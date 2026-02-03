@@ -12,56 +12,63 @@ export default function Header() {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-primary">OTO</span>
-                <span className="text-xs font-semibold text-primary -mt-1">FINANS GLOBAL</span>
-              </div>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F8bf84ff4531a4db6bfe9a09d40088813?format=webp&width=800&height=1200"
+                alt="Oto Finans Global Logo"
+                className="h-12 w-auto"
+              />
             </Link>
 
             {/* Desktop Navigation - Spread Out */}
             <nav className="hidden md:flex items-center gap-1 lg:gap-3 flex-1 justify-center mx-8">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-foreground hover:text-primary font-medium transition-colors px-3 py-2 rounded-md hover:bg-gray-50 text-sm lg:text-base"
               >
                 Ana Sayfa
               </Link>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-foreground hover:text-primary font-medium transition-colors px-3 py-2 rounded-md hover:bg-gray-50 text-sm lg:text-base"
               >
-                Ürünler
+                Hakkımızda
               </Link>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-foreground hover:text-primary font-medium transition-colors px-3 py-2 rounded-md hover:bg-gray-50 text-sm lg:text-base"
               >
-                Kurumsal
+                Finansmanlar
               </Link>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-foreground hover:text-primary font-medium transition-colors px-3 py-2 rounded-md hover:bg-gray-50 text-sm lg:text-base"
               >
-                İletişim
+                Kampanyalar
               </Link>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-foreground hover:text-primary font-medium transition-colors px-3 py-2 rounded-md hover:bg-gray-50 text-sm lg:text-base"
               >
-                SSS
+                Kredi Hesaplama
               </Link>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-foreground hover:text-primary font-medium transition-colors px-3 py-2 rounded-md hover:bg-gray-50 text-sm lg:text-base"
               >
-                Blog
+                İş Ortaklığı
+              </Link>
+              <Link
+                to="/"
+                className="text-foreground hover:text-primary font-medium transition-colors px-3 py-2 rounded-md hover:bg-gray-50 text-sm lg:text-base"
+              >
+                Bize Ulaş
               </Link>
             </nav>
 
             {/* CTA Button - Always Visible */}
-            <a 
+            <a
               href="tel:+905324098440"
-              className="hidden md:inline-block bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors font-semibold text-sm lg:text-base flex-shrink-0"
+              className="hidden md:inline-block bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white px-6 py-2 rounded-lg hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors font-semibold text-sm lg:text-base flex-shrink-0 shadow-md"
             >
               Hemen Başvur
             </a>
