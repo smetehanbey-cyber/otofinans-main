@@ -19,7 +19,7 @@ const products = [
     id: 3,
     title: "Ön Onaylı +800.000TL Kredi Limiti",
     subtitle: "Günü Yüksek Kredi İmkanı",
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F00b28cd51bf44610bbeb85e9c41e6ec0?format=webp&width=800&height=1200",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F208b71039a474d89b38a8ba38d113503?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
 ];
@@ -62,12 +62,12 @@ export default function ProductDropdown() {
                 </div>
 
                 {/* Product Content */}
-                <div className="p-4 text-white" style={{ backgroundColor: "#1e2f79" }}>
-                  <h3 className="text-sm font-bold mb-2">
+                <div className="text-white" style={{ backgroundColor: "#1e2f79", padding: "11px" }}>
+                  <h3 className="text-base font-bold mb-1">
                     {product.title}
                   </h3>
                   {product.subtitle && (
-                    <p className="text-sm text-blue-100 mb-4">
+                    <p className="text-base text-blue-100 mb-2">
                       {product.subtitle}
                     </p>
                   )}
