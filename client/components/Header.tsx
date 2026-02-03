@@ -153,7 +153,7 @@ export default function Header() {
       {/* Tagline Bar */}
       <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-3 text-center">
         <p className="text-sm sm:text-base font-semibold px-4">
-          Gülerden İyeş Şahıstan Aracını Bul, Taşıt Kredisi Bize!
+          Destek Oto Finans'ta Aracın 30 Dakika'da Kapında.
         </p>
       </div>
     </>
