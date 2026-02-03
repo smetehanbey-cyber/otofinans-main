@@ -8,7 +8,6 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <BankLogosCarousel />
 
       <main>
         {/* Hero Section */}
@@ -68,6 +67,9 @@ export default function Index() {
 
         {/* Services Section */}
         <ServicesSection />
+
+        {/* Bank Logos Carousel */}
+        <BankLogosCarousel />
 
         {/* CTA Section */}
         <section className="py-12 sm:py-20 bg-primary">
