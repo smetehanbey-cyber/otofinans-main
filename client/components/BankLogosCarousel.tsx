@@ -1,6 +1,6 @@
 import React from "react";
 
-const banks = [
+const banksBase = [
   { name: "Akbank", code: "AKB" },
   { name: "Garanti BBVA", code: "GRT" },
   { name: "İş Bankası", code: "İSB" },
@@ -11,12 +11,18 @@ const banks = [
   { name: "Denizbank", code: "DNZ" },
   { name: "Şekerbank", code: "ŞEK" },
   { name: "ICBC Turkey", code: "ICB" },
-  { name: "Akbank", code: "AKB" },
-  { name: "Garanti BBVA", code: "GRT" },
-  { name: "İş Bankası", code: "İSB" },
-  { name: "Halkbank", code: "HLK" },
-  { name: "Ziraat Bankası", code: "ZRT" },
+  { name: "QuickFinans", code: "QCK" },
+  { name: "TürkiyeFinans", code: "TRF" },
+  { name: "VakıfKatılım", code: "VKT" },
+  { name: "alBaraka", code: "ALB" },
+  { name: "arabamtaksit", code: "ART" },
+  { name: "BurganBank", code: "BRG" },
+  { name: "OtoSOR", code: "OSR" },
+  { name: "otovadeli.com", code: "OVD" },
 ];
+
+// Duplicate the array multiple times for seamless looping
+const banks = [...banksBase, ...banksBase, ...banksBase];
 
 export default function BankLogosCarousel() {
   return (
