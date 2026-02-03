@@ -18,7 +18,8 @@ export default function Index() {
               {/* Left Content */}
               <div className="order-2 lg:order-1">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-                  Hayaline Geç Kalma!
+                  <div>Hayaline</div>
+                  <div className="font-black text-5xl sm:text-6xl lg:text-7xl">Geç Kalma</div>
                 </h1>
                 <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8">
                   Oto Finans olarak, binek ve ticari taşıt finansmanları konusunda sektörün en güvenilir ve hızlı çözümünü sunuyoruz.
