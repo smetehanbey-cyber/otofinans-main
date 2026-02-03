@@ -12,7 +12,7 @@ const products = [
     id: 2,
     title: "30 Dakika'da Taşıt Kredisi Hazır",
     subtitle: "20 Yaş'a Kadar Tüm Araçlarda Senetli Satış Kredisi.",
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F881f3a3d7e6b428d94e4c4f2ed354e1d?format=webp&width=800&height=1200",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F131274b80b1d48b0b1d63539799f60ec?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
