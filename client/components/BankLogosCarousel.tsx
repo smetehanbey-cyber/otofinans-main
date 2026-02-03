@@ -25,20 +25,24 @@ const banksBase = [
 const banks = [...banksBase, ...banksBase, ...banksBase];
 
 export default function BankLogosCarousel() {
+  // Calculate animation duration based on number of items
+  // Each item takes about 8-10 seconds to scroll across screen
+  const animationDuration = 220;
+
   return (
     <div className="w-full bg-gray-50 border-y border-gray-200 overflow-hidden">
       <style>{`
-        @keyframes scroll-left-to-right {
+        @keyframes scroll-infinite {
           0% {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-${banksBase.length} * 200px));
+            transform: translateX(-33.333%);
           }
         }
 
         .scroll-animation {
-          animation: scroll-left-to-right 200s linear infinite;
+          animation: scroll-infinite ${animationDuration}s linear infinite;
         }
       `}</style>
 
