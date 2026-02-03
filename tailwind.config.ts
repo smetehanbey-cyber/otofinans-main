@@ -5,10 +5,6 @@ export default {
   content: ["./client/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
-    fontFamily: {
-      montserrat: ["Montserrat", "sans-serif"],
-      sans: ["Montserrat", "sans-serif"],
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -17,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+        sans: ["Montserrat", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
