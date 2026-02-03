@@ -30,29 +30,29 @@ export default function BankLogosCarousel() {
       <style>{`
         @keyframes scroll-left-to-right {
           0% {
-            transform: translateX(-100%);
+            transform: translateX(0);
           }
           100% {
-            transform: translateX(100%);
+            transform: translateX(calc(-${banksBase.length} * 200px));
           }
         }
 
         .scroll-animation {
-          animation: scroll-left-to-right 80s linear infinite;
+          animation: scroll-left-to-right 200s linear infinite;
         }
       `}</style>
 
-      <div className="h-9 flex items-center relative overflow-hidden">
-        <div className="scroll-animation flex whitespace-nowrap">
+      <div className="h-10 flex items-center relative overflow-hidden">
+        <div className="scroll-animation flex whitespace-nowrap gap-0">
           {banks.map((bank, index) => (
             <div
               key={index}
-              className="px-6 flex items-center gap-2 text-gray-700 text-sm font-medium flex-shrink-0"
+              className="px-6 flex items-center gap-2 text-gray-700 text-sm font-medium flex-shrink-0 min-w-max"
             >
               <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-blue-400 rounded-full flex items-center justify-center text-xs font-bold text-blue-900">
                 {bank.code}
               </div>
-              <span>{bank.name}</span>
+              <span className="whitespace-nowrap">{bank.name}</span>
             </div>
           ))}
         </div>
