@@ -63,7 +63,7 @@ export default function Header() {
         {/* Main Header Section */}
         <div className="border-b-2" style={{ borderColor: '#0f367e' }}>
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-20 gap-4">
+            <div className="flex items-center h-20 gap-4">
               {/* Logo */}
               <Link to="/" className="flex items-center flex-shrink-0">
                 <img
@@ -74,7 +74,7 @@ export default function Header() {
               </Link>
 
               {/* Center Section - Filters and Search */}
-              <div className="hidden md:flex items-center gap-4 flex-1">
+              <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
                 {/* Filter Tabs */}
                 <div className="flex items-center gap-6">
                   <ProductDropdown />
@@ -85,7 +85,7 @@ export default function Header() {
                 </div>
 
                 {/* Search Box */}
-                <div className="flex items-center gap-2 ml-4">
+                <div className="flex items-center gap-2">
                   <input
                     type="text"
                     placeholder="Aracını Bul..."
