@@ -72,13 +72,13 @@ export default function BannerSlider() {
             index === currentSlide ? "opacity-100" : "opacity-0"
           } ${slide.gradient}`}
         >
-          <div className="absolute inset-0 flex items-center justify-between px-4 sm:px-8">
+          <div className="absolute inset-0 flex items-center justify-start px-4 sm:px-8">
             {/* Left content */}
-            <div className="flex flex-col justify-center text-white z-10 max-w-2xl">
-              <h2 className="text-2xl sm:text-4xl font-bold mb-2 italic">
+            <div className="flex flex-col justify-center text-white z-10 max-w-xs sm:max-w-2xl">
+              <h2 className="text-xl sm:text-4xl font-bold mb-1 sm:mb-2 italic leading-tight">
                 {slide.title}
               </h2>
-              <p className="text-base sm:text-xl font-semibold">
+              <p className="text-sm sm:text-xl font-semibold">
                 {slide.subtitle}
               </p>
             </div>
