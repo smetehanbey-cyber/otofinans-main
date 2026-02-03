@@ -62,8 +62,8 @@ export default function ProductDropdown() {
                 </div>
 
                 {/* Product Content */}
-                <div className="p-4 bg-blue-600">
-                  <h3 className="text-sm font-bold text-white mb-2">
+                <div className="p-4 text-white" style={{ backgroundColor: "#1e2f79" }}>
+                  <h3 className="text-sm font-bold mb-2">
                     {product.title}
                   </h3>
                   {product.subtitle && (
