@@ -5,6 +5,10 @@ export default {
   content: ["./client/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
+    fontFamily: {
+      montserrat: ["Montserrat", "sans-serif"],
+      sans: ["Montserrat", "sans-serif"],
+    },
     container: {
       center: true,
       padding: "2rem",
