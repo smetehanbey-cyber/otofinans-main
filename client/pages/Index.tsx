@@ -10,16 +10,16 @@ export default function Index() {
 
       <main>
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary via-blue-700 to-slate-900 text-white py-12 sm:py-20">
+        <section className="bg-gradient-to-br from-primary via-blue-700 to-slate-900 text-white py-8 sm:py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
               {/* Left Content */}
               <div className="order-2 lg:order-1">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-                  Hayalindeki Aracı <span className="italic">Hemen Sahip Olun!</span>
+                  Hayaline Geç Kalma!
                 </h1>
                 <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8">
-                  Oto Finans Global olarak, otomobil finansmanı konusunda sektörün en güvenilir ve hızlı çözümünü sunuyoruz. 
+                  Oto Finans olarak, binek ve ticari taşıt finansmanları konusunda sektörün en güvenilir ve hızlı çözümünü sunuyoruz.
                 </p>
                 <ul className="space-y-3 sm:space-y-4 mb-8">
                   <li className="flex items-center gap-3 text-base sm:text-lg">
