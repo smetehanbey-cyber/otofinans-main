@@ -63,18 +63,18 @@ export default function Header() {
         {/* Main Header Section */}
         <div className="border-b-2" style={{ borderColor: '#0f367e' }}>
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center h-20 gap-4">
+            <div className="flex items-center h-20 gap-6">
               {/* Logo */}
               <Link to="/" className="flex items-center flex-shrink-0">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F8bf84ff4531a4db6bfe9a09d40088813?format=webp&width=800&height=1200"
                   alt="Oto Finans Global Logo"
-                  className="h-16 w-auto"
+                  className="h-14 w-auto"
                 />
               </Link>
 
-              {/* Center Section - Filters and Search */}
-              <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
+              {/* Center Section - Filters */}
+              <div className="hidden md:flex items-center gap-4">
                 {/* Filter Tabs */}
                 <div className="flex items-center gap-6">
                   <ProductDropdown />
@@ -83,22 +83,10 @@ export default function Header() {
                     Aracım İçin
                   </button>
                 </div>
-
-                {/* Search Box */}
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    placeholder="Aracını Bul..."
-                    className="px-3 py-1.5 border border-gray-300 rounded text-xs outline-none focus:border-primary"
-                  />
-                  <button className="p-1.5 hover:bg-gray-100 rounded border border-gray-300">
-                    <Search className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
               </div>
 
-              {/* Right Buttons */}
-              <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+              {/* Right Section - Search and Buttons */}
+              <div className="hidden md:flex items-center gap-2 ml-auto flex-shrink-0">
                 <button className="px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-50">
                   Aracını Hızlı Sat
                 </button>
