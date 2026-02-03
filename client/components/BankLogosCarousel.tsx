@@ -53,8 +53,12 @@ export default function BankLogosCarousel() {
               key={index}
               className="px-6 flex items-center gap-2 text-gray-700 text-sm font-medium flex-shrink-0 min-w-max"
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-blue-400 rounded-full flex items-center justify-center text-xs font-bold text-blue-900">
-                {bank.code}
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-blue-400 rounded-full flex items-center justify-center text-xs font-bold text-blue-900 overflow-hidden">
+                {bank.logo ? (
+                  <img src={bank.logo} alt={bank.name} className="w-full h-full object-contain p-1" />
+                ) : (
+                  bank.code
+                )}
               </div>
               <span className="whitespace-nowrap">{bank.name}</span>
             </div>
