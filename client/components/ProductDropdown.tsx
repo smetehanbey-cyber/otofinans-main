@@ -75,8 +75,8 @@ export default function ProductDropdown() {
                 </div>
 
                 {/* Button */}
-                <div className="px-4 py-3 bg-white border-t border-gray-200">
-                  <button className="w-full py-1.5 border border-primary text-primary font-medium text-xs rounded hover:bg-blue-50 transition-colors">
+                <div className="px-4 py-3 bg-white" style={{ borderTop: "2px solid #C5A863" }}>
+                  <button className="w-full py-1.5 font-medium text-xs rounded hover:bg-blue-50 transition-colors" style={{ border: "2px solid #C5A863", color: "#C5A863" }}>
                     {product.buttonText}
                   </button>
                 </div>
