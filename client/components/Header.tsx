@@ -13,7 +13,7 @@ export default function Header() {
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-10">
               {/* Top Navigation Links */}
-              <nav className="hidden md:flex items-center gap-3 flex-1 text-xs">
+              <nav className="hidden md:flex items-center gap-3 flex-1 justify-center text-xs">
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
                   Ana Sayfa
                 </Link>
@@ -38,7 +38,7 @@ export default function Header() {
               </nav>
 
               {/* Right Section */}
-              <div className="hidden md:flex items-center gap-2 text-xs">
+              <div className="hidden md:flex items-center gap-2 text-xs ml-auto">
                 <button className="text-gray-600 hover:text-primary">English</button>
                 <span className="text-gray-400">•</span>
                 <button className="text-gray-600 hover:text-primary">Türkçe</button>
@@ -60,7 +60,7 @@ export default function Header() {
         </div>
 
         {/* Main Header Section */}
-        <div className="border-b-2 border-gray-800">
+        <div className="border-b-2" style={{ borderColor: '#0f367e' }}>
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-20 gap-4">
               {/* Logo */}
@@ -68,7 +68,7 @@ export default function Header() {
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F8bf84ff4531a4db6bfe9a09d40088813?format=webp&width=800&height=1200"
                   alt="Oto Finans Global Logo"
-                  className="h-12 w-auto"
+                  className="h-16 w-auto"
                 />
               </Link>
 
@@ -101,7 +101,7 @@ export default function Header() {
               {/* Right Buttons */}
               <div className="hidden md:flex items-center gap-2 flex-shrink-0">
                 <button className="px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-50">
-                  Aracını Hakkı Sat
+                  Aracını Hızlı Sat
                 </button>
                 <a
                   href="tel:+905324098440"
@@ -157,7 +157,7 @@ export default function Header() {
             </div>
             <div className="px-4 py-2 space-y-2 border-t border-gray-200">
               <button className="w-full px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-100">
-                Aracını Hakkı Sat
+                Aracını Hızlı Sat
               </button>
               <a
                 href="tel:+905324098440"
@@ -173,7 +173,7 @@ export default function Header() {
       {/* Tagline Bar */}
       <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-3 text-center">
         <p className="text-sm sm:text-base font-semibold px-4">
-          Destek Oto Finans'ta Aracın 30 Dakika'da Kapında.
+          Destek Oto Finans'ta ⇋ Aracın 30 Dakika'da Kapında!
         </p>
       </div>
     </>
