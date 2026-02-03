@@ -51,7 +51,7 @@ export default function ProductDropdown() {
               <div
                 key={product.id}
                 className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-                style={{ border: "2px solid #C5A863" }}
+                style={{ border: "2px solid #1f3a93" }}
               >
                 {/* Product Image */}
                 <div className="relative w-full h-40 bg-gray-100 overflow-hidden">
@@ -75,8 +75,8 @@ export default function ProductDropdown() {
                 </div>
 
                 {/* Button */}
-                <div className="px-4 py-3 bg-white" style={{ borderTop: "2px solid #C5A863" }}>
-                  <button className="w-full py-1.5 font-medium text-xs rounded hover:bg-blue-50 transition-colors" style={{ border: "2px solid #C5A863", color: "#C5A863" }}>
+                <div className="px-4 py-3 bg-white" style={{ borderTop: "2px solid #1f3a93" }}>
+                  <button className="w-full py-1.5 font-medium text-xs rounded hover:bg-blue-50 transition-colors" style={{ border: "2px solid #1f3a93", color: "#1f3a93" }}>
                     {product.buttonText}
                   </button>
                 </div>
