@@ -5,20 +5,20 @@ const products = [
     id: 1,
     title: "20 YAYA KADAR Tüm Araçlarda Kredi",
     subtitle: "30 Dakika'da Kredi Hazır!",
-    image: "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=300&fit=crop",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F92df219e3b134fdb80abd49b953fbd18?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
     id: 2,
     title: "30 Dakika'da Taşıt Kredisi Hazır",
-    image: "https://images.unsplash.com/photo-1619405399517-d4dc2500d5f9?w=400&h=300&fit=crop",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F9a682ecde0ed41c0a221fcac6c0591a8?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
     id: 3,
     title: "Ön Onaylı +800.000TL Kredi Limiti",
     subtitle: "Günü Yüksek Kredi İmkanı",
-    image: "https://images.unsplash.com/photo-1606611281537-bbb6bfa74edf?w=400&h=300&fit=crop",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F394c26aaf2d249d89b6fe6c466205dce?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
 ];
