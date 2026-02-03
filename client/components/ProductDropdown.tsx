@@ -5,7 +5,7 @@ const products = [
     id: 1,
     title: "Peşinatsız Destekle Aracın Kapında.",
     subtitle: "30 Dakika'da Kredi Hazır!",
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F275ea60d1cce43a09f40c10985e2f43f?format=webp&width=800&height=1200",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ff490ae85b15e40f28311850afe05e1aa?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
