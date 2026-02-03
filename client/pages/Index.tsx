@@ -65,11 +65,11 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Services Section */}
-        <ServicesSection />
-
         {/* Bank Logos Carousel */}
         <BankLogosCarousel />
+
+        {/* Services Section */}
+        <ServicesSection />
 
         {/* CTA Section */}
         <section className="py-12 sm:py-20 bg-primary">

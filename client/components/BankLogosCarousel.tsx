@@ -32,7 +32,7 @@ export default function BankLogosCarousel() {
         }
 
         .scroll-animation {
-          animation: scroll-left-to-right 50s linear infinite;
+          animation: scroll-left-to-right 80s linear infinite;
         }
       `}</style>
 
