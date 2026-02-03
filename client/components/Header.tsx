@@ -101,39 +101,46 @@ export default function Header() {
                 className="block px-3 py-2 rounded-md text-foreground hover:bg-gray-100 font-medium"
                 onClick={() => setIsOpen(false)}
               >
-                Ürünler
+                Hakkımızda
               </Link>
               <Link
                 to="/"
                 className="block px-3 py-2 rounded-md text-foreground hover:bg-gray-100 font-medium"
                 onClick={() => setIsOpen(false)}
               >
-                Kurumsal
+                Finansmanlar
               </Link>
               <Link
                 to="/"
                 className="block px-3 py-2 rounded-md text-foreground hover:bg-gray-100 font-medium"
                 onClick={() => setIsOpen(false)}
               >
-                İletişim
+                Kampanyalar
               </Link>
               <Link
                 to="/"
                 className="block px-3 py-2 rounded-md text-foreground hover:bg-gray-100 font-medium"
                 onClick={() => setIsOpen(false)}
               >
-                SSS
+                Kredi Hesaplama
               </Link>
               <Link
                 to="/"
                 className="block px-3 py-2 rounded-md text-foreground hover:bg-gray-100 font-medium"
                 onClick={() => setIsOpen(false)}
               >
-                Blog
+                İş Ortaklığı
+              </Link>
+              <Link
+                to="/"
+                className="block px-3 py-2 rounded-md text-foreground hover:bg-gray-100 font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                Bize Ulaş
               </Link>
               <a
                 href="tel:+905324098440"
-                className="block w-full bg-red-600 text-white px-3 py-2 rounded-md text-center hover:bg-red-700 transition-colors font-semibold mt-2"
+                className="block w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white px-3 py-2 rounded-md text-center hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors font-semibold mt-2"
                 onClick={() => setIsOpen(false)}
               >
                 Hemen Başvur
