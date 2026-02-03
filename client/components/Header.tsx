@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Search } from "lucide-react";
+import ProductDropdown from "./ProductDropdown";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,9 +77,7 @@ export default function Header() {
               <div className="hidden md:flex items-center gap-4 flex-1">
                 {/* Filter Tabs */}
                 <div className="flex items-center gap-6">
-                  <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors">
-                    Kendim İçin
-                  </button>
+                  <ProductDropdown />
                   <div className="h-4 border-l border-gray-300"></div>
                   <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors">
                     Aracım İçin
