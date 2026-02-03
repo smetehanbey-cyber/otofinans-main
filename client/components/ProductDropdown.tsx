@@ -3,9 +3,9 @@ import { useState } from "react";
 const products = [
   {
     id: 1,
-    title: "20 YAYA KADAR Tüm Araçlarda Kredi",
+    title: "Peşinatsız Destekle Aracın Kapında.",
     subtitle: "30 Dakika'da Kredi Hazır!",
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F92df219e3b134fdb80abd49b953fbd18?format=webp&width=800&height=1200",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F0321897513424136b7ce096976476a69?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
