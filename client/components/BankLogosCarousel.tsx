@@ -22,17 +22,17 @@ export default function BankLogosCarousel() {
   return (
     <div className="w-full bg-gray-50 border-y border-gray-200 overflow-hidden">
       <style>{`
-        @keyframes scroll-right-to-left {
+        @keyframes scroll-left-to-right {
           0% {
-            transform: translateX(100%);
-          }
-          100% {
             transform: translateX(-100%);
           }
+          100% {
+            transform: translateX(100%);
+          }
         }
-        
+
         .scroll-animation {
-          animation: scroll-right-to-left 40s linear infinite;
+          animation: scroll-left-to-right 50s linear infinite;
         }
       `}</style>
 
