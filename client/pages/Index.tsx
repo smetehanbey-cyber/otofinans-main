@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import BannerSlider from "@/components/BannerSlider";
 import ServicesSection from "@/components/ServicesSection";
+import BankLogosCarousel from "@/components/BankLogosCarousel";
 
 export default function Index() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
+      <BankLogosCarousel />
 
       <main>
         {/* Hero Section */}
