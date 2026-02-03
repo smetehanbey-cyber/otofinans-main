@@ -5,7 +5,7 @@ const products = [
     id: 1,
     title: "Peşinatsız Destekle Aracın Kapında.",
     subtitle: "30 Dakika'da Kredi Hazır!",
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F76a95df9aeb74635b625e38d53e6ffda?format=webp&width=800&height=1200",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fd48ae6be8511489c8905ee933513aed5?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
@@ -50,7 +50,8 @@ export default function ProductDropdown() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                style={{ border: "2px solid #C5A863" }}
               >
                 {/* Product Image */}
                 <div className="relative w-full h-40 bg-gray-100 overflow-hidden">
