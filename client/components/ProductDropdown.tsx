@@ -66,7 +66,7 @@ export default function ProductDropdown() {
                     {product.title}
                   </h3>
                   {product.subtitle && (
-                    <p className="text-xs text-blue-100 mb-4">
+                    <p className="text-sm text-blue-100 mb-4">
                       {product.subtitle}
                     </p>
                   )}
