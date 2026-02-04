@@ -190,7 +190,8 @@ export default function PiyasaVerileri() {
         <div className="flex justify-center items-center gap-3 sm:gap-4">
           <button
             onClick={handlePrev}
-            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center hover:bg-white hover:text-emerald-500 transition-colors"
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center hover:bg-white transition-colors"
+            style={{ "--tw-text-opacity": "1", color: "#1f3a93" }}
           >
             ←
           </button>
