@@ -16,9 +16,9 @@ export default function Index() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-center">
               {/* Left Content */}
               <div className="order-2 lg:order-1">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-                  <div className="text-5xl sm:text-6xl lg:text-7xl">Hayaline</div>
-                  <div className="font-black text-5xl sm:text-6xl lg:text-7xl">Geç Kalma</div>
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 leading-tight">
+                  <div className="text-4xl sm:text-5xl lg:text-6xl">Hayaline</div>
+                  <div className="font-black text-4xl sm:text-5xl lg:text-6xl">Geç Kalma</div>
                 </h1>
                 <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8">
                   Oto Finans olarak, binek ve ticari taşıt finansmanları konusunda sektörün en güvenilir ve hızlı çözümünü sunuyoruz.
