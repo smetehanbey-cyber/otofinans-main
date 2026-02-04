@@ -107,14 +107,14 @@ export default function ProductDropdown() {
 
                 {/* Button */}
                 <div className="px-2 py-2 bg-white" style={{
-                  borderTop: "2px solid",
-                  borderImageSource: "linear-gradient(to right, #e8e8e8, #b0b0b0)",
-                  borderImageSlice: 1
+                  borderTopWidth: "2px",
+                  borderTopStyle: "solid",
+                  borderImage: "linear-gradient(to right, #e8e8e8, #b0b0b0) 1"
                 }}>
                   <button className="w-full py-1 font-medium text-xs rounded hover:bg-blue-50 transition-colors" style={{
-                    border: "2px solid",
-                    background: "linear-gradient(white, white) padding-box, linear-gradient(135deg, #e8e8e8, #b0b0b0) border-box",
-                    borderRadius: "0.375rem",
+                    borderWidth: "2px",
+                    borderStyle: "solid",
+                    borderImage: "linear-gradient(135deg, #e8e8e8, #b0b0b0) 1",
                     color: "#1f3a93"
                   }}>
                     {product.buttonText}
