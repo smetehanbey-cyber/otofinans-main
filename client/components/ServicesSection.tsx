@@ -3,8 +3,9 @@ import { Clock, Shield, TrendingUp } from "lucide-react";
 const services = [
   {
     icon: Clock,
-    title: "Hızlı İşlem",
-    description: "30 dakika içinde başvurunuz değerlendirilir ve sonuç alırsınız",
+    title: "Esnek Ödeme",
+    titleBold: "Esnek",
+    description: "İster senetle ister esnek ödeme ile bütçenize göre ödeme planı oluşturun.",
   },
   {
     icon: Shield,
