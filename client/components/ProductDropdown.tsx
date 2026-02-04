@@ -44,7 +44,9 @@ export default function ProductDropdown() {
       <div
         className="relative"
         onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
+        onMouseLeave={() => {
+          setTimeout(() => setIsOpen(false), 300);
+        }}
       >
       <div className="flex flex-col items-center">
         <button className={`text-sm font-medium pb-2 transition-colors ${isOpen ? 'text-primary' : 'text-gray-700 hover:text-primary'}`}>
@@ -64,8 +66,10 @@ export default function ProductDropdown() {
       {isOpen && (
         <div className="fixed left-0 right-0 bg-white shadow-xl z-40 transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out', top: '108px' }}>
           {/* Dropdown Header */}
-          <div className="px-6 py-4 border-b border-gray-200 text-sm font-semibold text-gray-700">
-            Finansal Çözümler
+          <div className="border-b border-gray-200 py-4 text-sm font-semibold text-gray-700">
+            <div className="max-w-6xl mx-auto px-4">
+              Kendim İçin Finansal Çözümler
+            </div>
           </div>
 
           {/* Products Grid */}
