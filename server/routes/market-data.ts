@@ -366,8 +366,9 @@ export async function handleMarketData(
       let sellRateFormatted: string | undefined;
 
       if (item.key === "GAU") {
-        // Gram Gold: Check if using fallback data (smaller values) or API data (already in TRY)
-        // Fallback values (2830.50) are USD, API values (49811.89) are already in TRY
+        // Gram Gold: XAU/TRY (troy ounce) / 31.10 gram = price per gram
+        // 1 troy ounce = 31.10 grams
+        const GRAMS_PER_TROY_OUNCE = 31.10;
 
         let buyRateTL = rates.buyRate;
         let sellRateTL = rates.sellRate;
@@ -377,22 +378,32 @@ export async function handleMarketData(
           // Fallback USD values - multiply by USD/TRY rate
           buyRateTL = buyRateTL * usdRate;
           sellRateTL = sellRateTL * usdRate;
-          console.log(`✓ Gram Gold (Fallback USD): Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
+          console.log(`✓ Gram Gold (Fallback USD in TRY): Troy Ounce Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
         } else {
-          // API values already in TRY
-          console.log(`✓ Gram Gold (API TRY): Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
+          // API values are in TRY (troy ounce price)
+          console.log(`✓ Gram Gold (API Troy Ounce): XAU/TRY Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
         }
 
+        // Convert troy ounce price to gram price: divide by 31.10
+        let buyRateGram = buyRateTL / GRAMS_PER_TROY_OUNCE;
+        let sellRateGram = sellRateTL / GRAMS_PER_TROY_OUNCE;
+
+        console.log(`✓ Gram Gold (per gram): Al=${buyRateGram.toFixed(2)}, Sat=${sellRateGram.toFixed(2)} TRY/gram`);
+
         // Turkish formatting: thousands with dots, decimals with comma
-        // Example: 122.887,50
-        buyRateFormatted = buyRateTL.toLocaleString('tr-TR', {
+        // Example: 1.589,50
+        buyRateFormatted = buyRateGram.toLocaleString('tr-TR', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
-        sellRateFormatted = sellRateTL.toLocaleString('tr-TR', {
+        sellRateFormatted = sellRateGram.toLocaleString('tr-TR', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
+
+        // Update buyRate and sellRate to gram prices for display
+        buyRate = parseFloat(buyRateGram.toFixed(2));
+        sellRate = parseFloat(sellRateGram.toFixed(2));
       }
 
       marketData.push({
