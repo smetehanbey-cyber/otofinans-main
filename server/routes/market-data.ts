@@ -10,55 +10,76 @@ interface MarketDataResponse {
   isPositive: boolean;
 }
 
-// Fetch rates from genelpara.com API (updates every 15 minutes)
+// Fetch all rates from genelpara.com API (updates every 15 minutes)
+// Using /list=all endpoint to get all currencies and commodities
 async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; sellRate: number }>> {
   const rates: Record<string, { buyRate: number; sellRate: number }> = {};
-  const currencies = ["USD", "EUR", "GBP", "JPY"];
 
   try {
-    for (const currency of currencies) {
-      try {
-        const response = await fetch(
-          `https://api.genelpara.com/json/?list=doviz&sembol=${currency}`,
-          { signal: AbortSignal.timeout(5000) }
-        );
+    const response = await fetch(
+      "https://api.genelpara.com/json/?list=all",
+      { signal: AbortSignal.timeout(5000) }
+    );
 
-        if (response.ok) {
-          const data = await response.json();
+    if (response.ok) {
+      const data = await response.json();
 
-          // The API returns data with this structure:
-          // { success: true, data: { USD: { alis: "43.4918", satis: "43.5038", ... } } }
-          if (data.success && data.data && data.data[currency]) {
-            const item = data.data[currency];
-
-            // Parse buy and sell rates
-            // Note: Turkish API uses "alis" (buy) and "satis" (sell)
-            const buyRate = parseFloat(item.alis);
-            const sellRate = parseFloat(item.satis);
-
-            if (!isNaN(buyRate) && !isNaN(sellRate)) {
-              rates[currency] = {
-                buyRate: parseFloat(buyRate.toFixed(4)),
-                sellRate: parseFloat(sellRate.toFixed(4)),
-              };
-              console.log(`✓ ${currency}: Al=${rates[currency].buyRate}, Sat=${rates[currency].sellRate}`);
-            }
+      // The API returns data with this structure:
+      // { success: true, data: { EUR: { alis: "...", satis: "..." }, GBP: { alis: "...", satis: "..." }, ... } }
+      if (data.success && data.data) {
+        // EUR
+        if (data.data.EUR) {
+          const item = data.data.EUR;
+          const buyRate = parseFloat(item.alis);
+          const sellRate = parseFloat(item.satis);
+          if (!isNaN(buyRate) && !isNaN(sellRate)) {
+            rates.EUR = {
+              buyRate: parseFloat(buyRate.toFixed(4)),
+              sellRate: parseFloat(sellRate.toFixed(4)),
+            };
+            console.log(`✓ EUR: Al=${rates.EUR.buyRate}, Sat=${rates.EUR.sellRate}`);
           }
-        } else {
-          console.log(`GenelPara API returned status ${response.status} for ${currency}`);
         }
-      } catch (error) {
-        console.log(`GenelPara API fetch failed for ${currency}:`, error instanceof Error ? error.message : error);
-      }
-    }
 
-    if (Object.keys(rates).length > 0) {
-      console.log("✓ GenelPara API: Successfully fetched rates for", Object.keys(rates).join(", "));
+        // GBP
+        if (data.data.GBP) {
+          const item = data.data.GBP;
+          const buyRate = parseFloat(item.alis);
+          const sellRate = parseFloat(item.satis);
+          if (!isNaN(buyRate) && !isNaN(sellRate)) {
+            rates.GBP = {
+              buyRate: parseFloat(buyRate.toFixed(4)),
+              sellRate: parseFloat(sellRate.toFixed(4)),
+            };
+            console.log(`✓ GBP: Al=${rates.GBP.buyRate}, Sat=${rates.GBP.sellRate}`);
+          }
+        }
+
+        // GRAM ALTIN (Gram Gold)
+        if (data.data["GRAM ALTIN"]) {
+          const item = data.data["GRAM ALTIN"];
+          const buyRate = parseFloat(item.alis);
+          const sellRate = parseFloat(item.satis);
+          if (!isNaN(buyRate) && !isNaN(sellRate)) {
+            rates["GRAM ALTIN"] = {
+              buyRate: parseFloat(buyRate.toFixed(4)),
+              sellRate: parseFloat(sellRate.toFixed(4)),
+            };
+            console.log(`✓ GRAM ALTIN: Al=${rates["GRAM ALTIN"].buyRate}, Sat=${rates["GRAM ALTIN"].sellRate}`);
+          }
+        }
+      }
+
+      if (Object.keys(rates).length > 0) {
+        console.log("✓ GenelPara API: Successfully fetched rates for", Object.keys(rates).join(", "));
+      } else {
+        console.log("⚠ GenelPara API: No rates fetched, will use fallback");
+      }
     } else {
-      console.log("⚠ GenelPara API: No rates fetched, will use fallback");
+      console.log(`GenelPara API returned status ${response.status}`);
     }
   } catch (error) {
-    console.log("GenelPara API batch fetch failed:", error instanceof Error ? error.message : error);
+    console.log("GenelPara API fetch failed:", error instanceof Error ? error.message : error);
   }
 
   return rates;
