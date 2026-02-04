@@ -5,43 +5,34 @@ export default function PiyasaVerileri() {
   const [marketData, setMarketData] = useState([
     {
       id: 1,
-      symbol: "USD",
-      name: "Amerikan Doları",
-      buyRate: 30.0747,
-      sellRate: 30.2315,
-      change: 0.47,
+      symbol: "EUR",
+      name: "Euro",
+      buyRate: 51.4746,
+      sellRate: 51.4821,
+      change: 0.04,
       isPositive: true,
     },
     {
       id: 2,
-      symbol: "EUR",
-      name: "Euro",
-      buyRate: 32.7758,
-      sellRate: 32.9215,
-      change: 0.28,
+      symbol: "GBP",
+      name: "İngiliz Poundu",
+      buyRate: 59.7531,
+      sellRate: 60.0526,
+      change: 0.26,
       isPositive: true,
     },
     {
       id: 3,
       symbol: "ALT (gr)",
-      name: "Altın",
-      buyRate: 2072.6269,
-      sellRate: 2157.0752,
-      change: 2.759,
+      name: "Gram Altın",
+      buyRate: 2830.5,
+      sellRate: 2890.5,
+      change: 1.5,
       isPositive: true,
-    },
-    {
-      id: 4,
-      symbol: "GMS (gr)",
-      name: "Gümüş",
-      buyRate: 24.9138,
-      sellRate: 26.1854,
-      change: 0.087,
-      isPositive: false,
     },
   ]);
 
-  // Fetch real-time market data from backend
+  // Fetch market data from backend
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
@@ -72,8 +63,8 @@ export default function PiyasaVerileri() {
     // Fetch immediately
     fetchMarketData();
 
-    // Set up interval to fetch every second
-    const interval = setInterval(fetchMarketData, 1000);
+    // Set up interval to fetch every 10 minutes (to avoid rate limiting)
+    const interval = setInterval(fetchMarketData, 10 * 60 * 1000);
 
     return () => {
       clearInterval(interval);
