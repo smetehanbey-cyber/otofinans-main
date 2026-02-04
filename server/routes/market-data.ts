@@ -114,28 +114,33 @@ export async function handleMarketData(
 
   const marketData: MarketDataResponse[] = [];
   let dataIndex = 1;
-  let tcmbRates: Record<string, { buyRate: number; sellRate: number }> = {};
+  let ratesToUse = fallbackRates;
 
-  // Try to fetch from TCMB XML
-  try {
-    const response = await fetch("https://www.tcmb.gov.tr/kurlar/today.xml", {
-      signal: AbortSignal.timeout(3000),
-    });
+  // Try to fetch from currencyapi.com first (free, no key needed)
+  const currencyApiRates = await fetchFromCurrencyAPI();
+  if (Object.keys(currencyApiRates).length > 0) {
+    ratesToUse = currencyApiRates;
+    console.log("✓ CurrencyAPI rates fetched successfully");
+  } else {
+    // Try TCMB XML as fallback
+    try {
+      const response = await fetch("https://www.tcmb.gov.tr/kurlar/today.xml", {
+        signal: AbortSignal.timeout(3000),
+      });
 
-    if (response.ok) {
-      const xmlText = await response.text();
-      tcmbRates = parseTCMBXML(xmlText);
+      if (response.ok) {
+        const xmlText = await response.text();
+        const tcmbRates = parseTCMBXML(xmlText);
 
-      if (Object.keys(tcmbRates).length > 0) {
-        console.log("✓ TCMB rates fetched successfully:", Object.keys(tcmbRates).join(", "));
+        if (Object.keys(tcmbRates).length > 0) {
+          ratesToUse = tcmbRates;
+          console.log("✓ TCMB rates fetched successfully:", Object.keys(tcmbRates).join(", "));
+        }
       }
+    } catch (error) {
+      console.log("TCMB API fetch failed, using fallback");
     }
-  } catch (error) {
-    console.log("TCMB API fetch failed, using fallback:", error instanceof Error ? error.message : error);
   }
-
-  // Use TCMB rates if available, otherwise fallback
-  const ratesToUse = Object.keys(tcmbRates).length > 0 ? tcmbRates : fallbackRates;
 
   // Add currencies
   for (const currency of Object.keys(currencyNames)) {
