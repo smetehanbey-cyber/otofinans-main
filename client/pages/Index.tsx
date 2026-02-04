@@ -72,6 +72,9 @@ export default function Index() {
         {/* Services Section */}
         <ServicesSection />
 
+        {/* Credit Calculator Section */}
+        <CreditCalculator />
+
         {/* CTA Section */}
         <section className="py-12 sm:py-20 bg-primary">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
