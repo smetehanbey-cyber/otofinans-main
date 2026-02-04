@@ -101,9 +101,12 @@ export default function CreditCalculator() {
               <label className="text-sm font-medium text-gray-700 mb-2 block">Tutar</label>
               <div className="flex items-center">
                 <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
+                  type="text"
+                  value={amount.toLocaleString('tr-TR')}
+                  onChange={(e) => {
+                    const numericValue = parseInt(e.target.value.replace(/\D/g, '')) || 0;
+                    setAmount(numericValue);
+                  }}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 />
                 <span className="ml-2 text-sm font-medium text-gray-700">₺</span>
