@@ -142,13 +142,17 @@ export default function PiyasaVerileri() {
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-medium text-gray-600">Al</span>
                   <span className="text-sm font-bold text-gray-900">
-                    {item.buyRate.toFixed(item.symbol === "ALT (gr)" ? 2 : 4)}
+                    {item.symbol === "ALT (gr)" && item.buyRateFormatted
+                      ? item.buyRateFormatted
+                      : item.buyRate.toFixed(item.symbol === "ALT (gr)" ? 2 : 4)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-medium text-gray-600">Sat</span>
                   <span className="text-sm font-bold text-gray-900">
-                    {item.sellRate.toFixed(item.symbol === "ALT (gr)" ? 2 : 4)}
+                    {item.symbol === "ALT (gr)" && item.sellRateFormatted
+                      ? item.sellRateFormatted
+                      : item.sellRate.toFixed(item.symbol === "ALT (gr)" ? 2 : 4)}
                   </span>
                 </div>
               </div>
