@@ -227,34 +227,51 @@ export async function handleMarketData(
   _req: Request,
   res: Response
 ): Promise<void> {
-  const items = [
-    { key: "USD", symbol: "USD", name: "Amerikan Doları" },
-    { key: "EUR", symbol: "EUR", name: "Euro" },
-    { key: "GBP", symbol: "GBP", name: "İngiliz Poundu" },
-    { key: "GA", symbol: "ALT (gr)", name: "Gram Altın" }, // GA is the API key for Gram Altın
-  ];
-
   // Fallback data - Current rates
   const fallbackRates: Record<string, RateData> = {
     USD: { buyRate: 43.4918, sellRate: 43.5038, change: 0.03 },
     EUR: { buyRate: 51.4746, sellRate: 51.4821, change: 0.04 },
     GBP: { buyRate: 59.7531, sellRate: 60.0526, change: 0.26 },
-    GA: { buyRate: 2830.50, sellRate: 2890.50, change: 1.5 },
+    GAU: { buyRate: 2830.50, sellRate: 2890.50, change: 1.5 },
   };
+
+  let ratesToUse = fallbackRates;
+
+  // Try Trunçgil API first (more reliable for gold prices)
+  const truncgilRates = await fetchFromTruncgil();
+  if (Object.keys(truncgilRates).length > 0) {
+    // Merge Trunçgil data with fallback, preferring Trunçgil
+    ratesToUse = { ...fallbackRates, ...truncgilRates };
+    console.log("✓ Using Trunçgil API data");
+  } else {
+    // Fallback to genelpara API
+    const genelParaRates = await fetchFromGenelPara();
+    if (Object.keys(genelParaRates).length > 0) {
+      ratesToUse = { ...fallbackRates, ...genelParaRates };
+      console.log("✓ Using GenelPara API data");
+    } else {
+      console.log("⚠ Using fallback data - both APIs unavailable");
+    }
+  }
+
+  // Map API data to display items
+  const items = [
+    { key: "USD", symbol: "USD", name: "Amerikan Doları", decimals: 4 },
+    { key: "EUR", symbol: "EUR", name: "Euro", decimals: 4 },
+    { key: "GBP", symbol: "GBP", name: "İngiliz Poundu", decimals: 4 },
+    { key: "GAU", symbol: "ALT (gr)", name: "Gram Altın", decimals: 2 }, // GAU is gold in Trunçgil API
+  ];
 
   const marketData: MarketDataResponse[] = [];
   let dataIndex = 1;
-  let ratesToUse = fallbackRates;
 
-  // Try to fetch from genelpara.com API first (updates every 15 minutes)
-  const genelParaRates = await fetchFromGenelPara();
-  if (Object.keys(genelParaRates).length > 0) {
-    ratesToUse = genelParaRates;
-  }
-
-  // Add USD, EUR, GBP, and GA (Gram Altın) in order
+  // Add USD, EUR, GBP, and GAU (Gram Altın) in order
   for (const item of items) {
-    const rates = ratesToUse[item.key];
+    // Try primary key first, then fallback to GA (genelpara format)
+    let rates = ratesToUse[item.key];
+    if (!rates && item.key === "GAU") {
+      rates = ratesToUse["GA"]; // Try genelpara key if Trunçgil key not found
+    }
 
     if (rates) {
       const change = rates.change ?? 0;
@@ -262,8 +279,8 @@ export async function handleMarketData(
         id: dataIndex++,
         symbol: item.symbol,
         name: item.name,
-        buyRate: parseFloat(rates.buyRate.toFixed(item.key === "GA" ? 2 : 4)),
-        sellRate: parseFloat(rates.sellRate.toFixed(item.key === "GA" ? 2 : 4)),
+        buyRate: parseFloat(rates.buyRate.toFixed(item.decimals)),
+        sellRate: parseFloat(rates.sellRate.toFixed(item.decimals)),
         change: parseFloat(change.toFixed(3)),
         isPositive: change >= 0,
       });
