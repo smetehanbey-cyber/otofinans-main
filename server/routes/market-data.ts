@@ -8,6 +8,8 @@ interface MarketDataResponse {
   sellRate: number;
   change: number;
   isPositive: boolean;
+  buyRateFormatted?: string; // Turkish formatted version for high values like gold
+  sellRateFormatted?: string;
 }
 
 interface RateData {
