@@ -71,7 +71,7 @@ export default function PiyasaVerileri() {
     };
   }, []);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const totalItems = marketData.length;
   const maxIndex = totalItems > itemsPerPage ? Math.ceil(totalItems / itemsPerPage) - 1 : 0;
 
