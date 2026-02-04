@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import BannerSlider from "@/components/BannerSlider";
 import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
+import CreditCalculator from "@/components/CreditCalculator";
 
 export default function Index() {
   return (
