@@ -112,11 +112,10 @@ export async function handleMarketData(
   let dataIndex = 1;
   let ratesToUse = fallbackRates;
 
-  // Try to fetch from currencyapi.com first (free, no key needed)
-  const currencyApiRates = await fetchFromCurrencyAPI();
-  if (Object.keys(currencyApiRates).length > 0) {
-    ratesToUse = currencyApiRates;
-    console.log("✓ CurrencyAPI rates fetched successfully");
+  // Try to fetch from genelpara.com API first (updates every 15 minutes)
+  const genelParaRates = await fetchFromGenelPara();
+  if (Object.keys(genelParaRates).length > 0) {
+    ratesToUse = genelParaRates;
   } else {
     // Try TCMB XML as fallback
     try {
