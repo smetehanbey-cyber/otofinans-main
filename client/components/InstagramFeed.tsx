@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 
 interface InstagramPost {
   id: string;
-  media_type: string;
-  media_url: string;
-  permalink: string;
+  image_url: string;
   caption?: string;
+  likes?: number;
+  comments?: number;
+  url: string;
   timestamp?: string;
 }
 
@@ -21,20 +22,18 @@ export default function InstagramFeed() {
   const fetchInstagramPosts = async () => {
     try {
       setLoading(true);
-      // This endpoint would call your backend to fetch Instagram posts
-      // The backend would use Instagram Graph API with the access token
+      // Fetch from backend which scrapes Instagram's public JSON endpoint
       const response = await fetch("/api/instagram-posts");
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch Instagram posts");
       }
 
       const data = await response.json();
-      setPosts(data.slice(0, 6)); // Get only the latest 6 posts
+      setPosts(Array.isArray(data) ? data : []);
     } catch (err) {
       console.log("Instagram feed error:", err);
       setError("Instagram postaları yüklenemedi");
-      // Use fallback/placeholder posts
       setPosts([]);
     } finally {
       setLoading(false);
