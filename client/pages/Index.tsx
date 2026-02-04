@@ -129,10 +129,15 @@ export default function Index() {
               {/* Left Content */}
               <div className="text-white flex flex-col justify-between py-8 lg:py-0 h-full lg:h-auto">
                 <div>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight animate-fade-in-up">
                     Aracını bizimle hızlı sat<br />
                     anında <b>Oto Finanslı</b> ol
                   </h2>
+                  <p className="text-base sm:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
+                    Oto Finans ile özgürce günlük rutinlerinden<br />
+                    geri kalmadan aracına en iyi teklifi biz bulalım<br />
+                    ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
+                  </p>
                 </div>
 
                 <div className="animate-fade-in-up-delay-2">
