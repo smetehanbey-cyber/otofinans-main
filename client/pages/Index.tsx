@@ -129,30 +129,20 @@ export default function Index() {
               {/* Left Content */}
               <div className="text-white flex flex-col justify-between py-8 lg:py-0 h-full lg:h-auto">
                 <div>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 leading-tight animate-fade-in-up">
-                    Aracını bizimle hızlı sat
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
+                    Aracını bizimle hızlı sat<br />
+                    anında <b>Oto Finanslı</b> ol
                   </h2>
                 </div>
 
-                <p className="text-base sm:text-lg mb-6 text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
-                  Oto Finans ile özgürce günlük rutinlerinden<br />
-                  geri kalmadan aracına en iyi teklifi biz bulalım<br />
-                  ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
-                </p>
-
-                <div className="space-y-4">
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
-                    anında <b>Oto Finanslı</b> ol
-                  </h2>
-                  <div className="animate-fade-in-up-delay-2">
-                    <a
-                      href="tel:+905324098440"
-                      className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 border-2 border-blue-400 text-blue-400 font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200"
-                      title="Oto Finanslı Ol"
-                    >
-                      ➜
-                    </a>
-                  </div>
+                <div className="animate-fade-in-up-delay-2">
+                  <a
+                    href="tel:+905324098440"
+                    className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-blue-400 font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
+                    title="Oto Finanslı Ol"
+                  >
+                    Oto Finanslı Ol
+                  </a>
                 </div>
               </div>
 
