@@ -123,15 +123,15 @@ export async function handleMarketData(
     { key: "USD", symbol: "USD", name: "Amerikan Doları" },
     { key: "EUR", symbol: "EUR", name: "Euro" },
     { key: "GBP", symbol: "GBP", name: "İngiliz Poundu" },
-    { key: "GRAM ALTIN", symbol: "ALT (gr)", name: "Gram Altın" },
+    { key: "GA", symbol: "ALT (gr)", name: "Gram Altın" }, // GA is the API key for Gram Altın
   ];
 
   // Fallback data - Current rates
-  const fallbackRates: Record<string, { buyRate: number; sellRate: number }> = {
-    USD: { buyRate: 43.4918, sellRate: 43.5038 },
-    EUR: { buyRate: 51.4746, sellRate: 51.4821 },
-    GBP: { buyRate: 59.7531, sellRate: 60.0526 },
-    "GRAM ALTIN": { buyRate: 2830.50, sellRate: 2890.50 },
+  const fallbackRates: Record<string, RateData> = {
+    USD: { buyRate: 43.4918, sellRate: 43.5038, change: 0.03 },
+    EUR: { buyRate: 51.4746, sellRate: 51.4821, change: 0.04 },
+    GBP: { buyRate: 59.7531, sellRate: 60.0526, change: 0.26 },
+    GA: { buyRate: 2830.50, sellRate: 2890.50, change: 1.5 },
   };
 
   const marketData: MarketDataResponse[] = [];
@@ -144,18 +144,18 @@ export async function handleMarketData(
     ratesToUse = genelParaRates;
   }
 
-  // Add USD, EUR, GBP, and GRAM ALTIN in order
+  // Add USD, EUR, GBP, and GA (Gram Altın) in order
   for (const item of items) {
     const rates = ratesToUse[item.key];
-    const change = Math.random() * 0.4 - 0.2;
 
     if (rates) {
+      const change = rates.change ?? 0;
       marketData.push({
         id: dataIndex++,
         symbol: item.symbol,
         name: item.name,
-        buyRate: parseFloat(rates.buyRate.toFixed(item.key === "GRAM ALTIN" ? 2 : 4)),
-        sellRate: parseFloat(rates.sellRate.toFixed(item.key === "GRAM ALTIN" ? 2 : 4)),
+        buyRate: parseFloat(rates.buyRate.toFixed(item.key === "GA" ? 2 : 4)),
+        sellRate: parseFloat(rates.sellRate.toFixed(item.key === "GA" ? 2 : 4)),
         change: parseFloat(change.toFixed(3)),
         isPositive: change >= 0,
       });
