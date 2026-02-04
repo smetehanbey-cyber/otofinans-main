@@ -160,56 +160,17 @@ export default function PiyasaVerileri() {
           ))}
         </div>
 
-        {/* Navigation Controls */}
-        <div className="flex justify-center items-center gap-3 sm:gap-4">
-          <button
-            onClick={handlePrev}
-            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center transition-colors"
-            style={{
-              color: "white",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "white";
-              e.currentTarget.style.color = "#1f3a93";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-              e.currentTarget.style.color = "white";
-            }}
-          >
-            ←
-          </button>
-
-          {/* Dots */}
-          <div className="flex gap-2">
-            {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentIndex(idx)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  idx === currentIndex ? "bg-white" : "bg-white/40"
-                }`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={handleNext}
-            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center transition-colors"
-            style={{
-              color: "white",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "white";
-              e.currentTarget.style.color = "#1f3a93";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-              e.currentTarget.style.color = "white";
-            }}
-          >
-            →
-          </button>
+        {/* Navigation Controls - Dots Only */}
+        <div className="flex justify-center items-center gap-2">
+          {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                idx === currentIndex ? "bg-white" : "bg-white/40"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>
