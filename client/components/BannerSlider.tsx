@@ -85,10 +85,16 @@ export default function BannerSlider() {
               </p>
             </div>
 
-            {/* Decorative element */}
-            <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-10">
-              <div className="w-full h-full bg-white rounded-full ml-1/2 -mr-1/4"></div>
-            </div>
+            {/* Decorative element or phone image */}
+            {slide.rightImage ? (
+              <div className="absolute right-0 top-0 bottom-0 w-1/3 flex items-center justify-center">
+                <img src={slide.rightImage} alt={slide.title} className="h-full object-contain" />
+              </div>
+            ) : (
+              <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-10">
+                <div className="w-full h-full bg-white rounded-full ml-1/2 -mr-1/4"></div>
+              </div>
+            )}
           </div>
         </div>
       ))}
