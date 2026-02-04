@@ -46,9 +46,16 @@ async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
         }
       }
 
-      // Debug: Log the first few keys to understand structure
-      const dataKeys = Object.keys(data).slice(0, 10);
-      console.log("Trunçgil API response keys:", dataKeys);
+      // Debug: Log all keys to find gold data
+      const allKeys = Object.keys(data);
+      const goldKeys = allKeys.filter(k => k.toLowerCase().includes('alt') || k.toLowerCase().includes('gau') || k.toLowerCase().includes('gold'));
+      console.log("All Trunçgil keys count:", allKeys.length);
+      console.log("Gold-related keys found:", goldKeys);
+
+      // Also log structure of first item to understand format
+      if (data.USD) {
+        console.log("USD structure:", Object.keys(data.USD));
+      }
 
       // Trunçgil API structure typically has currency and gold data
       // The API provides data with various key patterns
