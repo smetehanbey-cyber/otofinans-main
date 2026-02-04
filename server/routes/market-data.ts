@@ -88,7 +88,9 @@ export async function handleMarketData(
     }
 
     // If we have exchange rates, use them; otherwise use fallback
-    if (ratesData && ratesData.rates) {
+    if (ratesData && ratesData.rates && ratesData.rates.USD && ratesData.rates.EUR) {
+      // exchangerate.host returns the value of 1 TRY in other currencies
+      // So to get TRY per currency, we need to calculate: 1 / rate
       const usdRate = 1 / ratesData.rates.USD;
       const eurRate = 1 / ratesData.rates.EUR;
 
