@@ -80,21 +80,38 @@ export default function Index() {
         {/* Services Section */}
         <ServicesSection />
 
-        {/* CTA Section */}
-        <section className="py-12 sm:py-20 bg-primary">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 sm:mb-6">
-              Başlamaya Hazır mısınız?
-            </h2>
-            <p className="text-lg text-blue-100 mb-8">
-              Oto Finans Global ile aracınızı satın almanız sadece birkaç dakika uzakta
-            </p>
-            <a
-              href="tel:+905324098440"
-              className="inline-block bg-blue-400 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-lg transition-colors duration-200 text-lg shadow-lg hover:shadow-xl"
-            >
-              Şimdi Başvur
-            </a>
+        {/* Banner Section */}
+        <section className="py-12 sm:py-20" style={{ backgroundColor: '#3b8fa3' }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* Left Content */}
+              <div className="text-white">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                  Aracını bizimle hızlı sat anında
+                </h2>
+                <p className="text-base sm:text-lg mb-6 text-white/90 leading-relaxed">
+                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifli satış anında ve en hızlı kredi sistemleri ile biz sağlıyoruz.
+                  Tüm Türkiye'deki allıklarımız sizi bekliyor.
+                </p>
+                <a
+                  href="tel:+905324098440"
+                  className="inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold px-6 py-3 rounded-lg transition-colors duration-200 border border-teal-500"
+                >
+                  Oto Finanslı ol
+                </a>
+              </div>
+
+              {/* Right Content - Woman and Car */}
+              <div className="relative flex justify-center items-center">
+                <div className="w-full max-w-sm">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fb1dd5245a267463e9ebc5b8f24e21f7b?format=webp&width=800&height=1200"
+                    alt="Oto Finans Müşteri"
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
