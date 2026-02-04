@@ -59,12 +59,12 @@ export default function ProductDropdown() {
 
       {/* Divider Line */}
       {isOpen && (
-        <div className="fixed left-0 right-0 h-1" style={{ background: 'linear-gradient(to right, #1f3a93, #1f3a93)', top: '108px', zIndex: 35 }}></div>
+        <div className="fixed left-0 right-0 h-1" style={{ background: 'linear-gradient(to right, #1f3a93, #1f3a93)', top: '160px', zIndex: 35 }}></div>
       )}
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="fixed left-0 right-0 bg-white shadow-xl z-40 transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out', top: '108px' }}>
+        <div className="fixed left-0 right-0 bg-white shadow-xl z-40 transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out', top: '160px' }}>
           {/* Dropdown Header */}
           <div className="border-b border-gray-200 py-4 text-sm font-semibold text-gray-700">
             <div className="max-w-6xl mx-auto px-4">
