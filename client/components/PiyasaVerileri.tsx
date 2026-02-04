@@ -30,15 +30,6 @@ export default function PiyasaVerileri() {
       change: 0.26,
       isPositive: true,
     },
-    {
-      id: 4,
-      symbol: "BTC",
-      name: "Bitcoin",
-      buyRate: 3500000.00,
-      sellRate: 3517500.00,
-      change: 2.5,
-      isPositive: true,
-    },
   ]);
 
   // Fetch market data from backend
@@ -80,7 +71,7 @@ export default function PiyasaVerileri() {
     };
   }, []);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const totalItems = marketData.length;
   const maxIndex = totalItems > itemsPerPage ? Math.ceil(totalItems / itemsPerPage) - 1 : 0;
 
@@ -102,7 +93,7 @@ export default function PiyasaVerileri() {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
           {currentItems.map((item) => (
             <div
               key={item.id}
@@ -135,17 +126,13 @@ export default function PiyasaVerileri() {
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-medium text-gray-600">Al</span>
                   <span className="text-sm font-bold text-gray-900">
-                    {item.symbol === "BTC" && item.buyRateFormatted
-                      ? item.buyRateFormatted
-                      : item.buyRate.toFixed(item.symbol === "BTC" ? 2 : 4)}
+                    {item.buyRate.toFixed(4)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-medium text-gray-600">Sat</span>
                   <span className="text-sm font-bold text-gray-900">
-                    {item.symbol === "BTC" && item.sellRateFormatted
-                      ? item.sellRateFormatted
-                      : item.sellRate.toFixed(item.symbol === "BTC" ? 2 : 4)}
+                    {item.sellRate.toFixed(4)}
                   </span>
                 </div>
               </div>
