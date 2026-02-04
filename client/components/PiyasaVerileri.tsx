@@ -32,11 +32,11 @@ export default function PiyasaVerileri() {
     },
     {
       id: 4,
-      symbol: "XAU",
-      name: "Altın (ONS)",
-      buyRate: 2825.00,
-      sellRate: 2895.00,
-      change: 1.5,
+      symbol: "BTC",
+      name: "Bitcoin",
+      buyRate: 3500000.00,
+      sellRate: 3517500.00,
+      change: 2.5,
       isPositive: true,
     },
   ]);
@@ -135,17 +135,17 @@ export default function PiyasaVerileri() {
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-medium text-gray-600">Al</span>
                   <span className="text-sm font-bold text-gray-900">
-                    {item.symbol === "XAU" && item.buyRateFormatted
+                    {item.symbol === "BTC" && item.buyRateFormatted
                       ? item.buyRateFormatted
-                      : item.buyRate.toFixed(item.symbol === "XAU" ? 2 : 4)}
+                      : item.buyRate.toFixed(item.symbol === "BTC" ? 2 : 4)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-medium text-gray-600">Sat</span>
                   <span className="text-sm font-bold text-gray-900">
-                    {item.symbol === "XAU" && item.sellRateFormatted
+                    {item.symbol === "BTC" && item.sellRateFormatted
                       ? item.sellRateFormatted
-                      : item.sellRate.toFixed(item.symbol === "XAU" ? 2 : 4)}
+                      : item.sellRate.toFixed(item.symbol === "BTC" ? 2 : 4)}
                   </span>
                 </div>
               </div>
