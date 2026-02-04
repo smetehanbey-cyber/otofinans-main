@@ -39,7 +39,7 @@ export default function ProductDropdown() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-xl border border-gray-200 border-t-0 z-40 w-max">
+        <div className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-xl border border-gray-200 border-t-0 z-40 w-max animate-in fade-in slide-in-from-top-2 duration-200">
           {/* Dropdown Header */}
           <div className="px-6 py-4 border-b border-gray-200 text-sm font-semibold text-gray-700">
             Finansal Çözümler
