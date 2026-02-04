@@ -52,14 +52,14 @@ export default function ProductDropdown() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-xl border border-gray-200 border-t-0 z-40 w-max transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out' }}>
+        <div className="fixed top-20 left-0 right-0 mt-0 bg-white shadow-xl border-t border-gray-200 z-40 transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out' }}>
           {/* Dropdown Header */}
           <div className="px-6 py-4 border-b border-gray-200 text-sm font-semibold text-gray-700">
             Finansal Çözümler
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-3 gap-4 p-6 min-w-[900px]">
+          <div className="grid grid-cols-3 gap-3 p-4 max-w-6xl mx-auto">
             {products.map((product) => (
               <div
                 key={product.id}
@@ -67,7 +67,7 @@ export default function ProductDropdown() {
                 style={{ border: "2px solid rgba(31, 58, 147, 0.5)" }}
               >
                 {/* Product Image */}
-                <div className="relative w-full h-40 bg-gray-100 overflow-hidden">
+                <div className="relative w-full h-24 bg-gray-100 overflow-hidden">
                   <img
                     src={product.image}
                     alt={product.title}
@@ -76,20 +76,20 @@ export default function ProductDropdown() {
                 </div>
 
                 {/* Product Content */}
-                <div className="text-white" style={{ backgroundColor: "#1e2f79", padding: "11px" }}>
-                  <h3 className="text-base font-bold mb-1">
+                <div className="text-white" style={{ backgroundColor: "#1e2f79", padding: "8px" }}>
+                  <h3 className="text-xs font-bold mb-0.5">
                     {product.title}
                   </h3>
                   {product.subtitle && (
-                    <p className="text-base text-blue-100 mb-2">
+                    <p className="text-xs text-blue-100 mb-1">
                       {product.subtitle}
                     </p>
                   )}
                 </div>
 
                 {/* Button */}
-                <div className="px-4 py-3 bg-white" style={{ borderTop: "2px solid rgba(31, 58, 147, 0.5)" }}>
-                  <button className="w-full py-1.5 font-medium text-xs rounded hover:bg-blue-50 transition-colors" style={{ border: "2px solid rgba(31, 58, 147, 0.5)", color: "#1f3a93" }}>
+                <div className="px-2 py-2 bg-white" style={{ borderTop: "2px solid rgba(31, 58, 147, 0.5)" }}>
+                  <button className="w-full py-1 font-medium text-xs rounded hover:bg-blue-50 transition-colors" style={{ border: "2px solid rgba(31, 58, 147, 0.5)", color: "#1f3a93" }}>
                     {product.buttonText}
                   </button>
                 </div>
@@ -98,7 +98,7 @@ export default function ProductDropdown() {
           </div>
 
           {/* Pagination Dots */}
-          <div className="flex justify-center gap-1.5 py-3 border-t border-gray-200">
+          <div className="flex justify-center gap-1.5 py-2 border-t border-gray-200">
             <div className="w-2 h-2 rounded-full bg-gray-300"></div>
             <div className="w-2 h-2 rounded-full bg-gray-300"></div>
             <div className="w-2 h-2 rounded-full bg-gray-300"></div>
