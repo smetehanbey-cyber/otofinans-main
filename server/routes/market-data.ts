@@ -17,7 +17,7 @@ export async function handleMarketData(
   try {
     const marketData: MarketDataResponse[] = [];
 
-    // Fallback data
+    // Fallback data - Daha geniş döviz seçkisi
     const fallbackData = [
       {
         id: 1,
@@ -39,6 +39,24 @@ export async function handleMarketData(
       },
       {
         id: 3,
+        symbol: "GBP",
+        name: "İngiliz Poundu",
+        buyRate: 37.5,
+        sellRate: 37.8,
+        change: 0.35,
+        isPositive: true,
+      },
+      {
+        id: 4,
+        symbol: "JPY",
+        name: "Japon Yeni",
+        buyRate: 0.225,
+        sellRate: 0.228,
+        change: 0.12,
+        isPositive: true,
+      },
+      {
+        id: 5,
         symbol: "ALT (gr)",
         name: "Altın",
         buyRate: 2072.6269,
@@ -47,7 +65,7 @@ export async function handleMarketData(
         isPositive: true,
       },
       {
-        id: 4,
+        id: 6,
         symbol: "GMS (gr)",
         name: "Gümüş",
         buyRate: 24.9138,
