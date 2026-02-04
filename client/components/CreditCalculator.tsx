@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import * as XLSX from "xlsx";
 
 export default function CreditCalculator() {
   const [amount, setAmount] = useState(1000);
