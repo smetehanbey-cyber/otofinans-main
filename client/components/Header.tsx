@@ -12,9 +12,9 @@ export default function Header() {
         {/* Top Navigation Bar */}
         <div className="border-b border-gray-200 bg-gray-100">
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-10">
-              {/* Top Navigation Links */}
-              <nav className="hidden md:flex items-center gap-3 flex-1 justify-center text-xs">
+            <div className="flex justify-center items-center h-10">
+              {/* Top Navigation Links - Centered */}
+              <nav className="hidden md:flex items-center gap-3 justify-center text-xs">
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
                   Ana Sayfa
                 </Link>
@@ -40,13 +40,6 @@ export default function Header() {
                   Ürünler
                 </Link>
               </nav>
-
-              {/* Right Section */}
-              <div className="hidden md:flex items-center gap-2 text-xs ml-auto">
-                <button className="text-gray-600 hover:text-primary">English</button>
-                <span className="text-gray-400">•</span>
-                <button className="text-gray-600 hover:text-primary">Türkçe</button>
-              </div>
 
               {/* Mobile menu button */}
               <button
