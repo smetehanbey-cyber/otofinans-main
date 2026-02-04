@@ -104,16 +104,14 @@ export default function Index() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Brand with Logo */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm font-bold text-primary">OTO</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-white">OTO</span>
-                  <span className="text-xs font-semibold text-white -mt-1">FINANS</span>
-                </div>
+              <div className="mb-4">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
+                  alt="Oto Finans Global Logo"
+                  className="h-12 w-auto"
+                />
               </div>
-              <p className="text-sm">Otomobil finansmanında güvenilir bir ortak.</p>
+              <p className="text-sm">TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU</p>
             </div>
 
             {/* Quick Links */}
