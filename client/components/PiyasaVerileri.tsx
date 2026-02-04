@@ -5,6 +5,15 @@ export default function PiyasaVerileri() {
   const [marketData, setMarketData] = useState([
     {
       id: 1,
+      symbol: "USD",
+      name: "Amerikan Doları",
+      buyRate: 43.4918,
+      sellRate: 43.5038,
+      change: 0.03,
+      isPositive: true,
+    },
+    {
+      id: 2,
       symbol: "EUR",
       name: "Euro",
       buyRate: 51.4746,
@@ -13,7 +22,7 @@ export default function PiyasaVerileri() {
       isPositive: true,
     },
     {
-      id: 2,
+      id: 3,
       symbol: "GBP",
       name: "İngiliz Poundu",
       buyRate: 59.7531,
@@ -22,11 +31,11 @@ export default function PiyasaVerileri() {
       isPositive: true,
     },
     {
-      id: 3,
+      id: 4,
       symbol: "ALT (gr)",
       name: "Gram Altın",
-      buyRate: 2830.5,
-      sellRate: 2890.5,
+      buyRate: 2830.50,
+      sellRate: 2890.50,
       change: 1.5,
       isPositive: true,
     },
