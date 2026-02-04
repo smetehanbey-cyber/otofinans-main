@@ -72,8 +72,8 @@ export default function PiyasaVerileri() {
     // Fetch immediately
     fetchMarketData();
 
-    // Set up interval to fetch every 10 minutes (to avoid rate limiting)
-    const interval = setInterval(fetchMarketData, 10 * 60 * 1000);
+    // Set up interval to fetch every 5 minutes (API updates every 15 minutes)
+    const interval = setInterval(fetchMarketData, 5 * 60 * 1000);
 
     return () => {
       clearInterval(interval);
