@@ -46,13 +46,23 @@ export default function ProductDropdown() {
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
-      <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors">
-        Kendim İçin
-      </button>
+      <div className="flex flex-col items-center">
+        <button className={`text-sm font-medium pb-2 transition-colors ${isOpen ? 'text-primary' : 'text-gray-700 hover:text-primary'}`}>
+          Kendim İçin
+        </button>
+        {isOpen && (
+          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#1f3a93' }}></div>
+        )}
+      </div>
+
+      {/* Divider Line */}
+      {isOpen && (
+        <div className="fixed left-0 right-0 h-px" style={{ backgroundColor: '#e5e7eb', top: '78px', zIndex: 35 }}></div>
+      )}
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="fixed top-20 left-0 right-0 mt-0 bg-white shadow-xl border-t border-gray-200 z-40 transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out' }}>
+        <div className="fixed top-20 left-0 right-0 mt-0 bg-white shadow-xl z-40 transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out' }}>
           {/* Dropdown Header */}
           <div className="px-6 py-4 border-b border-gray-200 text-sm font-semibold text-gray-700">
             Finansal Çözümler
