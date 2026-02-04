@@ -399,7 +399,7 @@ export async function handleMarketData(
     { key: "USD", symbol: "USD", name: "Amerikan Doları", decimals: 4 },
     { key: "EUR", symbol: "EUR", name: "Euro", decimals: 4 },
     { key: "GBP", symbol: "GBP", name: "İngiliz Poundu", decimals: 4 },
-    { key: "GAU", symbol: "ALT (gr)", name: "Gram Altın", decimals: 2 }, // GAU is gold in Trunçgil API
+    { key: "GAU", symbol: "XAU", name: "Altın (ONS)", decimals: 2 }, // XAU/TRY troy ounce price
   ];
 
   const marketData: MarketDataResponse[] = [];
@@ -426,10 +426,8 @@ export async function handleMarketData(
       let sellRateFormatted: string | undefined;
 
       if (item.key === "GAU") {
-        // Gram Gold: XAU/TRY (troy ounce) / 31.10 gram = price per gram
-        // 1 troy ounce = 31.10 grams
-        const GRAMS_PER_TROY_OUNCE = 31.10;
-
+        // Troy Ounce Gold: XAU/TRY (troy ounce price in Turkish Lira)
+        // Display the raw XAU/TRY price without gram conversion
         let buyRateTL = rates.buyRate;
         let sellRateTL = rates.sellRate;
 
@@ -438,32 +436,26 @@ export async function handleMarketData(
           // Fallback USD values - multiply by USD/TRY rate
           buyRateTL = buyRateTL * usdRate;
           sellRateTL = sellRateTL * usdRate;
-          console.log(`✓ Gram Gold (Fallback USD in TRY): Troy Ounce Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
+          console.log(`✓ Troy Ounce Gold (Fallback USD in TRY): XAU/TRY Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
         } else {
           // API values are in TRY (troy ounce price)
-          console.log(`✓ Gram Gold (API Troy Ounce): XAU/TRY Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
+          console.log(`✓ Troy Ounce Gold (API): XAU/TRY Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
         }
 
-        // Convert troy ounce price to gram price: divide by 31.10
-        let buyRateGram = buyRateTL / GRAMS_PER_TROY_OUNCE;
-        let sellRateGram = sellRateTL / GRAMS_PER_TROY_OUNCE;
-
-        console.log(`✓ Gram Gold (per gram): Al=${buyRateGram.toFixed(2)}, Sat=${sellRateGram.toFixed(2)} TRY/gram`);
-
         // Turkish formatting: thousands with dots, decimals with comma
-        // Example: 1.589,50
-        buyRateFormatted = buyRateGram.toLocaleString('tr-TR', {
+        // Example: 2.589,50
+        buyRateFormatted = buyRateTL.toLocaleString('tr-TR', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
-        sellRateFormatted = sellRateGram.toLocaleString('tr-TR', {
+        sellRateFormatted = sellRateTL.toLocaleString('tr-TR', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
 
-        // Update buyRate and sellRate to gram prices for display
-        buyRate = parseFloat(buyRateGram.toFixed(2));
-        sellRate = parseFloat(sellRateGram.toFixed(2));
+        // Update buyRate and sellRate to troy ounce prices for display
+        buyRate = parseFloat(buyRateTL.toFixed(2));
+        sellRate = parseFloat(sellRateTL.toFixed(2));
       }
 
       marketData.push({
