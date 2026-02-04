@@ -56,8 +56,8 @@ export default function Index() {
 
                 {/* Contact Info */}
                 <div className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
-                  <p className="text-sm text-blue-100 mb-2">Bizimle İletişime Geçin</p>
-                  <p className="text-2xl sm:text-3xl font-bold">+90 532 409 8440</p>
+                  <p className="text-xs text-blue-100 mb-1">Bizimle İletişime Geçin</p>
+                  <p className="text-lg sm:text-xl font-bold">+90 532 409 8440</p>
                   <p className="text-blue-100 text-sm mt-2">Pazartesi-Cuma: 09:00 - 18:00</p>
                 </div>
               </div>
