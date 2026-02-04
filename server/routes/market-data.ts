@@ -16,6 +16,114 @@ interface RateData {
   change?: number;
 }
 
+// Fetch gold and currency data from Trunçgil Finans API
+// This is a reliable Turkish finance API for gold prices (GAU/TRY)
+async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
+  const rates: Record<string, RateData> = {};
+
+  try {
+    const response = await fetch(
+      "https://finans.truncgil.com/v4/today.json",
+      { signal: AbortSignal.timeout(5000) }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // Trunçgil API structure typically has currency and gold data
+      // Example: data.USD, data.EUR, data.GBP, data.GAU (Gold)
+
+      // USD
+      if (data.USD) {
+        const item = data.USD;
+        const buyRate = item.Alis || item.alis || item.buying || item.buy;
+        const sellRate = item.Satis || item.satis || item.selling || item.sell;
+        if (buyRate && sellRate) {
+          const buy = parseFloat(buyRate);
+          const sell = parseFloat(sellRate);
+          if (!isNaN(buy) && !isNaN(sell)) {
+            rates.USD = {
+              buyRate: parseFloat(buy.toFixed(4)),
+              sellRate: parseFloat(sell.toFixed(4)),
+              change: 0,
+            };
+            console.log(`✓ Trunçgil USD: Al=${rates.USD.buyRate}, Sat=${rates.USD.sellRate}`);
+          }
+        }
+      }
+
+      // EUR
+      if (data.EUR) {
+        const item = data.EUR;
+        const buyRate = item.Alis || item.alis || item.buying || item.buy;
+        const sellRate = item.Satis || item.satis || item.selling || item.sell;
+        if (buyRate && sellRate) {
+          const buy = parseFloat(buyRate);
+          const sell = parseFloat(sellRate);
+          if (!isNaN(buy) && !isNaN(sell)) {
+            rates.EUR = {
+              buyRate: parseFloat(buy.toFixed(4)),
+              sellRate: parseFloat(sell.toFixed(4)),
+              change: 0,
+            };
+            console.log(`✓ Trunçgil EUR: Al=${rates.EUR.buyRate}, Sat=${rates.EUR.sellRate}`);
+          }
+        }
+      }
+
+      // GBP
+      if (data.GBP) {
+        const item = data.GBP;
+        const buyRate = item.Alis || item.alis || item.buying || item.buy;
+        const sellRate = item.Satis || item.satis || item.selling || item.sell;
+        if (buyRate && sellRate) {
+          const buy = parseFloat(buyRate);
+          const sell = parseFloat(sellRate);
+          if (!isNaN(buy) && !isNaN(sell)) {
+            rates.GBP = {
+              buyRate: parseFloat(buy.toFixed(4)),
+              sellRate: parseFloat(sell.toFixed(4)),
+              change: 0,
+            };
+            console.log(`✓ Trunçgil GBP: Al=${rates.GBP.buyRate}, Sat=${rates.GBP.sellRate}`);
+          }
+        }
+      }
+
+      // GAU (Gold/Altın) - Trunçgil specific
+      if (data.GAU || data.GRAM_ALTIN || data.altın) {
+        const item = data.GAU || data.GRAM_ALTIN || data.altın;
+        const buyRate = item.Alis || item.alis || item.buying || item.buy;
+        const sellRate = item.Satis || item.satis || item.selling || item.sell;
+        if (buyRate && sellRate) {
+          const buy = parseFloat(buyRate);
+          const sell = parseFloat(sellRate);
+          if (!isNaN(buy) && !isNaN(sell)) {
+            rates.GAU = {
+              buyRate: parseFloat(buy.toFixed(2)),
+              sellRate: parseFloat(sell.toFixed(2)),
+              change: 0,
+            };
+            console.log(`✓ Trunçgil GAU (Gold): Al=${rates.GAU.buyRate}, Sat=${rates.GAU.sellRate}`);
+          }
+        }
+      }
+
+      if (Object.keys(rates).length > 0) {
+        console.log("✓ Trunçgil API: Successfully fetched rates for", Object.keys(rates).join(", "));
+      } else {
+        console.log("⚠ Trunçgil API: No rates extracted from response");
+      }
+    } else {
+      console.log(`Trunçgil API returned status ${response.status}`);
+    }
+  } catch (error) {
+    console.log("Trunçgil API fetch failed:", error instanceof Error ? error.message : error);
+  }
+
+  return rates;
+}
+
 // Fetch all rates from genelpara.com API (updates every 15 minutes)
 // Using /list=all endpoint to get all currencies and commodities
 async function fetchFromGenelPara(): Promise<Record<string, RateData>> {
