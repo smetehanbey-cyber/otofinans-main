@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleMarketData } from "./routes/market-data";
+import { handleInstagramPosts } from "./routes/instagram-posts";
 
 export function createServer() {
   const app = express();
