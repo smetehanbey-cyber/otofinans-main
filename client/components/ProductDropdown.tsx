@@ -28,11 +28,24 @@ export default function ProductDropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
+    <>
+      <style>{`
+        @keyframes dropdownSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+      <div
+        className="relative"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
       <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors">
         Kendim İçin
       </button>
@@ -92,6 +105,7 @@ export default function ProductDropdown() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
