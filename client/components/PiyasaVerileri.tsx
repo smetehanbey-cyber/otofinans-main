@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 export default function PiyasaVerileri() {
   const [currentIndex, setCurrentIndex] = useState(0);
