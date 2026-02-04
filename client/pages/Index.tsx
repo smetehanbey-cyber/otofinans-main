@@ -81,7 +81,7 @@ export default function Index() {
         <ServicesSection />
 
         {/* Banner Section with Animations */}
-        <section className="relative overflow-hidden" style={{ backgroundColor: '#0f367e', minHeight: '350px' }}>
+        <section className="relative overflow-hidden" style={{ backgroundColor: '#0f367e', minHeight: '370px' }}>
           <style>{`
             @keyframes slideInFromRight {
               from {
@@ -125,7 +125,7 @@ export default function Index() {
           `}</style>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[350px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[370px]">
               {/* Left Content */}
               <div className="text-white flex flex-col justify-center py-4 lg:py-0">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight animate-fade-in-up">
@@ -147,12 +147,12 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="relative flex items-end justify-center lg:justify-end h-[350px]">
+              <div className="relative flex items-end justify-center lg:justify-end h-[370px]">
                 <div className="w-full h-full max-w-md lg:max-w-none animate-slide-in-right">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
                     alt="Oto Finans Müşteri"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
               </div>
