@@ -262,29 +262,21 @@ export async function handleMarketData(
 
   let ratesToUse = fallbackRates;
 
-  // Try TCMB first for currencies (most reliable)
-  const tcmbRates = await fetchFromTCMB();
-  if (Object.keys(tcmbRates).length > 0) {
-    ratesToUse = { ...fallbackRates, ...tcmbRates };
-    console.log("✓ Using TCMB data for currencies");
-  }
-
-  // Try Trunçgil API for gold (more reliable for gold prices)
+  // Try Trunçgil API first (provides currencies and gold prices)
   const truncgilRates = await fetchFromTruncgil();
-  if (truncgilRates.GAU) {
-    ratesToUse.GAU = truncgilRates.GAU;
-    console.log("✓ Using Trunçgil data for gold");
+  if (Object.keys(truncgilRates).length > 0) {
+    // Merge Trunçgil data with fallback, preferring Trunçgil
+    ratesToUse = { ...fallbackRates, ...truncgilRates };
+    console.log("✓ Using Trunçgil API data for all rates");
   } else {
-    // Fallback to genelpara API for gold
+    // Fallback to genelpara API if Trunçgil fails
     const genelParaRates = await fetchFromGenelPara();
-    if (genelParaRates.GAU) {
-      ratesToUse.GAU = genelParaRates.GAU;
-      console.log("✓ Using GenelPara data for gold");
+    if (Object.keys(genelParaRates).length > 0) {
+      ratesToUse = { ...fallbackRates, ...genelParaRates };
+      console.log("✓ Using GenelPara API data");
+    } else {
+      console.log("⚠ APIs unavailable, using fallback data");
     }
-  }
-
-  if (Object.keys(tcmbRates).length === 0 && Object.keys(truncgilRates).length === 0) {
-    console.log("⚠ APIs unavailable, using fallback data");
   }
 
   // Map API data to display items
