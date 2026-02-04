@@ -123,20 +123,17 @@ export async function handleMarketData(
   _req: Request,
   res: Response
 ): Promise<void> {
-  const currencyNames: Record<string, string> = {
-    USD: "Amerikan Doları",
-    EUR: "Euro",
-    GBP: "İngiliz Poundu",
-    JPY: "Japon Yeni",
-  };
+  const items = [
+    { key: "EUR", symbol: "EUR", name: "Euro" },
+    { key: "GBP", symbol: "GBP", name: "İngiliz Poundu" },
+    { key: "GRAM ALTIN", symbol: "ALT (gr)", name: "Gram Altın" },
+  ];
 
-  // Fallback data - Current rates (Feb 4, 2026)
-  // Source: Multiple forex data providers (Investing.com, XE, WalletInvestor)
+  // Fallback data - Current rates
   const fallbackRates: Record<string, { buyRate: number; sellRate: number }> = {
-    USD: { buyRate: 43.2656, sellRate: 43.4980 }, // 1 USD = 43.26-43.50 TRY
-    EUR: { buyRate: 46.8410, sellRate: 47.0798 }, // EUR ~1.08x USD
-    GBP: { buyRate: 54.8897, sellRate: 55.1724 }, // GBP ~1.27x USD
-    JPY: { buyRate: 0.3041, sellRate: 0.3058 },   // JPY ~0.007x USD
+    EUR: { buyRate: 51.4746, sellRate: 51.4821 },
+    GBP: { buyRate: 59.7531, sellRate: 60.0526 },
+    "GRAM ALTIN": { buyRate: 2830.5, sellRate: 2890.5 },
   };
 
   const marketData: MarketDataResponse[] = [];
@@ -147,65 +144,25 @@ export async function handleMarketData(
   const genelParaRates = await fetchFromGenelPara();
   if (Object.keys(genelParaRates).length > 0) {
     ratesToUse = genelParaRates;
-  } else {
-    // Try TCMB XML as fallback
-    try {
-      const response = await fetch("https://www.tcmb.gov.tr/kurlar/today.xml", {
-        signal: AbortSignal.timeout(3000),
-      });
-
-      if (response.ok) {
-        const xmlText = await response.text();
-        const tcmbRates = parseTCMBXML(xmlText);
-
-        if (Object.keys(tcmbRates).length > 0) {
-          ratesToUse = tcmbRates;
-          console.log("✓ TCMB rates fetched successfully:", Object.keys(tcmbRates).join(", "));
-        }
-      }
-    } catch (error) {
-      console.log("TCMB API fetch failed, using fallback");
-    }
   }
 
-  // Add currencies
-  for (const currency of Object.keys(currencyNames)) {
-    const rates = ratesToUse[currency];
+  // Add EUR, GBP, and GRAM ALTIN
+  for (const item of items) {
+    const rates = ratesToUse[item.key];
     const change = Math.random() * 0.4 - 0.2;
 
-    marketData.push({
-      id: dataIndex++,
-      symbol: currency,
-      name: currencyNames[currency],
-      buyRate: parseFloat(rates.buyRate.toFixed(4)),
-      sellRate: parseFloat(rates.sellRate.toFixed(4)),
-      change: parseFloat(change.toFixed(3)),
-      isPositive: change >= 0,
-    });
+    if (rates) {
+      marketData.push({
+        id: dataIndex++,
+        symbol: item.symbol,
+        name: item.name,
+        buyRate: parseFloat(rates.buyRate.toFixed(4)),
+        sellRate: parseFloat(rates.sellRate.toFixed(4)),
+        change: parseFloat(change.toFixed(3)),
+        isPositive: change >= 0,
+      });
+    }
   }
-
-  // Add precious metals
-  const goldChange = Math.random() * 0.4 - 0.2;
-  marketData.push({
-    id: dataIndex++,
-    symbol: "ALT (gr)",
-    name: "Altın",
-    buyRate: 2072.6269,
-    sellRate: 2157.0752,
-    change: parseFloat(goldChange.toFixed(3)),
-    isPositive: goldChange >= 0,
-  });
-
-  const silverChange = Math.random() * 0.4 - 0.2;
-  marketData.push({
-    id: dataIndex++,
-    symbol: "GMS (gr)",
-    name: "Gümüş",
-    buyRate: 24.9138,
-    sellRate: 26.1854,
-    change: parseFloat(silverChange.toFixed(3)),
-    isPositive: silverChange >= 0,
-  });
 
   res.json(marketData);
 }
