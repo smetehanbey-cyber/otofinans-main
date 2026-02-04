@@ -3,22 +3,22 @@ import { Clock, Shield, TrendingUp } from "lucide-react";
 const services = [
   {
     icon: Clock,
-    title: "Esnek Ödeme",
     titleBold: "Esnek",
+    titleSuffix: "Ödeme",
     description: "İster senetle ister esnek ödeme ile bütçenize göre ödeme planı oluşturun.",
     color: "text-blue-900", // Dark blue
   },
   {
     icon: Shield,
-    title: "Hızlı Değerlendirme",
     titleBold: "Hızlı",
+    titleSuffix: "Değerlendirme",
     description: "Verileriniz en yüksek güvenlik standartlarıyla korunur",
     color: "text-blue-600", // Regular blue
   },
   {
     icon: TrendingUp,
-    title: "Güvenli Süreç",
     titleBold: "Güvenli",
+    titleSuffix: "Süreç",
     description: "%9.99'dan başlayan uygun faiz oranlarından yararlanın",
     color: "text-blue-900", // Dark blue
   },
