@@ -46,8 +46,12 @@ async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
         }
       }
 
+      // Debug: Log the first few keys to understand structure
+      const dataKeys = Object.keys(data).slice(0, 10);
+      console.log("Trunçgil API response keys:", dataKeys);
+
       // Trunçgil API structure typically has currency and gold data
-      // Example: data.USD, data.EUR, data.GBP, data.GAU (Gold)
+      // The API provides data with various key patterns
 
       // USD
       if (data.USD) {
