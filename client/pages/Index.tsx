@@ -81,7 +81,7 @@ export default function Index() {
         <ServicesSection />
 
         {/* Banner Section with Animations */}
-        <section className="relative overflow-hidden" style={{ backgroundColor: '#0f367e', minHeight: '380px' }}>
+        <section className="relative overflow-hidden" style={{ backgroundColor: '#0f367e', minHeight: '480px' }}>
           <style>{`
             @keyframes slideInFromRight {
               from {
@@ -125,21 +125,21 @@ export default function Index() {
           `}</style>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[380px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[480px]">
               {/* Left Content */}
-              <div className="text-white flex flex-col justify-center py-4 lg:py-0">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight animate-fade-in-up">
+              <div className="text-white flex flex-col justify-center py-8 lg:py-0">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 leading-tight animate-fade-in-up">
                   Aracını bizimle hızlı sat<br />
                   anında <b>Oto Finanslı</b> ol
                 </h2>
-                <p className="text-sm sm:text-base mb-4 text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
+                <p className="text-base sm:text-lg mb-6 text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
                   Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifli satış anında ve en hızlı kredi sistemleri ile biz sağlıyoruz.
                   Tüm Türkiye'deki allıklarımız sizi bekliyor.
                 </p>
                 <div className="animate-fade-in-up-delay-2">
                   <a
                     href="tel:+905324098440"
-                    className="inline-block bg-blue-400 hover:bg-blue-500 text-white font-bold px-6 py-2 text-sm rounded-lg transition-colors duration-200"
+                    className="inline-block bg-blue-400 hover:bg-blue-500 text-white font-bold px-7 py-3 text-base rounded-lg transition-colors duration-200"
                   >
                     Oto Finanslı ol
                   </a>
@@ -147,7 +147,7 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="relative flex items-end justify-center lg:justify-end h-[380px]">
+              <div className="relative flex items-end justify-center lg:justify-end h-[480px]">
                 <div className="w-full h-full max-w-md lg:max-w-none animate-slide-in-right">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
