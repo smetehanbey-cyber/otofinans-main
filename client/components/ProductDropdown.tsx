@@ -39,7 +39,7 @@ export default function ProductDropdown() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-xl border border-gray-200 border-t-0 z-40 w-max animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-xl border border-gray-200 border-t-0 z-40 w-max transition-all duration-300 opacity-100 scale-100 origin-top" style={{ animation: 'dropdownSlideIn 0.3s ease-out' }}>
           {/* Dropdown Header */}
           <div className="px-6 py-4 border-b border-gray-200 text-sm font-semibold text-gray-700">
             Finansal Çözümler
