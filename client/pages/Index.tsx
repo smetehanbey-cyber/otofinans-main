@@ -127,13 +127,12 @@ export default function Index() {
           `}</style>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[420px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-stretch lg:items-center min-h-[420px]">
               {/* Left Content */}
-              <div className="text-white flex flex-col justify-between py-8 lg:py-0 h-full lg:h-auto">
+              <div className="text-white flex flex-col justify-between py-8 lg:py-0 h-auto lg:h-full relative z-10">
                 <div>
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight animate-fade-in-up">
-                    Aracını bizimle hızlı sat<br />
-                    anında <b>Oto Finanslı</b> ol
+                    Aracını bizimle hızlı sat anında <b>Oto Finanslı</b> ol
                   </h2>
                   <p className="text-base sm:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
                     Oto Finans ile özgürce günlük rutinlerinden<br />
@@ -154,7 +153,7 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="absolute inset-0 lg:relative flex items-center justify-center lg:justify-start h-[420px] lg:h-auto lg:static pt-3" style={{ paddingLeft: '10px' }}>
+              <div className="hidden lg:flex items-center justify-start h-[420px] overflow-hidden" style={{ paddingLeft: '10px', paddingBottom: '20px' }}>
                 <div className="w-full animate-slide-in-right lg:z-10 flex items-center justify-center">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
