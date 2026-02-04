@@ -378,9 +378,21 @@ export async function handleMarketData(
     }
   }
 
-  // Trunçgil already provides HAMITALTIN (Gram Gold) data
-  // It's included in the truncgilRates above
-  // Gold rates are updated every fetch cycle
+  // Fetch gold price from Metal Price API (primary source for XAU/TRY)
+  const metalPriceGold = await fetchGoldFromMetalPriceAPI();
+  if (metalPriceGold) {
+    ratesToUse.GAU = metalPriceGold;
+    console.log("✓ Using Metal Price API for gold prices");
+  } else {
+    // Try exchangerate-api as fallback if Trunçgil doesn't have gold
+    if (!ratesToUse.GAU || (ratesToUse.GAU && ratesToUse.GAU.buyRate < 10000)) {
+      const exchangeRateGold = await fetchGoldFromExchangeRate();
+      if (exchangeRateGold) {
+        ratesToUse.GAU = exchangeRateGold;
+        console.log("✓ Using ExchangeRate API for gold prices");
+      }
+    }
+  }
 
   // Map API data to display items
   const items = [
