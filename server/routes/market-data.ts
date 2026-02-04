@@ -306,17 +306,29 @@ export async function handleMarketData(
     if (rates) {
       const change = rates.change ?? 0;
 
-      // For Gram Gold (GAU), multiply by USD rate to get higher value in TL
-      // and format with Turkish notation
+      // For Gram Gold (GAU), format with Turkish notation
       let buyRate = parseFloat(rates.buyRate.toFixed(item.decimals));
       let sellRate = parseFloat(rates.sellRate.toFixed(item.decimals));
       let buyRateFormatted: string | undefined;
       let sellRateFormatted: string | undefined;
 
       if (item.key === "GAU") {
-        // Gram Gold: multiply by USD rate and format as Turkish currency
-        const buyRateTL = rates.buyRate * usdRate;
-        const sellRateTL = rates.sellRate * usdRate;
+        // Gram Gold: Check if using fallback data (smaller values) or API data (already in TRY)
+        // Fallback values (2830.50) are USD, API values (49811.89) are already in TRY
+
+        let buyRateTL = rates.buyRate;
+        let sellRateTL = rates.sellRate;
+
+        // If value is small (fallback USD), multiply by USD rate to get TRY
+        if (buyRateTL < 10000) {
+          // Fallback USD values - multiply by USD/TRY rate
+          buyRateTL = buyRateTL * usdRate;
+          sellRateTL = sellRateTL * usdRate;
+          console.log(`✓ Gram Gold (Fallback USD): Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
+        } else {
+          // API values already in TRY
+          console.log(`✓ Gram Gold (API TRY): Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
+        }
 
         // Turkish formatting: thousands with dots, decimals with comma
         // Example: 122.887,50
