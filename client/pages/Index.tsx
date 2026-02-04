@@ -5,6 +5,7 @@ import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import CreditCalculator from "@/components/CreditCalculator";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
+import InstagramFeed from "@/components/InstagramFeed";
 
 export default function Index() {
   return (
