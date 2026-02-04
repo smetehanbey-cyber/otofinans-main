@@ -44,9 +44,7 @@ export default function ProductDropdown() {
       <div
         className="relative"
         onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => {
-          setTimeout(() => setIsOpen(false), 3000);
-        }}
+        onMouseLeave={() => setIsOpen(false)}
       >
       <div className="flex flex-col items-center">
         <button className={`text-sm font-medium pb-2 transition-colors ${isOpen ? 'text-primary' : 'text-gray-700 hover:text-primary'}`}>
