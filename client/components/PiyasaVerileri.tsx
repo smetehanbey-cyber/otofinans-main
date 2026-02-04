@@ -128,7 +128,7 @@ export default function PiyasaVerileri() {
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-r from-teal-500 to-emerald-500">
+    <section className="py-12 sm:py-16" style={{ backgroundColor: "#1f3a93" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
