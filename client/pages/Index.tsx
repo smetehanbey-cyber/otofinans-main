@@ -11,7 +11,7 @@ export default function Index() {
 
       <main>
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary via-blue-700 to-slate-900 text-white py-8 sm:py-12">
+        <section className="bg-gradient-to-br from-primary via-blue-700 to-slate-900 text-white py-4 sm:py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
               {/* Left Content */}
