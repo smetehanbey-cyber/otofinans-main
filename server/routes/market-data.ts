@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import tcmbExchangeRates from "tcmb-exchange-rates";
 
 interface MarketDataResponse {
   id: number;
@@ -9,6 +8,40 @@ interface MarketDataResponse {
   sellRate: number;
   change: number;
   isPositive: boolean;
+}
+
+// Parse TCMB XML to extract currency rates
+function parseTCMBXML(xml: string): Record<string, { buyRate: number; sellRate: number }> {
+  const rates: Record<string, { buyRate: number; sellRate: number }> = {};
+
+  const currencyCodes = ["USD", "EUR", "GBP", "JPY"];
+
+  for (const code of currencyCodes) {
+    // Find currency block
+    const currencyPattern = new RegExp(
+      `<Currency Code="${code}">([\\s\\S]*?)</Currency>`,
+      "i"
+    );
+    const currencyMatch = xml.match(currencyPattern);
+
+    if (currencyMatch) {
+      const currencyBlock = currencyMatch[1];
+
+      // Extract BanknoteBuying
+      const buyingMatch = currencyBlock.match(/<BanknoteBuying>([\d.]+)<\/BanknoteBuying>/);
+      // Extract BanknoteSelling
+      const sellingMatch = currencyBlock.match(/<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/);
+
+      if (buyingMatch && sellingMatch) {
+        rates[code] = {
+          buyRate: parseFloat(buyingMatch[1]),
+          sellRate: parseFloat(sellingMatch[1]),
+        };
+      }
+    }
+  }
+
+  return rates;
 }
 
 export async function handleMarketData(
@@ -22,7 +55,7 @@ export async function handleMarketData(
     JPY: "Japon Yeni",
   };
 
-  // Fallback data with current rates
+  // Fallback data
   const fallbackRates: Record<string, { buyRate: number; sellRate: number }> = {
     USD: { buyRate: 43.0000, sellRate: 43.5000 },
     EUR: { buyRate: 46.5000, sellRate: 47.0000 },
@@ -32,62 +65,46 @@ export async function handleMarketData(
 
   const marketData: MarketDataResponse[] = [];
   let dataIndex = 1;
+  let tcmbRates: Record<string, { buyRate: number; sellRate: number }> = {};
 
+  // Try to fetch from TCMB XML
   try {
-    // Fetch real TCMB rates using the tcmb-exchange-rates package
-    const tcmbData = await tcmbExchangeRates.getTodaysCurrencyRates();
+    const response = await fetch("https://www.tcmb.gov.tr/kurlar/today.xml", {
+      signal: AbortSignal.timeout(3000),
+    });
 
-    console.log("TCMB data fetched successfully");
+    if (response.ok) {
+      const xmlText = await response.text();
+      tcmbRates = parseTCMBXML(xmlText);
 
-    // Process currencies from TCMB data
-    for (const [currency, rates] of Object.entries(currencyNames)) {
-      const currencyKey = currency.toLowerCase();
-
-      // Try to get data from TCMB
-      let buyRate = fallbackRates[currency].buyRate;
-      let sellRate = fallbackRates[currency].sellRate;
-
-      if (tcmbData && tcmbData[currencyKey]) {
-        // TCMB data structure: { buying: number, selling: number }
-        const currencyData = tcmbData[currencyKey];
-        if (currencyData.buying && currencyData.selling) {
-          buyRate = parseFloat(currencyData.buying);
-          sellRate = parseFloat(currencyData.selling);
-        }
+      if (Object.keys(tcmbRates).length > 0) {
+        console.log("✓ TCMB rates fetched successfully:", Object.keys(tcmbRates).join(", "));
       }
-
-      const change = Math.random() * 0.4 - 0.2;
-      marketData.push({
-        id: dataIndex++,
-        symbol: currency,
-        name: currencyNames[currency],
-        buyRate: parseFloat(buyRate.toFixed(4)),
-        sellRate: parseFloat(sellRate.toFixed(4)),
-        change: parseFloat(change.toFixed(3)),
-        isPositive: change >= 0,
-      });
     }
-
-    console.log("Processed TCMB rates:", marketData.slice(0, 4));
   } catch (error) {
     console.log("TCMB API fetch failed, using fallback:", error instanceof Error ? error.message : error);
-
-    // Use fallback rates if TCMB fails
-    for (const [currency, rates] of Object.entries(fallbackRates)) {
-      const change = Math.random() * 0.4 - 0.2;
-      marketData.push({
-        id: dataIndex++,
-        symbol: currency,
-        name: currencyNames[currency],
-        buyRate: parseFloat(rates.buyRate.toFixed(4)),
-        sellRate: parseFloat(rates.sellRate.toFixed(4)),
-        change: parseFloat(change.toFixed(3)),
-        isPositive: change >= 0,
-      });
-    }
   }
 
-  // Add precious metals with fallback
+  // Use TCMB rates if available, otherwise fallback
+  const ratesToUse = Object.keys(tcmbRates).length > 0 ? tcmbRates : fallbackRates;
+
+  // Add currencies
+  for (const currency of Object.keys(currencyNames)) {
+    const rates = ratesToUse[currency];
+    const change = Math.random() * 0.4 - 0.2;
+
+    marketData.push({
+      id: dataIndex++,
+      symbol: currency,
+      name: currencyNames[currency],
+      buyRate: parseFloat(rates.buyRate.toFixed(4)),
+      sellRate: parseFloat(rates.sellRate.toFixed(4)),
+      change: parseFloat(change.toFixed(3)),
+      isPositive: change >= 0,
+    });
+  }
+
+  // Add precious metals
   const goldChange = Math.random() * 0.4 - 0.2;
   marketData.push({
     id: dataIndex++,
