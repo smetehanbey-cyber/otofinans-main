@@ -128,18 +128,18 @@ export default function Index() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[350px]">
               {/* Left Content */}
               <div className="text-white flex flex-col justify-center py-4 lg:py-0">
-                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight animate-fade-in-up">
                   Aracını bizimle hızlı sat<br />
                   anında <b>Oto Finanslı</b> ol
                 </h2>
-                <p className="text-base sm:text-lg mb-8 text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
+                <p className="text-sm sm:text-base mb-4 text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
                   Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifli satış anında ve en hızlı kredi sistemleri ile biz sağlıyoruz.
                   Tüm Türkiye'deki allıklarımız sizi bekliyor.
                 </p>
                 <div className="animate-fade-in-up-delay-2">
                   <a
                     href="tel:+905324098440"
-                    className="inline-block bg-blue-400 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-lg transition-colors duration-200"
+                    className="inline-block bg-blue-400 hover:bg-blue-500 text-white font-bold px-6 py-2 text-sm rounded-lg transition-colors duration-200"
                   >
                     Oto Finanslı ol
                   </a>
