@@ -7,6 +7,7 @@ interface Slide {
   subtitle: string;
   color: string;
   gradient: string;
+  rightImage?: string;
 }
 
 const slides: Slide[] = [
