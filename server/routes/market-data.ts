@@ -107,44 +107,81 @@ export async function handleMarketData(
     }
 
     // If we have exchange rates, use them; otherwise use fallback
-    if (ratesData && ratesData.try && ratesData.try.usd && ratesData.try.eur) {
-      // fawazahmed0 API returns: how much USD/EUR you get for 1 TRY
-      // To get TRY per USD/EUR, we calculate: 1 / rate
-      const usdRate = 1 / ratesData.try.usd;
-      const eurRate = 1 / ratesData.try.eur;
+    if (ratesData && ratesData.try) {
+      // fawazahmed0 API returns: how much USD/EUR/etc you get for 1 TRY
+      // To get TRY per currency, we calculate: 1 / rate
+      const tryRates = ratesData.try;
+      let dataIndex = 1;
 
       // USD
-      const usdChange = (Math.random() * 0.5 - 0.25);
-      marketData.push({
-        id: 1,
-        symbol: "USD",
-        name: "Amerikan Doları",
-        buyRate: parseFloat((usdRate * 0.998).toFixed(4)),
-        sellRate: parseFloat((usdRate * 1.002).toFixed(4)),
-        change: parseFloat(usdChange.toFixed(3)),
-        isPositive: usdChange >= 0,
-      });
+      if (tryRates.usd) {
+        const usdRate = 1 / tryRates.usd;
+        const usdChange = (Math.random() * 0.5 - 0.25);
+        marketData.push({
+          id: dataIndex++,
+          symbol: "USD",
+          name: "Amerikan Doları",
+          buyRate: parseFloat((usdRate * 0.998).toFixed(4)),
+          sellRate: parseFloat((usdRate * 1.002).toFixed(4)),
+          change: parseFloat(usdChange.toFixed(3)),
+          isPositive: usdChange >= 0,
+        });
+      }
 
       // EUR
-      const eurChange = (Math.random() * 0.5 - 0.25);
-      marketData.push({
-        id: 2,
-        symbol: "EUR",
-        name: "Euro",
-        buyRate: parseFloat((eurRate * 0.998).toFixed(4)),
-        sellRate: parseFloat((eurRate * 1.002).toFixed(4)),
-        change: parseFloat(eurChange.toFixed(3)),
-        isPositive: eurChange >= 0,
-      });
+      if (tryRates.eur) {
+        const eurRate = 1 / tryRates.eur;
+        const eurChange = (Math.random() * 0.5 - 0.25);
+        marketData.push({
+          id: dataIndex++,
+          symbol: "EUR",
+          name: "Euro",
+          buyRate: parseFloat((eurRate * 0.998).toFixed(4)),
+          sellRate: parseFloat((eurRate * 1.002).toFixed(4)),
+          change: parseFloat(eurChange.toFixed(3)),
+          isPositive: eurChange >= 0,
+        });
+      }
+
+      // GBP
+      if (tryRates.gbp) {
+        const gbpRate = 1 / tryRates.gbp;
+        const gbpChange = (Math.random() * 0.5 - 0.25);
+        marketData.push({
+          id: dataIndex++,
+          symbol: "GBP",
+          name: "İngiliz Poundu",
+          buyRate: parseFloat((gbpRate * 0.998).toFixed(4)),
+          sellRate: parseFloat((gbpRate * 1.002).toFixed(4)),
+          change: parseFloat(gbpChange.toFixed(3)),
+          isPositive: gbpChange >= 0,
+        });
+      }
+
+      // JPY
+      if (tryRates.jpy) {
+        const jpyRate = 1 / tryRates.jpy;
+        const jpyChange = (Math.random() * 0.5 - 0.25);
+        marketData.push({
+          id: dataIndex++,
+          symbol: "JPY",
+          name: "Japon Yeni",
+          buyRate: parseFloat((jpyRate * 0.998).toFixed(4)),
+          sellRate: parseFloat((jpyRate * 1.002).toFixed(4)),
+          change: parseFloat(jpyChange.toFixed(3)),
+          isPositive: jpyChange >= 0,
+        });
+      }
 
       // Gold and Silver with metals data or fallback
-      if (metalData && metalData.gold && metalData.silver) {
+      if (metalData && metalData.gold && metalData.silver && tryRates.usd) {
+        const usdRate = 1 / tryRates.usd;
         const goldGram = (metalData.gold / 31.1035) * usdRate;
         const silverGram = (metalData.silver / 31.1035) * usdRate;
 
         const goldChange = (Math.random() * 0.5 - 0.25);
         marketData.push({
-          id: 3,
+          id: dataIndex++,
           symbol: "ALT (gr)",
           name: "Altın",
           buyRate: parseFloat(goldGram.toFixed(4)),
@@ -155,7 +192,7 @@ export async function handleMarketData(
 
         const silverChange = (Math.random() * 0.5 - 0.25);
         marketData.push({
-          id: 4,
+          id: dataIndex++,
           symbol: "GMS (gr)",
           name: "Gümüş",
           buyRate: parseFloat(silverGram.toFixed(4)),
@@ -165,31 +202,21 @@ export async function handleMarketData(
         });
       } else {
         // Use fallback for metals
-        marketData.push(
-          {
-            id: 3,
-            symbol: "ALT (gr)",
-            name: "Altın",
-            buyRate: fallbackData[2].buyRate,
-            sellRate: fallbackData[2].sellRate,
-            change: (Math.random() * 0.5 - 0.25),
+        const metalFallback = fallbackData.filter(d => d.symbol.includes("(gr)"));
+        metalFallback.forEach(item => {
+          marketData.push({
+            ...item,
+            id: dataIndex++,
+            change: parseFloat((Math.random() * 0.5 - 0.25).toFixed(3)),
             isPositive: Math.random() > 0.5,
-          },
-          {
-            id: 4,
-            symbol: "GMS (gr)",
-            name: "Gümüş",
-            buyRate: fallbackData[3].buyRate,
-            sellRate: fallbackData[3].sellRate,
-            change: (Math.random() * 0.5 - 0.25),
-            isPositive: Math.random() > 0.5,
-          }
-        );
+          });
+        });
       }
     } else {
       // Use all fallback data if rates fetch fails
-      return res.json(fallbackData.map(item => ({
+      return res.json(fallbackData.map((item, idx) => ({
         ...item,
+        id: idx + 1,
         change: parseFloat((Math.random() * 0.5 - 0.25).toFixed(3)),
         isPositive: Math.random() > 0.5,
       })));
