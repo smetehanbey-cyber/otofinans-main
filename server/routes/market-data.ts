@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getTodaysCurrencyRates } from "tcmb-exchange-rates";
+import tcmbExchangeRates from "tcmb-exchange-rates";
 
 interface MarketDataResponse {
   id: number;
