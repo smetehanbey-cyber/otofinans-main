@@ -23,21 +23,18 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
           { signal: AbortSignal.timeout(5000) }
         );
 
-        console.log(`GenelPara ${currency} - Status: ${response.status}, OK: ${response.ok}`);
-
         if (response.ok) {
           const data = await response.json();
-          console.log(`GenelPara ${currency} Response:`, JSON.stringify(data).substring(0, 200));
 
           // The API returns data with this structure:
-          // { success: true, result: [{ id, name, symbol, buy, sell, ... }] }
-          if (data.result && Array.isArray(data.result) && data.result.length > 0) {
-            const item = data.result[0];
-            console.log(`GenelPara ${currency} Item:`, JSON.stringify(item).substring(0, 200));
+          // { success: true, data: { USD: { alis: "43.4918", satis: "43.5038", ... } } }
+          if (data.success && data.data && data.data[currency]) {
+            const item = data.data[currency];
 
             // Parse buy and sell rates
-            const buyRate = parseFloat(item.buy);
-            const sellRate = parseFloat(item.sell);
+            // Note: Turkish API uses "alis" (buy) and "satis" (sell)
+            const buyRate = parseFloat(item.alis);
+            const sellRate = parseFloat(item.satis);
 
             if (!isNaN(buyRate) && !isNaN(sellRate)) {
               rates[currency] = {
@@ -45,11 +42,7 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
                 sellRate: parseFloat(sellRate.toFixed(4)),
               };
               console.log(`✓ ${currency}: Al=${rates[currency].buyRate}, Sat=${rates[currency].sellRate}`);
-            } else {
-              console.log(`GenelPara ${currency} - Invalid rates: buy=${item.buy}, sell=${item.sell}`);
             }
-          } else {
-            console.log(`GenelPara ${currency} - No result data`);
           }
         } else {
           console.log(`GenelPara API returned status ${response.status} for ${currency}`);
