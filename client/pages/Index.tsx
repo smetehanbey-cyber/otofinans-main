@@ -4,6 +4,7 @@ import BannerSlider from "@/components/BannerSlider";
 import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import CreditCalculator from "@/components/CreditCalculator";
+import PiyasaVerileri from "@/components/PiyasaVerileri";
 
 export default function Index() {
   return (
