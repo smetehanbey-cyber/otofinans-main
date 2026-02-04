@@ -79,15 +79,16 @@ export async function handleMarketData(
     let metalData = null;
 
     // Try to fetch currency rates from fawazahmed0 currency API
+    // API returns rates for 1 TRY in other currencies
     try {
-      const usdRes = await fetch(
+      const ratesRes = await fetch(
         "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/try.json",
         {
           signal: AbortSignal.timeout(5000),
         }
       );
-      if (usdRes.ok) {
-        ratesData = await usdRes.json();
+      if (ratesRes.ok) {
+        ratesData = await ratesRes.json();
       }
     } catch (error) {
       console.log("Currency API fetch failed:", error);
