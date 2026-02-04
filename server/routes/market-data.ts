@@ -330,15 +330,9 @@ export async function handleMarketData(
     }
   }
 
-  // Try ExchangeRate API for gold (XAU/TRY) - most reliable for precious metals
-  const goldRate = await fetchGoldFromExchangeRate();
-  if (goldRate) {
-    // Override gold rates with exchangerate.host data
-    ratesToUse.GAU = goldRate;
-    console.log("✓ Using ExchangeRate API for Gold (XAU/TRY)");
-  } else {
-    console.log("⚠ ExchangeRate API unavailable, using fallback gold rates");
-  }
+  // Trunçgil already provides HAMITALTIN (Gram Gold) data
+  // It's included in the truncgilRates above
+  // Gold rates are updated every fetch cycle
 
   // Map API data to display items
   const items = [
