@@ -59,7 +59,7 @@ export default function ProductDropdown() {
 
       {/* Divider Line */}
       {isOpen && (
-        <div className="fixed left-0 right-0 h-px" style={{ backgroundColor: '#e5e7eb', top: '108px', zIndex: 35 }}></div>
+        <div className="fixed left-0 right-0 h-1" style={{ background: 'linear-gradient(to right, #1f3a93, #1f3a93)', top: '108px', zIndex: 35 }}></div>
       )}
 
       {/* Dropdown Menu */}
