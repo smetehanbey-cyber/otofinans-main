@@ -20,7 +20,7 @@ export default function Index() {
                   <div className="text-4xl sm:text-5xl lg:text-6xl">Hayaline</div>
                   <div className="font-black text-4xl sm:text-5xl lg:text-6xl">Geç Kalma</div>
                 </h1>
-                <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8">
+                <p className="text-base sm:text-lg text-blue-100 mb-3 sm:mb-4">
                   Oto Finans olarak, binek ve ticari taşıt finansmanları konusunda sektörün en güvenilir ve hızlı çözümünü sunuyoruz.
                 </p>
                 <ul className="space-y-3 sm:space-y-4 mb-8">
