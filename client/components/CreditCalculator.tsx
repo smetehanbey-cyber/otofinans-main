@@ -32,11 +32,11 @@ export default function CreditCalculator() {
   }).format(parseFloat(totalPayment));
 
   return (
-    <section className="py-16 sm:py-24 bg-white">
+    <section className="py-4 sm:py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-medium text-foreground mb-2">
             Ön Onaylı Krediniz Hazır!
           </h2>
           <p className="text-lg sm:text-xl text-gray-600">
