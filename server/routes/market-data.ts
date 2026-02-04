@@ -18,8 +18,8 @@ interface RateData {
 
 // Fetch all rates from genelpara.com API (updates every 15 minutes)
 // Using /list=all endpoint to get all currencies and commodities
-async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; sellRate: number }>> {
-  const rates: Record<string, { buyRate: number; sellRate: number }> = {};
+async function fetchFromGenelPara(): Promise<Record<string, RateData>> {
+  const rates: Record<string, RateData> = {};
 
   try {
     const response = await fetch(
@@ -31,19 +31,21 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
       const data = await response.json();
 
       // The API returns data with this structure:
-      // { success: true, data: { USD: { alis: "...", satis: "..." }, EUR: { alis: "...", satis: "..." }, ... } }
+      // { success: true, data: { USD: { alis: "...", satis: "...", degisim: "..." }, ... } }
       if (data.success && data.data) {
         // USD
         if (data.data.USD) {
           const item = data.data.USD;
           const buyRate = parseFloat(item.alis);
           const sellRate = parseFloat(item.satis);
+          const change = item.degisim ? parseFloat(item.degisim) : 0;
           if (!isNaN(buyRate) && !isNaN(sellRate)) {
             rates.USD = {
               buyRate: parseFloat(buyRate.toFixed(4)),
               sellRate: parseFloat(sellRate.toFixed(4)),
+              change: isNaN(change) ? 0 : change,
             };
-            console.log(`✓ USD: Al=${rates.USD.buyRate}, Sat=${rates.USD.sellRate}`);
+            console.log(`✓ USD: Al=${rates.USD.buyRate}, Sat=${rates.USD.sellRate}, Değişim=${rates.USD.change}`);
           }
         }
 
@@ -52,12 +54,14 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
           const item = data.data.EUR;
           const buyRate = parseFloat(item.alis);
           const sellRate = parseFloat(item.satis);
+          const change = item.degisim ? parseFloat(item.degisim) : 0;
           if (!isNaN(buyRate) && !isNaN(sellRate)) {
             rates.EUR = {
               buyRate: parseFloat(buyRate.toFixed(4)),
               sellRate: parseFloat(sellRate.toFixed(4)),
+              change: isNaN(change) ? 0 : change,
             };
-            console.log(`✓ EUR: Al=${rates.EUR.buyRate}, Sat=${rates.EUR.sellRate}`);
+            console.log(`✓ EUR: Al=${rates.EUR.buyRate}, Sat=${rates.EUR.sellRate}, Değişim=${rates.EUR.change}`);
           }
         }
 
@@ -66,26 +70,31 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
           const item = data.data.GBP;
           const buyRate = parseFloat(item.alis);
           const sellRate = parseFloat(item.satis);
+          const change = item.degisim ? parseFloat(item.degisim) : 0;
           if (!isNaN(buyRate) && !isNaN(sellRate)) {
             rates.GBP = {
               buyRate: parseFloat(buyRate.toFixed(4)),
               sellRate: parseFloat(sellRate.toFixed(4)),
+              change: isNaN(change) ? 0 : change,
             };
-            console.log(`✓ GBP: Al=${rates.GBP.buyRate}, Sat=${rates.GBP.sellRate}`);
+            console.log(`✓ GBP: Al=${rates.GBP.buyRate}, Sat=${rates.GBP.sellRate}, Değişim=${rates.GBP.change}`);
           }
         }
 
-        // GRAM ALTIN (Gram Gold in TL)
-        if (data.data["GRAM ALTIN"]) {
-          const item = data.data["GRAM ALTIN"];
+        // GA (Gram Altın - Gram Gold in TL)
+        // Using GA key as per genelpara.com API specification
+        if (data.data.GA) {
+          const item = data.data.GA;
           const buyRate = parseFloat(item.alis);
           const sellRate = parseFloat(item.satis);
+          const change = item.degisim ? parseFloat(item.degisim) : 0;
           if (!isNaN(buyRate) && !isNaN(sellRate)) {
-            rates["GRAM ALTIN"] = {
+            rates.GA = {
               buyRate: parseFloat(buyRate.toFixed(2)),
               sellRate: parseFloat(sellRate.toFixed(2)),
+              change: isNaN(change) ? 0 : change,
             };
-            console.log(`✓ GRAM ALTIN: Al=${rates["GRAM ALTIN"].buyRate}, Sat=${rates["GRAM ALTIN"].sellRate}`);
+            console.log(`✓ GA (Gram Altın): Al=${rates.GA.buyRate}, Sat=${rates.GA.sellRate}, Değişim=${rates.GA.change}`);
           }
         }
       }
