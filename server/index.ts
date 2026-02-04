@@ -21,6 +21,7 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
   app.get("/api/market-data", handleMarketData);
+  app.get("/api/instagram-posts", handleInstagramPosts);
 
   return app;
 }
