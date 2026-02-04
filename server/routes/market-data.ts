@@ -35,7 +35,7 @@ export async function handleMarketData(
 
   try {
     // Fetch real TCMB rates using the tcmb-exchange-rates package
-    const tcmbData = await getTodaysCurrencyRates();
+    const tcmbData = await tcmbExchangeRates.getTodaysCurrencyRates();
 
     console.log("TCMB data fetched successfully");
 
