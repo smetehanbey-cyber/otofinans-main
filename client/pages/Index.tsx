@@ -102,11 +102,16 @@ export default function Index() {
       <footer className="bg-slate-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Brand */}
+            {/* Brand with Logo */}
             <div>
-              <div className="flex flex-col mb-4">
-                <span className="text-xl font-bold text-white">OTO</span>
-                <span className="text-xs font-semibold text-white -mt-1">FINANS GLOBAL</span>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-sm font-bold text-primary">OTO</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-white">OTO</span>
+                  <span className="text-xs font-semibold text-white -mt-1">FINANS</span>
+                </div>
               </div>
               <p className="text-sm">Otomobil finansmanında güvenilir bir ortak.</p>
             </div>
