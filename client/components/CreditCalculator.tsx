@@ -35,17 +35,17 @@ export default function CreditCalculator() {
     <section className="py-4 sm:py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-medium text-foreground mb-2">
-            Ön Onaylı Krediniz Hazır!
+        <div className="text-left mb-3 sm:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-medium text-foreground mb-0">
+            Ön Onaylı Krediniz Hazır.
           </h2>
           <p className="text-lg sm:text-xl text-gray-600">
-            Hemen Kullan
+            Şimdi Kullanabilirsiniz!
           </p>
         </div>
 
         {/* Calculator Section */}
-        <div className="max-w-4xl mx-auto bg-gray-50 rounded-2xl p-8 sm:p-12 border border-gray-200">
+        <div className="bg-gray-50 rounded-2xl p-8 sm:p-12 border border-gray-200">
           {/* Input Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {/* Product Type */}
