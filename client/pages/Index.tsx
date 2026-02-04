@@ -23,8 +23,8 @@ export default function Index() {
                 <p className="text-base sm:text-lg text-blue-100 mb-3 sm:mb-4">
                   Oto Finans olarak, binek ve ticari taşıt finansmanları konusunda sektörün en güvenilir ve hızlı çözümünü sunuyoruz.
                 </p>
-                <ul className="space-y-3 sm:space-y-4 mb-8">
-                  <li className="flex items-center gap-3 text-base sm:text-lg">
+                <ul className="space-y-2 sm:space-y-2.5 mb-4">
+                  <li className="flex items-center gap-3 text-sm sm:text-base">
                     <CheckIcon />
                     <span>30 dakikada kredi taraması ve onayı</span>
                   </li>
