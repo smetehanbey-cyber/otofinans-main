@@ -6,16 +6,21 @@ const services = [
     title: "Esnek Ödeme",
     titleBold: "Esnek",
     description: "İster senetle ister esnek ödeme ile bütçenize göre ödeme planı oluşturun.",
+    color: "text-blue-900", // Dark blue
   },
   {
     icon: Shield,
-    title: "Güvenli Sistem",
+    title: "Hızlı Değerlendirme",
+    titleBold: "Hızlı",
     description: "Verileriniz en yüksek güvenlik standartlarıyla korunur",
+    color: "text-blue-600", // Regular blue
   },
   {
     icon: TrendingUp,
-    title: "Kompetitif Oranlar",
+    title: "Güvenli Süreç",
+    titleBold: "Güvenli",
     description: "%9.99'dan başlayan uygun faiz oranlarından yararlanın",
+    color: "text-blue-900", // Dark blue
   },
 ];
 
