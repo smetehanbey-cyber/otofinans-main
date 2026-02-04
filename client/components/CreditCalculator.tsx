@@ -3,8 +3,7 @@ import { useState, useMemo } from "react";
 export default function CreditCalculator() {
   const [amount, setAmount] = useState(1000);
   const [duration, setDuration] = useState(48);
-  const [customRate, setCustomRate] = useState(false);
-  const [rate, setRate] = useState(9.99);
+  const [rate] = useState(0.99);
 
   // Calculate monthly payment
   const monthlyPayment = useMemo(() => {
