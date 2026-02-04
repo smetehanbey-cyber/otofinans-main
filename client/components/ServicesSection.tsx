@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, Shield, TrendingUp, Users, Smartphone } from "lucide-react";
+import { Clock, Shield, TrendingUp } from "lucide-react";
 
 const services = [
   {
@@ -15,21 +15,6 @@ const services = [
     icon: TrendingUp,
     title: "Kompetitif Oranlar",
     description: "%9.99'dan başlayan uygun faiz oranlarından yararlanın",
-  },
-  {
-    icon: Users,
-    title: "Uzman Danışmanlar",
-    description: "Deneyimli ekibimiz her adımda size yardımcı olacak",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobil Uygulama",
-    description: "Başvurunuzu ve kredisini yönetin mobil uygulamadan",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Kolay Onay",
-    description: "Minimum evrakla kolayca kredi alabilirsiniz",
   },
 ];
 
