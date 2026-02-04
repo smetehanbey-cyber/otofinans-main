@@ -45,7 +45,7 @@ export default function ProductDropdown() {
         className="relative"
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => {
-          setTimeout(() => setIsOpen(false), 300);
+          setTimeout(() => setIsOpen(false), 3000);
         }}
       >
       <div className="flex flex-col items-center">
