@@ -46,7 +46,7 @@ export default function CreditCalculator() {
         {/* Calculator Section */}
         <div className="bg-gray-50 rounded-2xl p-8 sm:p-12 border border-gray-200">
           {/* Input Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             {/* Product Type */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">Ürün</label>
