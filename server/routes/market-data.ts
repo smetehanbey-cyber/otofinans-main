@@ -10,50 +10,45 @@ interface MarketDataResponse {
   isPositive: boolean;
 }
 
-// Fetch rates from currencyapi.com (free, no key required for USD base)
-async function fetchFromCurrencyAPI(): Promise<Record<string, { buyRate: number; sellRate: number }>> {
+// Fetch rates from genelpara.com API (updates every 15 minutes)
+async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; sellRate: number }>> {
   const rates: Record<string, { buyRate: number; sellRate: number }> = {};
+  const currencies = ["USD", "EUR", "GBP", "JPY"];
 
   try {
-    // currencyapi.com free tier - get USD to TRY rate
-    const response = await fetch(
-      "https://api.currencyapi.com/v3/latest?base_currency=USD&currencies=TRY",
-      { signal: AbortSignal.timeout(3000) }
-    );
+    for (const currency of currencies) {
+      const response = await fetch(
+        `https://api.genelpara.com/json/?list=doviz&sembol=${currency}`,
+        { signal: AbortSignal.timeout(3000) }
+      );
 
-    if (response.ok) {
-      const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-      if (data.data && data.data.TRY) {
-        const usdToTry = data.data.TRY.value; // How many TRY per 1 USD
+        // The API returns data with this structure:
+        // { success: true, result: [{ id, name, symbol, buy, sell, ... }] }
+        if (data.result && Array.isArray(data.result) && data.result.length > 0) {
+          const item = data.result[0];
 
-        // USD rate
-        rates.USD = {
-          buyRate: parseFloat((usdToTry * 0.998).toFixed(4)),
-          sellRate: parseFloat((usdToTry * 1.002).toFixed(4)),
-        };
+          // Parse buy and sell rates
+          const buyRate = parseFloat(item.buy);
+          const sellRate = parseFloat(item.sell);
 
-        // EUR (roughly 1.08 times USD)
-        rates.EUR = {
-          buyRate: parseFloat((usdToTry * 1.08 * 0.998).toFixed(4)),
-          sellRate: parseFloat((usdToTry * 1.08 * 1.002).toFixed(4)),
-        };
-
-        // GBP (roughly 1.27 times USD)
-        rates.GBP = {
-          buyRate: parseFloat((usdToTry * 1.27 * 0.998).toFixed(4)),
-          sellRate: parseFloat((usdToTry * 1.27 * 1.002).toFixed(4)),
-        };
-
-        // JPY (roughly 0.007 times USD)
-        rates.JPY = {
-          buyRate: parseFloat((usdToTry * 0.007 * 0.998).toFixed(4)),
-          sellRate: parseFloat((usdToTry * 0.007 * 1.002).toFixed(4)),
-        };
+          if (!isNaN(buyRate) && !isNaN(sellRate)) {
+            rates[currency] = {
+              buyRate: parseFloat(buyRate.toFixed(4)),
+              sellRate: parseFloat(sellRate.toFixed(4)),
+            };
+          }
+        }
       }
     }
+
+    if (Object.keys(rates).length > 0) {
+      console.log("✓ GenelPara API rates fetched successfully:", Object.keys(rates).join(", "));
+    }
   } catch (error) {
-    console.log("CurrencyAPI fetch failed:", error instanceof Error ? error.message : error);
+    console.log("GenelPara API fetch failed:", error instanceof Error ? error.message : error);
   }
 
   return rates;
