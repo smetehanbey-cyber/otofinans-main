@@ -12,14 +12,14 @@ const services = [
     icon: Shield,
     titleBold: "Hızlı",
     titleSuffix: "Değerlendirme",
-    description: "Verileriniz en yüksek güvenlik standartlarıyla korunur",
-    color: "text-blue-600", // Regular blue
+    description: "Kısa sürede en hızlı sonucu çağrı merkezimizden endilebilirsiniz.",
+    color: "text-blue-900", // Dark blue
   },
   {
     icon: TrendingUp,
     titleBold: "Güvenli",
     titleSuffix: "Süreç",
-    description: "%9.99'dan başlayan uygun faiz oranlarından yararlanın",
+    description: "Kurumsal ve resmi çözümler ile kredi limitinizi etkilemeden ön sorgu gerçekleştirebilirsiniz.",
     color: "text-blue-900", // Dark blue
   },
 ];
