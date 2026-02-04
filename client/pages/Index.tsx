@@ -73,6 +73,9 @@ export default function Index() {
         {/* Credit Calculator Section */}
         <CreditCalculator />
 
+        {/* Market Data Section */}
+        <PiyasaVerileri />
+
         {/* Services Section */}
         <ServicesSection />
 
