@@ -292,6 +292,9 @@ export async function handleMarketData(
   const marketData: MarketDataResponse[] = [];
   let dataIndex = 1;
 
+  // Get USD/TRY rate for Gram Gold calculation
+  const usdRate = ratesToUse.USD?.buyRate || 43.5;
+
   // Add USD, EUR, GBP, and GAU (Gram Altın) in order
   for (const item of items) {
     // Try primary key first, then fallback to GA (genelpara format)
@@ -302,14 +305,41 @@ export async function handleMarketData(
 
     if (rates) {
       const change = rates.change ?? 0;
+
+      // For Gram Gold (GAU), multiply by USD rate to get higher value in TL
+      // and format with Turkish notation
+      let buyRate = parseFloat(rates.buyRate.toFixed(item.decimals));
+      let sellRate = parseFloat(rates.sellRate.toFixed(item.decimals));
+      let buyRateFormatted: string | undefined;
+      let sellRateFormatted: string | undefined;
+
+      if (item.key === "GAU") {
+        // Gram Gold: multiply by USD rate and format as Turkish currency
+        const buyRateTL = rates.buyRate * usdRate;
+        const sellRateTL = rates.sellRate * usdRate;
+
+        // Turkish formatting: thousands with dots, decimals with comma
+        // Example: 122.887,50
+        buyRateFormatted = buyRateTL.toLocaleString('tr-TR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        sellRateFormatted = sellRateTL.toLocaleString('tr-TR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
       marketData.push({
         id: dataIndex++,
         symbol: item.symbol,
         name: item.name,
-        buyRate: parseFloat(rates.buyRate.toFixed(item.decimals)),
-        sellRate: parseFloat(rates.sellRate.toFixed(item.decimals)),
+        buyRate,
+        sellRate,
         change: parseFloat(change.toFixed(3)),
         isPositive: change >= 0,
+        buyRateFormatted,
+        sellRateFormatted,
       });
     }
   }
