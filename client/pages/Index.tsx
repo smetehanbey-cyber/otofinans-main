@@ -5,6 +5,7 @@ import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import CreditCalculator from "@/components/CreditCalculator";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
+import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 
 export default function Index() {
   return (
@@ -96,6 +97,9 @@ export default function Index() {
             </a>
           </div>
         </section>
+
+        {/* Car Brands Showcase */}
+        <CarBrandsShowcase />
       </main>
 
       {/* Footer */}
