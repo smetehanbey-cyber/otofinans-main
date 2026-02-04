@@ -1,42 +1,68 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-interface InstagramPost {
-  id: string;
-  image_url: string;
-  caption?: string;
-  likes?: number;
-  comments?: number;
-  url: string;
-  timestamp?: string;
+declare global {
+  interface Window {
+    Instafeed: any;
+  }
 }
 
 export default function InstagramFeed() {
-  const [posts, setPosts] = useState<InstagramPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const feedRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchInstagramPosts();
+    // Load Instafeed.js library
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/instafeed.js@2";
+    script.async = true;
+    script.onload = () => {
+      initializeInstafeed();
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
   }, []);
 
-  const fetchInstagramPosts = async () => {
+  const initializeInstafeed = () => {
+    // Get access token from environment or localStorage
+    const accessToken = process.env.REACT_APP_INSTAGRAM_TOKEN;
+
+    if (!accessToken || accessToken === "YOUR_INSTAGRAM_ACCESS_TOKEN") {
+      console.log("Instagram access token not configured");
+      return;
+    }
+
     try {
-      setLoading(true);
-      // Fetch from backend which scrapes Instagram's public JSON endpoint
-      const response = await fetch("/api/instagram-posts");
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch Instagram posts");
-      }
-
-      const data = await response.json();
-      setPosts(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.log("Instagram feed error:", err);
-      setError("Instagram postaları yüklenemedi");
-      setPosts([]);
-    } finally {
-      setLoading(false);
+      const feed = new window.Instafeed({
+        accessToken: accessToken,
+        limit: 6,
+        target: "instafeed",
+        template: `<a href="{{link}}" target="_blank" rel="noopener noreferrer" class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+          <img src="{{image}}" alt="{{caption}}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+            <div></div>
+            <div class="flex gap-4 text-white text-xs font-medium pt-4">
+              <div class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span>{{likes}}</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>{{comments}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <svg class="w-12 h-12 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z"/></svg>
+          </div>
+        </a>`,
+      });
+      feed.run();
+    } catch (error) {
+      console.log("Instafeed initialization error:", error);
     }
   };
 
