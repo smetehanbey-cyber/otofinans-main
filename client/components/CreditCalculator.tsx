@@ -39,7 +39,7 @@ export default function CreditCalculator() {
             Ön Onaylı Krediniz Hazır.
           </h2>
           <p className="text-lg sm:text-xl text-gray-600">
-            Şimdi Kullanabilirsiniz!
+            Taşıt Kredinizi Şimdi Kullanabilirsiniz!
           </p>
         </div>
 
