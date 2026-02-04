@@ -97,6 +97,9 @@ export default function Index() {
             </a>
           </div>
         </section>
+
+        {/* Instagram Feed Section */}
+        <InstagramFeed />
       </main>
 
       {/* Footer */}
