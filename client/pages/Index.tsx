@@ -14,7 +14,9 @@ export default function Index() {
 
       <main>
         {/* Hero Section */}
-        <section className="text-white py-4 sm:py-6" style={{ backgroundColor: '#0f367e' }}>
+        <section className="text-white py-4 sm:py-6" style={{
+          background: 'linear-gradient(to bottom right, #0f367e, #1a4d9e, #2563eb)'
+        }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-center">
               {/* Left Content */}
@@ -152,12 +154,12 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="absolute inset-0 lg:relative flex items-start justify-center lg:justify-end h-[420px] lg:h-auto lg:static overflow-hidden">
-                <div className="w-full h-full max-w-md lg:max-w-none animate-slide-in-right lg:z-10" style={{ marginTop: '-35px' }}>
+              <div className="absolute inset-0 lg:relative flex items-center justify-center lg:justify-end h-[420px] lg:h-auto lg:static">
+                <div className="w-full animate-slide-in-right lg:z-10 flex items-center justify-center">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
                     alt="Oto Finans Müşteri"
-                    className="w-full h-full object-cover object-top"
+                    className="h-[400px] w-auto object-contain"
                   />
                 </div>
               </div>
