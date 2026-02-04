@@ -81,12 +81,13 @@ export default function PiyasaVerileri() {
   }, []);
 
   const itemsPerPage = 4;
-  const maxIndex = Math.ceil(marketData.length / itemsPerPage) - 1;
+  const totalItems = marketData.length;
+  const maxIndex = totalItems > itemsPerPage ? Math.ceil(totalItems / itemsPerPage) - 1 : 0;
 
   const currentItems = useMemo(() => {
     const start = currentIndex * itemsPerPage;
     return marketData.slice(start, start + itemsPerPage);
-  }, [currentIndex]);
+  }, [currentIndex, marketData]);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
