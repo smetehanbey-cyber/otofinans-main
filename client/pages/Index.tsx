@@ -140,10 +140,10 @@ export default function Index() {
                   </p>
                 </div>
 
-                <div className="animate-fade-in-up-delay-2">
+                <div className="animate-fade-in-up-delay-2 mt-10">
                   <a
                     href="tel:+905324098440"
-                    className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-blue-400 font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
+                    className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
                     title="Oto Finanslı Ol"
                   >
                     Oto Finanslı Ol
@@ -152,8 +152,8 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="absolute inset-0 lg:relative flex items-start justify-center lg:justify-end h-[420px] lg:h-auto lg:static">
-                <div className="w-full h-full max-w-md lg:max-w-none animate-slide-in-right lg:z-10">
+              <div className="absolute inset-0 lg:relative flex items-start justify-center lg:justify-end h-[420px] lg:h-auto lg:static overflow-hidden">
+                <div className="w-full h-full max-w-md lg:max-w-none animate-slide-in-right lg:z-10" style={{ marginTop: '-15px' }}>
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
                     alt="Oto Finans Müşteri"
