@@ -60,19 +60,19 @@ export async function handleMarketData(
     let ratesData = null;
     let metalData = null;
 
-    // Try to fetch currency rates from exchangerate.host
+    // Try to fetch currency rates from fawazahmed0 currency API
     try {
-      const ratesRes = await fetch(
-        "https://api.exchangerate.host/latest?base=TRY&symbols=USD,EUR",
+      const usdRes = await fetch(
+        "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/try.json",
         {
           signal: AbortSignal.timeout(5000),
         }
       );
-      if (ratesRes.ok) {
-        ratesData = await ratesRes.json();
+      if (usdRes.ok) {
+        ratesData = await usdRes.json();
       }
     } catch (error) {
-      console.log("Exchange rate API fetch failed:", error);
+      console.log("Currency API fetch failed:", error);
     }
 
     // Try to fetch metal prices
