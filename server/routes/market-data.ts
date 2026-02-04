@@ -18,8 +18,56 @@ interface RateData {
   change?: number;
 }
 
-// Fetch gold (XAU/TRY) rate from exchangerate-api.com (free tier, no key needed)
+// Fetch gold (XAU/TRY) rate from Metal Price API
 // This provides real-time gold to Turkish Lira conversion
+async function fetchGoldFromMetalPriceAPI(): Promise<RateData | null> {
+  try {
+    const response = await fetch(
+      "https://api.metalpriceapi.com/v1/latest?api_key=42ba482ba703b3a5569425c0be0a8a0a&base=XAU&currencies=TRY",
+      {
+        signal: AbortSignal.timeout(5000),
+        headers: {
+          'Accept': 'application/json',
+        }
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // API response structure: { rates: { TRY: number }, ... }
+      if (data.rates && data.rates.TRY) {
+        const goldPrice = parseFloat(data.rates.TRY);
+
+        if (!isNaN(goldPrice) && goldPrice > 0) {
+          // Use the rate as both buy and sell (mid-market rate)
+          // Add a small spread for realistic trading (0.5%)
+          const spreadPercentage = 0.005;
+          const buyRate = goldPrice;
+          const sellRate = goldPrice * (1 + spreadPercentage);
+
+          const rateData: RateData = {
+            buyRate: parseFloat(buyRate.toFixed(2)),
+            sellRate: parseFloat(sellRate.toFixed(2)),
+            change: 0,
+          };
+
+          console.log(`✓ Metal Price API Gold (XAU/TRY): Al=${rateData.buyRate}, Sat=${rateData.sellRate} TL`);
+          return rateData;
+        }
+      }
+    } else {
+      console.log(`Metal Price API returned status ${response.status}`);
+    }
+  } catch (error) {
+    console.log("Metal Price API fetch failed:", error instanceof Error ? error.message : error);
+  }
+
+  return null;
+}
+
+// Fetch gold (XAU/TRY) rate from exchangerate-api.com (free tier, no key needed)
+// This provides real-time gold to Turkish Lira conversion (fallback)
 async function fetchGoldFromExchangeRate(): Promise<RateData | null> {
   try {
     // Try exchangerate-api.com (free tier without API key)
