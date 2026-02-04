@@ -10,6 +10,55 @@ interface MarketDataResponse {
   isPositive: boolean;
 }
 
+// Fetch rates from currencyapi.com (free, no key required for USD base)
+async function fetchFromCurrencyAPI(): Promise<Record<string, { buyRate: number; sellRate: number }>> {
+  const rates: Record<string, { buyRate: number; sellRate: number }> = {};
+
+  try {
+    // currencyapi.com free tier - get USD to TRY rate
+    const response = await fetch(
+      "https://api.currencyapi.com/v3/latest?base_currency=USD&currencies=TRY",
+      { signal: AbortSignal.timeout(3000) }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      if (data.data && data.data.TRY) {
+        const usdToTry = data.data.TRY.value; // How many TRY per 1 USD
+
+        // USD rate
+        rates.USD = {
+          buyRate: parseFloat((usdToTry * 0.998).toFixed(4)),
+          sellRate: parseFloat((usdToTry * 1.002).toFixed(4)),
+        };
+
+        // EUR (roughly 1.08 times USD)
+        rates.EUR = {
+          buyRate: parseFloat((usdToTry * 1.08 * 0.998).toFixed(4)),
+          sellRate: parseFloat((usdToTry * 1.08 * 1.002).toFixed(4)),
+        };
+
+        // GBP (roughly 1.27 times USD)
+        rates.GBP = {
+          buyRate: parseFloat((usdToTry * 1.27 * 0.998).toFixed(4)),
+          sellRate: parseFloat((usdToTry * 1.27 * 1.002).toFixed(4)),
+        };
+
+        // JPY (roughly 0.007 times USD)
+        rates.JPY = {
+          buyRate: parseFloat((usdToTry * 0.007 * 0.998).toFixed(4)),
+          sellRate: parseFloat((usdToTry * 0.007 * 1.002).toFixed(4)),
+        };
+      }
+    }
+  } catch (error) {
+    console.log("CurrencyAPI fetch failed:", error instanceof Error ? error.message : error);
+  }
+
+  return rates;
+}
+
 // Parse TCMB XML to extract currency rates
 function parseTCMBXML(xml: string): Record<string, { buyRate: number; sellRate: number }> {
   const rates: Record<string, { buyRate: number; sellRate: number }> = {};
