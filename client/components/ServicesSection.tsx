@@ -26,7 +26,7 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-4 sm:py-8 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Services grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
