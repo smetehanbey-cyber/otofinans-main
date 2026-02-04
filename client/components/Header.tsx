@@ -148,11 +148,6 @@ export default function Header() {
             <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               Ürün ve Hizmet
             </Link>
-            <div className="px-4 py-2 flex gap-2 text-xs border-t border-gray-200 mt-2">
-              <button className="text-gray-600 hover:text-primary">English</button>
-              <span className="text-gray-400">•</span>
-              <button className="text-gray-600 hover:text-primary">Türkçe</button>
-            </div>
             <div className="px-4 py-2 space-y-2 border-t border-gray-200">
               <button className="w-full px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-100">
                 Aracını Hızlı Sat
