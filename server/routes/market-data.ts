@@ -15,18 +15,77 @@ export async function handleMarketData(
   res: Response
 ): Promise<void> {
   try {
-    // Fetch currency rates from exchangerate-api
-    const ratesRes = await fetch("https://api.exchangerate-api.com/v4/latest/TRY");
-    const ratesData = await ratesRes.json();
-
-    // Fetch metal prices from metals.live
-    const metalRes = await fetch("https://api.metals.live/v1/spot/metals");
-    const metalData = await metalRes.json();
-
     const marketData: MarketDataResponse[] = [];
 
-    if (ratesData.rates) {
-      // Get rates for USD and EUR to TRY
+    // Fallback data
+    const fallbackData = [
+      {
+        id: 1,
+        symbol: "USD",
+        name: "Amerikan Doları",
+        buyRate: 30.0747,
+        sellRate: 30.2315,
+        change: 0.47,
+        isPositive: true,
+      },
+      {
+        id: 2,
+        symbol: "EUR",
+        name: "Euro",
+        buyRate: 32.7758,
+        sellRate: 32.9215,
+        change: 0.28,
+        isPositive: true,
+      },
+      {
+        id: 3,
+        symbol: "ALT (gr)",
+        name: "Altın",
+        buyRate: 2072.6269,
+        sellRate: 2157.0752,
+        change: 2.759,
+        isPositive: true,
+      },
+      {
+        id: 4,
+        symbol: "GMS (gr)",
+        name: "Gümüş",
+        buyRate: 24.9138,
+        sellRate: 26.1854,
+        change: 0.087,
+        isPositive: false,
+      },
+    ];
+
+    let ratesData = null;
+    let metalData = null;
+
+    // Try to fetch currency rates
+    try {
+      const ratesRes = await fetch("https://api.exchangerate-api.com/v4/latest/TRY", {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (ratesRes.ok) {
+        ratesData = await ratesRes.json();
+      }
+    } catch (error) {
+      console.log("Exchange rate API fetch failed:", error);
+    }
+
+    // Try to fetch metal prices
+    try {
+      const metalRes = await fetch("https://api.metals.live/v1/spot/metals", {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (metalRes.ok) {
+        metalData = await metalRes.json();
+      }
+    } catch (error) {
+      console.log("Metals API fetch failed:", error);
+    }
+
+    // If we have exchange rates, use them; otherwise use fallback
+    if (ratesData && ratesData.rates) {
       const usdRate = 1 / ratesData.rates.USD;
       const eurRate = 1 / ratesData.rates.EUR;
 
@@ -54,13 +113,11 @@ export async function handleMarketData(
         isPositive: eurChange >= 0,
       });
 
-      // Gold and Silver
+      // Gold and Silver with metals data or fallback
       if (metalData && metalData.gold && metalData.silver) {
-        // Convert from USD per troy ounce to TRY per gram
         const goldGram = (metalData.gold / 31.1035) * usdRate;
         const silverGram = (metalData.silver / 31.1035) * usdRate;
 
-        // Gold
         const goldChange = (Math.random() * 0.5 - 0.25);
         marketData.push({
           id: 3,
@@ -72,7 +129,6 @@ export async function handleMarketData(
           isPositive: goldChange >= 0,
         });
 
-        // Silver
         const silverChange = (Math.random() * 0.5 - 0.25);
         marketData.push({
           id: 4,
@@ -84,14 +140,14 @@ export async function handleMarketData(
           isPositive: silverChange >= 0,
         });
       } else {
-        // Fallback data if metals API fails
+        // Use fallback for metals
         marketData.push(
           {
             id: 3,
             symbol: "ALT (gr)",
             name: "Altın",
-            buyRate: 2072.6269,
-            sellRate: 2157.0752,
+            buyRate: fallbackData[2].buyRate,
+            sellRate: fallbackData[2].sellRate,
             change: (Math.random() * 0.5 - 0.25),
             isPositive: Math.random() > 0.5,
           },
@@ -99,19 +155,26 @@ export async function handleMarketData(
             id: 4,
             symbol: "GMS (gr)",
             name: "Gümüş",
-            buyRate: 24.9138,
-            sellRate: 26.1854,
+            buyRate: fallbackData[3].buyRate,
+            sellRate: fallbackData[3].sellRate,
             change: (Math.random() * 0.5 - 0.25),
             isPositive: Math.random() > 0.5,
           }
         );
       }
+    } else {
+      // Use all fallback data if rates fetch fails
+      return res.json(fallbackData.map(item => ({
+        ...item,
+        change: parseFloat((Math.random() * 0.5 - 0.25).toFixed(3)),
+        isPositive: Math.random() > 0.5,
+      })));
     }
 
     res.json(marketData);
   } catch (error) {
-    console.error("Error fetching market data:", error);
-    // Return fallback data
+    console.error("Unexpected error in market data handler:", error);
+    // Return fallback data as last resort
     res.json([
       {
         id: 1,
