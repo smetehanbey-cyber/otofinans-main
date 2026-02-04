@@ -17,38 +17,47 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
 
   try {
     for (const currency of currencies) {
-      const response = await fetch(
-        `https://api.genelpara.com/json/?list=doviz&sembol=${currency}`,
-        { signal: AbortSignal.timeout(3000) }
-      );
+      try {
+        const response = await fetch(
+          `https://api.genelpara.com/json/?list=doviz&sembol=${currency}`,
+          { signal: AbortSignal.timeout(3000) }
+        );
 
-      if (response.ok) {
-        const data = await response.json();
+        if (response.ok) {
+          const data = await response.json();
 
-        // The API returns data with this structure:
-        // { success: true, result: [{ id, name, symbol, buy, sell, ... }] }
-        if (data.result && Array.isArray(data.result) && data.result.length > 0) {
-          const item = data.result[0];
+          // The API returns data with this structure:
+          // { success: true, result: [{ id, name, symbol, buy, sell, ... }] }
+          if (data.result && Array.isArray(data.result) && data.result.length > 0) {
+            const item = data.result[0];
 
-          // Parse buy and sell rates
-          const buyRate = parseFloat(item.buy);
-          const sellRate = parseFloat(item.sell);
+            // Parse buy and sell rates
+            const buyRate = parseFloat(item.buy);
+            const sellRate = parseFloat(item.sell);
 
-          if (!isNaN(buyRate) && !isNaN(sellRate)) {
-            rates[currency] = {
-              buyRate: parseFloat(buyRate.toFixed(4)),
-              sellRate: parseFloat(sellRate.toFixed(4)),
-            };
+            if (!isNaN(buyRate) && !isNaN(sellRate)) {
+              rates[currency] = {
+                buyRate: parseFloat(buyRate.toFixed(4)),
+                sellRate: parseFloat(sellRate.toFixed(4)),
+              };
+              console.log(`✓ ${currency}: Al=${rates[currency].buyRate}, Sat=${rates[currency].sellRate}`);
+            }
           }
+        } else {
+          console.log(`GenelPara API returned status ${response.status} for ${currency}`);
         }
+      } catch (error) {
+        console.log(`GenelPara API fetch failed for ${currency}:`, error instanceof Error ? error.message : error);
       }
     }
 
     if (Object.keys(rates).length > 0) {
-      console.log("✓ GenelPara API rates fetched successfully:", Object.keys(rates).join(", "));
+      console.log("✓ GenelPara API: Successfully fetched rates for", Object.keys(rates).join(", "));
+    } else {
+      console.log("⚠ GenelPara API: No rates fetched, will use fallback");
     }
   } catch (error) {
-    console.log("GenelPara API fetch failed:", error instanceof Error ? error.message : error);
+    console.log("GenelPara API batch fetch failed:", error instanceof Error ? error.message : error);
   }
 
   return rates;
