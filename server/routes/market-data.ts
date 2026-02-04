@@ -28,7 +28,23 @@ async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
     );
 
     if (response.ok) {
-      const data = await response.json();
+      const text = await response.text();
+
+      // Try to parse JSON, with fallback for malformed responses
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.log("⚠ Trunçgil JSON parse error, attempting to fix...", parseError instanceof Error ? parseError.message : "Unknown error");
+        // Try to fix common JSON issues
+        const fixed = text.replace(/,\s*([}\]])/g, '$1').replace(/,(\s*[}\]])/g, '$1');
+        try {
+          data = JSON.parse(fixed);
+        } catch {
+          console.log("⚠ Could not parse Trunçgil API response even after fixing");
+          return rates;
+        }
+      }
 
       // Trunçgil API structure typically has currency and gold data
       // Example: data.USD, data.EUR, data.GBP, data.GAU (Gold)
