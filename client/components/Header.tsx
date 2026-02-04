@@ -63,7 +63,7 @@ export default function Header() {
         {/* Main Header Section */}
         <div className="border-b-2" style={{ borderColor: '#0f367e' }}>
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center h-20 gap-6">
+            <div className="flex items-center justify-center h-20 gap-6">
               {/* Logo */}
               <Link to="/" className="flex items-center flex-shrink-0">
                 <img
@@ -85,8 +85,8 @@ export default function Header() {
                 </div>
               </div>
 
-              {/* Right Section - Search and Buttons */}
-              <div className="hidden md:flex items-center gap-2 ml-auto flex-shrink-0">
+              {/* Search and Buttons */}
+              <div className="hidden md:flex items-center gap-2 flex-shrink-0">
                 {/* Search Box */}
                 <div className="flex items-center gap-2">
                   <input
