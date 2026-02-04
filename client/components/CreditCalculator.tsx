@@ -36,10 +36,10 @@ export default function CreditCalculator() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-2">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2">
             Ön Onaylı Krediniz Hazır!
           </h2>
-          <p className="text-base sm:text-lg text-gray-600">
+          <p className="text-lg sm:text-xl text-gray-600">
             Hemen Kullan
           </p>
         </div>
