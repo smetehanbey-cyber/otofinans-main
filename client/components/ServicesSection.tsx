@@ -22,16 +22,6 @@ export default function ServicesSection() {
   return (
     <section className="py-16 sm:py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Neden Oto Finans Global?
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-            Müşteri memnuniyeti ve hızlı hizmet sunmakta sektör lideri olarak işimizi yapıyoruz
-          </p>
-        </div>
-
         {/* Services grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {services.map((service, index) => {
