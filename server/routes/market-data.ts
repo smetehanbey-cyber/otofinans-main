@@ -85,39 +85,6 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
   return rates;
 }
 
-// Parse TCMB XML to extract currency rates
-function parseTCMBXML(xml: string): Record<string, { buyRate: number; sellRate: number }> {
-  const rates: Record<string, { buyRate: number; sellRate: number }> = {};
-
-  const currencyCodes = ["USD", "EUR", "GBP", "JPY"];
-
-  for (const code of currencyCodes) {
-    // Find currency block
-    const currencyPattern = new RegExp(
-      `<Currency Code="${code}">([\\s\\S]*?)</Currency>`,
-      "i"
-    );
-    const currencyMatch = xml.match(currencyPattern);
-
-    if (currencyMatch) {
-      const currencyBlock = currencyMatch[1];
-
-      // Extract BanknoteBuying
-      const buyingMatch = currencyBlock.match(/<BanknoteBuying>([\d.]+)<\/BanknoteBuying>/);
-      // Extract BanknoteSelling
-      const sellingMatch = currencyBlock.match(/<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/);
-
-      if (buyingMatch && sellingMatch) {
-        rates[code] = {
-          buyRate: parseFloat(buyingMatch[1]),
-          sellRate: parseFloat(sellingMatch[1]),
-        };
-      }
-    }
-  }
-
-  return rates;
-}
 
 export async function handleMarketData(
   _req: Request,
