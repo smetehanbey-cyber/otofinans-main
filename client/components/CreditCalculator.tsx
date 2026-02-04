@@ -31,6 +31,44 @@ export default function CreditCalculator() {
     currency: 'TRY'
   }).format(parseFloat(totalPayment));
 
+  // Generate and download payment schedule as Excel
+  const downloadPaymentSchedule = () => {
+    const monthlyRate = rate / 100 / 12;
+    const scheduleData = [];
+    let remainingBalance = amount;
+
+    for (let month = 1; month <= duration; month++) {
+      const interestPayment = remainingBalance * monthlyRate;
+      const principalPayment = parseFloat(monthlyPayment) - interestPayment;
+      remainingBalance -= principalPayment;
+
+      scheduleData.push({
+        'Ay': month,
+        'Taksit Tutarı (₺)': parseFloat(monthlyPayment).toFixed(2),
+        'Anapara (₺)': Math.max(principalPayment, 0).toFixed(2),
+        'Faiz (₺)': interestPayment.toFixed(2),
+        'Kalan Bakiye (₺)': Math.max(remainingBalance, 0).toFixed(2)
+      });
+    }
+
+    // Create Excel workbook
+    const ws = XLSX.utils.json_to_sheet(scheduleData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Ödeme Planı");
+
+    // Set column widths
+    ws['!cols'] = [
+      { wch: 8 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 18 }
+    ];
+
+    // Download file
+    XLSX.writeFile(wb, `Odeme-Plani-${amount}TL-${duration}Ay.xlsx`);
+  };
+
   return (
     <section className="py-4 sm:py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
