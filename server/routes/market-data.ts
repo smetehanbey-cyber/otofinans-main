@@ -10,6 +10,12 @@ interface MarketDataResponse {
   isPositive: boolean;
 }
 
+interface RateData {
+  buyRate: number;
+  sellRate: number;
+  change?: number;
+}
+
 // Fetch all rates from genelpara.com API (updates every 15 minutes)
 // Using /list=all endpoint to get all currencies and commodities
 async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; sellRate: number }>> {
