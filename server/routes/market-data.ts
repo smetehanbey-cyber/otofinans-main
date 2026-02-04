@@ -337,7 +337,6 @@ export async function handleMarketData(
     USD: { buyRate: 43.4918, sellRate: 43.5038, change: 0.03 },
     EUR: { buyRate: 51.4746, sellRate: 51.4821, change: 0.04 },
     GBP: { buyRate: 59.7531, sellRate: 60.0526, change: 0.26 },
-    BTC: { buyRate: 3500000.00, sellRate: 3517500.00, change: 2.5 },
   };
 
   let ratesToUse = fallbackRates;
@@ -359,66 +358,26 @@ export async function handleMarketData(
     }
   }
 
-  // Fetch Bitcoin price from CoinGecko API (primary source for BTC/TRY)
-  const bitcoinPrice = await fetchBitcoinFromCoinGecko();
-  if (bitcoinPrice) {
-    ratesToUse.BTC = bitcoinPrice;
-    console.log("✓ Using CoinGecko API for Bitcoin prices");
-  } else {
-    // Try fallback CoinGecko call
-    const bitcoinFallback = await fetchBitcoinFallback();
-    if (bitcoinFallback) {
-      ratesToUse.BTC = bitcoinFallback;
-      console.log("✓ Using CoinGecko Fallback for Bitcoin prices");
-    }
-  }
 
   // Map API data to display items
   const items = [
     { key: "USD", symbol: "USD", name: "Amerikan Doları", decimals: 4 },
     { key: "EUR", symbol: "EUR", name: "Euro", decimals: 4 },
     { key: "GBP", symbol: "GBP", name: "İngiliz Poundu", decimals: 4 },
-    { key: "BTC", symbol: "BTC", name: "Bitcoin", decimals: 2 }, // BTC/TRY Bitcoin price
   ];
 
   const marketData: MarketDataResponse[] = [];
   let dataIndex = 1;
 
-  // Add USD, EUR, GBP, and BTC in order
+  // Add USD, EUR, and GBP in order
   for (const item of items) {
     const rates = ratesToUse[item.key];
 
     if (rates) {
       const change = rates.change ?? 0;
 
-      // For Bitcoin (BTC), format with Turkish notation
       let buyRate = parseFloat(rates.buyRate.toFixed(item.decimals));
       let sellRate = parseFloat(rates.sellRate.toFixed(item.decimals));
-      let buyRateFormatted: string | undefined;
-      let sellRateFormatted: string | undefined;
-
-      if (item.key === "BTC") {
-        // Bitcoin: BTC/TRY (Bitcoin price in Turkish Lira)
-        const buyRateTL = rates.buyRate;
-        const sellRateTL = rates.sellRate;
-
-        console.log(`✓ Bitcoin (BTC/TRY): Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
-
-        // Turkish formatting: thousands with dots, decimals with comma
-        // Example: 3.500.000,00
-        buyRateFormatted = buyRateTL.toLocaleString('tr-TR', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-        sellRateFormatted = sellRateTL.toLocaleString('tr-TR', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-
-        // Update buyRate and sellRate for display
-        buyRate = parseFloat(buyRateTL.toFixed(2));
-        sellRate = parseFloat(sellRateTL.toFixed(2));
-      }
 
       marketData.push({
         id: dataIndex++,
@@ -428,8 +387,6 @@ export async function handleMarketData(
         sellRate,
         change: parseFloat(change.toFixed(3)),
         isPositive: change >= 0,
-        buyRateFormatted,
-        sellRateFormatted,
       });
     }
   }
