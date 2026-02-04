@@ -18,31 +18,27 @@ interface RateData {
   change?: number;
 }
 
-// Fetch gold (XAU/TRY) rate from exchangerate.host API with API key
+// Fetch gold (XAU/TRY) rate from exchangerate-api.com (free tier, no key needed)
 // This provides real-time gold to Turkish Lira conversion
 async function fetchGoldFromExchangeRate(): Promise<RateData | null> {
   try {
-    // API key can be set via environment variable
-    const apiKey = process.env.EXCHANGE_RATE_API_KEY || "";
-
-    let url = "https://api.exchangerate.host/convert?from=XAU&to=TRY";
-    if (apiKey) {
-      url += `&access_key=${apiKey}`;
-    }
-
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(5000),
-      headers: {
-        'Accept': 'application/json',
+    // Try exchangerate-api.com (free tier without API key)
+    const response = await fetch(
+      "https://v6.exchangerate-api.com/v6/latest/XAU",
+      {
+        signal: AbortSignal.timeout(5000),
+        headers: {
+          'Accept': 'application/json',
+        }
       }
-    });
+    );
 
     if (response.ok) {
       const data = await response.json();
 
-      // API response structure: { success: true, query: {...}, result: number, ... }
-      if (data.success && data.result) {
-        const goldPrice = parseFloat(data.result);
+      // API response structure: { result: "success", rates: { TRY: number, ... } }
+      if (data.result === "success" && data.rates && data.rates.TRY) {
+        const goldPrice = parseFloat(data.rates.TRY);
 
         if (!isNaN(goldPrice) && goldPrice > 0) {
           // Use the rate as both buy and sell (mid-market rate)
@@ -57,17 +53,15 @@ async function fetchGoldFromExchangeRate(): Promise<RateData | null> {
             change: 0,
           };
 
-          console.log(`✓ ExchangeRate Gold (XAU/TRY): Al=${rateData.buyRate}, Sat=${rateData.sellRate}`);
+          console.log(`✓ ExchangeRate-API Gold (XAU/TRY): Al=${rateData.buyRate}, Sat=${rateData.sellRate} TL`);
           return rateData;
         }
-      } else if (data.error) {
-        console.log(`ExchangeRate API error: ${data.error.type} - ${data.error.info}`);
       }
     } else {
-      console.log(`ExchangeRate API returned status ${response.status}`);
+      console.log(`ExchangeRate-API returned status ${response.status}`);
     }
   } catch (error) {
-    console.log("ExchangeRate API fetch failed:", error instanceof Error ? error.message : error);
+    console.log("ExchangeRate-API fetch failed:", error instanceof Error ? error.message : error);
   }
 
   return null;
