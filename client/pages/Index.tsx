@@ -80,34 +80,79 @@ export default function Index() {
         {/* Services Section */}
         <ServicesSection />
 
-        {/* Banner Section */}
-        <section className="py-12 sm:py-20" style={{ backgroundColor: '#3b8fa3' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        {/* Banner Section with Animations */}
+        <section className="relative overflow-hidden" style={{ backgroundColor: '#0f367e', minHeight: '500px' }}>
+          <style>{`
+            @keyframes slideInFromRight {
+              from {
+                opacity: 0;
+                transform: translateX(100px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+
+            @keyframes fadeInUp {
+              from {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+
+            .animate-slide-in-right {
+              animation: slideInFromRight 0.8s ease-out forwards;
+            }
+
+            .animate-fade-in-up {
+              animation: fadeInUp 0.8s ease-out forwards;
+            }
+
+            .animate-fade-in-up-delay-1 {
+              animation: fadeInUp 0.8s ease-out 0.2s forwards;
+              opacity: 0;
+            }
+
+            .animate-fade-in-up-delay-2 {
+              animation: fadeInUp 0.8s ease-out 0.4s forwards;
+              opacity: 0;
+            }
+          `}</style>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch min-h-[500px]">
               {/* Left Content */}
-              <div className="text-white">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                  Aracını bizimle hızlı sat anında
+              <div className="text-white flex flex-col justify-center py-12 lg:py-0">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
+                  Aracını bizimle hızlı sat<br />
+                  anında <b>Oto Finanslı</b> ol
                 </h2>
-                <p className="text-base sm:text-lg mb-6 text-white/90 leading-relaxed">
+                <p className="text-base sm:text-lg mb-8 text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
                   Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifli satış anında ve en hızlı kredi sistemleri ile biz sağlıyoruz.
                   Tüm Türkiye'deki allıklarımız sizi bekliyor.
                 </p>
-                <a
-                  href="tel:+905324098440"
-                  className="inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold px-6 py-3 rounded-lg transition-colors duration-200 border border-teal-500"
-                >
-                  Oto Finanslı ol
-                </a>
+                <div className="animate-fade-in-up-delay-2">
+                  <a
+                    href="tel:+905324098440"
+                    className="inline-block bg-blue-400 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-lg transition-colors duration-200"
+                  >
+                    Oto Finanslı ol
+                  </a>
+                </div>
               </div>
 
-              {/* Right Content - Woman and Car */}
-              <div className="relative flex justify-center items-center">
-                <div className="w-full max-w-sm">
+              {/* Right Content - Woman Image */}
+              <div className="relative flex items-end justify-center lg:justify-end">
+                <div className="w-full h-full max-w-md lg:max-w-none animate-slide-in-right">
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fb1dd5245a267463e9ebc5b8f24e21f7b?format=webp&width=800&height=1200"
+                    src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
                     alt="Oto Finans Müşteri"
-                    className="w-full h-auto"
+                    className="w-full h-auto object-cover"
                   />
                 </div>
               </div>
