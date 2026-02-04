@@ -17,6 +17,73 @@ interface RateData {
   change?: number;
 }
 
+// Fetch exchange rates from TCMB (Turkish Central Bank)
+// This is the most reliable source for currency data
+async function fetchFromTCMB(): Promise<Record<string, RateData>> {
+  const rates: Record<string, RateData> = {};
+
+  try {
+    const exchangeRates = await getExchangeRates();
+
+    // TCMB provides exchange rates against TRY
+    // Structure: { [currencyCode]: { buy: number, sell: number, ... } }
+
+    // USD
+    if (exchangeRates.USD) {
+      const item = exchangeRates.USD;
+      const buyRate = typeof item === 'object' && item.buy ? parseFloat(item.buy) : parseFloat(String(item));
+      const sellRate = typeof item === 'object' && item.sell ? parseFloat(item.sell) : parseFloat(String(item));
+
+      if (!isNaN(buyRate) && buyRate > 0) {
+        rates.USD = {
+          buyRate: parseFloat(buyRate.toFixed(4)),
+          sellRate: parseFloat((buyRate + 0.01).toFixed(4)), // Estimate sell rate if not available
+          change: 0,
+        };
+        console.log(`✓ TCMB USD: ${rates.USD.buyRate} TRY`);
+      }
+    }
+
+    // EUR
+    if (exchangeRates.EUR) {
+      const item = exchangeRates.EUR;
+      const buyRate = typeof item === 'object' && item.buy ? parseFloat(item.buy) : parseFloat(String(item));
+
+      if (!isNaN(buyRate) && buyRate > 0) {
+        rates.EUR = {
+          buyRate: parseFloat(buyRate.toFixed(4)),
+          sellRate: parseFloat((buyRate + 0.01).toFixed(4)),
+          change: 0,
+        };
+        console.log(`✓ TCMB EUR: ${rates.EUR.buyRate} TRY`);
+      }
+    }
+
+    // GBP
+    if (exchangeRates.GBP) {
+      const item = exchangeRates.GBP;
+      const buyRate = typeof item === 'object' && item.buy ? parseFloat(item.buy) : parseFloat(String(item));
+
+      if (!isNaN(buyRate) && buyRate > 0) {
+        rates.GBP = {
+          buyRate: parseFloat(buyRate.toFixed(4)),
+          sellRate: parseFloat((buyRate + 0.01).toFixed(4)),
+          change: 0,
+        };
+        console.log(`✓ TCMB GBP: ${rates.GBP.buyRate} TRY`);
+      }
+    }
+
+    if (Object.keys(rates).length > 0) {
+      console.log("✓ TCMB: Successfully fetched exchange rates");
+    }
+  } catch (error) {
+    console.log("TCMB API fetch failed:", error instanceof Error ? error.message : error);
+  }
+
+  return rates;
+}
+
 // Fetch gold and currency data from Trunçgil Finans API
 // This is a reliable Turkish finance API for gold prices (GAU/TRY)
 async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
