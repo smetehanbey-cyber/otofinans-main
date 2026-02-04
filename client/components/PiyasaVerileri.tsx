@@ -89,13 +89,6 @@ export default function PiyasaVerileri() {
     return marketData.slice(start, start + itemsPerPage);
   }, [currentIndex, marketData]);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
-  };
 
   return (
     <section className="py-6 sm:py-8" style={{ backgroundColor: "#1f3a93" }}>
