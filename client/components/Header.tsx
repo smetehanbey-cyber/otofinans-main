@@ -37,7 +37,7 @@ export default function Header() {
                   Bize Ulaş
                 </Link>
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
-                  Ürün ve Hizmet
+                  Ürünler
                 </Link>
               </nav>
 
