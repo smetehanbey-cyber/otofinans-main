@@ -44,10 +44,11 @@ export default function ServicesSection() {
                     </div>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
-                      {index === 0 && service.titleBold ? (
+                    <h3 className={`text-lg sm:text-xl font-semibold mb-2 ${service.color}`}>
+                      {service.titleBold ? (
                         <>
-                          <b>{service.titleBold}</b> Ödeme
+                          <b>{service.titleBold}</b>{" "}
+                          {index === 0 ? "Ödeme" : index === 1 ? "Değerlendirme" : "Süreç"}
                         </>
                       ) : (
                         service.title
