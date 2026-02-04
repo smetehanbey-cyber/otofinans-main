@@ -14,40 +14,44 @@ interface MarketDataResponse {
 function parseTCMBRates(xmlString: string): Record<string, { buyRate: number; sellRate: number }> {
   const rates: Record<string, { buyRate: number; sellRate: number }> = {};
 
-  // Parse USD
-  const usdMatch = xmlString.match(/<Currency Code="USD">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
-  if (usdMatch) {
-    rates.USD = {
-      buyRate: parseFloat(usdMatch[1]),
-      sellRate: parseFloat(usdMatch[2]),
-    };
-  }
+  try {
+    // Parse USD
+    const usdMatch = xmlString.match(/<Currency Code="USD">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
+    if (usdMatch) {
+      rates.USD = {
+        buyRate: parseFloat(usdMatch[1]),
+        sellRate: parseFloat(usdMatch[2]),
+      };
+    }
 
-  // Parse EUR
-  const eurMatch = xmlString.match(/<Currency Code="EUR">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
-  if (eurMatch) {
-    rates.EUR = {
-      buyRate: parseFloat(eurMatch[1]),
-      sellRate: parseFloat(eurMatch[2]),
-    };
-  }
+    // Parse EUR
+    const eurMatch = xmlString.match(/<Currency Code="EUR">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
+    if (eurMatch) {
+      rates.EUR = {
+        buyRate: parseFloat(eurMatch[1]),
+        sellRate: parseFloat(eurMatch[2]),
+      };
+    }
 
-  // Parse GBP
-  const gbpMatch = xmlString.match(/<Currency Code="GBP">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
-  if (gbpMatch) {
-    rates.GBP = {
-      buyRate: parseFloat(gbpMatch[1]),
-      sellRate: parseFloat(gbpMatch[2]),
-    };
-  }
+    // Parse GBP
+    const gbpMatch = xmlString.match(/<Currency Code="GBP">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
+    if (gbpMatch) {
+      rates.GBP = {
+        buyRate: parseFloat(gbpMatch[1]),
+        sellRate: parseFloat(gbpMatch[2]),
+      };
+    }
 
-  // Parse JPY
-  const jpyMatch = xmlString.match(/<Currency Code="JPY">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
-  if (jpyMatch) {
-    rates.JPY = {
-      buyRate: parseFloat(jpyMatch[1]),
-      sellRate: parseFloat(jpyMatch[2]),
-    };
+    // Parse JPY
+    const jpyMatch = xmlString.match(/<Currency Code="JPY">.*?<BanknoteBuying>([\d.]+)<\/BanknoteBuying>.*?<BanknoteSelling>([\d.]+)<\/BanknoteSelling>/s);
+    if (jpyMatch) {
+      rates.JPY = {
+        buyRate: parseFloat(jpyMatch[1]),
+        sellRate: parseFloat(jpyMatch[2]),
+      };
+    }
+  } catch (error) {
+    console.log("Error parsing TCMB XML:", error);
   }
 
   return rates;
