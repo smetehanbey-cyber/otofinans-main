@@ -24,24 +24,44 @@ async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
   try {
     const response = await fetch(
       "https://finans.truncgil.com/v4/today.json",
-      { signal: AbortSignal.timeout(5000) }
+      {
+        signal: AbortSignal.timeout(5000),
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0',
+        }
+      }
     );
 
     if (response.ok) {
       const text = await response.text();
 
+      // The response might have encoding issues, try cleaning it
+      let cleanText = text;
+      // Remove any BOM or invalid characters at the start
+      if (cleanText.charCodeAt(0) === 0xFEFF) {
+        cleanText = cleanText.slice(1);
+      }
+
       // Try to parse JSON, with fallback for malformed responses
       let data;
       try {
-        data = JSON.parse(text);
+        data = JSON.parse(cleanText);
       } catch (parseError) {
-        console.log("⚠ Trunçgil JSON parse error, attempting to fix...", parseError instanceof Error ? parseError.message : "Unknown error");
-        // Try to fix common JSON issues
-        const fixed = text.replace(/,\s*([}\]])/g, '$1').replace(/,(\s*[}\]])/g, '$1');
+        console.log("⚠ Trunçgil JSON parse error:", parseError instanceof Error ? parseError.message : "Unknown error");
+        // Try to fix common JSON issues with trailing commas or quotes
+        let fixed = cleanText
+          .replace(/,\s*([}\]])/g, '$1')           // Remove trailing commas
+          .replace(/([}\]])\s*,\s*$/g, '$1')       // Remove trailing commas at end
+          .replace(/\\u0000/g, '')                  // Remove null bytes
+          .replace(/[\x00-\x1F\x7F]/g, '');        // Remove control characters except newlines
+
         try {
           data = JSON.parse(fixed);
+          console.log("⚠ Recovered Trunçgil data after fixing JSON");
         } catch {
           console.log("⚠ Could not parse Trunçgil API response even after fixing");
+          console.log("Response length:", text.length);
           return rates;
         }
       }
