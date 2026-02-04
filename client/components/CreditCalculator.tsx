@@ -95,7 +95,7 @@ export default function CreditCalculator() {
                   onChange={(e) => setCustomRate(e.target.checked)}
                   className="w-5 h-5 rounded border-gray-300"
                 />
-                <span className="text-sm font-medium text-gray-700">Kâr Oranı Belirle</span>
+                <span className="text-sm font-medium text-gray-700">Oran</span>
               </label>
             </div>
           </div>
