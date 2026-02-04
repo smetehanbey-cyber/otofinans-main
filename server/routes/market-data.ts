@@ -46,93 +46,71 @@ async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
         }
       }
 
-      // Debug: Log all keys to find gold data
-      const allKeys = Object.keys(data);
-      const goldKeys = allKeys.filter(k => k.toLowerCase().includes('alt') || k.toLowerCase().includes('gau') || k.toLowerCase().includes('gold'));
-      console.log("All Trunçgil keys count:", allKeys.length);
-      console.log("Gold-related keys found:", goldKeys);
-
-      // Also log structure of first item to understand format
-      if (data.USD) {
-        console.log("USD structure:", Object.keys(data.USD));
-      }
-
-      // Trunçgil API structure typically has currency and gold data
-      // The API provides data with various key patterns
+      // Trunçgil API Structure (confirmed):
+      // - Currencies use: { Type, Change, Name, Buying, Selling }
+      // - Gold types: HAMITALTIN (gram gold), CEYREKALTIN, etc.
 
       // USD
-      if (data.USD) {
+      if (data.USD && typeof data.USD === "object") {
         const item = data.USD;
-        const buyRate = item.Alis || item.alis || item.buying || item.buy;
-        const sellRate = item.Satis || item.satis || item.selling || item.sell;
-        if (buyRate && sellRate) {
-          const buy = parseFloat(buyRate);
-          const sell = parseFloat(sellRate);
-          if (!isNaN(buy) && !isNaN(sell)) {
-            rates.USD = {
-              buyRate: parseFloat(buy.toFixed(4)),
-              sellRate: parseFloat(sell.toFixed(4)),
-              change: 0,
-            };
-            console.log(`✓ Trunçgil USD: Al=${rates.USD.buyRate}, Sat=${rates.USD.sellRate}`);
-          }
+        const buyRate = parseFloat(item.Buying);
+        const sellRate = parseFloat(item.Selling);
+        const change = item.Change ? parseFloat(item.Change) : 0;
+        if (!isNaN(buyRate) && !isNaN(sellRate)) {
+          rates.USD = {
+            buyRate: parseFloat(buyRate.toFixed(4)),
+            sellRate: parseFloat(sellRate.toFixed(4)),
+            change: isNaN(change) ? 0 : change,
+          };
+          console.log(`✓ Trunçgil USD: Al=${rates.USD.buyRate}, Sat=${rates.USD.sellRate}`);
         }
       }
 
       // EUR
-      if (data.EUR) {
+      if (data.EUR && typeof data.EUR === "object") {
         const item = data.EUR;
-        const buyRate = item.Alis || item.alis || item.buying || item.buy;
-        const sellRate = item.Satis || item.satis || item.selling || item.sell;
-        if (buyRate && sellRate) {
-          const buy = parseFloat(buyRate);
-          const sell = parseFloat(sellRate);
-          if (!isNaN(buy) && !isNaN(sell)) {
-            rates.EUR = {
-              buyRate: parseFloat(buy.toFixed(4)),
-              sellRate: parseFloat(sell.toFixed(4)),
-              change: 0,
-            };
-            console.log(`✓ Trunçgil EUR: Al=${rates.EUR.buyRate}, Sat=${rates.EUR.sellRate}`);
-          }
+        const buyRate = parseFloat(item.Buying);
+        const sellRate = parseFloat(item.Selling);
+        const change = item.Change ? parseFloat(item.Change) : 0;
+        if (!isNaN(buyRate) && !isNaN(sellRate)) {
+          rates.EUR = {
+            buyRate: parseFloat(buyRate.toFixed(4)),
+            sellRate: parseFloat(sellRate.toFixed(4)),
+            change: isNaN(change) ? 0 : change,
+          };
+          console.log(`✓ Trunçgil EUR: Al=${rates.EUR.buyRate}, Sat=${rates.EUR.sellRate}`);
         }
       }
 
       // GBP
-      if (data.GBP) {
+      if (data.GBP && typeof data.GBP === "object") {
         const item = data.GBP;
-        const buyRate = item.Alis || item.alis || item.buying || item.buy;
-        const sellRate = item.Satis || item.satis || item.selling || item.sell;
-        if (buyRate && sellRate) {
-          const buy = parseFloat(buyRate);
-          const sell = parseFloat(sellRate);
-          if (!isNaN(buy) && !isNaN(sell)) {
-            rates.GBP = {
-              buyRate: parseFloat(buy.toFixed(4)),
-              sellRate: parseFloat(sell.toFixed(4)),
-              change: 0,
-            };
-            console.log(`✓ Trunçgil GBP: Al=${rates.GBP.buyRate}, Sat=${rates.GBP.sellRate}`);
-          }
+        const buyRate = parseFloat(item.Buying);
+        const sellRate = parseFloat(item.Selling);
+        const change = item.Change ? parseFloat(item.Change) : 0;
+        if (!isNaN(buyRate) && !isNaN(sellRate)) {
+          rates.GBP = {
+            buyRate: parseFloat(buyRate.toFixed(4)),
+            sellRate: parseFloat(sellRate.toFixed(4)),
+            change: isNaN(change) ? 0 : change,
+          };
+          console.log(`✓ Trunçgil GBP: Al=${rates.GBP.buyRate}, Sat=${rates.GBP.sellRate}`);
         }
       }
 
-      // GAU (Gold/Altın) - Trunçgil specific
-      if (data.GAU || data.GRAM_ALTIN || data.altın) {
-        const item = data.GAU || data.GRAM_ALTIN || data.altın;
-        const buyRate = item.Alis || item.alis || item.buying || item.buy;
-        const sellRate = item.Satis || item.satis || item.selling || item.sell;
-        if (buyRate && sellRate) {
-          const buy = parseFloat(buyRate);
-          const sell = parseFloat(sellRate);
-          if (!isNaN(buy) && !isNaN(sell)) {
-            rates.GAU = {
-              buyRate: parseFloat(buy.toFixed(2)),
-              sellRate: parseFloat(sell.toFixed(2)),
-              change: 0,
-            };
-            console.log(`✓ Trunçgil GAU (Gold): Al=${rates.GAU.buyRate}, Sat=${rates.GAU.sellRate}`);
-          }
+      // HAMITALTIN (Gram Gold/Altın) - Trunçgil's gram gold entry
+      if (data.HAMITALTIN && typeof data.HAMITALTIN === "object") {
+        const item = data.HAMITALTIN;
+        const buyRate = parseFloat(item.Buying);
+        const sellRate = parseFloat(item.Selling);
+        const change = item.Change ? parseFloat(item.Change) : 0;
+        if (!isNaN(buyRate) && !isNaN(sellRate)) {
+          rates.GAU = {
+            buyRate: parseFloat(buyRate.toFixed(2)),
+            sellRate: parseFloat(sellRate.toFixed(2)),
+            change: isNaN(change) ? 0 : change,
+          };
+          console.log(`✓ Trunçgil HAMITALTIN (Gram Gold): Al=${rates.GAU.buyRate}, Sat=${rates.GAU.sellRate}`);
         }
       }
 
