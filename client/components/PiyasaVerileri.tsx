@@ -45,10 +45,20 @@ export default function PiyasaVerileri() {
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const response = await fetch("/api/market-data");
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch("/api/market-data", {
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
         if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
+          console.log(`API error: ${response.status}`);
+          return;
         }
+
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
           setMarketData(data);
@@ -65,7 +75,9 @@ export default function PiyasaVerileri() {
     // Set up interval to fetch every second
     const interval = setInterval(fetchMarketData, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const itemsPerPage = 4;
