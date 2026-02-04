@@ -18,12 +18,12 @@ interface RateData {
   change?: number;
 }
 
-// Fetch gold (XAU/TRY) rate from Metal Price API
-// This provides real-time gold to Turkish Lira conversion
-async function fetchGoldFromMetalPriceAPI(): Promise<RateData | null> {
+// Fetch Bitcoin (BTC/TRY) rate from CoinGecko API
+// This provides real-time Bitcoin to Turkish Lira conversion
+async function fetchBitcoinFromCoinGecko(): Promise<RateData | null> {
   try {
     const response = await fetch(
-      "https://api.metalpriceapi.com/v1/latest?api_key=42ba482ba703b3a5569425c0be0a8a0a&base=XAU&currencies=TRY",
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=try",
       {
         signal: AbortSignal.timeout(5000),
         headers: {
@@ -35,16 +35,16 @@ async function fetchGoldFromMetalPriceAPI(): Promise<RateData | null> {
     if (response.ok) {
       const data = await response.json();
 
-      // API response structure: { rates: { TRY: number }, ... }
-      if (data.rates && data.rates.TRY) {
-        const goldPrice = parseFloat(data.rates.TRY);
+      // API response structure: { bitcoin: { try: number } }
+      if (data.bitcoin && data.bitcoin.try) {
+        const btcPrice = parseFloat(data.bitcoin.try);
 
-        if (!isNaN(goldPrice) && goldPrice > 0) {
+        if (!isNaN(btcPrice) && btcPrice > 0) {
           // Use the rate as both buy and sell (mid-market rate)
           // Add a small spread for realistic trading (0.5%)
           const spreadPercentage = 0.005;
-          const buyRate = goldPrice;
-          const sellRate = goldPrice * (1 + spreadPercentage);
+          const buyRate = btcPrice;
+          const sellRate = btcPrice * (1 + spreadPercentage);
 
           const rateData: RateData = {
             buyRate: parseFloat(buyRate.toFixed(2)),
@@ -52,27 +52,26 @@ async function fetchGoldFromMetalPriceAPI(): Promise<RateData | null> {
             change: 0,
           };
 
-          console.log(`✓ Metal Price API Gold (XAU/TRY): Al=${rateData.buyRate}, Sat=${rateData.sellRate} TL`);
+          console.log(`✓ CoinGecko Bitcoin (BTC/TRY): Al=${rateData.buyRate}, Sat=${rateData.sellRate} TL`);
           return rateData;
         }
       }
     } else {
-      console.log(`Metal Price API returned status ${response.status}`);
+      console.log(`CoinGecko API returned status ${response.status}`);
     }
   } catch (error) {
-    console.log("Metal Price API fetch failed:", error instanceof Error ? error.message : error);
+    console.log("CoinGecko API fetch failed:", error instanceof Error ? error.message : error);
   }
 
   return null;
 }
 
-// Fetch gold (XAU/TRY) rate from exchangerate-api.com (free tier, no key needed)
-// This provides real-time gold to Turkish Lira conversion (fallback)
-async function fetchGoldFromExchangeRate(): Promise<RateData | null> {
+// Fetch Bitcoin (BTC/TRY) rate from CoinGecko API (fallback)
+// This provides real-time Bitcoin to Turkish Lira conversion
+async function fetchBitcoinFallback(): Promise<RateData | null> {
   try {
-    // Try exchangerate-api.com (free tier without API key)
     const response = await fetch(
-      "https://v6.exchangerate-api.com/v6/latest/XAU",
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=try&include_24hr_change=true",
       {
         signal: AbortSignal.timeout(5000),
         headers: {
@@ -84,39 +83,38 @@ async function fetchGoldFromExchangeRate(): Promise<RateData | null> {
     if (response.ok) {
       const data = await response.json();
 
-      // API response structure: { result: "success", rates: { TRY: number, ... } }
-      if (data.result === "success" && data.rates && data.rates.TRY) {
-        const goldPrice = parseFloat(data.rates.TRY);
+      // API response structure: { bitcoin: { try: number, try_24h_change: number } }
+      if (data.bitcoin && data.bitcoin.try) {
+        const btcPrice = parseFloat(data.bitcoin.try);
+        const change = data.bitcoin.try_24h_change ? parseFloat(data.bitcoin.try_24h_change) : 0;
 
-        if (!isNaN(goldPrice) && goldPrice > 0) {
-          // Use the rate as both buy and sell (mid-market rate)
-          // Add a small spread for realistic trading (0.5%)
+        if (!isNaN(btcPrice) && btcPrice > 0) {
           const spreadPercentage = 0.005;
-          const buyRate = goldPrice;
-          const sellRate = goldPrice * (1 + spreadPercentage);
+          const buyRate = btcPrice;
+          const sellRate = btcPrice * (1 + spreadPercentage);
 
           const rateData: RateData = {
             buyRate: parseFloat(buyRate.toFixed(2)),
             sellRate: parseFloat(sellRate.toFixed(2)),
-            change: 0,
+            change: isNaN(change) ? 0 : change,
           };
 
-          console.log(`✓ ExchangeRate-API Gold (XAU/TRY): Al=${rateData.buyRate}, Sat=${rateData.sellRate} TL`);
+          console.log(`✓ CoinGecko Bitcoin Fallback (BTC/TRY): Al=${rateData.buyRate}, Sat=${rateData.sellRate} TL, Change=${rateData.change}%`);
           return rateData;
         }
       }
     } else {
-      console.log(`ExchangeRate-API returned status ${response.status}`);
+      console.log(`CoinGecko Fallback returned status ${response.status}`);
     }
   } catch (error) {
-    console.log("ExchangeRate-API fetch failed:", error instanceof Error ? error.message : error);
+    console.log("CoinGecko Fallback fetch failed:", error instanceof Error ? error.message : error);
   }
 
   return null;
 }
 
-// Fetch gold and currency data from Trunçgil Finans API
-// This is a reliable Turkish finance API for gold prices (GAU/TRY)
+// Fetch currency data from Trunçgil Finans API
+// This is a reliable Turkish finance API for currency prices
 async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
   const rates: Record<string, RateData> = {};
 
@@ -167,7 +165,6 @@ async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
 
       // Trunçgil API Structure (confirmed):
       // - Currencies use: { Type, Change, Name, Buying, Selling }
-      // - Gold types: HAMITALTIN (gram gold), CEYREKALTIN, etc.
 
       // USD
       if (data.USD && typeof data.USD === "object") {
@@ -214,22 +211,6 @@ async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
             change: isNaN(change) ? 0 : change,
           };
           console.log(`✓ Trunçgil GBP: Al=${rates.GBP.buyRate}, Sat=${rates.GBP.sellRate}`);
-        }
-      }
-
-      // HAMITALTIN (Gram Gold/Altın) - Trunçgil's gram gold entry
-      if (data.HAMITALTIN && typeof data.HAMITALTIN === "object") {
-        const item = data.HAMITALTIN;
-        const buyRate = parseFloat(item.Buying);
-        const sellRate = parseFloat(item.Selling);
-        const change = item.Change ? parseFloat(item.Change) : 0;
-        if (!isNaN(buyRate) && !isNaN(sellRate)) {
-          rates.GAU = {
-            buyRate: parseFloat(buyRate.toFixed(2)),
-            sellRate: parseFloat(sellRate.toFixed(2)),
-            change: isNaN(change) ? 0 : change,
-          };
-          console.log(`✓ Trunçgil HAMITALTIN (Gram Gold): Al=${rates.GAU.buyRate}, Sat=${rates.GAU.sellRate}`);
         }
       }
 
@@ -356,7 +337,7 @@ export async function handleMarketData(
     USD: { buyRate: 43.4918, sellRate: 43.5038, change: 0.03 },
     EUR: { buyRate: 51.4746, sellRate: 51.4821, change: 0.04 },
     GBP: { buyRate: 59.7531, sellRate: 60.0526, change: 0.26 },
-    GAU: { buyRate: 2830.50, sellRate: 2890.50, change: 1.5 },
+    BTC: { buyRate: 3500000.00, sellRate: 3517500.00, change: 2.5 },
   };
 
   let ratesToUse = fallbackRates;
@@ -378,19 +359,17 @@ export async function handleMarketData(
     }
   }
 
-  // Fetch gold price from Metal Price API (primary source for XAU/TRY)
-  const metalPriceGold = await fetchGoldFromMetalPriceAPI();
-  if (metalPriceGold) {
-    ratesToUse.GAU = metalPriceGold;
-    console.log("✓ Using Metal Price API for gold prices");
+  // Fetch Bitcoin price from CoinGecko API (primary source for BTC/TRY)
+  const bitcoinPrice = await fetchBitcoinFromCoinGecko();
+  if (bitcoinPrice) {
+    ratesToUse.BTC = bitcoinPrice;
+    console.log("✓ Using CoinGecko API for Bitcoin prices");
   } else {
-    // Try exchangerate-api as fallback if Trunçgil doesn't have gold
-    if (!ratesToUse.GAU || (ratesToUse.GAU && ratesToUse.GAU.buyRate < 10000)) {
-      const exchangeRateGold = await fetchGoldFromExchangeRate();
-      if (exchangeRateGold) {
-        ratesToUse.GAU = exchangeRateGold;
-        console.log("✓ Using ExchangeRate API for gold prices");
-      }
+    // Try fallback CoinGecko call
+    const bitcoinFallback = await fetchBitcoinFallback();
+    if (bitcoinFallback) {
+      ratesToUse.BTC = bitcoinFallback;
+      console.log("✓ Using CoinGecko Fallback for Bitcoin prices");
     }
   }
 
@@ -399,51 +378,34 @@ export async function handleMarketData(
     { key: "USD", symbol: "USD", name: "Amerikan Doları", decimals: 4 },
     { key: "EUR", symbol: "EUR", name: "Euro", decimals: 4 },
     { key: "GBP", symbol: "GBP", name: "İngiliz Poundu", decimals: 4 },
-    { key: "GAU", symbol: "XAU", name: "Altın (ONS)", decimals: 2 }, // XAU/TRY troy ounce price
+    { key: "BTC", symbol: "BTC", name: "Bitcoin", decimals: 2 }, // BTC/TRY Bitcoin price
   ];
 
   const marketData: MarketDataResponse[] = [];
   let dataIndex = 1;
 
-  // Get USD/TRY rate for Gram Gold calculation
-  const usdRate = ratesToUse.USD?.buyRate || 43.5;
-
-  // Add USD, EUR, GBP, and GAU (Gram Altın) in order
+  // Add USD, EUR, GBP, and BTC in order
   for (const item of items) {
-    // Try primary key first, then fallback to GA (genelpara format)
-    let rates = ratesToUse[item.key];
-    if (!rates && item.key === "GAU") {
-      rates = ratesToUse["GA"]; // Try genelpara key if Trunçgil key not found
-    }
+    const rates = ratesToUse[item.key];
 
     if (rates) {
       const change = rates.change ?? 0;
 
-      // For Gram Gold (GAU), format with Turkish notation
+      // For Bitcoin (BTC), format with Turkish notation
       let buyRate = parseFloat(rates.buyRate.toFixed(item.decimals));
       let sellRate = parseFloat(rates.sellRate.toFixed(item.decimals));
       let buyRateFormatted: string | undefined;
       let sellRateFormatted: string | undefined;
 
-      if (item.key === "GAU") {
-        // Troy Ounce Gold: XAU/TRY (troy ounce price in Turkish Lira)
-        // Display the raw XAU/TRY price without gram conversion
-        let buyRateTL = rates.buyRate;
-        let sellRateTL = rates.sellRate;
+      if (item.key === "BTC") {
+        // Bitcoin: BTC/TRY (Bitcoin price in Turkish Lira)
+        const buyRateTL = rates.buyRate;
+        const sellRateTL = rates.sellRate;
 
-        // If value is small (fallback USD), multiply by USD rate to get TRY
-        if (buyRateTL < 10000) {
-          // Fallback USD values - multiply by USD/TRY rate
-          buyRateTL = buyRateTL * usdRate;
-          sellRateTL = sellRateTL * usdRate;
-          console.log(`✓ Troy Ounce Gold (Fallback USD in TRY): XAU/TRY Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
-        } else {
-          // API values are in TRY (troy ounce price)
-          console.log(`✓ Troy Ounce Gold (API): XAU/TRY Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
-        }
+        console.log(`✓ Bitcoin (BTC/TRY): Al=${buyRateTL}, Sat=${sellRateTL} TRY`);
 
         // Turkish formatting: thousands with dots, decimals with comma
-        // Example: 2.589,50
+        // Example: 3.500.000,00
         buyRateFormatted = buyRateTL.toLocaleString('tr-TR', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
@@ -453,7 +415,7 @@ export async function handleMarketData(
           maximumFractionDigits: 2,
         });
 
-        // Update buyRate and sellRate to troy ounce prices for display
+        // Update buyRate and sellRate for display
         buyRate = parseFloat(buyRateTL.toFixed(2));
         sellRate = parseFloat(sellRateTL.toFixed(2));
       }
