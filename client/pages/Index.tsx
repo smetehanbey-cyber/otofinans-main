@@ -157,8 +157,8 @@ export default function Index() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:info@otofin.com" className="hover:text-white transition-colors">
-                    Email: info@otofin.com
+                  <a href="mailto:bilgi@otofinansglobal.com" className="hover:text-white transition-colors">
+                    Email: bilgi@otofinansglobal.com
                   </a>
                 </li>
                 <li>
@@ -177,7 +177,7 @@ export default function Index() {
 
           <div className="border-t border-gray-700 pt-8">
             <p className="text-center text-sm">
-              &copy; 2024 Oto Finans Global. Tüm hakları saklıdır.
+              &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
             </p>
           </div>
         </div>

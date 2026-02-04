@@ -83,18 +83,6 @@ export default function Header() {
 
               {/* Search and Buttons */}
               <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-                {/* Search Box */}
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    placeholder="Aracını Bul..."
-                    className="px-3 py-1.5 border border-gray-300 rounded text-xs outline-none focus:border-primary"
-                  />
-                  <button className="p-1.5 hover:bg-gray-100 rounded border border-gray-300">
-                    <Search className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-
                 <button className="px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-50">
                   Aracını Hızlı Sat
                 </button>
