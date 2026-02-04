@@ -312,7 +312,7 @@ export async function handleMarketData(
   if (Object.keys(truncgilRates).length > 0) {
     // Merge Trunçgil data with fallback, preferring Trunçgil
     ratesToUse = { ...fallbackRates, ...truncgilRates };
-    console.log("✓ Using Trunçgil API data for all rates");
+    console.log("✓ Using Trunçgil API data for currencies");
   } else {
     // Fallback to genelpara API if Trunçgil fails
     const genelParaRates = await fetchFromGenelPara();
@@ -322,6 +322,16 @@ export async function handleMarketData(
     } else {
       console.log("⚠ APIs unavailable, using fallback data");
     }
+  }
+
+  // Try ExchangeRate API for gold (XAU/TRY) - most reliable for precious metals
+  const goldRate = await fetchGoldFromExchangeRate();
+  if (goldRate) {
+    // Override gold rates with exchangerate.host data
+    ratesToUse.GAU = goldRate;
+    console.log("✓ Using ExchangeRate API for Gold (XAU/TRY)");
+  } else {
+    console.log("⚠ ExchangeRate API unavailable, using fallback gold rates");
   }
 
   // Map API data to display items
