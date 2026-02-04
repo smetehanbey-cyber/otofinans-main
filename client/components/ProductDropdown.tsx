@@ -91,11 +91,11 @@ export default function ProductDropdown() {
 
                 {/* Product Content */}
                 <div className="text-white" style={{ backgroundColor: "#1e2f79", padding: "8px" }}>
-                  <h3 className="text-xs font-bold mb-0.5">
+                  <h3 className="text-base font-bold mb-0">
                     {product.title}
                   </h3>
                   {product.subtitle && (
-                    <p className="text-xs text-blue-100 mb-1">
+                    <p className="text-base text-blue-100 mb-0.5">
                       {product.subtitle}
                     </p>
                   )}
