@@ -40,7 +40,13 @@ export default function ServicesSection() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
-                      {service.title}
+                      {index === 0 && service.titleBold ? (
+                        <>
+                          <b>{service.titleBold}</b> Ödeme
+                        </>
+                      ) : (
+                        service.title
+                      )}
                     </h3>
                     <p className="text-sm sm:text-base text-gray-600">
                       {service.description}
