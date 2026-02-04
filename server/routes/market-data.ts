@@ -18,6 +18,49 @@ interface RateData {
   change?: number;
 }
 
+// Fetch gold (XAU/TRY) rate from exchangerate.host API
+// This provides real-time gold to Turkish Lira conversion
+async function fetchGoldFromExchangeRate(): Promise<RateData | null> {
+  try {
+    const response = await fetch(
+      "https://api.exchangerate.host/convert?from=XAU&to=TRY",
+      { signal: AbortSignal.timeout(5000) }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // API response structure: { success: true, query: {...}, result: number, ... }
+      if (data.success && data.result) {
+        const goldPrice = parseFloat(data.result);
+
+        if (!isNaN(goldPrice) && goldPrice > 0) {
+          // Use the rate as both buy and sell (mid-market rate)
+          // Add a small spread for realistic trading (0.5%)
+          const spreadPercentage = 0.005;
+          const buyRate = goldPrice;
+          const sellRate = goldPrice * (1 + spreadPercentage);
+
+          const rateData: RateData = {
+            buyRate: parseFloat(buyRate.toFixed(2)),
+            sellRate: parseFloat(sellRate.toFixed(2)),
+            change: 0,
+          };
+
+          console.log(`✓ ExchangeRate Gold: XAU/TRY=${rateData.buyRate}, Spread=${rateData.sellRate}`);
+          return rateData;
+        }
+      }
+    } else {
+      console.log(`ExchangeRate API returned status ${response.status}`);
+    }
+  } catch (error) {
+    console.log("ExchangeRate API fetch failed:", error instanceof Error ? error.message : error);
+  }
+
+  return null;
+}
+
 // Fetch gold and currency data from Trunçgil Finans API
 // This is a reliable Turkish finance API for gold prices (GAU/TRY)
 async function fetchFromTruncgil(): Promise<Record<string, RateData>> {
