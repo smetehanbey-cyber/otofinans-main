@@ -78,7 +78,11 @@ export default function ProductDropdown() {
               <div
                 key={product.id}
                 className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-                style={{ border: "2px solid", borderImage: "linear-gradient(135deg, #d3d3d3, #a9a9a9) 1" }}
+                style={{
+                  border: "2px solid",
+                  background: "linear-gradient(white, white) padding-box, linear-gradient(135deg, #e8e8e8, #b0b0b0) border-box",
+                  borderRadius: "0.5rem"
+                }}
               >
                 {/* Product Image */}
                 <div className="relative w-full h-24 bg-gray-100 overflow-hidden">
