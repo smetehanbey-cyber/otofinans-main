@@ -190,8 +190,18 @@ export default function PiyasaVerileri() {
         <div className="flex justify-center items-center gap-3 sm:gap-4">
           <button
             onClick={handlePrev}
-            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center hover:bg-white transition-colors"
-            style={{ "--tw-text-opacity": "1", color: "#1f3a93" }}
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center transition-colors"
+            style={{
+              color: "white",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "white";
+              e.currentTarget.style.color = "#1f3a93";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "white";
+            }}
           >
             ←
           </button>
@@ -211,8 +221,18 @@ export default function PiyasaVerileri() {
 
           <button
             onClick={handleNext}
-            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center hover:bg-white transition-colors"
-            style={{ "--tw-text-opacity": "1", color: "#1f3a93" }}
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white text-white flex items-center justify-center transition-colors"
+            style={{
+              color: "white",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "white";
+              e.currentTarget.style.color = "#1f3a93";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "white";
+            }}
           >
             →
           </button>
