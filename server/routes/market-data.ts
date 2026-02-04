@@ -60,11 +60,14 @@ export async function handleMarketData(
     let ratesData = null;
     let metalData = null;
 
-    // Try to fetch currency rates
+    // Try to fetch currency rates from exchangerate.host
     try {
-      const ratesRes = await fetch("https://api.exchangerate-api.com/v4/latest/TRY", {
-        signal: AbortSignal.timeout(5000),
-      });
+      const ratesRes = await fetch(
+        "https://api.exchangerate.host/latest?base=TRY&symbols=USD,EUR",
+        {
+          signal: AbortSignal.timeout(5000),
+        }
+      );
       if (ratesRes.ok) {
         ratesData = await ratesRes.json();
       }
