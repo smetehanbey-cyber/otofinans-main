@@ -103,7 +103,7 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Brand with Logo */}
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-start text-left">
               <div className="mb-4">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
