@@ -36,6 +36,9 @@ export default function Header() {
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
                   Bize Ulaş
                 </Link>
+                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                  Ürün ve Hizmet
+                </Link>
               </nav>
 
               {/* Right Section */}
