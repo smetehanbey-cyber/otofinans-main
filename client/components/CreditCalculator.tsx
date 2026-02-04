@@ -85,18 +85,6 @@ export default function CreditCalculator() {
               </div>
             </div>
 
-            {/* Set Interest Rate */}
-            <div className="flex items-end">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={customRate}
-                  onChange={(e) => setCustomRate(e.target.checked)}
-                  className="w-5 h-5 rounded border-gray-300"
-                />
-                <span className="text-sm font-medium text-gray-700">Oran</span>
-              </label>
-            </div>
           </div>
 
           {/* Custom Rate Input */}
