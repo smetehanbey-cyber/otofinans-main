@@ -87,20 +87,6 @@ export default function CreditCalculator() {
 
           </div>
 
-          {/* Custom Rate Input */}
-          {customRate && (
-            <div className="mb-8 pb-8 border-b border-gray-200">
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Kâr Oranı (%)</label>
-              <input
-                type="number"
-                step="0.01"
-                value={rate}
-                onChange={(e) => setRate(parseFloat(e.target.value) || 0)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none max-w-xs"
-              />
-            </div>
-          )}
-
           {/* Results Section */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 pb-8 border-b border-gray-200">
             <div>
