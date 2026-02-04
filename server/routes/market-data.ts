@@ -25,8 +25,22 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
       const data = await response.json();
 
       // The API returns data with this structure:
-      // { success: true, data: { EUR: { alis: "...", satis: "..." }, GBP: { alis: "...", satis: "..." }, ... } }
+      // { success: true, data: { USD: { alis: "...", satis: "..." }, EUR: { alis: "...", satis: "..." }, ... } }
       if (data.success && data.data) {
+        // USD
+        if (data.data.USD) {
+          const item = data.data.USD;
+          const buyRate = parseFloat(item.alis);
+          const sellRate = parseFloat(item.satis);
+          if (!isNaN(buyRate) && !isNaN(sellRate)) {
+            rates.USD = {
+              buyRate: parseFloat(buyRate.toFixed(4)),
+              sellRate: parseFloat(sellRate.toFixed(4)),
+            };
+            console.log(`✓ USD: Al=${rates.USD.buyRate}, Sat=${rates.USD.sellRate}`);
+          }
+        }
+
         // EUR
         if (data.data.EUR) {
           const item = data.data.EUR;
@@ -55,15 +69,15 @@ async function fetchFromGenelPara(): Promise<Record<string, { buyRate: number; s
           }
         }
 
-        // GRAM ALTIN (Gram Gold)
+        // GRAM ALTIN (Gram Gold in TL)
         if (data.data["GRAM ALTIN"]) {
           const item = data.data["GRAM ALTIN"];
           const buyRate = parseFloat(item.alis);
           const sellRate = parseFloat(item.satis);
           if (!isNaN(buyRate) && !isNaN(sellRate)) {
             rates["GRAM ALTIN"] = {
-              buyRate: parseFloat(buyRate.toFixed(4)),
-              sellRate: parseFloat(sellRate.toFixed(4)),
+              buyRate: parseFloat(buyRate.toFixed(2)),
+              sellRate: parseFloat(sellRate.toFixed(2)),
             };
             console.log(`✓ GRAM ALTIN: Al=${rates["GRAM ALTIN"].buyRate}, Sat=${rates["GRAM ALTIN"].sellRate}`);
           }
