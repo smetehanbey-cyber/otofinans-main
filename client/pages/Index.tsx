@@ -127,22 +127,32 @@ export default function Index() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[420px]">
               {/* Left Content */}
-              <div className="text-white flex flex-col justify-center py-8 lg:py-0">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 leading-tight animate-fade-in-up">
-                  Aracını bizimle hızlı sat<br />
-                  anında <b>Oto Finanslı</b> ol
-                </h2>
+              <div className="text-white flex flex-col justify-between py-8 lg:py-0 h-full lg:h-auto">
+                <div>
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 leading-tight animate-fade-in-up">
+                    Aracını bizimle hızlı sat
+                  </h2>
+                </div>
+
                 <p className="text-base sm:text-lg mb-6 text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
-                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifli satış anında ve en hızlı kredi sistemleri ile biz sağlıyoruz.
-                  Tüm Türkiye'deki allıklarımız sizi bekliyor.
+                  Oto Finans ile özgürce günlük rutinlerinden<br />
+                  geri kalmadan aracına en iyi teklifi biz bulalım<br />
+                  ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
                 </p>
-                <div className="animate-fade-in-up-delay-2">
-                  <a
-                    href="tel:+905324098440"
-                    className="inline-block bg-blue-400 hover:bg-blue-500 text-white font-bold px-7 py-3 text-base rounded-lg transition-colors duration-200"
-                  >
-                    Oto Finanslı ol
-                  </a>
+
+                <div className="space-y-4">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
+                    anında <b>Oto Finanslı</b> ol
+                  </h2>
+                  <div className="animate-fade-in-up-delay-2">
+                    <a
+                      href="tel:+905324098440"
+                      className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 border-2 border-blue-400 text-blue-400 font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200"
+                      title="Oto Finanslı Ol"
+                    >
+                      ➜
+                    </a>
+                  </div>
                 </div>
               </div>
 
