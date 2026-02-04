@@ -154,7 +154,7 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="absolute inset-0 lg:relative flex items-center justify-center lg:justify-end h-[420px] lg:h-auto lg:static pt-2">
+              <div className="absolute inset-0 lg:relative flex items-center justify-center lg:justify-start h-[420px] lg:h-auto lg:static pt-3" style={{ paddingLeft: '10px' }}>
                 <div className="w-full animate-slide-in-right lg:z-10 flex items-center justify-center">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
