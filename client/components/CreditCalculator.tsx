@@ -92,22 +92,22 @@ export default function CreditCalculator() {
 
         {/* Calculator Section */}
         <div className="bg-gray-50 rounded-2xl p-8 sm:p-12 border border-gray-200">
-          {/* Product Type Header */}
-          <div className="mb-6">
-            <label className="text-sm font-medium text-gray-700 mb-2 block">Ürün</label>
-            <select
-              value={productType}
-              onChange={(e) => setProductType(e.target.value)}
-              className="w-full sm:w-60 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-            >
-              <option>Taşıt Kredisi</option>
-              <option>Ticari Araç Kredisi</option>
-              <option>Motorsiklet Kredisi</option>
-            </select>
-          </div>
-
           {/* Input Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+            {/* Product Type */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">Ürün</label>
+              <select
+                value={productType}
+                onChange={(e) => setProductType(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              >
+                <option>Taşıt Kredisi</option>
+                <option>Ticari Araç Kredisi</option>
+                <option>Motorsiklet Kredisi</option>
+              </select>
+            </div>
+
             {/* Amount */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">Tutar</label>
