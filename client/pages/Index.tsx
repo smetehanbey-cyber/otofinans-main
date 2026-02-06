@@ -26,7 +26,7 @@ export default function Index() {
                   <div className="font-black text-4xl sm:text-5xl lg:text-6xl">Geç Kalma</div>
                 </h1>
                 <p className="text-base sm:text-lg text-blue-100 mb-3 sm:mb-4">
-                  Ön onaylı +800.000TL krediniz hazır! Ticari ve Binek 20 Yaş'a kadar tüm taşıtlarda geçerli 48 Ay Vade şeneği OtoFinans'ta.
+                  Ön onaylı +800.000TL krediniz hazır! Ticari ve Binek 20 Yaş'a kadar tüm taşıtlarda geçerli <u>48 Ay Vade</u> seçeneği OtoFinans'ta.
                 </p>
                 <ul className="space-y-2 sm:space-y-2.5 mb-4">
                   <li className="flex items-center gap-3 text-sm sm:text-base">
