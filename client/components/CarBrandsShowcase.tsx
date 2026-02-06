@@ -102,7 +102,6 @@ export default function CarBrandsShowcase() {
                   style={{
                     width: '150px',
                     height: '150px',
-                    transform: 'translateX(50px)',
                   }}
                 />
               </div>
