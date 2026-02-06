@@ -24,6 +24,13 @@ const carImages: Record<string, string> = {
   Peugeot: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ff124e0392ed34e948e3b39b972bed098?format=webp&width=800&height=1200",
   Citroen: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F32d80f27a02c4c17b303f79cb5dabf57?format=webp&width=800&height=1200",
   Fiat: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fd94ef9a5927c481d88c3d14af8d3a0c7?format=webp&width=800&height=1200",
+  Opel: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F1434b2dd934f4dea8f8fcbcad908ad37?format=webp&width=800&height=1200",
+  Suzuki: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F66bb4986470a4bc7b0d2cc4d7f4ba9fe?format=webp&width=800&height=1200",
+  Dacia: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fdc1cbc7d414843dcb89fce47cb63bcfa?format=webp&width=800&height=1200",
+  Skoda: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7ca8483d3b0141ceb6b2f3c598d971c5?format=webp&width=800&height=1200",
+  SEAT: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F4bc2f98d59d244169399c24b9cd8019b?format=webp&width=800&height=1200",
+  Porsche: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F5eebc55f997e40c386b661353a3a91c1?format=webp&width=800&height=1200",
+  Volvo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F797bc1f00e354ef1b91e0586b3b62bca?format=webp&width=800&height=1200",
   // Default image for all other brands
   default: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200"
 };
