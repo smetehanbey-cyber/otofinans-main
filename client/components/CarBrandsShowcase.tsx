@@ -9,7 +9,7 @@ const carBrands = [
 ];
 
 // Car image - same for all (can be customized per brand later)
-const carImage = "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200";
+const carImage = "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fafc37c5734bd4b7aabfa97cf0db9334f?format=webp&width=800&height=1200";
 
 export default function CarBrandsShowcase() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
