@@ -153,7 +153,7 @@ export default function Header() {
 
       {/* Tagline Bar - Top */}
       <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-1.5 text-center">
-        <p className="font-semibold px-4" style={{ fontSize: 'calc(0.875rem - 0.5px)', letterSpacing: '0.2px' }}>
+        <p className="font-semibold px-4" style={{ fontSize: 'calc(0.875rem - 1.5px)', letterSpacing: '0.7px' }}>
           TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
         </p>
       </div>
