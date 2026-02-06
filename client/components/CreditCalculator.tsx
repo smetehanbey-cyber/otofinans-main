@@ -92,7 +92,7 @@ export default function CreditCalculator() {
         {/* Calculator Section */}
         <div className="bg-gray-50 rounded-2xl p-8 sm:p-12 border border-gray-200">
           {/* Input Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
             {/* Product Type */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">Ürün</label>
@@ -132,6 +132,22 @@ export default function CreditCalculator() {
                 />
                 <span className="ml-2 text-sm font-medium text-gray-700 whitespace-nowrap">Ay</span>
               </div>
+            </div>
+
+            {/* Rate */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">Oran</label>
+              <select
+                value={rate}
+                onChange={(e) => setRate(parseFloat(e.target.value))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              >
+                {rateOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    %{option.value.toFixed(2)} {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
           </div>
