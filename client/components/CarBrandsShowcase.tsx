@@ -84,7 +84,7 @@ export default function CarBrandsShowcase() {
               onMouseLeave={() => setHoveredIndex(null)}
               className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
             >
-              {/* Oval Blue Frame with Car Image */}
+              {/* Oval Blue Frame with Car Image or Logo */}
               <div
                 className={`
                   flex items-center justify-center
@@ -95,15 +95,25 @@ export default function CarBrandsShowcase() {
                   ${hoveredIndex === index ? 'car-item-hover shadow-lg' : ''}
                 `}
               >
-                <img
-                  src={getCarImage(brand)}
-                  alt={brand}
-                  className="w-full h-full object-cover object-left pointer-events-none"
-                  style={{
-                    clipPath: 'inset(0 50% 0 0)',
-                    transform: 'scaleX(2)',
-                  }}
-                />
+                {brand === 'Toyota' ? (
+                  <div className="flex items-center justify-center w-full h-full">
+                    <svg viewBox="0 0 100 100" className="w-8 h-8 text-blue-600" fill="currentColor">
+                      <ellipse cx="50" cy="35" rx="20" ry="18" />
+                      <ellipse cx="32" cy="55" rx="16" ry="20" />
+                      <ellipse cx="68" cy="55" rx="16" ry="20" />
+                    </svg>
+                  </div>
+                ) : (
+                  <img
+                    src={getCarImage(brand)}
+                    alt={brand}
+                    className="w-full h-full object-cover object-left pointer-events-none"
+                    style={{
+                      clipPath: 'inset(0 50% 0 0)',
+                      transform: 'scaleX(2)',
+                    }}
+                  />
+                )}
               </div>
 
               {/* Brand Name */}
