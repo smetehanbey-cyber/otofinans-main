@@ -36,15 +36,20 @@ export default function CarBrandsShowcase() {
     const mouseX = e.clientX - rect.left;
     const containerWidth = rect.width;
 
-    // Each car takes ~90px (50px width + 40px gap and padding)
-    const itemWidth = 90;
+    // Calculate total width of all items with gaps
+    // Item: 50px width, Gap: 16px (gap-4)
+    const itemWidth = 50;
+    const gapWidth = 16;
 
-    // Calculate maximum scroll: when last car (Cadillac) reaches the right edge
-    // The last car should end at the container's right edge
-    const maxScroll = (carBrands.length * itemWidth) - containerWidth;
+    // Total width: all items + all gaps between items
+    // For 35 items: 35 * 50 + 34 * 16 = 1750 + 544 = 2294px
+    const totalItemsWidth = (carBrands.length * itemWidth) + ((carBrands.length - 1) * gapWidth);
+
+    // Maximum scroll: when Cadillac's right edge aligns with container's right edge
+    // Subtract container width to get the scroll distance
+    const maxScroll = Math.max(0, totalItemsWidth - containerWidth);
 
     // Map mouse position to scroll position proportionally
-    // From 0 (left) to maxScroll (right where Cadillac stops)
     const mouseRatio = mouseX / containerWidth;
     const newScrollPos = Math.round(mouseRatio * maxScroll);
 
