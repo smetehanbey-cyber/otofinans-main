@@ -81,12 +81,12 @@ export default function CreditCalculator() {
     <section className="py-4 sm:py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-left mb-3 sm:mb-4">
+        <div className="text-left mb-2 sm:mb-3">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-medium mb-0" style={{ color: '#0f367e' }}>
             Ön Onaylı Kredin Hazır.
           </h2>
           <p className="text-lg sm:text-xl text-gray-600">
-            Taşıt Kredini Şimdi Kullanabilirsiniz!
+            Taşıt Kredini Şimdi Kullanabilirsin!
           </p>
         </div>
 
@@ -158,23 +158,21 @@ export default function CreditCalculator() {
 
           {/* Results Section */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-8 pb-8 border-b border-gray-200">
+            <div></div>
             <div>
-              <p className="text-xs text-gray-600 mb-2">Kredi Hesaplama</p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-600 mb-2">Taksit Tutarı</p>
+              <p className="text-xs text-gray-600 mb-2 text-left">Taksit Tutarı</p>
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 {formattedMonthly}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-600 mb-2">Ödenecek Toplam Tutar</p>
+              <p className="text-xs text-gray-600 mb-2 text-left">Ödenecek Toplam Tutar</p>
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 {formattedTotal}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-600 mb-2">Oran</p>
+              <p className="text-xs text-gray-600 mb-2 text-left">Oran</p>
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 %{rate.toFixed(2)}
               </p>
