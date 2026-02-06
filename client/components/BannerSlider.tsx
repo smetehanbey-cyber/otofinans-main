@@ -13,8 +13,8 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    title: "Hayalindeki Aracı",
-    subtitle: "30 Dakika'da Kapınıza",
+    title: "Hayalindeki Araç",
+    subtitle: "30 Dakika'da Kapında",
     color: "from-blue-700 to-blue-900",
     gradient: "bg-gradient-to-r from-blue-600 via-blue-700 to-blue-900"
   },
