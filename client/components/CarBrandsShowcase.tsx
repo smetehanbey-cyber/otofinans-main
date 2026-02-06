@@ -97,11 +97,6 @@ export default function CarBrandsShowcase() {
                   }}
                 />
               </div>
-
-              {/* Brand Name */}
-              <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
-                {brand} 2020
-              </p>
             </div>
           ))}
         </div>
