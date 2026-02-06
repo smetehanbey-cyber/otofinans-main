@@ -137,11 +137,9 @@ export default function Index() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[420px]">
               {/* Left Content */}
               <div className="text-white flex flex-col justify-start lg:justify-center py-8 lg:py-12 space-y-6 relative z-10">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up flex items-center">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
                   Aracını bizimle hızlı sat paran cebine gelsin
-                  <svg className="inline ml-2 w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ strokeWidth: 2.5 }}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                  </svg>
+                  <span className="inline-flex items-center ml-1 w-2 h-2 sm:w-2 sm:h-2 bg-white rounded-full" style={{ transform: 'translateY(-0.5em)', verticalAlign: 'middle' }}></span>
                 </h2>
 
                 <p className="text-sm sm:text-base lg:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
