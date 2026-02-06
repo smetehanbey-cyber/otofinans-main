@@ -157,12 +157,13 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="hidden lg:flex items-center justify-end h-[420px] overflow-hidden relative">
+              <div className="hidden lg:flex items-end justify-end h-[420px] overflow-hidden relative">
                 <div className="animate-slide-in-right lg:z-10 flex items-center justify-center">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
                     alt="Oto Finans Müşteri"
                     className="h-[400px] w-auto object-contain"
+                    style={{ marginBottom: '-4px' }}
                   />
                 </div>
               </div>
