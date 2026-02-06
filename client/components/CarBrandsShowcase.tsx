@@ -98,10 +98,10 @@ export default function CarBrandsShowcase() {
                 <img
                   src={getCarImage(brand)}
                   alt={brand}
-                  className="w-full h-full object-cover object-left pointer-events-none"
+                  className="pointer-events-none object-contain"
                   style={{
-                    clipPath: 'inset(0 50% 0 0)',
-                    transform: 'scaleX(2)',
+                    width: '10px',
+                    height: '10px',
                   }}
                 />
               </div>
