@@ -97,10 +97,14 @@ export default function CarBrandsShowcase() {
               >
                 {brand === 'Toyota' ? (
                   <div className="flex items-center justify-center w-full h-full">
-                    <svg viewBox="0 0 100 100" className="w-8 h-8 text-blue-600" fill="currentColor">
-                      <ellipse cx="50" cy="35" rx="20" ry="18" />
-                      <ellipse cx="32" cy="55" rx="16" ry="20" />
-                      <ellipse cx="68" cy="55" rx="16" ry="20" />
+                    <svg viewBox="0 0 100 100" className="w-7 h-7 text-red-600" fill="currentColor">
+                      {/* Toyota Official Logo - Three overlapping ovals */}
+                      {/* Vertical oval on left */}
+                      <ellipse cx="35" cy="50" rx="12" ry="28" fill="none" stroke="currentColor" strokeWidth="4" />
+                      {/* Vertical oval on right */}
+                      <ellipse cx="65" cy="50" rx="12" ry="28" fill="none" stroke="currentColor" strokeWidth="4" />
+                      {/* Horizontal oval in middle */}
+                      <ellipse cx="50" cy="50" rx="28" ry="12" fill="none" stroke="currentColor" strokeWidth="4" />
                     </svg>
                   </div>
                 ) : (
