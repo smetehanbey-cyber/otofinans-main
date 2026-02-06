@@ -31,6 +31,13 @@ const carImages: Record<string, string> = {
   SEAT: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F4bc2f98d59d244169399c24b9cd8019b?format=webp&width=800&height=1200",
   Porsche: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F5eebc55f997e40c386b661353a3a91c1?format=webp&width=800&height=1200",
   Volvo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F797bc1f00e354ef1b91e0586b3b62bca?format=webp&width=800&height=1200",
+  Tesla: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fc400fbfe36b24705a7fd447241f47c8c?format=webp&width=800&height=1200",
+  MG: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F482958fbc1e047279e12bf6655844d51?format=webp&width=800&height=1200",
+  BYD: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F630ea99f64154da088f74550c584d1fa?format=webp&width=800&height=1200",
+  Jeep: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F99f35a8f74f443d39f3a3afec121e877?format=webp&width=800&height=1200",
+  Nissan: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F4a67f4b31f61434295a58a548402ce5a?format=webp&width=800&height=1200",
+  Mitsubishi: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F019369dedd9c4793ac443b0c24a78c73?format=webp&width=800&height=1200",
+  Isuzu: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F846be8b724cd4ca7b8b512f58a4f1d98?format=webp&width=800&height=1200",
   // Default image for all other brands
   default: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200"
 };
