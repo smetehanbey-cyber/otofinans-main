@@ -96,7 +96,7 @@ export default function CarBrandsShowcase() {
                 `}
               >
                 <img
-                  src={carImage}
+                  src={getCarImage(brand)}
                   alt={brand}
                   className="w-full h-full object-cover object-left pointer-events-none"
                   style={{
@@ -108,7 +108,7 @@ export default function CarBrandsShowcase() {
 
               {/* Brand Name */}
               <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
-                {brand} 2020
+                {brand}
               </p>
             </div>
           ))}
