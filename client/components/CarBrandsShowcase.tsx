@@ -13,6 +13,9 @@ const carImages: Record<string, string> = {
   Toyota: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7858a8b33a134dc9a7e7d563b1a4375c?format=webp&width=800&height=1200",
   Honda: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fd923228302ae441b96dac9b350dada69?format=webp&width=800&height=1200",
   Ford: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F87367391e7cb461d8ec82b8357d7fb29?format=webp&width=800&height=1200",
+  BMW: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Faf3458382a79453b9bbc3345d2afb33a?format=webp&width=800&height=1200",
+  "Mercedes-Benz": "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40a071d38e254e1687678a989d9b85a9?format=webp&width=800&height=1200",
+  Audi: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F3f5096328b134666b1529dd9d4e86316?format=webp&width=800&height=1200",
   // Default image for all other brands
   default: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200"
 };
