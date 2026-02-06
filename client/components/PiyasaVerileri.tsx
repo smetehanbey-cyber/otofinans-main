@@ -44,15 +44,17 @@ export default function PiyasaVerileri() {
         const response = await fetch("/api/market-data", {
           signal: controller.signal,
           headers: {
-            'Accept': 'application/json',
+            Accept: "application/json",
           },
-          credentials: 'same-origin',
+          credentials: "same-origin",
         });
 
         if (timeoutId) clearTimeout(timeoutId);
 
         if (!response.ok) {
-          console.warn(`Market data API error: ${response.status} ${response.statusText}`);
+          console.warn(
+            `Market data API error: ${response.status} ${response.statusText}`,
+          );
           return;
         }
 
@@ -65,7 +67,7 @@ export default function PiyasaVerileri() {
         if (timeoutId) clearTimeout(timeoutId);
 
         if (error instanceof Error) {
-          if (error.name === 'AbortError') {
+          if (error.name === "AbortError") {
             console.warn("Market data fetch timeout after 10 seconds");
           } else {
             console.warn("Market data fetch error:", error.message);
@@ -90,13 +92,13 @@ export default function PiyasaVerileri() {
 
   const itemsPerPage = 3;
   const totalItems = marketData.length;
-  const maxIndex = totalItems > itemsPerPage ? Math.ceil(totalItems / itemsPerPage) - 1 : 0;
+  const maxIndex =
+    totalItems > itemsPerPage ? Math.ceil(totalItems / itemsPerPage) - 1 : 0;
 
   const currentItems = useMemo(() => {
     const start = currentIndex * itemsPerPage;
     return marketData.slice(start, start + itemsPerPage);
   }, [currentIndex, marketData]);
-
 
   return (
     <section className="py-6 sm:py-8" style={{ backgroundColor: "#1f3a93" }}>
@@ -119,7 +121,9 @@ export default function PiyasaVerileri() {
               {/* Currency Symbol */}
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{item.symbol}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {item.symbol}
+                  </p>
                   <p className="text-xs text-gray-500">{item.name}</p>
                 </div>
                 <div
@@ -129,9 +133,7 @@ export default function PiyasaVerileri() {
                       : "bg-red-100 text-red-700"
                   }`}
                 >
-                  <span className="text-lg">
-                    {item.isPositive ? "▲" : "▼"}
-                  </span>
+                  <span className="text-lg">{item.isPositive ? "▲" : "▼"}</span>
                   <span className="text-xs font-semibold">
                     {item.change.toFixed(3)}%
                   </span>
