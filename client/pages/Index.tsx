@@ -75,7 +75,7 @@ export default function Index() {
 
         {/* Support Tagline */}
         <div className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 py-2.5 text-center">
-          <p className="font-semibold text-white px-4" style={{ fontSize: 'calc(0.875rem - 1px)' }}>
+          <p className="font-semibold text-white px-4" style={{ fontSize: 'calc(0.875rem - 0.5px)' }}>
             Destek OtoFinans'ta ⇋ Aracın 30 Dakika'da Kapında!
           </p>
         </div>
