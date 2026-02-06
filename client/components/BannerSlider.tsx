@@ -27,8 +27,8 @@ const slides: Slide[] = [
   },
   {
     id: 3,
-    title: "Oto Finans Global'la",
-    subtitle: "İlk Adımınızı Atın Bugün!",
+    title: "OtoFinans'la",
+    subtitle: "Avantajlarını Bugün Keşfet!",
     color: "from-blue-800 to-slate-900",
     gradient: "bg-gradient-to-r from-blue-700 via-blue-800 to-slate-900"
   }
