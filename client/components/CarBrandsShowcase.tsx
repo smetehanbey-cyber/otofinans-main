@@ -21,6 +21,9 @@ const carImages: Record<string, string> = {
   Kia: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F802a0a82258443cbb31f6b77c381f1aa?format=webp&width=800&height=1200",
   Mazda: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ffc7f1ce77aaa416ba4013aec7f4e1b69?format=webp&width=800&height=1200",
   Renault: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F37b957bec89c48618f530096c007e905?format=webp&width=800&height=1200",
+  Peugeot: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ff124e0392ed34e948e3b39b972bed098?format=webp&width=800&height=1200",
+  Citroen: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F32d80f27a02c4c17b303f79cb5dabf57?format=webp&width=800&height=1200",
+  Fiat: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fd94ef9a5927c481d88c3d14af8d3a0c7?format=webp&width=800&height=1200",
   // Default image for all other brands
   default: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200"
 };
