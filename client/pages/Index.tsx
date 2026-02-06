@@ -73,6 +73,13 @@ export default function Index() {
         {/* Bank Logos Carousel */}
         <BankLogosCarousel />
 
+        {/* Support Tagline */}
+        <div className="w-full bg-gray-50 border-b border-gray-200 py-2.5 text-center">
+          <p className="text-sm sm:text-base font-semibold text-blue-900 px-4">
+            Destek Oto Finans'ta ⇋ Aracın 30 Dakika'da Kapında!
+          </p>
+        </div>
+
         {/* Credit Calculator Section */}
         <CreditCalculator />
 
