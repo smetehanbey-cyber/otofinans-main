@@ -252,7 +252,7 @@ export default function Index() {
           </div>
 
           <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <p className="text-sm">
+            <p className="text-sm" style={{ letterSpacing: '1.5px' }}>
               TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
             </p>
             <p className="text-sm">
