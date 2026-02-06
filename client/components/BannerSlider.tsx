@@ -59,6 +59,22 @@ export default function BannerSlider() {
 
   return (
     <div className="relative w-full h-56 overflow-hidden rounded-xl shadow-lg">
+      <style>{`
+        @keyframes slideInText {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-slide-in-text {
+          animation: slideInText 0.6s ease-out forwards;
+        }
+      `}</style>
+
       {/* Slides */}
       {slides.map((slide, index) => (
         <div
@@ -70,24 +86,13 @@ export default function BannerSlider() {
           <div className="absolute inset-0 flex items-center justify-start px-4 sm:px-8">
             {/* Left content */}
             <div className="flex flex-col justify-center text-white z-10 max-w-xs sm:max-w-2xl">
-              <h2 className="text-xl sm:text-4xl font-bold mb-1 sm:mb-2 italic leading-tight">
+              <h2 className="text-xl sm:text-4xl font-bold mb-1 sm:mb-2 italic leading-tight animate-slide-in-text">
                 {slide.title}
               </h2>
-              <p className="text-sm sm:text-xl font-semibold">
+              <p className="text-sm sm:text-xl font-semibold animate-slide-in-text" style={{ animationDelay: '0.2s', opacity: 0 }}>
                 {slide.subtitle}
               </p>
             </div>
-
-            {/* Decorative element or phone image */}
-            {slide.rightImage ? (
-              <div className="absolute right-0 top-0 bottom-0 w-1/3 flex items-center justify-center">
-                <img src={slide.rightImage} alt={slide.title} className="h-full object-contain" />
-              </div>
-            ) : (
-              <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-10">
-                <div className="w-full h-full bg-white rounded-full ml-1/2 -mr-1/4"></div>
-              </div>
-            )}
           </div>
         </div>
       ))}
