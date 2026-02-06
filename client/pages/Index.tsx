@@ -248,7 +248,7 @@ export default function Index() {
 
           <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
             <p className="text-sm">
-              Yetkili-Bayi Oto Pilot Garage Ekspertiz
+              Yetkili Bayi
             </p>
             <p className="text-sm">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
