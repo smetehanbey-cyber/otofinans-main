@@ -82,7 +82,7 @@ export default function CreditCalculator() {
         {/* Section Header */}
         <div className="text-left mb-3 sm:mb-4">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-medium mb-0" style={{ color: '#0f367e' }}>
-            Ön Onaylı Krediniz Hazır.
+            Ön Onaylı Kredin Hazır.
           </h2>
           <p className="text-lg sm:text-xl text-gray-600">
             Taşıt Kredinizi Şimdi Kullanabilirsiniz!
