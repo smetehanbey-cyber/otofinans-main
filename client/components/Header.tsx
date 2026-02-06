@@ -63,7 +63,7 @@ export default function Header() {
               {/* Logo */}
               <Link to="/" className="flex items-center flex-shrink-0">
                 <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F8bf84ff4531a4db6bfe9a09d40088813?format=webp&width=800&height=1200"
+                  src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F4ab72f175d0542049f90dff7a3b5c790?format=webp&width=800&height=1200"
                   alt="Oto Finans Global Logo"
                   className="h-14 w-auto"
                 />
