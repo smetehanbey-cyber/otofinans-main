@@ -157,7 +157,8 @@ export default function CreditCalculator() {
           </div>
 
           {/* Results Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 pb-8 border-b border-gray-200">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-8 pb-8 border-b border-gray-200">
+            <div></div>
             <div>
               <p className="text-xs text-gray-600 mb-2">Taksit Tutarı</p>
               <p className="text-2xl sm:text-3xl font-bold text-primary">
