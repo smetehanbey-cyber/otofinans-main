@@ -30,8 +30,7 @@ const slides: Slide[] = [
     title: "Oto Finans Global'la",
     subtitle: "İlk Adımınızı Atın Bugün!",
     color: "from-blue-800 to-slate-900",
-    gradient: "bg-gradient-to-r from-blue-700 via-blue-800 to-slate-900",
-    rightImage: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F192d42a3256c40ff8b7ec93b6430ccb0?format=webp&width=800&height=1200"
+    gradient: "bg-gradient-to-r from-blue-700 via-blue-800 to-slate-900"
   }
 ];
 
