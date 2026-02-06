@@ -143,7 +143,7 @@ export default function Index() {
                 </h2>
 
                 <p className="text-sm sm:text-base lg:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
-                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifi biz bulalım ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
+                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifi biz verelim ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
                 </p>
 
                 <div className="animate-fade-in-up-delay-2 pt-4">
