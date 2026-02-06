@@ -151,7 +151,14 @@ export default function Header() {
         )}
       </header>
 
-      {/* Tagline Bar */}
+      {/* Tagline Bar - Top */}
+      <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-1.5 text-center">
+        <p className="text-sm sm:text-base font-semibold px-4">
+          TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
+        </p>
+      </div>
+
+      {/* Tagline Bar - Bottom */}
       <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-1.5 text-center">
         <p className="text-sm sm:text-base font-semibold px-4">
           Destek Oto Finans'ta ⇋ Aracın 30 Dakika'da Kapında!
