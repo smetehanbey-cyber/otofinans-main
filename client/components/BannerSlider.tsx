@@ -20,8 +20,8 @@ const slides: Slide[] = [
   },
   {
     id: 2,
-    title: "En Düşük Faiz Oranları",
-    subtitle: "%0.99'dan Başlayan\nEn Düşük Oranlar",
+    title: "%0.99'dan Başlayan",
+    subtitle: "En düşük oranlar",
     color: "from-indigo-700 to-indigo-900",
     gradient: "bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-900"
   },
