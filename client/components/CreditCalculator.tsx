@@ -193,8 +193,9 @@ export default function CreditCalculator() {
           {/* Terms and Conditions */}
           <div className="mt-8 pt-8 border-t border-gray-200">
             <ul className="text-xs text-gray-600 space-y-2">
-              <li>• Tahsil ücreti müsteşnaından proje tarafı tahsil edilecektir. Ödenecek toplam tutar finansman tahsisi kömodyitededir.</li>
-              <li>• Minimum Taşıt Kredisi 50.000 TL, Azamı Finansman için DRB'nin ücreti % 2.5, 250.000 TL üzeride Azamı Finansman için DRB'nin ücreti % 2 ve taksat yapılabilmektedir.</li>
+              <li>• Şahıs vergi levhalı müşterilerimize geçerli ayrı avantajlar için %0,99 seçerek hesaplama ekranından ödeme planını indirebilirsiniz.</li>
+              <li>• Minimum Taşıt Kredisi 50.000 TL olarka geçerlidir.</li>
+              <li>• Dosya masrafları ödeme planı dışında ek olarak sunulmaktadır.</li>
             </ul>
           </div>
         </div>
