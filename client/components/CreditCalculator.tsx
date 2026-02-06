@@ -4,7 +4,14 @@ import * as XLSX from "xlsx";
 export default function CreditCalculator() {
   const [amount, setAmount] = useState(1000);
   const [duration, setDuration] = useState(48);
-  const [rate] = useState(0.99);
+  const [rate, setRate] = useState(0.99);
+
+  // Rate options for different customer types
+  const rateOptions = [
+    { label: 'Esnaf', value: 0.99 },
+    { label: 'Şirket', value: 3.70 },
+    { label: 'Bireysel', value: 3.80 }
+  ];
 
   // Calculate monthly payment
   const monthlyPayment = useMemo(() => {
