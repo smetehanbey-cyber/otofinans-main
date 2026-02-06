@@ -8,8 +8,16 @@ const carBrands = [
   "Nissan", "Subaru", "Mitsubishi", "Isuzu", "Dodge", "Cadillac"
 ];
 
-// Car image - same for all (can be customized per brand later)
-const carImage = "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200";
+// Car images - different per brand
+const carImages: Record<string, string> = {
+  Toyota: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F4d22196496544886a6621f8078066ae3?format=webp&width=800&height=1200",
+  // Default image for all other brands
+  default: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200"
+};
+
+const getCarImage = (brand: string): string => {
+  return carImages[brand] || carImages.default;
+};
 
 export default function CarBrandsShowcase() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
