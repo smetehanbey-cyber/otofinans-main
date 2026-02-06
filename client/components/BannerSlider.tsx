@@ -21,7 +21,7 @@ const slides: Slide[] = [
   {
     id: 2,
     title: "En Düşük Faiz Oranları",
-    subtitle: "%0.99'dan Başlayan Oranlar",
+    subtitle: "%0.99'dan Başlayan\nEn Düşük Oranlar",
     color: "from-indigo-700 to-indigo-900",
     gradient: "bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-900"
   },
