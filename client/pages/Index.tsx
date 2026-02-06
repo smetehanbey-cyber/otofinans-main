@@ -137,8 +137,11 @@ export default function Index() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[420px]">
               {/* Left Content */}
               <div className="text-white flex flex-col justify-start lg:justify-center py-8 lg:py-12 space-y-6 relative z-10">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
-                  Aracını bizimle hızlı sat paran cebine gelsin
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up flex items-end gap-2">
+                  <span>Aracını bizimle hızlı sat paran cebine gelsin</span>
+                  <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
                 </h2>
 
                 <p className="text-sm sm:text-base lg:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
