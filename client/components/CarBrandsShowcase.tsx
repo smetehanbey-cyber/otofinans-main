@@ -10,7 +10,7 @@ const carBrands = [
 
 // Car images - different per brand
 const carImages: Record<string, string> = {
-  Toyota: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F70f7ff60cdec4569a2ec8a1877f0b8ea?format=webp&width=800&height=1200",
+  Toyota: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fbcbb3a78fbc046049f255dd5b26e88e5?format=webp&width=800&height=1200",
   // Default image for all other brands
   default: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200"
 };
