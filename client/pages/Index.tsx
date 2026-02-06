@@ -247,9 +247,12 @@ export default function Index() {
           </div>
 
           <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <p className="text-sm">
-              Yetkili Bayi
-            </p>
+            <a
+              href="#"
+              className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
+            >
+              Yetkili Bayi Girişi
+            </a>
             <p className="text-sm">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
             </p>
