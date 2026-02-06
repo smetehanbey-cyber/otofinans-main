@@ -37,33 +37,46 @@ export default function PiyasaVerileri() {
     const fetchMarketData = async () => {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         const response = await fetch("/api/market-data", {
           signal: controller.signal,
+          headers: {
+            'Accept': 'application/json',
+          },
+          credentials: 'same-origin',
         });
 
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-          console.log(`API error: ${response.status}`);
+          console.warn(`Market data API error: ${response.status} ${response.statusText}`);
           return;
         }
 
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
           setMarketData(data);
+          console.log("Market data updated successfully");
         }
       } catch (error) {
-        console.log("Error fetching market data:", error);
-        // Keep showing previous data on error
+        if (error instanceof Error) {
+          if (error.name === 'AbortError') {
+            console.warn("Market data fetch timeout after 10 seconds");
+          } else {
+            console.warn("Market data fetch error:", error.message);
+          }
+        } else {
+          console.warn("Market data fetch failed:", error);
+        }
+        // Keep showing previous data on error (graceful degradation)
       }
     };
 
     // Fetch immediately
     fetchMarketData();
 
-    // Set up interval to fetch every minute for more frequent updates
+    // Set up interval to fetch every minute for updates
     const interval = setInterval(fetchMarketData, 1 * 60 * 1000);
 
     return () => {
