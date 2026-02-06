@@ -4,8 +4,8 @@ const carBrands = [
   "Toyota", "Honda", "Ford", "BMW", "Mercedes-Benz", "Audi", "Volkswagen",
   "Hyundai", "Kia", "Mazda", "Renault", "Peugeot", "Citroen", "Fiat",
   "Opel", "Suzuki", "Dacia", "Skoda", "SEAT", "Porsche", "Volvo",
-  "Tesla", "MG", "BYD", "GAC", "Geely", "Jeep", "Chevrolet",
-  "Nissan", "Subaru", "Mitsubishi", "Isuzu", "Dodge", "Cadillac"
+  "Tesla", "MG", "BYD", "Jeep",
+  "Nissan", "Mitsubishi", "Isuzu", "Dodge", "Cadillac"
 ];
 
 // Car images - different per brand
