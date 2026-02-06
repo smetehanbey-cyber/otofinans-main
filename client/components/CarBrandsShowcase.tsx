@@ -100,8 +100,8 @@ export default function CarBrandsShowcase() {
                   alt={brand}
                   className="pointer-events-none object-contain"
                   style={{
-                    width: '150px',
-                    height: '150px',
+                    width: '170px',
+                    height: '170px',
                   }}
                 />
               </div>
