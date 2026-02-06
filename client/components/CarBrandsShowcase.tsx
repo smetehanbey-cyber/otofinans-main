@@ -74,7 +74,7 @@ export default function CarBrandsShowcase() {
               key={index}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              className="flex flex-col items-center cursor-pointer flex-shrink-0"
+              className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
             >
               {/* Oval Blue Frame with Car Image */}
               <div
@@ -97,6 +97,11 @@ export default function CarBrandsShowcase() {
                   }}
                 />
               </div>
+
+              {/* Brand Name */}
+              <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
+                {brand} 2020
+              </p>
             </div>
           ))}
         </div>
