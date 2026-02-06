@@ -22,23 +22,21 @@ export default function CarBrandsShowcase() {
     const rect = containerRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const containerWidth = rect.width;
+    const centerX = containerWidth / 2;
 
-    // Calculate scroll position based on mouse X position
-    // Left side (0-25%) scrolls left, right side (75-100%) scrolls right
-    let newScrollPos = 0;
+    // Calculate which car index should be centered based on mouse position
+    // Each car takes ~90px (50px width + 40px gap and padding)
+    const itemWidth = 90;
+    const itemsPerView = Math.floor(containerWidth / itemWidth);
+    const totalScrollWidth = Math.max(0, (carBrands.length - itemsPerView) * itemWidth);
 
-    if (mouseX < containerWidth * 0.25) {
-      // Scroll left
-      newScrollPos = Math.max(0, scrollPos - 10);
-    } else if (mouseX > containerWidth * 0.75) {
-      // Scroll right
-      const maxScroll = (carBrands.length * 90) - containerWidth;
-      newScrollPos = Math.min(maxScroll, scrollPos + 10);
-    }
+    // Map mouse position (0 to containerWidth) to scroll position (0 to totalScrollWidth)
+    // When mouse is on left (0), show leftmost cars centered
+    // When mouse is on right (containerWidth), show rightmost cars centered
+    const mouseRatio = mouseX / containerWidth;
+    const newScrollPos = Math.round(mouseRatio * totalScrollWidth);
 
-    if (newScrollPos !== scrollPos) {
-      setScrollPos(newScrollPos);
-    }
+    setScrollPos(newScrollPos);
   };
 
   return (
