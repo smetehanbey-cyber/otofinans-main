@@ -1,12 +1,15 @@
 import { useState, useRef } from "react";
 
-const carBrands = [
+const carBrandsBase = [
   "Toyota", "Honda", "Ford", "BMW", "Mercedes-Benz", "Audi", "Volkswagen",
   "Hyundai", "Kia", "Mazda", "Renault", "Peugeot", "Citroen", "Fiat",
   "Opel", "Suzuki", "Dacia", "Skoda", "SEAT", "Porsche", "Volvo",
   "Tesla", "MG", "BYD", "GAC", "Geely", "Jeep", "Chevrolet",
   "Nissan", "Subaru", "Mitsubishi", "Isuzu", "Dodge", "Cadillac"
 ];
+
+// Create infinite loop by duplicating the array
+const carBrands = [...carBrandsBase, ...carBrandsBase];
 
 // Car images - different per brand
 const carImages: Record<string, string> = {
