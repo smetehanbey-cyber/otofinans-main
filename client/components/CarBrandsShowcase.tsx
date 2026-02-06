@@ -8,32 +8,63 @@ const carBrands = [
   "Nissan", "Subaru", "Mitsubishi", "Isuzu", "Dodge", "Cadillac"
 ];
 
+// Car image - same for all (can be customized per brand later)
+const carImage = "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200";
+
 export default function CarBrandsShowcase() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <section className="w-full bg-gradient-to-b from-gray-50 to-white py-6 sm:py-8">
-      <div className="h-[90px] w-full overflow-hidden">
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 sm:gap-3 p-2 sm:p-3 h-full auto-rows-max">
+      <style>{`
+        @keyframes carHover {
+          from {
+            transform: scale(1);
+          }
+          to {
+            transform: scale(1.15);
+          }
+        }
+        .car-item-hover {
+          animation: carHover 0.3s ease-out forwards;
+        }
+      `}</style>
+
+      <div className="w-full overflow-hidden">
+        <div className="flex flex-wrap gap-4 justify-center items-center p-4">
           {carBrands.map((brand, index) => (
             <div
               key={index}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              className={`
-                flex items-center justify-center
-                bg-white border-2 border-gray-200
-                rounded-lg px-2 py-1
-                text-xs sm:text-sm font-semibold text-gray-700
-                cursor-pointer transition-all duration-300 ease-out
-                whitespace-nowrap overflow-hidden text-center
-                ${hoveredIndex === index 
-                  ? 'scale-110 border-primary bg-blue-50 text-primary shadow-md z-10' 
-                  : 'hover:border-gray-300'
-                }
-              `}
+              className="flex flex-col items-center gap-2 cursor-pointer"
             >
-              {brand} 2020
+              {/* Oval Blue Frame with Car Image */}
+              <div
+                className={`
+                  flex items-center justify-center
+                  w-[50px] h-[90px]
+                  border-3 border-blue-500 rounded-full
+                  bg-blue-50 overflow-hidden
+                  transition-all duration-300 ease-out
+                  ${hoveredIndex === index ? 'car-item-hover shadow-lg' : ''}
+                `}
+              >
+                <img
+                  src={carImage}
+                  alt={brand}
+                  className="w-full h-full object-cover object-left"
+                  style={{
+                    clipPath: 'inset(0 50% 0 0)',
+                    transform: 'scaleX(2)',
+                  }}
+                />
+              </div>
+
+              {/* Brand Name */}
+              <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
+                {brand} 2020
+              </p>
             </div>
           ))}
         </div>
