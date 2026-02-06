@@ -193,7 +193,12 @@ export default function Index() {
                   className="h-16 w-auto"
                 />
               </div>
-              <p className="text-sm mb-3">TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU</p>
+              <a
+                href="#"
+                className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
+              >
+                Yetkili Bayi Girişi
+              </a>
             </div>
 
             {/* Quick Links */}
