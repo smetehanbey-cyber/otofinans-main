@@ -253,8 +253,11 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="border-t border-gray-700 pt-8">
-            <p className="text-center text-sm">
+          <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
+            <p className="text-sm">
+              otoSor Yetkili-Bayi
+            </p>
+            <p className="text-sm">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
             </p>
           </div>
