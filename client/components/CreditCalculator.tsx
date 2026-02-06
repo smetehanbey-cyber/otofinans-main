@@ -158,25 +158,29 @@ export default function CreditCalculator() {
 
           {/* Results Section */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-8 pb-8 border-b border-gray-200">
+            <div className="flex flex-col gap-6">
+              <div>
+                <p className="text-xs text-gray-600 mb-2 text-left">Taksit Tutarı</p>
+                <p className="text-2xl sm:text-3xl font-bold text-primary">
+                  {formattedMonthly}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 mb-2 text-left">Ödenecek Toplam Tutar</p>
+                <p className="text-2xl sm:text-3xl font-bold text-primary">
+                  {formattedTotal}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 mb-2 text-left">Oran</p>
+                <p className="text-2xl sm:text-3xl font-bold text-primary">
+                  %{rate.toFixed(2)}
+                </p>
+              </div>
+            </div>
             <div></div>
-            <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">Taksit Tutarı</p>
-              <p className="text-2xl sm:text-3xl font-bold text-primary">
-                {formattedMonthly}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">Ödenecek Toplam Tutar</p>
-              <p className="text-2xl sm:text-3xl font-bold text-primary">
-                {formattedTotal}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">Oran</p>
-              <p className="text-2xl sm:text-3xl font-bold text-primary">
-                %{rate.toFixed(2)}
-              </p>
-            </div>
+            <div></div>
+            <div></div>
           </div>
 
           {/* Action Buttons */}
