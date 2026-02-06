@@ -16,6 +16,11 @@ const carImages: Record<string, string> = {
   BMW: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Faf3458382a79453b9bbc3345d2afb33a?format=webp&width=800&height=1200",
   "Mercedes-Benz": "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40a071d38e254e1687678a989d9b85a9?format=webp&width=800&height=1200",
   Audi: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F3f5096328b134666b1529dd9d4e86316?format=webp&width=800&height=1200",
+  Volkswagen: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fcada180266e846bea750ff2dcdc73e4c?format=webp&width=800&height=1200",
+  Hyundai: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F82642e41247d479fa2eb3a3287662ea0?format=webp&width=800&height=1200",
+  Kia: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F802a0a82258443cbb31f6b77c381f1aa?format=webp&width=800&height=1200",
+  Mazda: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ffc7f1ce77aaa416ba4013aec7f4e1b69?format=webp&width=800&height=1200",
+  Renault: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F37b957bec89c48618f530096c007e905?format=webp&width=800&height=1200",
   // Default image for all other brands
   default: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200"
 };
