@@ -35,9 +35,11 @@ export default function PiyasaVerileri() {
   // Fetch market data from backend
   useEffect(() => {
     const fetchMarketData = async () => {
+      let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        timeoutId = setTimeout(() => controller.abort(), 10000);
 
         const response = await fetch("/api/market-data", {
           signal: controller.signal,
@@ -47,7 +49,7 @@ export default function PiyasaVerileri() {
           credentials: 'same-origin',
         });
 
-        clearTimeout(timeoutId);
+        if (timeoutId) clearTimeout(timeoutId);
 
         if (!response.ok) {
           console.warn(`Market data API error: ${response.status} ${response.statusText}`);
@@ -60,6 +62,8 @@ export default function PiyasaVerileri() {
           console.log("Market data updated successfully");
         }
       } catch (error) {
+        if (timeoutId) clearTimeout(timeoutId);
+
         if (error instanceof Error) {
           if (error.name === 'AbortError') {
             console.warn("Market data fetch timeout after 10 seconds");
