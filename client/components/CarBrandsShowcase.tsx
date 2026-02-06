@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const carBrands = [
   "Toyota", "Honda", "Ford", "BMW", "Mercedes-Benz", "Audi", "Volkswagen",
@@ -13,6 +13,33 @@ const carImage = "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab88
 
 export default function CarBrandsShowcase() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [scrollPos, setScrollPos] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const containerWidth = rect.width;
+
+    // Calculate scroll position based on mouse X position
+    // Left side (0-25%) scrolls left, right side (75-100%) scrolls right
+    let newScrollPos = 0;
+
+    if (mouseX < containerWidth * 0.25) {
+      // Scroll left
+      newScrollPos = Math.max(0, scrollPos - 10);
+    } else if (mouseX > containerWidth * 0.75) {
+      // Scroll right
+      const maxScroll = (carBrands.length * 90) - containerWidth;
+      newScrollPos = Math.min(maxScroll, scrollPos + 10);
+    }
+
+    if (newScrollPos !== scrollPos) {
+      setScrollPos(newScrollPos);
+    }
+  };
 
   return (
     <section className="w-full bg-gradient-to-b from-gray-50 to-white py-6 sm:py-8">
@@ -28,16 +55,28 @@ export default function CarBrandsShowcase() {
         .car-item-hover {
           animation: carHover 0.3s ease-out forwards;
         }
+        .carousel-container {
+          scroll-behavior: smooth;
+        }
       `}</style>
 
-      <div className="w-full overflow-hidden">
-        <div className="flex flex-wrap gap-4 justify-center items-center p-4">
+      <div
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        className="w-full overflow-hidden cursor-grab active:cursor-grabbing bg-gradient-to-b from-gray-50 to-white"
+      >
+        <div
+          className="carousel-container flex gap-4 p-4 transition-transform duration-200 ease-out"
+          style={{
+            transform: `translateX(-${scrollPos}px)`,
+          }}
+        >
           {carBrands.map((brand, index) => (
             <div
               key={index}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              className="flex flex-col items-center gap-2 cursor-pointer"
+              className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
             >
               {/* Oval Blue Frame with Car Image */}
               <div
@@ -53,7 +92,7 @@ export default function CarBrandsShowcase() {
                 <img
                   src={carImage}
                   alt={brand}
-                  className="w-full h-full object-cover object-left"
+                  className="w-full h-full object-cover object-left pointer-events-none"
                   style={{
                     clipPath: 'inset(0 50% 0 0)',
                     transform: 'scaleX(2)',
