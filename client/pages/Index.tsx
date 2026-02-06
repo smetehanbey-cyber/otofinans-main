@@ -139,8 +139,7 @@ export default function Index() {
               <div className="text-white flex flex-col justify-start lg:justify-center py-8 lg:py-12 space-y-6 relative z-10">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
                   Aracını bizimle hızlı sat paran cebine gelsin
-                  <svg className="inline w-7 h-6 sm:w-9 sm:h-8 text-white ml-2 align-text-bottom" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
+                  <svg className="inline w-9 h-8 sm:w-11 sm:h-10 text-white ml-2 align-middle" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
                     <circle cx="15" cy="9" r="1.5" fill="currentColor"/>
                     <path d="M8 14c0 2 1.5 3 4 3s4-1 4-3"/>
