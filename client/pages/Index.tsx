@@ -134,24 +134,21 @@ export default function Index() {
           `}</style>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-stretch lg:items-center min-h-[420px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[420px]">
               {/* Left Content */}
-              <div className="text-white flex flex-col justify-between py-8 lg:py-0 h-auto lg:h-full relative z-10">
-                <div>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight animate-fade-in-up">
-                    Aracını bizimle hızlı sat anında <b>Oto Finanslı</b> ol
-                  </h2>
-                  <p className="text-base sm:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
-                    Oto Finans ile özgürce günlük rutinlerinden<br />
-                    geri kalmadan aracına en iyi teklifi biz bulalım<br />
-                    ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
-                  </p>
-                </div>
+              <div className="text-white flex flex-col justify-start lg:justify-center py-8 lg:py-12 space-y-6 relative z-10">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
+                  Aracını bizimle hızlı sat anında <b>Oto Finanslı</b> ol
+                </h2>
 
-                <div className="animate-fade-in-up-delay-2 mt-10">
+                <p className="text-sm sm:text-base lg:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
+                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifi biz bulalım ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
+                </p>
+
+                <div className="animate-fade-in-up-delay-2 pt-4">
                   <a
                     href="tel:+905324098440"
-                    className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
+                    className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
                     title="Oto Finanslı Ol"
                   >
                     Oto Finanslı Ol
@@ -160,8 +157,8 @@ export default function Index() {
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="hidden lg:flex items-center justify-start h-[420px] overflow-hidden" style={{ paddingLeft: '10px', paddingBottom: '20px' }}>
-                <div className="w-full animate-slide-in-right lg:z-10 flex items-center justify-center">
+              <div className="hidden lg:flex items-center justify-end h-[420px] overflow-hidden relative">
+                <div className="animate-slide-in-right lg:z-10 flex items-center justify-center">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
                     alt="Oto Finans Müşteri"
