@@ -74,9 +74,9 @@ export default function Index() {
         <BankLogosCarousel />
 
         {/* Support Tagline */}
-        <div className="w-full bg-gray-50 border-b border-gray-200 py-2.5 text-center">
-          <p className="text-sm sm:text-base font-semibold text-blue-900 px-4">
-            Destek Oto Finans'ta ⇋ Aracın 30 Dakika'da Kapında!
+        <div className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 py-2.5 text-center">
+          <p className="text-sm sm:text-base font-semibold text-white px-4">
+            Destek OtoFinans'ta ⇋ Aracın 30 Dakika'da Kapında!
           </p>
         </div>
 
