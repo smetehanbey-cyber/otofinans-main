@@ -7,20 +7,27 @@ export default function CreditCalculator() {
   const [duration, setDuration] = useState(48);
   const [rate, setRate] = useState(0.99);
 
-  // Rate options for different customer types
+  // Rate options for different customer types (monthly percentages)
   const rateOptions = [
     { label: 'Esnaf', value: 0.99 },
     { label: 'Şirket', value: 3.70 },
     { label: 'Bireysel', value: 3.80 }
   ];
 
-  // Calculate monthly payment
+  // Calculate monthly payment using compound interest formula
+  // Formula: installment = principal * (r * (1+r)^n) / ((1+r)^n - 1)
+  // where r = monthly rate as decimal, n = number of months
   const monthlyPayment = useMemo(() => {
     if (amount <= 0 || duration <= 0) return 0;
-    const monthlyRate = rate / 100 / 12;
-    const monthlyPay = 
-      (amount * (monthlyRate * Math.pow(1 + monthlyRate, duration))) /
-      (Math.pow(1 + monthlyRate, duration) - 1);
+
+    // Convert percentage to decimal (0.99% → 0.0099)
+    const monthlyRate = rate / 100;
+
+    // Compound interest formula for equal installments
+    const numerator = monthlyRate * Math.pow(1 + monthlyRate, duration);
+    const denominator = Math.pow(1 + monthlyRate, duration) - 1;
+    const monthlyPay = amount * (numerator / denominator);
+
     return monthlyPay.toFixed(2);
   }, [amount, duration, rate]);
 
