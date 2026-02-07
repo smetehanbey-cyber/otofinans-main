@@ -283,15 +283,15 @@ export default function CreditCalculator() {
               </thead>
               <tbody>
                 {paymentScheduleData.map((row, idx) => (
-                  <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? '#f3f0ff' : '#ffffff' }}>
-                    <td style={{ border: '1px solid #e0d7ff', padding: '14px', textAlign: 'left', fontSize: '14px', fontWeight: '500' }}>
+                  <tr key={idx} style={{ backgroundColor: '#151a1d', color: '#ffffff' }}>
+                    <td style={{ border: '1px solid #6d2fce', padding: '14px', textAlign: 'left', fontSize: '14px', fontWeight: '500', fontFamily: '"Paytone One", sans-serif' }}>
                       %{row.downPaymentPercent} ({row.downPayment.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺)
                     </td>
-                    <td style={{ border: '1px solid #e0d7ff', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '14px' }}>
+                    <td style={{ border: '1px solid #6d2fce', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
                       {row.loanAmount.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺
                     </td>
                     {row.installments.map((installment, termIdx) => (
-                      <td key={termIdx} style={{ border: '1px solid #e0d7ff', padding: '14px', textAlign: 'right', fontSize: '14px' }}>
+                      <td key={termIdx} style={{ border: '1px solid #6d2fce', padding: '14px', textAlign: 'right', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
                         {installment.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺
                       </td>
                     ))}
