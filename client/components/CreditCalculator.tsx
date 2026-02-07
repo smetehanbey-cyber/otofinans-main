@@ -271,13 +271,13 @@ export default function CreditCalculator() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
               <thead>
                 <tr style={{ backgroundColor: '#1800ae', color: '#ffffff' }}>
-                  <th style={{ border: '2px solid #1800ae', padding: '14px 6px', textAlign: 'left', fontWeight: 'bold', fontSize: '20px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '0.5px' }}>PEŞİNAT</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '14px 0 14px 6px', textAlign: 'left', fontWeight: 'bold', fontSize: '20px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '0.5px', minWidth: '123px' }}>KREDİ TUTARI</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '20px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '0.5px', minWidth: '123px' }}>12AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '20px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '0.5px', minWidth: '123px' }}>18AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '20px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '0.5px', minWidth: '123px' }}>24AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '20px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '0.5px', minWidth: '123px' }}>36AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '20px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '0.5px', minWidth: '123px' }}>48AY</th>
+                  <th style={{ border: '2px solid #1800ae', padding: '14px 6px', textAlign: 'center', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '1px' }}>PEŞİNAT</th>
+                  <th style={{ border: '2px solid #1800ae', padding: '14px 0 14px 6px', textAlign: 'center', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '1px', minWidth: '123px' }}>KREDİ TUTARI</th>
+                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'center', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '1px', minWidth: '123px' }}>12AY</th>
+                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'center', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '1px', minWidth: '123px' }}>18AY</th>
+                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'center', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '1px', minWidth: '123px' }}>24AY</th>
+                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'center', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '1px', minWidth: '123px' }}>36AY</th>
+                  <th style={{ border: '2px solid #1800ae', padding: '14px', textAlign: 'center', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '1px', minWidth: '123px' }}>48AY</th>
                 </tr>
               </thead>
               <tbody>
