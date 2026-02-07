@@ -265,7 +265,7 @@ export default function CreditCalculator() {
             </div>
 
             {/* Separator Line */}
-            <div style={{ height: '2px', backgroundColor: '#6d2fce', width: '100%' }}></div>
+            <div style={{ height: '5px', backgroundColor: '#6d2fce', width: '100%' }}></div>
 
             {/* Table */}
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
