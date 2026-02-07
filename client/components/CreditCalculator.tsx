@@ -48,7 +48,8 @@ export default function CreditCalculator() {
 
   // Generate and download payment schedule as Excel
   const downloadPaymentSchedule = () => {
-    const monthlyRate = rate / 100 / 12;
+    // Convert percentage to decimal (0.99% → 0.0099, 3.70% → 0.037)
+    const monthlyRate = rate / 100;
     const scheduleData = [];
     let remainingBalance = amount;
 
