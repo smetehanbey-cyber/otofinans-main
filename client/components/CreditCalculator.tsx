@@ -331,14 +331,14 @@ export default function CreditCalculator() {
               <tbody>
                 {paymentScheduleData.map((row, idx) => (
                   <tr key={idx} style={{ backgroundColor: '#ffffff', color: '#000000' }}>
-                    <td style={{ border: '1px solid #6d2fce', padding: '16px 6px', textAlign: 'center', verticalAlign: 'middle', fontSize: '17px', fontWeight: 'bold', fontFamily: '"Arimo", sans-serif', letterSpacing: '1px', height: '60px', lineHeight: '1.2' }}>
+                    <td style={{ border: '1px solid #6d2fce', padding: '12px 6px', textAlign: 'center', verticalAlign: 'middle', fontSize: '17px', fontWeight: 'bold', fontFamily: '"Arimo", sans-serif', letterSpacing: '1px', height: '60px', lineHeight: '1.2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       %{row.downPaymentPercent} ({row.downPayment.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺)
                     </td>
-                    <td style={{ border: '1px solid #6d2fce', padding: '16px 0 16px 6px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '17px', fontFamily: '"Arimo", sans-serif', minWidth: '123px', letterSpacing: '1px', height: '60px', lineHeight: '1.2' }}>
+                    <td style={{ border: '1px solid #6d2fce', padding: '12px 6px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '17px', fontFamily: '"Arimo", sans-serif', minWidth: '123px', letterSpacing: '1px', height: '60px', lineHeight: '1.2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {row.loanAmount.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺
                     </td>
                     {row.installments.map((installment, termIdx) => (
-                      <td key={termIdx} style={{ border: '1px solid #6d2fce', padding: '16px', textAlign: 'center', verticalAlign: 'middle', fontSize: '17px', fontWeight: 'bold', fontFamily: '"Arimo", sans-serif', minWidth: '123px', letterSpacing: '1px', height: '60px', lineHeight: '1.2' }}>
+                      <td key={termIdx} style={{ border: '1px solid #6d2fce', padding: '12px', textAlign: 'center', verticalAlign: 'middle', fontSize: '17px', fontWeight: 'bold', fontFamily: '"Arimo", sans-serif', minWidth: '123px', letterSpacing: '1px', height: '60px', lineHeight: '1.2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {installment.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺
                       </td>
                     ))}
