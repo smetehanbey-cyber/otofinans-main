@@ -290,7 +290,7 @@ export default function CreditCalculator() {
                       {row.loanAmount.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺
                     </td>
                     {row.installments.map((installment, termIdx) => (
-                      <td key={termIdx} style={{ border: '1px solid #6d2fce', padding: '14px', textAlign: 'right', fontSize: '14px', fontFamily: '"Paytone One", sans-serif', minWidth: '95px' }}>
+                      <td key={termIdx} style={{ border: '1px solid #6d2fce', padding: '14px', textAlign: 'right', fontSize: '14px', fontFamily: '"Paytone One", sans-serif', minWidth: '123px' }}>
                         {installment.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺
                       </td>
                     ))}
