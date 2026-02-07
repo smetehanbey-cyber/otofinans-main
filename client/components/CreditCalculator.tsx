@@ -247,6 +247,49 @@ export default function CreditCalculator() {
             <div></div>
           </div>
 
+          {/* Payment Schedule Table for PNG Export */}
+          <div ref={tableRef} className="mb-8 p-6" style={{ backgroundColor: '#ffffff' }}>
+            {/* Header */}
+            <div style={{ backgroundColor: '#2d3a8b', color: '#ffffff', padding: '16px', marginBottom: '16px', borderRadius: '4px' }}>
+              <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: 'bold' }}>
+                {amount.toLocaleString('tr-TR')} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
+              </h3>
+              <p style={{ margin: '0', fontSize: '12px' }}>Oto Finans Global</p>
+            </div>
+
+            {/* Table */}
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#2d3a8b', color: '#ffffff' }}>
+                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left', fontWeight: 'bold' }}>PEŞİNAT</th>
+                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>KREDİ TUTARI</th>
+                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>12AY</th>
+                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>18AY</th>
+                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>24AY</th>
+                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>36AY</th>
+                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>48AY</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paymentScheduleData.map((row, idx) => (
+                  <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? '#f9f9f9' : '#ffffff' }}>
+                    <td style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left' }}>
+                      %{row.downPaymentPercent} ({row.downPayment.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺)
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>
+                      {row.loanAmount.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺
+                    </td>
+                    {row.installments.map((installment, termIdx) => (
+                      <td key={termIdx} style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right' }}>
+                        {installment.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <button
