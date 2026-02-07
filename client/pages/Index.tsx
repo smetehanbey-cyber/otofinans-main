@@ -14,19 +14,29 @@ export default function Index() {
 
       <main>
         {/* Hero Section */}
-        <section className="text-white py-4 sm:py-6" style={{
-          background: 'linear-gradient(to bottom right, #0f367e, #1a4d9e, #2563eb)'
-        }}>
+        <section
+          className="text-white py-4 sm:py-6"
+          style={{
+            background:
+              "linear-gradient(to bottom right, #0f367e, #1a4d9e, #2563eb)",
+          }}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-center">
               {/* Left Content */}
               <div className="order-2 lg:order-1">
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 leading-tight">
-                  <div className="text-4xl sm:text-5xl lg:text-6xl">Hayaline</div>
-                  <div className="font-black text-4xl sm:text-5xl lg:text-6xl">Geç Kalma</div>
+                  <div className="text-4xl sm:text-5xl lg:text-6xl">
+                    Hayaline
+                  </div>
+                  <div className="font-black text-4xl sm:text-5xl lg:text-6xl">
+                    Geç Kalma
+                  </div>
                 </h1>
                 <p className="text-base sm:text-lg text-blue-100 mb-3 sm:mb-4">
-                  Ön onaylı +800.000TL kredin hazır! Ticari ve Binek 20 Yaş'a kadar tüm taşıtlarda geçerli <u>48 Ay Vade</u> seçeneği OtoFinans'ta.
+                  Ön onaylı +800.000TL kredin hazır! Ticari ve Binek 20 Yaş'a
+                  kadar tüm taşıtlarda geçerli <u>48 Ay Vade</u> seçeneği
+                  OtoFinans'ta.
                 </p>
                 <ul className="space-y-2 sm:space-y-2.5 mb-4">
                   <li className="flex items-center gap-3 text-sm sm:text-base">
@@ -61,9 +71,15 @@ export default function Index() {
 
                 {/* Contact Info */}
                 <div className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
-                  <p className="text-xs text-blue-100 mb-1">Bizimle İletişime Geç</p>
-                  <p className="text-lg sm:text-xl font-bold">+90 532 409 8440</p>
-                  <p className="text-blue-100 text-sm mt-2">Limitini Etkilemeden Hemen Bilgi Al</p>
+                  <p className="text-xs text-blue-100 mb-1">
+                    Bizimle İletişime Geç
+                  </p>
+                  <p className="text-lg sm:text-xl font-bold">
+                    +90 532 409 8440
+                  </p>
+                  <p className="text-blue-100 text-sm mt-2">
+                    Limitini Etkilemeden Hemen Bilgi Al
+                  </p>
                 </div>
               </div>
             </div>
@@ -75,7 +91,10 @@ export default function Index() {
 
         {/* Support Tagline */}
         <div className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 py-2.5 text-center">
-          <p className="font-semibold text-white px-4" style={{ fontSize: 'calc(0.875rem - 0.5px)' }}>
+          <p
+            className="font-semibold text-white px-4"
+            style={{ fontSize: "calc(0.875rem - 0.5px)" }}
+          >
             Destek OtoFinans'ta ⇋ Aracın 30 Dakika'da Kapında!
           </p>
         </div>
@@ -90,7 +109,10 @@ export default function Index() {
         <ServicesSection />
 
         {/* Banner Section with Animations */}
-        <section className="relative overflow-hidden" style={{ backgroundColor: '#0f367e', minHeight: '420px' }}>
+        <section
+          className="relative overflow-hidden"
+          style={{ backgroundColor: "#0f367e", minHeight: "420px" }}
+        >
           <style>{`
             @keyframes slideInFromRight {
               from {
@@ -139,15 +161,26 @@ export default function Index() {
               <div className="text-white flex flex-col justify-start lg:justify-center py-8 lg:py-12 space-y-6 relative z-10">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
                   Aracını bizimle hızlı sat paran cebine gelsin
-                  <svg className="inline w-9 h-8 sm:w-11 sm:h-10 text-white ml-2 align-middle" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
-                    <circle cx="15" cy="9" r="1.5" fill="currentColor"/>
-                    <path d="M8 14c0 2 1.5 3 4 3s4-1 4-3"/>
+                  <svg
+                    className="inline w-9 h-8 sm:w-11 sm:h-10 text-white ml-2 align-middle"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="9" cy="9" r="1.5" fill="currentColor" />
+                    <circle cx="15" cy="9" r="1.5" fill="currentColor" />
+                    <path d="M8 14c0 2 1.5 3 4 3s4-1 4-3" />
                   </svg>
                 </h2>
 
                 <p className="text-sm sm:text-base lg:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
-                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan aracına en iyi teklifi biz verelim ve en hızlı kredi sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi bekliyor.
+                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan
+                  aracına en iyi teklifi biz verelim ve en hızlı kredi
+                  sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi
+                  bekliyor.
                 </p>
 
                 <div className="animate-fade-in-up-delay-2 pt-4">
@@ -168,7 +201,7 @@ export default function Index() {
                     src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
                     alt="Oto Finans Müşteri"
                     className="h-[400px] w-auto object-contain"
-                    style={{ marginBottom: '-4px' }}
+                    style={{ marginBottom: "-4px" }}
                   />
                 </div>
               </div>
@@ -205,10 +238,26 @@ export default function Index() {
             <div>
               <h3 className="text-white font-semibold mb-4">Hızlı Linkler</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Ana Sayfa</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Ürünler</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Kurumsal</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">İletişim</a></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Ana Sayfa
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Ürünler
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Kurumsal
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    İletişim
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -216,9 +265,21 @@ export default function Index() {
             <div>
               <h3 className="text-white font-semibold mb-4">Hakkımızda</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Gizlilik Politikası</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Kullanım Şartları</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">SSS</a></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Gizlilik Politikası
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Kullanım Şartları
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    SSS
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -227,12 +288,18 @@ export default function Index() {
               <h3 className="text-white font-semibold mb-4">İletişim</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="tel:+905324098440" className="hover:text-white transition-colors">
+                  <a
+                    href="tel:+905324098440"
+                    className="hover:text-white transition-colors"
+                  >
                     Telefon: +90 532 409 8440
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:bilgi@otofinansglobal.com" className="hover:text-white transition-colors">
+                  <a
+                    href="mailto:bilgi@otofinansglobal.com"
+                    className="hover:text-white transition-colors"
+                  >
                     Email: bilgi@otofinansglobal.com
                   </a>
                 </li>
@@ -251,7 +318,7 @@ export default function Index() {
           </div>
 
           <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <p className="text-sm" style={{ letterSpacing: '1.5px' }}>
+            <p className="text-sm" style={{ letterSpacing: "1.5px" }}>
               TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
             </p>
             <p className="text-sm">
