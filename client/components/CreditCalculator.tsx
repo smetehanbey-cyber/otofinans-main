@@ -231,6 +231,7 @@ export default function CreditCalculator() {
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 {formattedMonthly}
               </p>
+              <p className="text-xs text-gray-600 mt-1 text-left">Peşinatsız Tamamına Kredi Olursa</p>
             </div>
             <div>
               <p className="text-xs text-gray-600 mb-2 text-left">Ödenecek Toplam Tutar</p>
