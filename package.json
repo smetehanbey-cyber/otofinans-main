@@ -1,7 +1,4 @@
 {
-  "name": "otofinans-main",
-  "private": true,
-  "scripts": {
-    "build": "cd client && npm install && npm run build"
-  }
+  "name": "otofinans-root",
+  "private": true
 }
