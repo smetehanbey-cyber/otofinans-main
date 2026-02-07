@@ -253,7 +253,7 @@ export default function CreditCalculator() {
             {/* Header */}
             <div style={{ backgroundColor: '#1a2b7d', color: '#ffffff', padding: '20px', marginBottom: '0', borderRadius: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <h3 style={{ margin: '0', fontSize: '25px', fontWeight: 'bold', letterSpacing: '0.5px', fontFamily: '"Paytone One", sans-serif' }}>
+                <h3 style={{ margin: '0', fontSize: '25px', fontWeight: 'bold', letterSpacing: '2px', fontFamily: '"Paytone One", sans-serif' }}>
                   {amount.toLocaleString('tr-TR')} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
                 </h3>
               </div>
