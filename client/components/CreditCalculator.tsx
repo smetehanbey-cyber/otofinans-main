@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import * as XLSX from "xlsx";
 
 export default function CreditCalculator() {
@@ -7,6 +7,17 @@ export default function CreditCalculator() {
   const [amount, setAmount] = useState(100000);
   const [duration, setDuration] = useState(48);
   const [rate, setRate] = useState(0.99);
+  const [tableVisible, setTableVisible] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  // Show table when amount, duration, or rate changes (after initial load)
+  useEffect(() => {
+    if (initialLoad) {
+      setInitialLoad(false);
+      return;
+    }
+    setTableVisible(true);
+  }, [amount, duration, rate, initialLoad]);
 
   // Rate options for different customer types (monthly percentages)
   const rateOptions = [
