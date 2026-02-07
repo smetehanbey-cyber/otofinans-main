@@ -75,7 +75,15 @@ export default function Header() {
                 <div className="flex items-center gap-6">
                   <ProductDropdown />
                   <div className="h-4 border-l border-gray-300"></div>
-                  <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors">
+                  <button
+                    onClick={() => {
+                      const phoneNumber = '905324098440';
+                      const message = 'Kendi Aracıma Kredi Kullanmak İstiyorum.';
+                      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                      window.open(whatsappUrl, '_blank');
+                    }}
+                    className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors"
+                  >
                     Aracım İçin
                   </button>
                 </div>
