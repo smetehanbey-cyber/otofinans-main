@@ -274,13 +274,14 @@ export default function CreditCalculator() {
           {/* Payment Schedule Table for PNG Export */}
           <div
             ref={tableRef}
-            className="mb-8 p-6"
+            className="p-6"
             style={{
               backgroundColor: '#ffffff',
               opacity: tableVisible ? 1 : 0,
               maxHeight: tableVisible ? '2000px' : '0px',
               overflow: 'hidden',
-              transition: 'opacity 0.6s ease-in-out, maxHeight 0.6s ease-in-out, transform 0.6s ease-in-out',
+              marginBottom: tableVisible ? '32px' : '15px',
+              transition: 'opacity 0.6s ease-in-out, maxHeight 0.6s ease-in-out, transform 0.6s ease-in-out, margin-bottom 0.6s ease-in-out',
               transform: tableVisible ? 'translateY(0)' : 'translateY(-20px)',
             }}
           >
