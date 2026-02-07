@@ -251,24 +251,31 @@ export default function CreditCalculator() {
           {/* Payment Schedule Table for PNG Export */}
           <div ref={tableRef} className="mb-8 p-6" style={{ backgroundColor: '#ffffff' }}>
             {/* Header */}
-            <div style={{ backgroundColor: '#2d3a8b', color: '#ffffff', padding: '16px', marginBottom: '16px', borderRadius: '4px' }}>
-              <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: 'bold' }}>
-                {amount.toLocaleString('tr-TR')} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
-              </h3>
-              <p style={{ margin: '0', fontSize: '12px' }}>Oto Finans Global</p>
+            <div style={{ backgroundColor: '#1a2b7d', color: '#ffffff', padding: '20px', marginBottom: '0', borderRadius: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '22px', fontWeight: 'bold', letterSpacing: '0.5px' }}>
+                  {amount.toLocaleString('tr-TR')} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
+                </h3>
+                <p style={{ margin: '0', fontSize: '13px', fontWeight: '500' }}>Oto Finans Global</p>
+              </div>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F3480333c210f42128379cd3866456c52?format=webp&width=800&height=1200"
+                alt="Oto Finans Logo"
+                style={{ height: '50px', width: 'auto', objectFit: 'contain' }}
+              />
             </div>
 
             {/* Table */}
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
               <thead>
-                <tr style={{ backgroundColor: '#2d3a8b', color: '#ffffff' }}>
-                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left', fontWeight: 'bold' }}>PEŞİNAT</th>
-                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>KREDİ TUTARI</th>
-                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>12AY</th>
-                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>18AY</th>
-                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>24AY</th>
-                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>36AY</th>
-                  <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>48AY</th>
+                <tr style={{ backgroundColor: '#8b5cf6', color: '#ffffff' }}>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'left', fontWeight: 'bold', fontSize: '15px' }}>PEŞİNAT</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>KREDİ TUTARI</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>12AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>18AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>24AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>36AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>48AY</th>
                 </tr>
               </thead>
               <tbody>
