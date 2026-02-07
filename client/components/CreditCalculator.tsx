@@ -258,7 +258,7 @@ export default function CreditCalculator() {
                 </h3>
               </div>
               <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F3480333c210f42128379cd3866456c52?format=webp&width=800&height=1200"
+                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fdd2abb901dc9416a9b712d9a471c713a?format=webp&width=800&height=1200"
                 alt="Oto Finans Logo"
                 style={{ height: '50px', width: 'auto', objectFit: 'contain' }}
               />
