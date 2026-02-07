@@ -260,7 +260,18 @@ export default function CreditCalculator() {
           </div>
 
           {/* Payment Schedule Table for PNG Export */}
-          <div ref={tableRef} className="mb-8 p-6" style={{ backgroundColor: '#ffffff' }}>
+          <div
+            ref={tableRef}
+            className="mb-8 p-6"
+            style={{
+              backgroundColor: '#ffffff',
+              opacity: tableVisible ? 1 : 0,
+              maxHeight: tableVisible ? '2000px' : '0px',
+              overflow: 'hidden',
+              transition: 'opacity 0.6s ease-in-out, maxHeight 0.6s ease-in-out, transform 0.6s ease-in-out',
+              transform: tableVisible ? 'translateY(0)' : 'translateY(-20px)',
+            }}
+          >
             {/* Header */}
             <div style={{ backgroundColor: '#1a2b7d', color: '#ffffff', padding: '20px', marginBottom: '0', borderRadius: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
