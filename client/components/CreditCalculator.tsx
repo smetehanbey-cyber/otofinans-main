@@ -47,6 +47,65 @@ export default function CreditCalculator() {
     currency: 'TRY'
   }).format(parseFloat(totalPayment));
 
+  // Helper function to calculate monthly payment for any principal, rate, and duration
+  const calculateMonthlyPayment = (principal: number, monthlyRate: number, months: number): number => {
+    if (principal <= 0 || months <= 0) return 0;
+    const r = monthlyRate / 100;
+    const numerator = r * Math.pow(1 + r, months);
+    const denominator = Math.pow(1 + r, months) - 1;
+    return principal * (numerator / denominator);
+  };
+
+  // Generate payment schedule table data with different down payment scenarios
+  const paymentScheduleData = useMemo(() => {
+    const downPaymentPercentages = [20, 30, 40, 50, 60, 70];
+    const termMonths = [12, 18, 24, 36, 48];
+    const data: Array<{downPaymentPercent: number; downPayment: number; loanAmount: number; installments: number[]}> = [];
+
+    downPaymentPercentages.forEach(percentage => {
+      const downPayment = amount * (percentage / 100);
+      const loanAmount = amount - downPayment;
+      const installments = termMonths.map(months =>
+        calculateMonthlyPayment(loanAmount, rate, months)
+      );
+
+      data.push({
+        downPaymentPercent: percentage,
+        downPayment: downPayment,
+        loanAmount: loanAmount,
+        installments: installments
+      });
+    });
+
+    return data;
+  }, [amount, rate]);
+
+  // Generate and download payment schedule as PNG image
+  const downloadPaymentSchedulePNG = async () => {
+    if (!tableRef.current) return;
+
+    try {
+      // Dynamically import html2canvas
+      const html2canvas = (await import('html2canvas')).default;
+
+      const canvas = await html2canvas(tableRef.current, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+      });
+
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `Odeme-Plani-${amount.toLocaleString('tr-TR')}TL.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error generating PNG:', error);
+      alert('Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.');
+    }
+  };
+
   // Generate and download payment schedule as Excel
   const downloadPaymentSchedule = () => {
     // Convert percentage to decimal (0.99% → 0.0099, 3.70% → 0.037)
