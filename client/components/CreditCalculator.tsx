@@ -10,14 +10,14 @@ export default function CreditCalculator() {
   const [tableVisible, setTableVisible] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
 
-  // Show table when amount, duration, or rate changes (after initial load)
+  // Show table when any input changes (after initial load)
   useEffect(() => {
     if (initialLoad) {
       setInitialLoad(false);
       return;
     }
     setTableVisible(true);
-  }, [amount, duration, rate, initialLoad]);
+  }, [amount, duration, rate, productType, initialLoad]);
 
   // Rate options for different customer types (monthly percentages)
   const rateOptions = [
