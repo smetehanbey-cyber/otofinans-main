@@ -293,7 +293,7 @@ export default function CreditCalculator() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <button
-              onClick={downloadPaymentSchedule}
+              onClick={downloadPaymentSchedulePNG}
               className="px-8 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors duration-200"
             >
               Ödeme Planı
