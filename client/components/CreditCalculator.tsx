@@ -99,11 +99,24 @@ export default function CreditCalculator() {
       // Dynamically import html2canvas
       const html2canvas = (await import('html2canvas')).default;
 
+      // Temporarily make table visible for PNG export
+      const wasVisible = tableVisible;
+      if (!tableVisible) {
+        tableRef.current.style.opacity = '1';
+        tableRef.current.style.maxHeight = '2000px';
+      }
+
       const canvas = await html2canvas(tableRef.current, {
         backgroundColor: '#ffffff',
         scale: 2,
         useCORS: true,
       });
+
+      // Restore original visibility state
+      if (!wasVisible) {
+        tableRef.current.style.opacity = '0';
+        tableRef.current.style.maxHeight = '0px';
+      }
 
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
