@@ -243,6 +243,18 @@ export default function CreditCalculator() {
                 {formattedMonthly}
               </p>
               <p className="text-xs text-gray-600 mt-1 text-left">Peşinatsız Tamamına Kredi Olursa</p>
+              <div className="mt-3 flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="tableToggle"
+                  checked={tableVisible}
+                  onChange={(e) => setTableVisible(e.target.checked)}
+                  className="w-4 h-4 cursor-pointer"
+                />
+                <label htmlFor="tableToggle" className="text-sm text-gray-700 cursor-pointer font-medium">
+                  {tableVisible ? 'Tabloyu Gizle' : 'Tabloyu Göster'}
+                </label>
+              </div>
             </div>
             <div>
               <p className="text-xs text-gray-600 mb-2 text-left">Ödenecek Toplam Tutar</p>
