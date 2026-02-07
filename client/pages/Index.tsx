@@ -219,7 +219,6 @@ export default function Index() {
                 <li><a href="#" className="hover:text-white transition-colors">Gizlilik Politikası</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Kullanım Şartları</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">SSS</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
               </ul>
             </div>
 
