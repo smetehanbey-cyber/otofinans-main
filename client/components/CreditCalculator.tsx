@@ -253,10 +253,10 @@ export default function CreditCalculator() {
             {/* Header */}
             <div style={{ backgroundColor: '#1a2b7d', color: '#ffffff', padding: '20px', marginBottom: '0', borderRadius: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <h3 style={{ margin: '0 0 4px 0', fontSize: '22px', fontWeight: 'bold', letterSpacing: '0.5px' }}>
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '22px', fontWeight: 'bold', letterSpacing: '0.5px', fontFamily: '"Paytone One", sans-serif' }}>
                   {amount.toLocaleString('tr-TR')} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
                 </h3>
-                <p style={{ margin: '0', fontSize: '13px', fontWeight: '500' }}>Oto Finans Global</p>
+                <p style={{ margin: '0', fontSize: '13px', fontWeight: 'bold', textAlign: 'center', fontFamily: '"Paytone One", sans-serif' }}>Oto Finans Global</p>
               </div>
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F3480333c210f42128379cd3866456c52?format=webp&width=800&height=1200"
@@ -264,6 +264,9 @@ export default function CreditCalculator() {
                 style={{ height: '50px', width: 'auto', objectFit: 'contain' }}
               />
             </div>
+
+            {/* Separator Line */}
+            <div style={{ height: '2px', backgroundColor: '#6d2fce', width: '100%' }}></div>
 
             {/* Table */}
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
