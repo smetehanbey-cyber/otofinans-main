@@ -269,16 +269,16 @@ export default function CreditCalculator() {
             <div style={{ height: '2px', backgroundColor: '#6d2fce', width: '100%' }}></div>
 
             {/* Table */}
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
               <thead>
                 <tr style={{ backgroundColor: '#8b5cf6', color: '#ffffff' }}>
-                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'left', fontWeight: 'bold', fontSize: '15px' }}>PEŞİNAT</th>
-                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>KREDİ TUTARI</th>
-                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>12AY</th>
-                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>18AY</th>
-                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>24AY</th>
-                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>36AY</th>
-                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>48AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'left', fontWeight: 'bold', fontSize: '15px', fontFamily: '"Paytone One", sans-serif' }}>PEŞİNAT</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px', fontFamily: '"Paytone One", sans-serif' }}>KREDİ TUTARI</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px', fontFamily: '"Paytone One", sans-serif' }}>12AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px', fontFamily: '"Paytone One", sans-serif' }}>18AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px', fontFamily: '"Paytone One", sans-serif' }}>24AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px', fontFamily: '"Paytone One", sans-serif' }}>36AY</th>
+                  <th style={{ border: '2px solid #8b5cf6', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px', fontFamily: '"Paytone One", sans-serif' }}>48AY</th>
                 </tr>
               </thead>
               <tbody>
