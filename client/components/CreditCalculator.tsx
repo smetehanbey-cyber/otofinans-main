@@ -2,6 +2,7 @@ import { useState, useMemo, useRef } from "react";
 import * as XLSX from "xlsx";
 
 export default function CreditCalculator() {
+  const tableRef = useRef<HTMLDivElement>(null);
   const [productType, setProductType] = useState('Taşıt Kredisi');
   const [amount, setAmount] = useState(1000);
   const [duration, setDuration] = useState(48);
