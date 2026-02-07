@@ -15,28 +15,52 @@ export default function Header() {
             <div className="flex justify-center items-center h-10">
               {/* Top Navigation Links - Centered */}
               <nav className="hidden md:flex items-center gap-3 justify-center text-xs">
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   Ana Sayfa
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   Hakkımızda
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   Finansmanlar
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   Kampanyalar
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   Kredi Hesaplama
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   İş Ortaklığı
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   Bize Ulaş
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary font-medium"
+                >
                   Ürünler
                 </Link>
               </nav>
@@ -57,7 +81,7 @@ export default function Header() {
         </div>
 
         {/* Main Header Section */}
-        <div className="border-b-2" style={{ borderColor: '#0f367e' }}>
+        <div className="border-b-2" style={{ borderColor: "#0f367e" }}>
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-center h-20 gap-6">
               {/* Logo */}
@@ -77,10 +101,11 @@ export default function Header() {
                   <div className="h-4 border-l border-gray-300"></div>
                   <button
                     onClick={() => {
-                      const phoneNumber = '905324098440';
-                      const message = 'Kendi Aracıma Kredi Kullanmak İstiyorum.';
+                      const phoneNumber = "905324098440";
+                      const message =
+                        "Kendi Aracıma Kredi Kullanmak İstiyorum.";
                       const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                      window.open(whatsappUrl, '_blank');
+                      window.open(whatsappUrl, "_blank");
                     }}
                     className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors"
                   >
@@ -120,28 +145,60 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isOpen && (
           <nav className="md:hidden border-t border-gray-200 pb-4 space-y-2 bg-gray-50">
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               Ana Sayfa
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               Hakkımızda
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               Finansmanlar
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               Kampanyalar
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               Kredi Hesaplama
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               İş Ortaklığı
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               Bize Ulaş
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               Ürün ve Hizmet
             </Link>
             <div className="px-4 py-2 space-y-2 border-t border-gray-200">
@@ -161,7 +218,10 @@ export default function Header() {
 
       {/* Tagline Bar - Top */}
       <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-1.5 text-center">
-        <p className="font-semibold px-4" style={{ fontSize: 'calc(0.875rem - 1.5px)', letterSpacing: '0.7px' }}>
+        <p
+          className="font-semibold px-4"
+          style={{ fontSize: "calc(0.875rem - 1.5px)", letterSpacing: "0.7px" }}
+        >
           TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
         </p>
       </div>
