@@ -283,10 +283,10 @@ export default function CreditCalculator() {
               <tbody>
                 {paymentScheduleData.map((row, idx) => (
                   <tr key={idx} style={{ backgroundColor: '#ffffff', color: '#000000' }}>
-                    <td style={{ border: '1px solid #6d2fce', padding: '14px', textAlign: 'left', fontSize: '14px', fontWeight: '500', fontFamily: '"Paytone One", sans-serif' }}>
+                    <td style={{ border: '1px solid #6d2fce', padding: '14px 6px', textAlign: 'left', fontSize: '14px', fontWeight: '500', fontFamily: '"Paytone One", sans-serif' }}>
                       %{row.downPaymentPercent} ({row.downPayment.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺)
                     </td>
-                    <td style={{ border: '1px solid #6d2fce', padding: '14px', textAlign: 'right', fontWeight: 'bold', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
+                    <td style={{ border: '1px solid #6d2fce', padding: '14px 6px', textAlign: 'right', fontWeight: 'bold', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
                       {row.loanAmount.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺
                     </td>
                     {row.installments.map((installment, termIdx) => (
