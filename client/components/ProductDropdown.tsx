@@ -86,8 +86,9 @@ export default function ProductDropdown() {
                 {products.map((product) => (
                   <div
                     key={product.id}
-                    className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                    className="rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                     style={{
+                      backgroundColor: "#0f367e",
                       borderWidth: "2px",
                       borderStyle: "solid",
                       borderImage: "linear-gradient(135deg, #e8e8e8, #b0b0b0) 1"
