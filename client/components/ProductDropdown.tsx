@@ -89,6 +89,8 @@ export default function ProductDropdown() {
               top: '120px',
               pointerEvents: 'auto'
             }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             {/* Blue toned content area - Full width */}
             <div
