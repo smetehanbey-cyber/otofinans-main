@@ -68,12 +68,13 @@ export default function ProductDropdown() {
             {/* Transparent hover area (button üstüne kadar) */}
             <div style={{ height: '30px', backgroundColor: 'transparent' }}></div>
 
-            {/* White content area */}
+            {/* Transparent content area */}
             <div
-              className="bg-white shadow-xl"
-              style={{ 
+              className="shadow-xl"
+              style={{
                 borderTop: '2px solid #1f3a93',
-                pointerEvents: 'auto'
+                pointerEvents: 'auto',
+                backgroundColor: 'rgba(255, 255, 255, 0)'
               }}
             >
               {/* Dropdown Header */}
