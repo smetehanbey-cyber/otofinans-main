@@ -65,12 +65,13 @@ export default function ProductDropdown() {
               pointerEvents: 'auto'
             }}
           >
-            {/* White content area - Full width */}
+            {/* Blue toned content area - Full width */}
             <div
-              className="bg-white shadow-xl"
+              className="shadow-xl"
               style={{
                 borderTop: '2px solid #1f3a93',
-                pointerEvents: 'auto'
+                pointerEvents: 'auto',
+                backgroundColor: '#f0f4ff'
               }}
             >
               {/* Dropdown Header */}
