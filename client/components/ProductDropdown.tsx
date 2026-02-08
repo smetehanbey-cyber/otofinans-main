@@ -120,7 +120,7 @@ export default function ProductDropdown() {
                       backgroundColor: '#0f367e',
                       borderTopWidth: "2px",
                       borderTopStyle: "solid",
-                      borderImage: "linear-gradient(to right, #e8e8e8, #b0b0b0) 1"
+                      borderTopColor: "#0f367e"
                     }}>
                       <button className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200" style={{
                         border: "2px solid #0f367e",
