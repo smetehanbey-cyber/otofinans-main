@@ -26,6 +26,31 @@ const products = [
 
 export default function ProductDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleMouseEnter = () => {
+    // Hemen aç - 3 saniye gecikme kaldırıldı
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // 300ms delay ile kapat - ani kapanmayı önlemek için
+    closeTimeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 300);
+  };
 
   return (
     <>
