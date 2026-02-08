@@ -123,7 +123,7 @@ export default function ProductDropdown() {
                       borderTopColor: "#3b82f6"
                     }}>
                       <button className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200" style={{
-                        border: "2px solid #0f367e",
+                        border: "2px solid #3b82f6",
                         backgroundColor: "transparent"
                       }}>
                         {product.buttonText}
