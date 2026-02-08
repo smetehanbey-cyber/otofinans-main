@@ -115,10 +115,7 @@ export default function ProductDropdown() {
                     key={product.id}
                     className="rounded-2xl overflow-hidden hover:shadow-lg transition-shadow"
                     style={{
-                      backgroundColor: "#0f367e",
-                      borderWidth: "2px",
-                      borderStyle: "solid",
-                      borderColor: "#3b82f6"
+                      backgroundColor: "#0f367e"
                     }}
                   >
                     {/* Product Image */}
