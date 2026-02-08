@@ -55,6 +55,93 @@ export default function ProductDropdown() {
           )}
         </div>
 
+        {/* Dropdown Menu - Full width white content */}
+        {isOpen && (
+          <div
+            className="fixed left-0 right-0 z-40 w-full origin-top"
+            style={{
+              animation: 'dropdownSlideIn 0.3s ease-out',
+              top: '120px',
+              pointerEvents: 'auto'
+            }}
+          >
+            {/* Blue toned content area - Full width */}
+            <div
+              className="shadow-xl"
+              style={{
+                borderTop: '2px solid #1f3a93',
+                pointerEvents: 'auto',
+                backgroundColor: '#f0f4ff'
+              }}
+            >
+              {/* Dropdown Header */}
+              <div className="border-b border-gray-200 py-4 text-sm font-semibold text-gray-700">
+                <div className="max-w-6xl mx-auto px-4">
+                  Kendim İçin Finansal Çözümler
+                </div>
+              </div>
+
+              {/* Products Grid */}
+              <div className="grid grid-cols-3 gap-3 p-4 max-w-6xl mx-auto">
+                {products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="rounded-2xl overflow-hidden hover:shadow-lg transition-shadow"
+                    style={{
+                      backgroundColor: "#0f367e",
+                      borderWidth: "2px",
+                      borderStyle: "solid",
+                      borderColor: "#3b82f6"
+                    }}
+                  >
+                    {/* Product Image */}
+                    <div className="relative w-full h-24 bg-gray-100 overflow-hidden">
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    {/* Product Content */}
+                    <div className="text-white" style={{ backgroundColor: "#1e2f79", padding: "8px" }}>
+                      <h3 className="text-base font-bold mb-0">
+                        {product.title}
+                      </h3>
+                      {product.subtitle && (
+                        <p className="text-base text-blue-100 mb-0.5">
+                          {product.subtitle}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Button */}
+                    <div className="px-2 py-2" style={{
+                      backgroundColor: '#0f367e',
+                      borderTopWidth: "2px",
+                      borderTopStyle: "solid",
+                      borderTopColor: "#3b82f6"
+                    }}>
+                      <button className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200" style={{
+                        border: "2px solid #3b82f6",
+                        backgroundColor: "transparent"
+                      }}>
+                        {product.buttonText}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination Dots */}
+              <div className="flex justify-center gap-1.5 py-2 border-t border-gray-200">
+                <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
