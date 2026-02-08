@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 
 export default function CreditCalculator() {
   const tableRef = useRef<HTMLDivElement>(null);
-  const [productType, setProductType] = useState('Taşıt Kredisi');
+  const [productType, setProductType] = useState("Taşıt Kredisi");
   const [amount, setAmount] = useState(100000);
   const [duration, setDuration] = useState(48);
   const [rate, setRate] = useState(0.99);
@@ -21,9 +21,9 @@ export default function CreditCalculator() {
 
   // Rate options for different customer types (monthly percentages)
   const rateOptions = [
-    { label: 'Esnaf', value: 0.99 },
-    { label: 'Şirket', value: 3.70 },
-    { label: 'Bireysel', value: 3.80 }
+    { label: "Esnaf", value: 0.99 },
+    { label: "Şirket", value: 3.7 },
+    { label: "Bireysel", value: 3.8 },
   ];
 
   // Calculate monthly payment using compound interest formula
@@ -48,18 +48,22 @@ export default function CreditCalculator() {
     return (parseFloat(monthlyPayment) * duration).toFixed(2);
   }, [monthlyPayment, duration]);
 
-  const formattedMonthly = new Intl.NumberFormat('tr-TR', {
-    style: 'currency',
-    currency: 'TRY'
+  const formattedMonthly = new Intl.NumberFormat("tr-TR", {
+    style: "currency",
+    currency: "TRY",
   }).format(parseFloat(monthlyPayment));
 
-  const formattedTotal = new Intl.NumberFormat('tr-TR', {
-    style: 'currency',
-    currency: 'TRY'
+  const formattedTotal = new Intl.NumberFormat("tr-TR", {
+    style: "currency",
+    currency: "TRY",
   }).format(parseFloat(totalPayment));
 
   // Helper function to calculate monthly payment for any principal, rate, and duration
-  const calculateMonthlyPayment = (principal: number, monthlyRate: number, months: number): number => {
+  const calculateMonthlyPayment = (
+    principal: number,
+    monthlyRate: number,
+    months: number,
+  ): number => {
     if (principal <= 0 || months <= 0) return 0;
     const r = monthlyRate / 100;
     const numerator = r * Math.pow(1 + r, months);
@@ -71,20 +75,25 @@ export default function CreditCalculator() {
   const paymentScheduleData = useMemo(() => {
     const downPaymentPercentages = [20, 30, 40, 50, 60, 70];
     const termMonths = [12, 18, 24, 36, 48];
-    const data: Array<{downPaymentPercent: number; downPayment: number; loanAmount: number; installments: number[]}> = [];
+    const data: Array<{
+      downPaymentPercent: number;
+      downPayment: number;
+      loanAmount: number;
+      installments: number[];
+    }> = [];
 
-    downPaymentPercentages.forEach(percentage => {
+    downPaymentPercentages.forEach((percentage) => {
       const downPayment = amount * (percentage / 100);
       const loanAmount = amount - downPayment;
-      const installments = termMonths.map(months =>
-        calculateMonthlyPayment(loanAmount, rate, months)
+      const installments = termMonths.map((months) =>
+        calculateMonthlyPayment(loanAmount, rate, months),
       );
 
       data.push({
         downPaymentPercent: percentage,
         downPayment: downPayment,
         loanAmount: loanAmount,
-        installments: installments
+        installments: installments,
       });
     });
 
@@ -97,36 +106,36 @@ export default function CreditCalculator() {
 
     try {
       // Dynamically import html2canvas
-      const html2canvas = (await import('html2canvas')).default;
+      const html2canvas = (await import("html2canvas")).default;
 
       // Temporarily make table visible for PNG export
       const wasVisible = tableVisible;
       if (!tableVisible) {
-        tableRef.current.style.opacity = '1';
-        tableRef.current.style.maxHeight = '2000px';
+        tableRef.current.style.opacity = "1";
+        tableRef.current.style.maxHeight = "2000px";
       }
 
       const canvas = await html2canvas(tableRef.current, {
-        backgroundColor: '#ffffff',
+        backgroundColor: "#ffffff",
         scale: 2,
         useCORS: true,
       });
 
       // Restore original visibility state
       if (!wasVisible) {
-        tableRef.current.style.opacity = '0';
-        tableRef.current.style.maxHeight = '0px';
+        tableRef.current.style.opacity = "0";
+        tableRef.current.style.maxHeight = "0px";
       }
 
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = `Odeme-Plani-${amount.toLocaleString('tr-TR')}TL.png`;
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Error generating PNG:', error);
-      alert('Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.');
+      console.error("Error generating PNG:", error);
+      alert("Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.");
     }
   };
 
@@ -143,11 +152,11 @@ export default function CreditCalculator() {
       remainingBalance -= principalPayment;
 
       scheduleData.push({
-        'Ay': month,
-        'Taksit Tutarı (₺)': parseFloat(monthlyPayment).toFixed(2),
-        'Anapara (₺)': Math.max(principalPayment, 0).toFixed(2),
-        'Faiz (₺)': interestPayment.toFixed(2),
-        'Kalan Bakiye (₺)': Math.max(remainingBalance, 0).toFixed(2)
+        Ay: month,
+        "Taksit Tutarı (₺)": parseFloat(monthlyPayment).toFixed(2),
+        "Anapara (₺)": Math.max(principalPayment, 0).toFixed(2),
+        "Faiz (₺)": interestPayment.toFixed(2),
+        "Kalan Bakiye (₺)": Math.max(remainingBalance, 0).toFixed(2),
       });
     }
 
@@ -157,12 +166,12 @@ export default function CreditCalculator() {
     XLSX.utils.book_append_sheet(wb, ws, "Ödeme Planı");
 
     // Set column widths
-    ws['!cols'] = [
+    ws["!cols"] = [
       { wch: 8 },
       { wch: 18 },
       { wch: 18 },
       { wch: 18 },
-      { wch: 18 }
+      { wch: 18 },
     ];
 
     // Download file
@@ -174,7 +183,10 @@ export default function CreditCalculator() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-left mb-2 sm:mb-3">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-medium mb-0" style={{ color: '#0f367e' }}>
+          <h2
+            className="text-xl sm:text-2xl lg:text-3xl font-medium mb-0"
+            style={{ color: "#0f367e" }}
+          >
             Ön Onaylı Kredin Hazır.
           </h2>
           <p className="text-lg sm:text-xl text-gray-600">
@@ -188,7 +200,9 @@ export default function CreditCalculator() {
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
             {/* Product Type */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Ürün</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Ürün
+              </label>
               <select
                 value={productType}
                 onChange={(e) => setProductType(e.target.value)}
@@ -202,24 +216,31 @@ export default function CreditCalculator() {
 
             {/* Amount */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Tutar</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Tutar
+              </label>
               <div className="flex items-center">
                 <input
                   type="text"
-                  value={amount.toLocaleString('tr-TR')}
+                  value={amount.toLocaleString("tr-TR")}
                   onChange={(e) => {
-                    const numericValue = parseInt(e.target.value.replace(/\D/g, '')) || 0;
+                    const numericValue =
+                      parseInt(e.target.value.replace(/\D/g, "")) || 0;
                     setAmount(numericValue);
                   }}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 />
-                <span className="ml-2 text-sm font-medium text-gray-700">₺</span>
+                <span className="ml-2 text-sm font-medium text-gray-700">
+                  ₺
+                </span>
               </div>
             </div>
 
             {/* Duration */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Vade</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Vade
+              </label>
               <div className="flex items-center">
                 <input
                   type="number"
@@ -227,13 +248,17 @@ export default function CreditCalculator() {
                   onChange={(e) => setDuration(parseInt(e.target.value) || 0)}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 />
-                <span className="ml-2 text-sm font-medium text-gray-700 whitespace-nowrap">Ay</span>
+                <span className="ml-2 text-sm font-medium text-gray-700 whitespace-nowrap">
+                  Ay
+                </span>
               </div>
             </div>
 
             {/* Rate */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Oran</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Oran
+              </label>
               <select
                 value={rate}
                 onChange={(e) => setRate(parseFloat(e.target.value))}
@@ -251,11 +276,15 @@ export default function CreditCalculator() {
           {/* Results Section */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-gray-200">
             <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">Taksit Tutarı</p>
+              <p className="text-xs text-gray-600 mb-2 text-left">
+                Taksit Tutarı
+              </p>
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 {formattedMonthly}
               </p>
-              <p className="text-xs text-gray-600 mt-1 text-left">Peşinatsız Tamamına Kredi Olursa</p>
+              <p className="text-xs text-gray-600 mt-1 text-left">
+                Peşinatsız Tamamına Kredi Olursa
+              </p>
               <div className="mt-3 flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -264,13 +293,18 @@ export default function CreditCalculator() {
                   onChange={(e) => setTableVisible(e.target.checked)}
                   className="w-4 h-4 cursor-pointer"
                 />
-                <label htmlFor="tableToggle" className="text-sm text-gray-700 cursor-pointer font-medium">
-                  {tableVisible ? 'Tabloyu Gizle' : 'Tabloyu Göster'}
+                <label
+                  htmlFor="tableToggle"
+                  className="text-sm text-gray-700 cursor-pointer font-medium"
+                >
+                  {tableVisible ? "Tabloyu Gizle" : "Tabloyu Göster"}
                 </label>
               </div>
             </div>
             <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">Ödenecek Toplam Tutar</p>
+              <p className="text-xs text-gray-600 mb-2 text-left">
+                Ödenecek Toplam Tutar
+              </p>
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 {formattedTotal}
               </p>
@@ -289,57 +323,257 @@ export default function CreditCalculator() {
             ref={tableRef}
             className="p-6"
             style={{
-              backgroundColor: '#ffffff',
+              backgroundColor: "#ffffff",
               opacity: tableVisible ? 1 : 0,
-              maxHeight: tableVisible ? '2000px' : '0px',
-              overflow: 'hidden',
-              marginBottom: tableVisible ? '32px' : '15px',
-              transition: 'opacity 0.6s ease-in-out, maxHeight 0.6s ease-in-out, transform 0.6s ease-in-out, margin-bottom 0.6s ease-in-out',
-              transform: tableVisible ? 'translateY(0)' : 'translateY(-20px)',
+              maxHeight: tableVisible ? "2000px" : "0px",
+              overflow: "hidden",
+              marginBottom: tableVisible ? "32px" : "15px",
+              transition:
+                "opacity 0.6s ease-in-out, maxHeight 0.6s ease-in-out, transform 0.6s ease-in-out, margin-bottom 0.6s ease-in-out",
+              transform: tableVisible ? "translateY(0)" : "translateY(-20px)",
             }}
           >
             {/* Header */}
-            <div style={{ backgroundColor: '#1a2b7d', color: '#ffffff', padding: '20px', marginBottom: '0', borderRadius: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              style={{
+                backgroundColor: "#1a2b7d",
+                color: "#ffffff",
+                padding: "20px",
+                marginBottom: "0",
+                borderRadius: "0",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <div>
-                <h3 style={{ margin: '0', fontSize: '25px', fontWeight: 'bold', letterSpacing: '2px', fontFamily: '"Paytone One", sans-serif' }}>
-                  {amount.toLocaleString('tr-TR')} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
+                <h3
+                  style={{
+                    margin: "0",
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    letterSpacing: "2px",
+                    fontFamily: '"Paytone One", sans-serif',
+                  }}
+                >
+                  {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
+                  ÖRNEK ÖDEME TABLOSU
                 </h3>
               </div>
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fdd2abb901dc9416a9b712d9a471c713a?format=webp&width=800&height=1200"
                 alt="Oto Finans Logo"
-                style={{ height: '60px', width: 'auto', objectFit: 'contain' }}
+                style={{ height: "60px", width: "auto", objectFit: "contain" }}
               />
             </div>
 
             {/* Separator Line */}
-            <div style={{ height: '5px', backgroundColor: '#6d2fce', width: '100%' }}></div>
+            <div
+              style={{
+                height: "5px",
+                backgroundColor: "#6d2fce",
+                width: "100%",
+              }}
+            ></div>
 
             {/* Table */}
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', fontFamily: '"Paytone One", sans-serif' }}>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                fontSize: "14px",
+                fontFamily: '"Paytone One", sans-serif',
+              }}
+            >
               <thead>
-                <tr style={{ backgroundColor: '#1800ae', color: '#ffffff' }}>
-                  <th style={{ border: '2px solid #1800ae', padding: '20px 6px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '2px', height: '60px', lineHeight: '1.2' }}>PEŞİNAT</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '20px 0 20px 6px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '2px', minWidth: '123px', height: '60px', lineHeight: '1.2' }}>KREDİ TUTARI</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '20px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '2px', minWidth: '123px', height: '60px', lineHeight: '1.2' }}>12AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '20px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '2px', minWidth: '123px', height: '60px', lineHeight: '1.2' }}>18AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '20px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '2px', minWidth: '123px', height: '60px', lineHeight: '1.2' }}>24AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '20px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '2px', minWidth: '123px', height: '60px', lineHeight: '1.2' }}>36AY</th>
-                  <th style={{ border: '2px solid #1800ae', padding: '20px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '23px', fontFamily: '"Paytone One", sans-serif', letterSpacing: '2px', minWidth: '123px', height: '60px', lineHeight: '1.2' }}>48AY</th>
+                <tr style={{ backgroundColor: "#1800ae", color: "#ffffff" }}>
+                  <th
+                    style={{
+                      border: "2px solid #1800ae",
+                      padding: "20px 6px",
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      letterSpacing: "2px",
+                      height: "60px",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    PEŞİNAT
+                  </th>
+                  <th
+                    style={{
+                      border: "2px solid #1800ae",
+                      padding: "20px 0 20px 6px",
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      letterSpacing: "2px",
+                      minWidth: "123px",
+                      height: "60px",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    KREDİ TUTARI
+                  </th>
+                  <th
+                    style={{
+                      border: "2px solid #1800ae",
+                      padding: "20px",
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      letterSpacing: "2px",
+                      minWidth: "123px",
+                      height: "60px",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    12AY
+                  </th>
+                  <th
+                    style={{
+                      border: "2px solid #1800ae",
+                      padding: "20px",
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      letterSpacing: "2px",
+                      minWidth: "123px",
+                      height: "60px",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    18AY
+                  </th>
+                  <th
+                    style={{
+                      border: "2px solid #1800ae",
+                      padding: "20px",
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      letterSpacing: "2px",
+                      minWidth: "123px",
+                      height: "60px",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    24AY
+                  </th>
+                  <th
+                    style={{
+                      border: "2px solid #1800ae",
+                      padding: "20px",
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      letterSpacing: "2px",
+                      minWidth: "123px",
+                      height: "60px",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    36AY
+                  </th>
+                  <th
+                    style={{
+                      border: "2px solid #1800ae",
+                      padding: "20px",
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      letterSpacing: "2px",
+                      minWidth: "123px",
+                      height: "60px",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    48AY
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {paymentScheduleData.map((row, idx) => (
-                  <tr key={idx} style={{ backgroundColor: '#ffffff', color: '#000000' }}>
-                    <td style={{ border: '1px solid #6d2fce', padding: '16px 6px', textAlign: 'center', verticalAlign: 'middle', fontSize: '17px', fontWeight: 'bold', fontFamily: '"Arimo", sans-serif', letterSpacing: '1px', height: '60px', lineHeight: '1.2' }}>
-                      %{row.downPaymentPercent} ({row.downPayment.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺)
+                  <tr
+                    key={idx}
+                    style={{ backgroundColor: "#ffffff", color: "#000000" }}
+                  >
+                    <td
+                      style={{
+                        border: "1px solid #6d2fce",
+                        padding: "16px 6px",
+                        textAlign: "center",
+                        verticalAlign: "middle",
+                        fontSize: "17px",
+                        fontWeight: "bold",
+                        fontFamily: '"Arimo", sans-serif',
+                        letterSpacing: "1px",
+                        height: "60px",
+                        lineHeight: "1.2",
+                      }}
+                    >
+                      %{row.downPaymentPercent} (
+                      {row.downPayment.toLocaleString("tr-TR", {
+                        maximumFractionDigits: 0,
+                      })}{" "}
+                      ₺)
                     </td>
-                    <td style={{ border: '1px solid #6d2fce', padding: '16px 0 16px 6px', textAlign: 'center', verticalAlign: 'middle', fontWeight: 'bold', fontSize: '17px', fontFamily: '"Arimo", sans-serif', minWidth: '123px', letterSpacing: '1px', height: '60px', lineHeight: '1.2' }}>
-                      {row.loanAmount.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ₺
+                    <td
+                      style={{
+                        border: "1px solid #6d2fce",
+                        padding: "16px 0 16px 6px",
+                        textAlign: "center",
+                        verticalAlign: "middle",
+                        fontWeight: "bold",
+                        fontSize: "17px",
+                        fontFamily: '"Arimo", sans-serif',
+                        minWidth: "123px",
+                        letterSpacing: "1px",
+                        height: "60px",
+                        lineHeight: "1.2",
+                      }}
+                    >
+                      {row.loanAmount.toLocaleString("tr-TR", {
+                        maximumFractionDigits: 0,
+                      })}{" "}
+                      ₺
                     </td>
                     {row.installments.map((installment, termIdx) => (
-                      <td key={termIdx} style={{ border: '1px solid #6d2fce', padding: '16px', textAlign: 'center', verticalAlign: 'middle', fontSize: '17px', fontWeight: 'bold', fontFamily: '"Arimo", sans-serif', minWidth: '123px', letterSpacing: '1px', height: '60px', lineHeight: '1.2' }}>
-                        {installment.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺
+                      <td
+                        key={termIdx}
+                        style={{
+                          border: "1px solid #6d2fce",
+                          padding: "16px",
+                          textAlign: "center",
+                          verticalAlign: "middle",
+                          fontSize: "17px",
+                          fontWeight: "bold",
+                          fontFamily: '"Arimo", sans-serif',
+                          minWidth: "123px",
+                          letterSpacing: "1px",
+                          height: "60px",
+                          lineHeight: "1.2",
+                        }}
+                      >
+                        {installment.toLocaleString("tr-TR", {
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        ₺
                       </td>
                     ))}
                   </tr>
@@ -367,9 +601,15 @@ export default function CreditCalculator() {
           {/* Terms and Conditions */}
           <div className="mt-8 pt-8 border-t border-gray-200">
             <ul className="text-xs text-gray-600 space-y-2">
-              <li>• Şahıs vergi levhalı müşterilerimize geçerli ayrı avantajlar için %0,99 seçerek hesaplama ekranından ödeme planını indirebilirsiniz.</li>
+              <li>
+                • Şahıs vergi levhalı müşterilerimize geçerli ayrı avantajlar
+                için %0,99 seçerek hesaplama ekranından ödeme planını
+                indirebilirsiniz.
+              </li>
               <li>• Minimum Taşıt Kredisi 50.000 TL olarka geçerlidir.</li>
-              <li>• Dosya masrafları ödeme planı dışında ek olarak sunulmaktadır.</li>
+              <li>
+                • Dosya masrafları ödeme planı dışında ek olarak sunulmaktadır.
+              </li>
             </ul>
           </div>
         </div>
