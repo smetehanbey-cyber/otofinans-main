@@ -91,7 +91,7 @@ export default function ProductDropdown() {
                       backgroundColor: "#0f367e",
                       borderWidth: "2px",
                       borderStyle: "solid",
-                      borderImage: "linear-gradient(135deg, #e8e8e8, #b0b0b0) 1"
+                      borderColor: "#0f367e"
                     }}
                   >
                     {/* Product Image */}
