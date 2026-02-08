@@ -282,7 +282,7 @@ export default function CreditCalculator() {
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 {formattedMonthly}
               </p>
-              <p className="text-xs text-gray-600 mt-1 text-left">
+              <p className="text-xs font-semibold mt-1 text-left" style={{ color: "#0f367e" }}>
                 Peşinatsız Tamamına Kredi Olursa
               </p>
               <div className="mt-3 flex items-center gap-2">
