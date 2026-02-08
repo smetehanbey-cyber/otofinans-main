@@ -55,26 +55,22 @@ export default function ProductDropdown() {
           )}
         </div>
 
-        {/* Dropdown Menu - Transparent area + White content */}
+        {/* Dropdown Menu - Full width white content */}
         {isOpen && (
           <div
-            className="absolute left-1/2 transform -translate-x-1/2 z-40 w-screen origin-top"
-            style={{ 
-              animation: 'dropdownSlideIn 0.3s ease-out', 
-              top: '-30px',
-              pointerEvents: 'none'
+            className="fixed left-0 right-0 z-40 w-full origin-top"
+            style={{
+              animation: 'dropdownSlideIn 0.3s ease-out',
+              top: '100%',
+              pointerEvents: 'auto'
             }}
           >
-            {/* Transparent hover area (button üstüne kadar) */}
-            <div style={{ height: '30px', backgroundColor: 'transparent' }}></div>
-
-            {/* Transparent content area */}
+            {/* White content area - Full width */}
             <div
-              className="shadow-xl"
+              className="bg-white shadow-xl"
               style={{
                 borderTop: '2px solid #1f3a93',
-                pointerEvents: 'auto',
-                backgroundColor: 'rgba(255, 255, 255, 0)'
+                pointerEvents: 'auto'
               }}
             >
               {/* Dropdown Header */}
