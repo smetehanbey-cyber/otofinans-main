@@ -61,11 +61,11 @@ export default function CreditCalculator() {
   // Helper function to calculate monthly payment for any principal, rate, and duration
   const calculateMonthlyPayment = (
     principal: number,
-    monthlyRate: number,
+    ratePercent: number,
     months: number,
   ): number => {
     if (principal <= 0 || months <= 0) return 0;
-    const r = monthlyRate / 100;
+    const r = ratePercent / 100;
     const numerator = r * Math.pow(1 + r, months);
     const denominator = Math.pow(1 + r, months) - 1;
     return principal * (numerator / denominator);
