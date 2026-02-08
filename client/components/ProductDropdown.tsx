@@ -42,7 +42,7 @@ export default function ProductDropdown() {
         }
       `}</style>
       <div
-        className="relative"
+        className="relative group"
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
@@ -55,13 +55,11 @@ export default function ProductDropdown() {
         )}
       </div>
 
-      {/* Dropdown Menu */}
+      {/* Dropdown Menu - Absolute positioning relative to parent */}
       {isOpen && (
         <div
-          className="fixed left-0 right-0 bg-white shadow-xl z-40 transition-all duration-300 opacity-100 scale-100 origin-top"
-          style={{ animation: 'dropdownSlideIn 0.3s ease-out', top: '120px', borderTop: '2px solid #1f3a93' }}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
+          className="absolute left-1/2 transform -translate-x-1/2 bg-white shadow-xl z-40 transition-all duration-300 opacity-100 scale-100 origin-top w-screen"
+          style={{ animation: 'dropdownSlideIn 0.3s ease-out', top: '100%', borderTop: '2px solid #1f3a93', marginTop: '8px' }}
         >
           {/* Dropdown Header */}
           <div className="border-b border-gray-200 py-4 text-sm font-semibold text-gray-700">
