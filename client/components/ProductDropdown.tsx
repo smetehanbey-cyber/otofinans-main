@@ -117,7 +117,7 @@ export default function ProductDropdown() {
 
                     {/* Button */}
                     <div className="px-2 py-2" style={{
-                      backgroundColor: '#f0f4ff',
+                      backgroundColor: '#0f367e',
                       borderTopWidth: "2px",
                       borderTopStyle: "solid",
                       borderImage: "linear-gradient(to right, #e8e8e8, #b0b0b0) 1"
