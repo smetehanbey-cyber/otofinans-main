@@ -349,7 +349,7 @@ export default function CreditCalculator() {
                 <h3
                   style={{
                     margin: "0",
-                    fontSize: "20px",
+                    fontSize: "24px",
                     fontWeight: "bold",
                     letterSpacing: "2px",
                     fontFamily: '"Paytone One", sans-serif',
