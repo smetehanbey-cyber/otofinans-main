@@ -27,18 +27,19 @@ export default function CreditCalculator() {
   ];
 
   // Calculate monthly payment using compound interest formula
-  // Formula: installment = principal * (r * (1+r)^n) / ((1+r)^n - 1)
-  // where r = monthly rate as decimal, n = number of months
+  // Formula: installment = principal * (r * pow) / (pow - 1)
+  // where pow = Math.pow(1 + r, n) and r = ratePercent / 100
   const monthlyPayment = useMemo(() => {
     if (amount <= 0 || duration <= 0) return 0;
 
-    // Convert percentage to decimal (0.99% → 0.0099)
-    const monthlyRate = rate / 100;
+    // Convert percentage to decimal (e.g., 0.99% → 0.0099, 3.70% → 0.037)
+    const r = rate / 100;
 
-    // Compound interest formula for equal installments
-    const numerator = monthlyRate * Math.pow(1 + monthlyRate, duration);
-    const denominator = Math.pow(1 + monthlyRate, duration) - 1;
-    const monthlyPay = amount * (numerator / denominator);
+    // Calculate power term: (1 + r)^n
+    const pow = Math.pow(1 + r, duration);
+
+    // Apply equal installment formula: principal * (r * pow) / (pow - 1)
+    const monthlyPay = amount * (r * pow) / (pow - 1);
 
     return monthlyPay.toFixed(2);
   }, [amount, duration, rate]);
