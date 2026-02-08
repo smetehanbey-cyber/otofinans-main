@@ -61,7 +61,7 @@ export default function ProductDropdown() {
             className="fixed left-0 right-0 z-40 w-full origin-top"
             style={{
               animation: 'dropdownSlideIn 0.3s ease-out',
-              top: '100%',
+              top: '120px',
               pointerEvents: 'auto'
             }}
           >
