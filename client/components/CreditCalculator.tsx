@@ -58,17 +58,26 @@ export default function CreditCalculator() {
     currency: "TRY",
   }).format(parseFloat(totalPayment));
 
-  // Helper function to calculate monthly payment for any principal, rate, and duration
+  // Helper function to calculate monthly payment using compound interest formula
+  // Formula: installment = principal * (r * pow) / (pow - 1)
+  // where pow = Math.pow(1 + r, n) and r = ratePercent / 100
   const calculateMonthlyPayment = (
     principal: number,
     ratePercent: number,
     months: number,
   ): number => {
     if (principal <= 0 || months <= 0) return 0;
+
+    // Convert percentage to decimal (3.70 → 0.037)
     const r = ratePercent / 100;
-    const numerator = r * Math.pow(1 + r, months);
-    const denominator = Math.pow(1 + r, months) - 1;
-    return principal * (numerator / denominator);
+
+    // Calculate power term: (1 + r)^n
+    const pow = Math.pow(1 + r, months);
+
+    // Apply equal installment formula: principal * (r * pow) / (pow - 1)
+    const installment = principal * (r * pow) / (pow - 1);
+
+    return installment;
   };
 
   // Generate payment schedule table data with different down payment scenarios
