@@ -115,15 +115,15 @@ export default function ProductDropdown() {
                     </div>
 
                     {/* Button */}
-                    <div className="px-2 py-2 bg-white" style={{
+                    <div className="px-2 py-2" style={{
+                      backgroundColor: '#f0f4ff',
                       borderTopWidth: "2px",
                       borderTopStyle: "solid",
                       borderImage: "linear-gradient(to right, #e8e8e8, #b0b0b0) 1"
                     }}>
-                      <button className="w-full py-2 font-semibold text-xs rounded-full hover:bg-blue-800 transition-colors" style={{
-                        backgroundColor: "#0f367e",
-                        color: "#ffffff",
-                        border: "2px solid #0f367e"
+                      <button className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200" style={{
+                        border: "2px solid #0f367e",
+                        backgroundColor: "transparent"
                       }}>
                         {product.buttonText}
                       </button>
