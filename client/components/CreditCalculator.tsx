@@ -17,7 +17,7 @@ export default function CreditCalculator() {
       return;
     }
     setTableVisible(true);
-  }, [amount, duration, rate, productType, initialLoad]);
+  }, [amount, duration, rate, productType]);
 
   // Rate options for different customer types (monthly percentages)
   const rateOptions = [
