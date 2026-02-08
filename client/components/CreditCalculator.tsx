@@ -274,7 +274,7 @@ export default function CreditCalculator() {
           </div>
 
           {/* Results Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-gray-200 items-start">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 pb-8 border-b border-gray-200">
             <div>
               <p className="text-xs text-gray-600 mb-2 text-left">
                 Taksit Tutarı
@@ -315,7 +315,6 @@ export default function CreditCalculator() {
                 %{rate.toFixed(2)}
               </p>
             </div>
-            <div></div>
           </div>
 
           {/* Payment Schedule Table for PNG Export */}
