@@ -189,7 +189,7 @@ function KampanyalarCardsSection() {
                   </p>
                   <div className="campaign-button-wrapper">
                     <a
-                      href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                      href="https://wa.me/905324098440?text=Krediler%20hakkında%20bilgi%20almak%20istiyorum."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="campaign-button-link inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-3 text-white font-bold text-sm sm:text-base rounded-full hover:opacity-90 w-full sm:w-auto border-2"
@@ -198,7 +198,10 @@ function KampanyalarCardsSection() {
                         borderColor: "#2563eb",
                       }}
                     >
-                      <span>Hemen Başvur</span>
+                      <span className="button-text">Hemen Başvur</span>
+                      <svg className="whatsapp-icon w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.447-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a6.963 6.963 0 00-6.923 6.926c0 1.925.564 3.783 1.636 5.394L2.5 21.5l5.894-1.688c1.576.883 3.372 1.348 5.228 1.348h.004a6.976 6.976 0 006.923-6.973c0-1.857-.505-3.68-1.461-5.247A6.977 6.977 0 0011.78 6.979M19.5 3.651C17.853 2.064 15.604.5 12 .5 5.649.5.5 5.649.5 12c0 2.34.564 4.631 1.635 6.694L.5 23.5l5.385-1.542C9.344 23.213 11.125 23.5 12 23.5c6.351 0 11.5-5.149 11.5-11.5 0-3.604-1.564-7.017-4.5-9.349"/>
+                      </svg>
                     </a>
                   </div>
                 </div>
