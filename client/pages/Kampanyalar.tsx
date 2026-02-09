@@ -109,11 +109,11 @@ function KampanyalarCardsSection() {
                     style={
                       campaign.id === 1
                         ? {
-                            border: "3px solid #2563eb",
+                            border: "3px solid #0f367e",
                             borderRadius: "32px",
                             padding: "0",
-                            maxHeight: "400px",
-                            minHeight: "300px",
+                            maxHeight: "240px",
+                            minHeight: "180px",
                           }
                         : {
                             maxHeight: "256px",
