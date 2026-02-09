@@ -61,6 +61,17 @@ export default function BannerSlider() {
             alt={`Campaign slide ${index + 1}`}
             className="w-full h-full object-cover"
           />
+
+          {/* Left side text overlay */}
+          {slide.leftText && (
+            <div className="absolute inset-0 flex items-center z-10">
+              <div className="pl-4 sm:pl-8">
+                <p className="text-white font-bold text-2xl sm:text-4xl lg:text-5xl leading-tight whitespace-pre-line">
+                  {slide.leftText}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       ))}
 
