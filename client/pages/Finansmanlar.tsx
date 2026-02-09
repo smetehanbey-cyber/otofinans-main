@@ -105,8 +105,8 @@ export default function Finansmanlar() {
           </p>
         </div>
 
-        {/* About Us FAQ Section */}
-        <AboutFAQSection />
+        {/* Finansmanlar Section */}
+        <FinansmanlarFAQSection />
 
         {/* Market Data Section */}
         <PiyasaVerileri />
