@@ -39,7 +39,7 @@ export default function PiyasaVerileri() {
 
       try {
         const controller = new AbortController();
-        timeoutId = setTimeout(() => controller.abort(), 10000);
+        timeoutId = setTimeout(() => controller.abort(), 5000);
 
         const response = await fetch("/api/market-data", {
           signal: controller.signal,
@@ -52,30 +52,16 @@ export default function PiyasaVerileri() {
         if (timeoutId) clearTimeout(timeoutId);
 
         if (!response.ok) {
-          console.warn(
-            `Market data API error: ${response.status} ${response.statusText}`,
-          );
           return;
         }
 
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
           setMarketData(data);
-          console.log("Market data updated successfully");
         }
       } catch (error) {
         if (timeoutId) clearTimeout(timeoutId);
-
-        if (error instanceof Error) {
-          if (error.name === "AbortError") {
-            console.warn("Market data fetch timeout after 10 seconds");
-          } else {
-            console.warn("Market data fetch error:", error.message);
-          }
-        } else {
-          console.warn("Market data fetch failed:", error);
-        }
-        // Keep showing previous data on error (graceful degradation)
+        // Silent fail - keep showing previous data (graceful degradation)
       }
     };
 
