@@ -4,10 +4,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface Slide {
   id: number;
   image: string;
-  leftImage?: string;
-  title?: string;
-  subtitle?: string;
-  gradient?: string;
 }
 
 const slides: Slide[] = [
