@@ -101,7 +101,7 @@ function KampanyalarCardsSection() {
             >
               <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-2 p-2 md:p-3" : "gap-6 p-6 md:p-8"} ${campaign.id === 1 ? "md:min-h-[420px]" : ""}`}>
                 {/* Image */}
-                <div className={`flex items-center justify-center w-full ${campaign.id === 1 ? "h-full" : "h-auto"}`}>
+                <div className={`flex items-center justify-center w-full ${campaign.id === 1 ? "h-full p-0" : "h-auto"}`}>
                   <img
                     src={campaign.image}
                     alt={campaign.title}
