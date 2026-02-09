@@ -457,7 +457,7 @@ function AboutFAQSection() {
             href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-8 py-3 sm:px-10 sm:py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors duration-200"
+            className="inline-flex items-center justify-center px-6 py-2 sm:px-8 sm:py-3 bg-blue-600 text-white font-semibold text-sm sm:text-base rounded-full hover:bg-blue-700 transition-colors duration-200"
           >
             İletişime Geç
           </a>
