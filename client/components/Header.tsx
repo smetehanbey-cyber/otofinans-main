@@ -133,9 +133,18 @@ export default function Header() {
             <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               Kampanyalar
             </Link>
-            <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                const element = document.getElementById("credit-calculator");
+                if (element) {
+                  element.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }}
+              className="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
+            >
               Kredi Hesaplama
-            </Link>
+            </button>
             <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               İş Ortaklığı
             </Link>
