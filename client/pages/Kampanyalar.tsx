@@ -131,7 +131,7 @@ function KampanyalarCardsSection() {
       id: 1,
       title: "Hızlı Kredi Desteği",
       description: "20 Yaş'a Kadar Tüm Aracılarda Kredi Onayı OtoFinansında",
-      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F78d5f17173244bcda7edc13b4e5a7301?format=webp&width=800&height=1200",
+      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F92045d3d960f406e80a0a36b4ec1ada0?format=webp&width=800&height=1200",
     },
     {
       id: 2,
