@@ -100,7 +100,7 @@ function KampanyalarCardsSection() {
                 ...(campaign.id === 1 && { padding: "0" }),
               }}
             >
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-0 p-0" : "gap-6 p-6 md:p-8"} ${campaign.id === 1 ? "md:min-h-[420px]" : ""}`}>
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-0 p-0" : "gap-3 p-3 md:p-4"} ${campaign.id === 1 ? "md:min-h-[420px]" : ""}`}>
                 {/* Image */}
                 <div className={`flex items-center justify-center w-full ${campaign.id === 1 ? "h-full p-3 md:p-4" : "h-auto"}`}>
                   <img
