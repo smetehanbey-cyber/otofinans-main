@@ -105,13 +105,18 @@ function KampanyalarCardsSection() {
                   <img
                     src={campaign.image}
                     alt={campaign.title}
-                    className="w-full h-auto max-h-64 object-contain"
+                    className="w-full h-full object-cover"
                     style={{
                       ...(campaign.id === 1 && {
                         border: "3px solid #2563eb",
                         borderRadius: "32px",
-                        padding: "8px",
+                        padding: "0",
+                        maxHeight: "400px",
+                        minHeight: "300px",
                       }),
+                      ...(!campaign.id || campaign.id !== 1) && {
+                        maxHeight: "256px",
+                      },
                     }}
                   />
                 </div>
