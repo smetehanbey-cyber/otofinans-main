@@ -29,7 +29,6 @@ function KampanyalarCardsSection() {
       display: inline-flex !important;
       overflow: hidden;
       color: white !important;
-      mix-blend-mode: darken;
     }
 
     .campaign-button-link::before {
@@ -41,6 +40,13 @@ function KampanyalarCardsSection() {
       height: 100%;
       background: linear-gradient(to right, #22c55e, #16a34a);
       pointer-events: none;
+      z-index: 0;
+    }
+
+    .campaign-button-link span {
+      position: relative;
+      z-index: 2;
+      color: white !important;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link::before {
