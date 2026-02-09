@@ -27,9 +27,18 @@ export default function Header() {
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
                   Kampanyalar
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById("credit-calculator");
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                  }}
+                  className="text-gray-700 hover:text-primary font-medium cursor-pointer"
+                >
                   Kredi Hesaplama
-                </Link>
+                </button>
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
                   İş Ortaklığı
                 </Link>
