@@ -75,11 +75,12 @@ export default function BankLogosCarousel() {
       <style>{`
         .bank-carousel-wrapper {
           display: flex;
-          justify-center;
+          justify-content: center;
           align-items: center;
           overflow: hidden;
           padding: 20px 0;
           position: relative;
+          width: 100%;
         }
 
         .bank-carousel-container {
@@ -87,6 +88,7 @@ export default function BankLogosCarousel() {
           gap: 16px;
           padding: 0 16px;
           will-change: transform;
+          position: relative;
         }
 
         .bank-item {
