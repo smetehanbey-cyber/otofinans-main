@@ -28,27 +28,16 @@ function KampanyalarCardsSection() {
       position: relative;
       display: inline-flex !important;
       overflow: hidden;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
+      color: white;
     }
 
     .campaign-button-link::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 0%;
-      height: 100%;
       background: linear-gradient(to right, #22c55e, #16a34a);
-      z-index: 1;
       pointer-events: none;
-    }
-
-    .campaign-button-link * {
-      position: relative;
-      z-index: 2;
-      color: white;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link::before {
