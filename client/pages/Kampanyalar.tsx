@@ -20,8 +20,9 @@ function KampanyalarCardsSection() {
 
     .campaign-button-wrapper {
       position: relative;
-      display: block;
+      display: flex;
       width: 100%;
+      align-items: center;
     }
 
     .campaign-button-link {
