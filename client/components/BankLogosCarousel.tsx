@@ -71,8 +71,8 @@ export default function BankLogosCarousel() {
         }
 
         .bank-logo {
-          width: 32px;
-          height: 32px;
+          width: 50px;
+          height: 50px;
           background: linear-gradient(to bottom right, #93c5fd, #60a5fa);
           border-radius: 50%;
           display: flex;
