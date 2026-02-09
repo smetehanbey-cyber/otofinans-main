@@ -130,8 +130,8 @@ export default function BankLogosCarousel() {
         }
 
         .bank-logo {
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
           background: linear-gradient(to bottom right, #93c5fd, #60a5fa);
           border-radius: 50%;
           display: flex;
@@ -146,8 +146,8 @@ export default function BankLogosCarousel() {
         }
 
         .bank-item.center-item .bank-logo {
-          width: 80px;
-          height: 80px;
+          width: 60px;
+          height: 60px;
           box-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.5);
         }
 
