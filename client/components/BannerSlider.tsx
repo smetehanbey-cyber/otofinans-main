@@ -45,21 +45,6 @@ export default function BannerSlider() {
 
   return (
     <div className="relative w-full h-56 overflow-hidden rounded-xl shadow-lg">
-      <style>{`
-        @keyframes slideInText {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-slide-in-text {
-          animation: slideInText 0.6s ease-out forwards;
-        }
-      `}</style>
 
       {/* Slides */}
       {slides.map((slide, index) => (
