@@ -76,11 +76,11 @@ function KampanyalarCardsSection() {
   ];
 
   return (
-    <section className="py-8 sm:py-12 bg-gray-50">
+    <section className="py-4 sm:py-6 bg-gray-50">
       <style>{progressBarStyles}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12">
+        <div className="text-center mb-3 sm:mb-4">
           <h2
             className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
             style={{ color: "#0f367e" }}
@@ -90,7 +90,7 @@ function KampanyalarCardsSection() {
         </div>
 
         {/* Campaign Cards */}
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-3">
           {campaigns.map((campaign) => (
             <div
               key={campaign.id}
