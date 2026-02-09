@@ -21,7 +21,7 @@ export default function Header() {
                 <Link to="/hakkimizda" className="text-gray-700 hover:text-primary font-medium">
                   Hakkımızda
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link to="/finansmanlar" className="text-gray-700 hover:text-primary font-medium">
                   Finansmanlar
                 </Link>
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
