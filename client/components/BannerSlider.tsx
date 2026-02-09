@@ -68,7 +68,7 @@ export default function BannerSlider() {
           {slide.leftText && (
             <div className="absolute inset-0 flex items-center z-10">
               <div className="pl-2 sm:pl-6 md:pl-8">
-                <p className="text-white font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight whitespace-pre-line">
+                <p className="text-white font-bold text-3xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight whitespace-pre-line">
                   {slide.leftText}
                 </p>
               </div>
