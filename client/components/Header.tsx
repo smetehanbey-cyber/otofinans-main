@@ -40,13 +40,7 @@ export default function Header() {
                   Kampanyalar
                 </Link>
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const element = document.getElementById("credit-calculator");
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }
-                  }}
+                  onClick={handleCreditCalculatorClick}
                   className="text-gray-700 hover:text-primary font-medium cursor-pointer"
                 >
                   Kredi Hesaplama
