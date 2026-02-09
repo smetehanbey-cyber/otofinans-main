@@ -32,8 +32,8 @@ export default function BankLogosCarousel() {
   const ITEM_WIDTH = 70; // Width + gap
   const SCROLL_DURATION = 600; // Smooth scroll duration in ms
 
-  // Start with the middle of the first set visible in center
-  const INITIAL_OFFSET = Math.floor(banksBase.length / 2) * ITEM_WIDTH;
+  // Start with first set (so first bank appears centered)
+  const INITIAL_OFFSET = banksBase.length * ITEM_WIDTH;
 
   // Auto-scroll every 2 seconds
   useEffect(() => {
