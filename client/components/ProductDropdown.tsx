@@ -4,7 +4,7 @@ const products = [
   {
     id: 1,
     title: "Peşinatsız Destek",
-    subtitle: "30 Dakika'da kredin hazır! Aracın Hemen Kapıda!",
+    subtitle: "30 Dakika'da Kredin Hazır! Aracın Hemen Kapıda!",
     image:
       "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fd48ae6be8511489c8905ee933513aed5?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
