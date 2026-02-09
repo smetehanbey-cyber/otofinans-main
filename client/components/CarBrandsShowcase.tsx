@@ -130,22 +130,42 @@ export default function CarBrandsShowcase() {
         .carousel-container {
           scroll-behavior: smooth;
         }
-        
+
+        .mobile-brands-scroll {
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
+        }
+
+        .mobile-brands-scroll::-webkit-scrollbar {
+          height: 4px;
+        }
+
+        .mobile-brands-scroll::-webkit-scrollbar-track {
+          background: #f0f0f0;
+        }
+
+        .mobile-brands-scroll::-webkit-scrollbar-thumb {
+          background: #c0c0c0;
+          border-radius: 2px;
+        }
+
         @media (max-width: 768px) {
           .brands-scroll-container {
             overflow-x: auto;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
           }
-          
+
           .brands-scroll-container::-webkit-scrollbar {
             height: 4px;
           }
-          
+
           .brands-scroll-container::-webkit-scrollbar-track {
             background: #f0f0f0;
           }
-          
+
           .brands-scroll-container::-webkit-scrollbar-thumb {
             background: #c0c0c0;
             border-radius: 2px;
