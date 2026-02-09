@@ -123,14 +123,14 @@ function KampanyalarCardsSection() {
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col justify-center">
+                <div className={`flex flex-col justify-center ${campaign.id === 1 ? "p-0" : ""}`}>
                   <h3
-                    className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
+                    className={`font-bold ${campaign.id === 1 ? "text-lg mb-1" : "text-lg sm:text-xl lg:text-2xl mb-3"}`}
                     style={{ color: "#0f367e" }}
                   >
                     {campaign.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-700 mb-6 leading-relaxed">
+                  <p className={`text-gray-700 leading-relaxed ${campaign.id === 1 ? "text-sm mb-2" : "text-sm sm:text-base mb-6"}`}>
                     {campaign.description}
                   </p>
                   <div className="campaign-button-wrapper">
