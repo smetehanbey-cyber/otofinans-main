@@ -41,9 +41,10 @@ function KampanyalarCardsSection() {
       pointer-events: none;
     }
 
-    .campaign-button-link > * {
+    .campaign-button-link span,
+    .campaign-button-link {
       position: relative;
-      z-index: 2;
+      color: white;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link::before {
