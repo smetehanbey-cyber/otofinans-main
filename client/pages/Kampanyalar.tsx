@@ -42,6 +42,7 @@ function KampanyalarCardsSection() {
       background: linear-gradient(to right, #22c55e, #16a34a);
       pointer-events: none;
       z-index: 0;
+      border-radius: 9999px;
     }
 
     .campaign-button-link span {
