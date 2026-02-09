@@ -100,19 +100,19 @@ function FinansmanlarFAQSection() {
                       <h4 className="font-semibold text-sm text-gray-900 mb-3">
                         Sunulan Finansman Seçenekleri:
                       </h4>
-                      <div className="flex items-center gap-3 overflow-x-auto pb-2">
+                      <div className="flex items-center gap-3 overflow-x-auto pb-2 flex-wrap">
                         {bank.financingTypes.split(", ").map((type, typeIdx) => (
                           <div
                             key={typeIdx}
-                            className="flex items-center justify-center w-24 h-24 border-2 flex-shrink-0 transition-colors rounded-full"
+                            className="flex items-center justify-center px-5 py-2 border-2 flex-shrink-0 transition-all rounded-full whitespace-nowrap"
                             style={{
-                              borderColor: "#0f367e",
-                              backgroundColor: "#f0f4ff",
+                              borderColor: "rgba(255, 255, 255, 0.6)",
+                              background: "linear-gradient(to right, #0f367e, #1a4d9e)",
                             }}
                           >
                             <span
-                              className="text-center text-xs font-semibold px-2"
-                              style={{ color: "#0f367e", lineHeight: "1.3" }}
+                              className="text-center text-xs sm:text-sm font-semibold"
+                              style={{ color: "#ffffff" }}
                             >
                               {type}
                             </span>
