@@ -94,7 +94,7 @@ export default function BankLogosCarousel() {
 
         .bank-name {
           color: #374151;
-          font-size: 15px;
+          font-size: 14px;
           text-align: left;
           flex: 1;
           overflow: hidden;
@@ -104,11 +104,11 @@ export default function BankLogosCarousel() {
         @media (max-width: 640px) {
           .bank-item {
             flex: 0 0 auto;
-            font-size: 13px;
+            font-size: 12px;
           }
 
           .bank-name {
-            font-size: 13px;
+            font-size: 12px;
           }
         }
       `}</style>
