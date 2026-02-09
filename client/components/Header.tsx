@@ -75,7 +75,9 @@ export default function Header() {
                   Aracını Hızlı Sat
                 </button>
                 <a
-                  href="tel:+905324098440"
+                  href="https://wa.me/905324098440?text=Kredi%20Başvurusu%20Yapmak%20İstiyorum"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="px-5 py-1.5 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white rounded text-xs font-semibold hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors"
                 >
                   Kredi Kullan
