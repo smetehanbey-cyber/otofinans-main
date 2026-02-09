@@ -104,10 +104,11 @@ function FinansmanlarFAQSection() {
                         {bank.financingTypes.split(", ").map((type, typeIdx) => (
                           <div
                             key={typeIdx}
-                            className="flex items-center justify-center w-28 h-28 rounded-full border-2 transition-colors"
+                            className="flex items-center justify-center w-28 h-28 border-2 transition-colors"
                             style={{
                               borderColor: "#0f367e",
                               backgroundColor: "#f0f4ff",
+                              borderRadius: "5px",
                             }}
                           >
                             <span
