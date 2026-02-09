@@ -71,18 +71,12 @@ function KampanyalarCardsSection() {
   const campaigns = [
     {
       id: 1,
-      title: "Peşinatsız Destek",
-      description: "30 Dakikada Kredi! Aracın Hemen Kapında",
-      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F78d5f17173244bcda7edc13b4e5a7301?format=webp&width=800&height=1200",
-    },
-    {
-      id: 2,
       title: "Hızlı Kredi Desteği",
       description: "20 Yaş'a Kadar Tüm Aracılarda Kredi Onayı OtoFinansında",
       image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F78d5f17173244bcda7edc13b4e5a7301?format=webp&width=800&height=1200",
     },
     {
-      id: 3,
+      id: 2,
       title: "Ön Onaylı +800.000TL Kredi Limitini Hazır!",
       description: "Limitini Etkilemeden Ön Onaylı Kredini Hemen Kullan! Fırsatları kaçırma!",
       image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F78d5f17173244bcda7edc13b4e5a7301?format=webp&width=800&height=1200",
