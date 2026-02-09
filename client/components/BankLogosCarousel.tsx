@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const banksBase = [
   { name: "Akbank", code: "AKB", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40cf2a6e226b47bd9314e9bbaede9785?format=webp&width=800&height=1200" },
@@ -21,19 +21,25 @@ const banksBase = [
   { name: "otovadeli.com", code: "OVD", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4b1136e327a45d9a4585303fb14f28c?format=webp&width=800&height=1200" },
 ];
 
+// Create infinite loop by repeating the array
+const banks = [...banksBase, ...banksBase, ...banksBase];
+
 export default function BankLogosCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [scrollOffset, setScrollOffset] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-advance every 2 seconds
+  const ITEM_WIDTH = 70; // Width + gap
+  const SCROLL_DURATION = 600; // Smooth scroll duration in ms
+
+  // Auto-scroll every 2 seconds
   useEffect(() => {
-    const autoAdvance = () => {
-      setCurrentIndex((prev) => (prev + 1) % banksBase.length);
-      scrollTimeoutRef.current = setTimeout(autoAdvance, 2000);
+    const autoScroll = () => {
+      setScrollOffset((prev) => prev + ITEM_WIDTH);
+      scrollTimeoutRef.current = setTimeout(autoScroll, 2000);
     };
 
-    scrollTimeoutRef.current = setTimeout(autoAdvance, 2000);
+    scrollTimeoutRef.current = setTimeout(autoScroll, 2000);
 
     return () => {
       if (scrollTimeoutRef.current) {
@@ -42,21 +48,15 @@ export default function BankLogosCarousel() {
     };
   }, []);
 
-  // Scroll to keep center item visible
+  // Apply scroll with smooth transition
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (containerRef.current) {
+      containerRef.current.style.transition = `transform ${SCROLL_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`;
+      containerRef.current.style.transform = `translateX(-${scrollOffset}px)`;
+    }
+  }, [scrollOffset]);
 
-    const itemWidth = 70; // Item width + gap
-    const containerWidth = containerRef.current.offsetWidth;
-    const scrollPosition = currentIndex * itemWidth - (containerWidth / 2 - itemWidth / 2);
-
-    containerRef.current.scrollTo({
-      left: scrollPosition,
-      behavior: "smooth",
-    });
-  }, [currentIndex]);
-
-  // Prevent mouse wheel and touch scrolling
+  // Prevent mouse/touch interaction
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
   };
@@ -68,20 +68,22 @@ export default function BankLogosCarousel() {
   return (
     <div className="w-full bg-gray-50 border-y border-gray-200">
       <style>{`
+        .bank-carousel-wrapper {
+          display: flex;
+          justify-center;
+          align-items: center;
+          overflow: hidden;
+          padding: 20px 0;
+          position: relative;
+        }
+
         .bank-carousel-container {
           display: flex;
           gap: 16px;
-          padding: 20px 16px;
-          scroll-behavior: smooth;
-          -webkit-overflow-scrolling: auto;
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+          padding: 0 16px;
+          will-change: transform;
         }
-        
-        .bank-carousel-container::-webkit-scrollbar {
-          display: none;
-        }
-        
+
         .bank-item {
           flex: 0 0 auto;
           display: flex;
@@ -92,15 +94,16 @@ export default function BankLogosCarousel() {
           font-size: 13px;
           font-weight: 500;
           white-space: nowrap;
-          transition: transform 0.4s ease, opacity 0.4s ease;
           opacity: 0.5;
+          transition: opacity 0.4s ease, transform 0.4s ease;
         }
-        
-        .bank-item.selected {
+
+        /* Center item - ortada gelen item */
+        .bank-item.center-item {
           transform: scale(1.3);
           opacity: 1;
         }
-        
+
         .bank-logo {
           width: 40px;
           height: 40px;
@@ -116,54 +119,74 @@ export default function BankLogosCarousel() {
           flex-shrink: 0;
           transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
-        
+
         .bank-logo img {
           width: 100%;
           height: 100%;
           object-fit: contain;
           padding: 4px;
         }
-        
-        .bank-item.selected .bank-logo {
+
+        .bank-item.center-item .bank-logo {
           transform: scale(1.25);
           box-shadow: 0 0 20px rgba(59, 130, 246, 0.7), 0 0 30px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.3);
         }
-        
+
         .bank-name {
           color: #374151;
           transition: color 0.4s ease, font-weight 0.4s ease;
           font-size: 12px;
         }
-        
-        .bank-item.selected .bank-name {
+
+        .bank-item.center-item .bank-name {
           color: #0f367e;
           font-weight: 700;
           font-size: 13px;
         }
+
+        /* Center indicator - invisible reference point */
+        .center-indicator {
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 70px;
+          margin-left: -35px;
+          pointer-events: none;
+        }
       `}</style>
 
-      <div className="flex justify-center items-center overflow-hidden">
+      <div className="bank-carousel-wrapper" onWheel={handleWheel} onTouchStart={handleTouchStart}>
+        {/* Center indicator */}
+        <div className="center-indicator"></div>
+
+        {/* Scrolling container */}
         <div
-          className="bank-carousel-container w-full overflow-x-auto"
+          className="bank-carousel-container"
           ref={containerRef}
-          onWheel={handleWheel}
-          onTouchStart={handleTouchStart}
         >
-          {banksBase.map((bank, index) => (
-            <div
-              key={index}
-              className={`bank-item ${index === currentIndex ? "selected" : ""}`}
-            >
-              <div className="bank-logo">
-                {bank.logo ? (
-                  <img src={bank.logo} alt={bank.name} />
-                ) : (
-                  bank.code
-                )}
+          {banks.map((bank, index) => {
+            // Calculate if this item is in the center position
+            const centerPosition = Math.round(scrollOffset / ITEM_WIDTH) % banksBase.length;
+            const itemPosition = index % banksBase.length;
+            const isCenterItem = itemPosition === centerPosition;
+
+            return (
+              <div
+                key={index}
+                className={`bank-item ${isCenterItem ? "center-item" : ""}`}
+              >
+                <div className="bank-logo">
+                  {bank.logo ? (
+                    <img src={bank.logo} alt={bank.name} />
+                  ) : (
+                    bank.code
+                  )}
+                </div>
+                <span className="bank-name">{bank.name}</span>
               </div>
-              <span className="bank-name">{bank.name}</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
