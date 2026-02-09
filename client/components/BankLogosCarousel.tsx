@@ -82,7 +82,7 @@ export default function BankLogosCarousel() {
   const duplicatedBanks = [...banksBase, ...banksBase];
 
   return (
-    <div className="w-full bg-gray-50 border-y border-gray-200">
+    <div className="w-full">
       <style>{`
         .bank-carousel-wrapper {
           display: flex;
