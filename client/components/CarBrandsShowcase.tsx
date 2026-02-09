@@ -173,11 +173,11 @@ export default function CarBrandsShowcase() {
         }
       `}</style>
 
-      <div className="max-w-full overflow-hidden md:overflow-visible">
+      <div className="max-w-full">
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
-          className="brands-scroll-container hidden md:block w-full cursor-grab active:cursor-grabbing"
+          className="brands-scroll-container hidden md:block w-full cursor-grab active:cursor-grabbing overflow-hidden"
         >
           <div
             className="carousel-container flex gap-4 p-4 transition-transform duration-200 ease-out"
