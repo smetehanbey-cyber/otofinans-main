@@ -9,12 +9,12 @@ import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 function KampanyalarCardsSection() {
   // Add CSS styles for the progress bar animation
   const progressBarStyles = `
-    @keyframes greenProgressBar {
+    @keyframes greenFillBackground {
       from {
-        width: 0%;
+        background: linear-gradient(to right, #0f367e, #1a4d9e);
       }
       to {
-        width: 100%;
+        background: linear-gradient(to right, #22c55e, #16a34a);
       }
     }
 
@@ -22,23 +22,14 @@ function KampanyalarCardsSection() {
       position: relative;
       display: block;
       width: 100%;
-      overflow: hidden;
-      border-radius: 24px;
     }
 
-    .campaign-button-wrapper::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 4px;
-      background-color: #22c55e;
-      width: 0%;
-      border-radius: 0;
+    .campaign-button-link {
+      transition: none;
     }
 
-    .campaign-button-wrapper:hover::after {
-      animation: greenProgressBar 3s ease-in-out forwards;
+    .campaign-button-wrapper:hover .campaign-button-link {
+      animation: greenFillBackground 15s ease-in-out forwards;
     }
   `;
 
