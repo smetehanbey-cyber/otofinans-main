@@ -24,7 +24,7 @@ export default function Header() {
                 <Link to="/finansmanlar" className="text-gray-700 hover:text-primary font-medium">
                   Finansmanlar
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link to="/kampanyalar" className="text-gray-700 hover:text-primary font-medium">
                   Kampanyalar
                 </Link>
                 <button
