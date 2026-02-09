@@ -135,16 +135,17 @@ export default function ProductDropdown() {
                       />
                     </div>
 
-                    {/* Product Content */}
+                    {/* Product Content - Flex column to push button down */}
                     <div
-                      className="text-white"
-                      style={{ backgroundColor: "#1e2f79", padding: "8px" }}
+                      className="text-white flex flex-col flex-grow"
+                      style={{ backgroundColor: "#0f367e", padding: "12px" }}
                     >
-                      <h3 className="text-base font-bold mb-0">
+                      <div className="flex-grow"></div>
+                      <h3 className="text-sm font-bold mb-1">
                         {product.title}
                       </h3>
                       {product.subtitle && (
-                        <p className="text-base text-blue-100 mb-0.5">
+                        <p className="text-xs text-blue-100 mb-0">
                           {product.subtitle}
                         </p>
                       )}
