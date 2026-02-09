@@ -21,44 +21,65 @@ const banksBase = [
   { name: "otovadeli.com", code: "OVD", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4b1136e327a45d9a4585303fb14f28c?format=webp&width=800&height=1200" },
 ];
 
-// Duplicate banks for seamless infinite scroll
-const banks = [...banksBase, ...banksBase, ...banksBase];
-
 export default function BankLogosCarousel() {
-  const [centerIndex, setCenterIndex] = useState(Math.floor(banksBase.length / 2));
+  const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-scroll effect
+  // Auto-advance every 2 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCenterIndex((prev) => (prev + 1) % banksBase.length);
-    }, 4000);
+    const autoAdvance = () => {
+      setCurrentIndex((prev) => (prev + 1) % banksBase.length);
+      scrollTimeoutRef.current = setTimeout(autoAdvance, 2000);
+    };
 
-    return () => clearInterval(interval);
+    scrollTimeoutRef.current = setTimeout(autoAdvance, 2000);
+
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
+  // Scroll to keep center item visible
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const itemWidth = 70; // Item width + gap
+    const containerWidth = containerRef.current.offsetWidth;
+    const scrollPosition = currentIndex * itemWidth - (containerWidth / 2 - itemWidth / 2);
+
+    containerRef.current.scrollTo({
+      left: scrollPosition,
+      behavior: "smooth",
+    });
+  }, [currentIndex]);
+
+  // Prevent mouse wheel and touch scrolling
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="w-full bg-gray-50 border-y border-gray-200 overflow-hidden">
+    <div className="w-full bg-gray-50 border-y border-gray-200">
       <style>{`
         .bank-carousel-container {
           display: flex;
           gap: 16px;
           padding: 20px 16px;
-          width: fit-content;
-          animation: scroll-continuous 80s linear infinite;
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: auto;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
         
-        @keyframes scroll-continuous {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(calc(-${banksBase.length} * 70px - ${banksBase.length} * 16px));
-          }
-        }
-        
-        .bank-carousel-container:hover {
-          animation-play-state: paused;
+        .bank-carousel-container::-webkit-scrollbar {
+          display: none;
         }
         
         .bank-item {
@@ -71,12 +92,12 @@ export default function BankLogosCarousel() {
           font-size: 13px;
           font-weight: 500;
           white-space: nowrap;
-          transition: transform 0.3s ease, opacity 0.3s ease;
-          opacity: 0.6;
+          transition: transform 0.4s ease, opacity 0.4s ease;
+          opacity: 0.5;
         }
         
         .bank-item.selected {
-          transform: scale(1.25);
+          transform: scale(1.3);
           opacity: 1;
         }
         
@@ -93,7 +114,7 @@ export default function BankLogosCarousel() {
           color: #1e3a8a;
           overflow: hidden;
           flex-shrink: 0;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
         
         .bank-logo img {
@@ -104,47 +125,45 @@ export default function BankLogosCarousel() {
         }
         
         .bank-item.selected .bank-logo {
-          transform: scale(1.2);
-          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.6), 0 0 12px rgba(59, 130, 246, 0.4);
+          transform: scale(1.25);
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.7), 0 0 30px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.3);
         }
         
         .bank-name {
           color: #374151;
-          transition: color 0.3s ease, font-weight 0.3s ease;
+          transition: color 0.4s ease, font-weight 0.4s ease;
+          font-size: 12px;
         }
         
         .bank-item.selected .bank-name {
           color: #0f367e;
           font-weight: 700;
+          font-size: 13px;
         }
       `}</style>
 
       <div className="flex justify-center items-center overflow-hidden">
-        <div className="relative w-full flex justify-center">
-          {/* Center indicator line */}
-          <div className="absolute top-0 bottom-0 w-1 bg-blue-400 opacity-0 z-10" style={{ left: "50%" }}></div>
-          
-          {/* Scrolling container */}
-          <div className="bank-carousel-container">
-            {banks.map((bank, index) => {
-              const isCenterItem = (index % banksBase.length) === centerIndex;
-              return (
-                <div
-                  key={index}
-                  className={`bank-item ${isCenterItem ? "selected" : ""}`}
-                >
-                  <div className="bank-logo">
-                    {bank.logo ? (
-                      <img src={bank.logo} alt={bank.name} />
-                    ) : (
-                      bank.code
-                    )}
-                  </div>
-                  <span className="bank-name">{bank.name}</span>
-                </div>
-              );
-            })}
-          </div>
+        <div
+          className="bank-carousel-container w-full overflow-x-auto"
+          ref={containerRef}
+          onWheel={handleWheel}
+          onTouchStart={handleTouchStart}
+        >
+          {banksBase.map((bank, index) => (
+            <div
+              key={index}
+              className={`bank-item ${index === currentIndex ? "selected" : ""}`}
+            >
+              <div className="bank-logo">
+                {bank.logo ? (
+                  <img src={bank.logo} alt={bank.name} />
+                ) : (
+                  bank.code
+                )}
+              </div>
+              <span className="bank-name">{bank.name}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
