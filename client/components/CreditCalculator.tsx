@@ -342,56 +342,7 @@ export default function CreditCalculator() {
               transform: tableVisible ? "translateY(0)" : "translateY(-20px)",
             }}
           >
-            {/* Header */}
-            <div
-              style={{
-                backgroundColor: "#1a2b7d",
-                color: "#ffffff",
-                padding: "12px",
-                marginBottom: "0",
-                borderRadius: "0",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: "12px",
-              }}
-            >
-              <div style={{ flex: 1, minWidth: "0" }}>
-                <h3
-                  style={{
-                    margin: "0",
-                    fontSize: "clamp(14px, 4vw, 24px)",
-                    fontWeight: "bold",
-                    letterSpacing: "1px",
-                    fontFamily: '"Paytone One", sans-serif',
-                    textAlign: "left",
-                    verticalAlign: "middle",
-                    lineHeight: "1.2",
-                    wordBreak: "break-word",
-                  }}
-                >
-                  {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
-                  ÖRNEK ÖDEME TABLOSU
-                </h3>
-              </div>
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F475a3c8d7d4e4dda994162d8b3ea3e67?format=webp&width=800&height=1200"
-                alt="Oto Finans Logo"
-                style={{ height: "50px", width: "auto", objectFit: "contain", flexShrink: 0 }}
-              />
-            </div>
-
-            {/* Separator Line */}
-            <div
-              style={{
-                height: "5px",
-                backgroundColor: "#6d2fce",
-                width: "100%",
-              }}
-            ></div>
-
-            {/* Table Wrapper for Horizontal Scroll on Mobile */}
+            {/* Table Wrapper for Horizontal Scroll on Mobile - includes header */}
             <div
               style={{
                 overflowX: "auto",
@@ -400,6 +351,56 @@ export default function CreditCalculator() {
                 marginBottom: "0",
               }}
             >
+              {/* Header */}
+              <div
+                style={{
+                  backgroundColor: "#1a2b7d",
+                  color: "#ffffff",
+                  padding: "10px 12px",
+                  marginBottom: "0",
+                  borderRadius: "0",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "nowrap",
+                  gap: "12px",
+                  minWidth: "900px",
+                }}
+              >
+                <div style={{ flex: 1, minWidth: "0" }}>
+                  <h3
+                    style={{
+                      margin: "0",
+                      fontSize: "clamp(12px, 2.5vw, 20px)",
+                      fontWeight: "bold",
+                      letterSpacing: "0.5px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      textAlign: "left",
+                      verticalAlign: "middle",
+                      lineHeight: "1.3",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
+                    ÖRNEK ÖDEME TABLOSU
+                  </h3>
+                </div>
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F475a3c8d7d4e4dda994162d8b3ea3e67?format=webp&width=800&height=1200"
+                  alt="Oto Finans Logo"
+                  style={{ height: "45px", width: "auto", objectFit: "contain", flexShrink: 0 }}
+                />
+              </div>
+
+              {/* Separator Line */}
+              <div
+                style={{
+                  height: "5px",
+                  backgroundColor: "#6d2fce",
+                  width: "100%",
+                }}
+              ></div>
               {/* Table */}
               <table
                 style={{
