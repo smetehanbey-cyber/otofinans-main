@@ -104,10 +104,10 @@ export default function BankLogosCarousel() {
 
         .bank-carousel-track {
           display: flex;
-          gap: 16px;
+          gap: 0;
           position: relative;
           transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-          transform: translateX(calc(-${itemWidth}px * var(--scroll-index)));
+          transform: translateX(calc(-160px * var(--scroll-index)));
         }
 
         .bank-item {
