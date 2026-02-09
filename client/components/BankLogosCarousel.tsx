@@ -22,42 +22,34 @@ const banksBase = [
 ];
 
 export default function BankLogosCarousel() {
-  const [centerIndex, setCenterIndex] = useState(0);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Auto-advance every 2 seconds
-  useEffect(() => {
-    const autoAdvance = () => {
-      setCenterIndex((prev) => (prev + 1) % banksBase.length);
-      timeoutRef.current = setTimeout(autoAdvance, 2000);
-    };
-
-    timeoutRef.current = setTimeout(autoAdvance, 2000);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+  // Duplicate banks for seamless infinite scroll
+  const duplicatedBanks = [...banksBase, ...banksBase];
 
   return (
     <div className="w-full bg-gray-50 border-y border-gray-200">
       <style>{`
-        .bank-carousel-wrapper {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          overflow-x: auto;
-          padding: 20px 16px;
-          gap: 16px;
-          -webkit-overflow-scrolling: touch;
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+        @keyframes scrollLeft {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
 
-        .bank-carousel-wrapper::-webkit-scrollbar {
-          display: none;
+        .bank-carousel-wrapper {
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          padding: 20px 16px;
+          gap: 16px;
+          width: 100%;
+        }
+
+        .bank-carousel-track {
+          display: flex;
+          gap: 16px;
+          animation: scrollLeft 30s linear infinite;
         }
 
         .bank-item {
@@ -70,12 +62,6 @@ export default function BankLogosCarousel() {
           font-size: 13px;
           font-weight: 500;
           white-space: nowrap;
-          transition: transform 0.4s ease, opacity 0.4s ease;
-          opacity: 0.5;
-        }
-
-        .bank-item.center-item {
-          transform: scale(1.3);
           opacity: 1;
         }
 
@@ -92,7 +78,6 @@ export default function BankLogosCarousel() {
           color: #1e3a8a;
           overflow: hidden;
           flex-shrink: 0;
-          transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
         .bank-logo img {
@@ -102,40 +87,30 @@ export default function BankLogosCarousel() {
           padding: 4px;
         }
 
-        .bank-item.center-item .bank-logo {
-          transform: scale(1.25);
-          box-shadow: 0 0 20px rgba(59, 130, 246, 0.7), 0 0 30px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-
         .bank-name {
           color: #374151;
-          transition: color 0.4s ease, font-weight 0.4s ease;
           font-size: 12px;
-        }
-
-        .bank-item.center-item .bank-name {
-          color: #0f367e;
-          font-weight: 700;
-          font-size: 13px;
         }
       `}</style>
 
       <div className="bank-carousel-wrapper">
-        {banksBase.map((bank, index) => (
-          <div
-            key={index}
-            className={`bank-item ${index === centerIndex ? "center-item" : ""}`}
-          >
-            <div className="bank-logo">
-              {bank.logo ? (
-                <img src={bank.logo} alt={bank.name} />
-              ) : (
-                bank.code
-              )}
+        <div className="bank-carousel-track">
+          {duplicatedBanks.map((bank, index) => (
+            <div
+              key={index}
+              className="bank-item"
+            >
+              <div className="bank-logo">
+                {bank.logo ? (
+                  <img src={bank.logo} alt={bank.name} />
+                ) : (
+                  bank.code
+                )}
+              </div>
+              <span className="bank-name">{bank.name}</span>
             </div>
-            <span className="bank-name">{bank.name}</span>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
