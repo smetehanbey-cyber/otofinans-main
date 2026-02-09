@@ -22,32 +22,14 @@ const banksBase = [
 ];
 
 export default function BankLogosCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [scroll, setScroll] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef(0);
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const totalBanks = banksBase.length;
-  const arcRadius = 120;
-  const arcAngle = 180; // degrees for the arc
-  const itemsInView = 5; // number of items visible in the arc
-
-  // Calculate angle for each item in the arc
-  const getItemAngle = (index: number) => {
-    const centerIndex = Math.floor(itemsInView / 2);
-    const offset = index - centerIndex;
-    return (offset * arcAngle) / (itemsInView - 1) - 90; // -90 to start from bottom
-  };
-
-  // Calculate position for each item in the arc
-  const getItemPosition = (index: number) => {
-    const angle = getItemAngle(index);
-    const rad = (angle * Math.PI) / 180;
-    const x = arcRadius * Math.cos(rad);
-    const y = arcRadius * Math.sin(rad);
-    return { x, y };
-  };
+  const itemWidth = 110; // width of each bank item in pixels
+  const centerOffset = itemWidth / 2;
 
   // Reset auto-advance timer
   const resetAutoAdvance = () => {
@@ -55,7 +37,7 @@ export default function BankLogosCarousel() {
       clearTimeout(autoAdvanceRef.current);
     }
     autoAdvanceRef.current = setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % totalBanks);
+      setScroll((prev) => prev + itemWidth);
     }, 2000);
   };
 
@@ -66,17 +48,16 @@ export default function BankLogosCarousel() {
         clearTimeout(autoAdvanceRef.current);
       }
     };
-  }, [currentIndex]);
+  }, [scroll]);
 
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     setIsDragging(true);
-    dragStartRef.current =
-      "touches" in e ? e.touches[0].clientX : e.clientX;
+    dragStartRef.current = "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
   };
 
   const handleDragEnd = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDragging) return;
-    
+
     const dragEndPos =
       "changedTouches" in e ? e.changedTouches[0].clientX : (e as React.MouseEvent).clientX;
     const dragDistance = dragStartRef.current - dragEndPos;
@@ -84,13 +65,7 @@ export default function BankLogosCarousel() {
     setIsDragging(false);
 
     if (Math.abs(dragDistance) > 30) {
-      if (dragDistance > 0) {
-        // Dragged left, show next bank
-        setCurrentIndex((prev) => (prev + 1) % totalBanks);
-      } else {
-        // Dragged right, show previous bank
-        setCurrentIndex((prev) => (prev - 1 + totalBanks) % totalBanks);
-      }
+      setScroll((prev) => prev + (dragDistance > 0 ? itemWidth : -itemWidth));
       if (autoAdvanceRef.current) {
         clearTimeout(autoAdvanceRef.current);
       }
@@ -99,45 +74,56 @@ export default function BankLogosCarousel() {
     }
   };
 
-  const getVisibleIndex = (bankIndex: number) => {
-    const centerIndex = Math.floor(itemsInView / 2);
-    return (bankIndex - currentIndex + totalBanks) % totalBanks;
+  const getCenterIndex = () => {
+    return Math.round(scroll / itemWidth) % banksBase.length;
   };
 
+  const centerIndex = getCenterIndex();
+  const duplicatedBanks = [...banksBase, ...banksBase];
+
   return (
-    <div className="w-full bg-gray-50 border-y border-gray-200 py-8">
+    <div className="w-full bg-gray-50 border-y border-gray-200">
       <style>{`
-        .bank-carousel-container {
+        .bank-carousel-wrapper {
           display: flex;
-          justify-content: center;
           align-items: center;
-          height: 320px;
+          overflow: hidden;
+          padding: 8px 16px;
+          gap: 0;
+          width: 100%;
           position: relative;
-          user-select: none;
           cursor: grab;
+          user-select: none;
+          height: 120px;
         }
 
-        .bank-carousel-container.dragging {
+        .bank-carousel-wrapper.dragging {
           cursor: grabbing;
         }
 
-        .bank-arc-wrapper {
+        .bank-carousel-track {
+          display: flex;
+          gap: 16px;
           position: relative;
-          width: 100%;
-          height: 100%;
+          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transform: translateX(calc(-${itemWidth}px * var(--scroll-index)));
         }
 
-        .bank-item-arc {
-          position: absolute;
+        .bank-item {
+          flex: 0 0 ${itemWidth}px;
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 8px;
-          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          text-gray-700;
+          font-size: 13px;
+          font-weight: 500;
+          white-space: nowrap;
           opacity: 0.4;
+          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .bank-item-arc.center {
+        .bank-item.center-item {
           opacity: 1;
         }
 
@@ -157,7 +143,7 @@ export default function BankLogosCarousel() {
           transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .bank-item-arc.center .bank-logo {
+        .bank-item.center-item .bank-logo {
           width: 80px;
           height: 80px;
           box-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.5);
@@ -172,48 +158,36 @@ export default function BankLogosCarousel() {
 
         .bank-name {
           color: #374151;
-          font-size: 12px;
-          font-weight: 500;
-          text-align: center;
-          white-space: nowrap;
+          font-size: 11px;
           transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .bank-item-arc.center .bank-name {
+        .bank-item.center-item .bank-name {
           color: #0f367e;
           font-weight: 700;
-          font-size: 13px;
+          font-size: 12px;
         }
       `}</style>
 
       <div
         ref={containerRef}
-        className={`bank-carousel-container ${isDragging ? "dragging" : ""}`}
+        className={`bank-carousel-wrapper ${isDragging ? "dragging" : ""}`}
+        style={{ "--scroll-index": Math.round(scroll / itemWidth) } as React.CSSProperties}
         onMouseDown={handleDragStart}
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}
         onTouchStart={handleDragStart}
         onTouchEnd={handleDragEnd}
       >
-        <div className="bank-arc-wrapper">
-          {banksBase.map((bank, index) => {
-            const visibleIndex = getVisibleIndex(index);
-            const centerIndex = Math.floor(itemsInView / 2);
-            const isCenter = visibleIndex === centerIndex;
-            
-            if (visibleIndex >= itemsInView) return null;
-
-            const { x, y } = getItemPosition(visibleIndex);
+        <div className="bank-carousel-track">
+          {duplicatedBanks.map((bank, index) => {
+            const bankIndex = index % banksBase.length;
+            const isCenter = bankIndex === centerIndex;
 
             return (
               <div
                 key={index}
-                className={`bank-item-arc ${isCenter ? "center" : ""}`}
-                style={{
-                  transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                  left: "50%",
-                  top: "50%",
-                }}
+                className={`bank-item ${isCenter ? "center-item" : ""}`}
               >
                 <div className="bank-logo">
                   {bank.logo ? (
