@@ -122,7 +122,7 @@ function KampanyalarCardsSection() {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 md:p-4">
                 {/* Image */}
-                <div className="campaign-image-container flex items-center justify-center w-full overflow-hidden h-auto">
+                <div className="campaign-image-container w-full h-auto">
                   <img
                     src={campaign.image}
                     alt={campaign.title}
