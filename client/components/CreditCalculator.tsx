@@ -144,9 +144,18 @@ export default function CreditCalculator() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
+      // Show success message
+      toast.success("Ödeme planınız görüntü olarak kayıt edilmiştir", {
+        duration: 4000,
+        position: "top-center",
+      });
     } catch (error) {
       console.error("Error generating PNG:", error);
-      alert("Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.");
+      toast.error("Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.", {
+        duration: 4000,
+        position: "top-center",
+      });
     }
   };
 
