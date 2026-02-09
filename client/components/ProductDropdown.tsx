@@ -3,23 +3,23 @@ import { useState, useRef, useEffect } from "react";
 const products = [
   {
     id: 1,
-    title: "Peşinatsız Destekle Aracın Kapında.",
-    subtitle: "30 Dakika'da Kredi Hazır!",
+    title: "Peşinatsız Destek",
+    subtitle: "30 Dakika'da kredin hazır! Aracın Hemen Kapıda!",
     image:
       "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fd48ae6be8511489c8905ee933513aed5?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
     id: 2,
-    title: "30 Dakika'da Taşıt Kredisi Hazır",
-    subtitle: "20 Yaş'a Kadar Tüm Araçlarda Senetli Satış Kredisi.",
+    title: "Hızlı Kredi Desteği",
+    subtitle: "20 Yaş'a Kadar Tüm Araçlarda Kredi Onayı OtoFinans'ta.",
     image:
       "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F131274b80b1d48b0b1d63539799f60ec?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
   },
   {
     id: 3,
-    title: "Ön Onaylı +800.000TL Kredi Limiti",
+    title: "Ön Onaylı +800.000TL Kredi Limitin Hazır!",
     subtitle: "Günü Yüksek Kredi İmkanı",
     image:
       "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F208b71039a474d89b38a8ba38d113503?format=webp&width=800&height=1200",
