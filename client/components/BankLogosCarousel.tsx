@@ -22,88 +22,83 @@ const banksBase = [
 ];
 
 export default function BankLogosCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(Math.floor(banksBase.length / 2));
+  const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    setTouchEnd(e.changedTouches[0].clientX);
-    handleSwipe();
-  };
-
-  const handleSwipe = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      setCurrentIndex((prev) => (prev + 1) % banksBase.length);
-    }
-    if (isRightSwipe) {
-      setCurrentIndex((prev) => (prev - 1 + banksBase.length) % banksBase.length);
-    }
-  };
+  const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const scrollToCenter = (index: number) => {
     if (!containerRef.current) return;
-    const itemWidth = 200; // Approximate item width
+    const itemWidth = 70; // Item width + gap
     const containerWidth = containerRef.current.offsetWidth;
     const scrollPosition = index * itemWidth - (containerWidth / 2 - itemWidth / 2);
     containerRef.current.scrollLeft = scrollPosition;
   };
 
+  // Auto-scroll effect
+  useEffect(() => {
+    const autoScroll = () => {
+      setCurrentIndex((prev) => (prev + 1) % banksBase.length);
+      autoScrollTimeoutRef.current = setTimeout(autoScroll, 4000);
+    };
+
+    autoScrollTimeoutRef.current = setTimeout(autoScroll, 4000);
+
+    return () => {
+      if (autoScrollTimeoutRef.current) {
+        clearTimeout(autoScrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Scroll when index changes
   useEffect(() => {
     scrollToCenter(currentIndex);
   }, [currentIndex]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (autoScrollTimeoutRef.current) {
+      clearTimeout(autoScrollTimeoutRef.current);
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const autoScroll = () => {
+      setCurrentIndex((prev) => (prev + 1) % banksBase.length);
+      autoScrollTimeoutRef.current = setTimeout(autoScroll, 4000);
+    };
+    autoScrollTimeoutRef.current = setTimeout(autoScroll, 4000);
+  };
+
   return (
     <div className="w-full bg-gray-50 border-y border-gray-200">
       <style>{`
-        .carousel-container {
+        .bank-carousel-container {
           display: flex;
           overflow-x: auto;
           gap: 16px;
           padding: 16px;
           scroll-behavior: smooth;
-          scroll-snap-type: x mandatory;
           -webkit-overflow-scrolling: touch;
           -ms-overflow-style: none;
           scrollbar-width: none;
         }
         
-        .carousel-container::-webkit-scrollbar {
+        .bank-carousel-container::-webkit-scrollbar {
           display: none;
         }
         
-        .carousel-item {
+        .bank-item {
           flex: 0 0 auto;
           display: flex;
+          flex-direction: column;
           align-items: center;
           gap: 8px;
-          padding: 8px 12px;
-          border-radius: 8px;
-          transition: transform 0.3s ease, opacity 0.3s ease;
+          text-gray-700;
+          font-size: 13px;
+          font-weight: 500;
           white-space: nowrap;
-          cursor: grab;
-          user-select: none;
-          scroll-snap-align: center;
-        }
-        
-        .carousel-item.active {
-          transform: scale(1.15);
-          opacity: 1;
-        }
-        
-        .carousel-item:not(.active) {
+          transition: transform 0.3s ease;
           opacity: 0.6;
-          transform: scale(0.95);
         }
         
         .bank-logo {
@@ -118,13 +113,8 @@ export default function BankLogosCarousel() {
           font-weight: bold;
           color: #1e3a8a;
           overflow: hidden;
-          flex-shrink: 0;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .carousel-item.active .bank-logo {
-          transform: scale(1.1);
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+          flex-shrink: 0;
         }
         
         .bank-logo img {
@@ -134,20 +124,29 @@ export default function BankLogosCarousel() {
           padding: 4px;
         }
         
-        .bank-name {
-          font-size: 13px;
-          font-weight: 500;
-          color: #374151;
+        .bank-item.selected {
+          transform: scale(1.2);
+          opacity: 1;
         }
         
-        .carousel-item.active .bank-name {
+        .bank-item.selected .bank-logo {
+          transform: scale(1.25);
+          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.5);
+        }
+        
+        .bank-name {
+          color: #374151;
+          transition: color 0.3s ease;
+        }
+        
+        .bank-item.selected .bank-name {
           color: #0f367e;
           font-weight: 600;
         }
       `}</style>
 
       <div
-        className="carousel-container"
+        className="bank-carousel-container"
         ref={containerRef}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -155,8 +154,7 @@ export default function BankLogosCarousel() {
         {banksBase.map((bank, index) => (
           <div
             key={index}
-            className={`carousel-item ${index === currentIndex ? "active" : ""}`}
-            onClick={() => setCurrentIndex(index)}
+            className={`bank-item ${index === currentIndex ? "selected" : ""}`}
           >
             <div className="bank-logo">
               {bank.logo ? (
