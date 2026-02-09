@@ -20,8 +20,10 @@ function KampanyalarCardsSection() {
 
     .campaign-button-wrapper {
       position: relative;
-      display: inline-flex;
+      display: block;
       width: 100%;
+      overflow: hidden;
+      border-radius: 24px;
     }
 
     .campaign-button-wrapper::after {
@@ -32,7 +34,7 @@ function KampanyalarCardsSection() {
       height: 4px;
       background-color: #22c55e;
       width: 0%;
-      border-radius: 0 0 24px 0;
+      border-radius: 0;
     }
 
     .campaign-button-wrapper:hover::after {
