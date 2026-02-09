@@ -102,7 +102,7 @@ function KampanyalarCardsSection() {
             >
               <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-0 p-0" : "gap-3 p-3 md:p-4"} ${campaign.id === 1 ? "md:min-h-[420px]" : ""}`}>
                 {/* Image */}
-                <div className={`flex items-start justify-center w-full overflow-hidden ${campaign.id === 1 ? "h-full p-3 md:p-4" : "h-auto"}`}>
+                <div className={`flex items-center justify-center w-full overflow-hidden ${campaign.id === 1 ? "h-full" : "h-auto"}`}>
                   <img
                     src={campaign.image}
                     alt={campaign.title}
@@ -112,10 +112,8 @@ function KampanyalarCardsSection() {
                         ? {
                             border: "3px solid #0f367e",
                             borderRadius: "32px",
-                            padding: "0",
-                            height: "240px",
-                            objectPosition: "center top",
-                            marginTop: "5px",
+                            height: "100%",
+                            width: "100%",
                           }
                         : {
                             maxHeight: "256px",
