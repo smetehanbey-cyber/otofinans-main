@@ -419,7 +419,7 @@ function AboutFAQSection() {
                 }}
               >
                 <h3
-                  className="text-left text-base sm:text-lg font-semibold"
+                  className="text-left text-sm sm:text-base font-semibold"
                   style={{ color: "#0f367e" }}
                 >
                   {item.title}
