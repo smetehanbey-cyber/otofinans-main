@@ -102,25 +102,13 @@ export default function CarBrandsShowcase() {
     const mouseX = e.clientX - rect.left;
     const containerWidth = rect.width;
 
-    // Calculate total width of all items with gaps
-    // Item: 50px width, Gap: 16px (gap-4)
-    const itemWidth = 50;
-    const gapWidth = 16;
+    // Item width + gap: ~70px per item
+    const itemWithGap = 70;
+    const totalWidth = carBrands.length * itemWithGap;
+    const maxScroll = Math.max(0, totalWidth - containerWidth);
 
-    // Total width: all items + all gaps between items
-    // For 35 items: 35 * 50 + 34 * 16 = 1750 + 544 = 2294px
-    const totalItemsWidth =
-      carBrands.length * itemWidth + (carBrands.length - 1) * gapWidth;
-
-    // Maximum scroll: when Cadillac's right edge aligns with container's right edge
-    // Subtract container width to get the scroll distance
-    const maxScroll = Math.max(0, totalItemsWidth - containerWidth);
-
-    // Map mouse position to scroll position proportionally
     const mouseRatio = mouseX / containerWidth;
     const newScrollPos = Math.round(mouseRatio * maxScroll);
-
-    // Clamp scroll position to valid range
     const clampedScrollPos = Math.max(0, Math.min(newScrollPos, maxScroll));
     setScrollPos(clampedScrollPos);
   };
@@ -142,54 +130,108 @@ export default function CarBrandsShowcase() {
         .carousel-container {
           scroll-behavior: smooth;
         }
+        
+        @media (max-width: 768px) {
+          .brands-scroll-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+          }
+          
+          .brands-scroll-container::-webkit-scrollbar {
+            height: 4px;
+          }
+          
+          .brands-scroll-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+          }
+          
+          .brands-scroll-container::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border-radius: 2px;
+          }
+        }
       `}</style>
 
-      <div
-        ref={containerRef}
-        onMouseMove={handleMouseMove}
-        className="w-full overflow-hidden cursor-grab active:cursor-grabbing bg-gradient-to-b from-gray-50 to-white"
-      >
+      <div className="max-w-full overflow-hidden">
         <div
-          className="carousel-container flex gap-4 p-4 transition-transform duration-200 ease-out"
-          style={{
-            transform: `translateX(-${scrollPos}px)`,
-          }}
+          ref={containerRef}
+          onMouseMove={handleMouseMove}
+          className="brands-scroll-container hidden md:block w-full cursor-grab active:cursor-grabbing"
         >
-          {carBrands.map((brand, index) => (
-            <div
-              key={index}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
-            >
-              {/* Oval Blue Frame with Car Image or Logo */}
+          <div
+            className="carousel-container flex gap-4 p-4 transition-transform duration-200 ease-out"
+            style={{
+              transform: `translateX(-${scrollPos}px)`,
+              width: "fit-content",
+            }}
+          >
+            {carBrands.map((brand, index) => (
               <div
-                className={`
-                  flex items-center justify-center
-                  w-[50px] h-[90px]
-                  border-3 border-blue-500 rounded-full
-                  bg-blue-50 overflow-hidden
-                  transition-all duration-300 ease-out
-                  ${hoveredIndex === index ? "car-item-hover shadow-lg" : ""}
-                `}
+                key={index}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
               >
-                <img
-                  src={getCarImage(brand)}
-                  alt={brand}
-                  className="pointer-events-none object-contain"
-                  style={{
-                    width: "190px",
-                    height: "190px",
-                  }}
-                />
-              </div>
+                {/* Oval Blue Frame with Car Image or Logo */}
+                <div
+                  className={`
+                    flex items-center justify-center
+                    w-[50px] h-[90px]
+                    border-3 border-blue-500 rounded-full
+                    bg-blue-50 overflow-hidden
+                    transition-all duration-300 ease-out
+                    ${hoveredIndex === index ? "car-item-hover shadow-lg" : ""}
+                  `}
+                >
+                  <img
+                    src={getCarImage(brand)}
+                    alt={brand}
+                    className="pointer-events-none object-contain"
+                    style={{
+                      width: "190px",
+                      height: "190px",
+                    }}
+                  />
+                </div>
 
-              {/* Brand Name */}
-              <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
-                {brand}
-              </p>
-            </div>
-          ))}
+                {/* Brand Name */}
+                <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
+                  {brand}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Version - Horizontal Scroll */}
+        <div className="md:hidden w-full overflow-x-auto -mx-4 px-4">
+          <div className="flex gap-4 p-4 w-fit">
+            {carBrands.map((brand, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
+              >
+                {/* Oval Blue Frame with Car Image or Logo */}
+                <div className="flex items-center justify-center w-[50px] h-[90px] border-3 border-blue-500 rounded-full bg-blue-50 overflow-hidden transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg">
+                  <img
+                    src={getCarImage(brand)}
+                    alt={brand}
+                    className="pointer-events-none object-contain"
+                    style={{
+                      width: "190px",
+                      height: "190px",
+                    }}
+                  />
+                </div>
+
+                {/* Brand Name */}
+                <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
+                  {brand}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
