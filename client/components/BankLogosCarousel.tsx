@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import useEmblaCarousel from "embla-carousel-react";
+import React, { useState, useRef, useEffect } from "react";
 
 const banksBase = [
   { name: "Akbank", code: "AKB", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40cf2a6e226b47bd9314e9bbaede9785?format=webp&width=800&height=1200" },
@@ -23,71 +22,109 @@ const banksBase = [
 ];
 
 export default function BankLogosCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "center",
-    loop: true,
-    skipSnaps: false,
-  });
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(Math.floor(banksBase.length / 2));
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    setTouchEnd(e.changedTouches[0].clientX);
+    handleSwipe();
+  };
+
+  const handleSwipe = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      setCurrentIndex((prev) => (prev + 1) % banksBase.length);
+    }
+    if (isRightSwipe) {
+      setCurrentIndex((prev) => (prev - 1 + banksBase.length) % banksBase.length);
+    }
+  };
+
+  const scrollToCenter = (index: number) => {
+    if (!containerRef.current) return;
+    const itemWidth = 200; // Approximate item width
+    const containerWidth = containerRef.current.offsetWidth;
+    const scrollPosition = index * itemWidth - (containerWidth / 2 - itemWidth / 2);
+    containerRef.current.scrollLeft = scrollPosition;
+  };
 
   useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
+    scrollToCenter(currentIndex);
+  }, [currentIndex]);
 
   return (
-    <div className="w-full bg-gray-50 border-y border-gray-200 overflow-hidden">
+    <div className="w-full bg-gray-50 border-y border-gray-200">
       <style>{`
-        .embla {
-          overflow: hidden;
-        }
-        
-        .embla__container {
+        .carousel-container {
           display: flex;
+          overflow-x: auto;
           gap: 16px;
-          padding: 16px 0;
+          padding: 16px;
+          scroll-behavior: smooth;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
         
-        .embla__slide {
+        .carousel-container::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .carousel-item {
           flex: 0 0 auto;
-          min-width: 0;
-          padding: 0 12px;
-        }
-        
-        .bank-item {
-          transition: transform 0.3s ease, opacity 0.3s ease;
           display: flex;
           align-items: center;
           gap: 8px;
-          text-gray-700;
-          font-size: 14px;
-          font-weight: 500;
+          padding: 8px 12px;
+          border-radius: 8px;
+          transition: transform 0.3s ease, opacity 0.3s ease;
           white-space: nowrap;
+          cursor: grab;
+          user-select: none;
+          scroll-snap-align: center;
+        }
+        
+        .carousel-item.active {
+          transform: scale(1.15);
+          opacity: 1;
+        }
+        
+        .carousel-item:not(.active) {
+          opacity: 0.6;
+          transform: scale(0.95);
         }
         
         .bank-logo {
-          width: 32px;
-          height: 32px;
+          width: 40px;
+          height: 40px;
           background: linear-gradient(to bottom right, #93c5fd, #60a5fa);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 11px;
+          font-size: 12px;
           font-weight: bold;
           color: #1e3a8a;
           overflow: hidden;
-          transition: transform 0.3s ease;
           flex-shrink: 0;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .carousel-item.active .bank-logo {
+          transform: scale(1.1);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
         
         .bank-logo img {
@@ -97,42 +134,40 @@ export default function BankLogosCarousel() {
           padding: 4px;
         }
         
-        .bank-item.selected {
-          transform: scale(1.15);
+        .bank-name {
+          font-size: 13px;
+          font-weight: 500;
+          color: #374151;
         }
         
-        .bank-item.selected .bank-logo {
-          transform: scale(1.2);
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-        }
-        
-        .bank-item:not(.selected) {
-          opacity: 0.6;
+        .carousel-item.active .bank-name {
+          color: #0f367e;
+          font-weight: 600;
         }
       `}</style>
 
-      <div className="embla" ref={emblaRef}>
-        <div className="embla__container">
-          {banksBase.map((bank, index) => (
-            <div
-              key={index}
-              className="embla__slide"
-            >
-              <div
-                className={`bank-item ${selectedIndex === index ? "selected" : ""}`}
-              >
-                <div className="bank-logo">
-                  {bank.logo ? (
-                    <img src={bank.logo} alt={bank.name} />
-                  ) : (
-                    bank.code
-                  )}
-                </div>
-                <span>{bank.name}</span>
-              </div>
+      <div
+        className="carousel-container"
+        ref={containerRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {banksBase.map((bank, index) => (
+          <div
+            key={index}
+            className={`carousel-item ${index === currentIndex ? "active" : ""}`}
+            onClick={() => setCurrentIndex(index)}
+          >
+            <div className="bank-logo">
+              {bank.logo ? (
+                <img src={bank.logo} alt={bank.name} />
+              ) : (
+                bank.code
+              )}
             </div>
-          ))}
-        </div>
+            <span className="bank-name">{bank.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
