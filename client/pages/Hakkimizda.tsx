@@ -459,7 +459,7 @@ function AboutFAQSection() {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-3 sm:px-10 sm:py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors duration-200"
           >
-            WhatsApp İle İletişime Geç
+            İletişime Geç
           </a>
         </div>
       </div>
