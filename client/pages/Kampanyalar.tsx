@@ -70,27 +70,6 @@ function KampanyalarCardsSection() {
       position: relative;
     }
 
-    .whatsapp-icon-outer {
-      position: absolute;
-      right: -70px;
-      top: 50%;
-      transform: translateY(-50%);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .campaign-button-wrapper:hover .whatsapp-icon-outer {
-      animation: showWhatsApp 13s ease-in-out forwards;
-    }
-
-    .campaign-button-link .whatsapp-icon {
-      display: none;
-    }
-
-    .campaign-button-wrapper:hover .campaign-button-link .whatsapp-icon {
-      animation: showWhatsApp 13s ease-in-out forwards;
-    }
-
     .campaign-button-link .button-text {
       display: inline-block;
     }
@@ -109,6 +88,15 @@ function KampanyalarCardsSection() {
       100% {
         opacity: 0;
       }
+    }
+
+    .campaign-button-link .whatsapp-text {
+      opacity: 0;
+      display: none;
+    }
+
+    .campaign-button-wrapper:hover .campaign-button-link .whatsapp-text {
+      animation: showWhatsApp 13s ease-in-out forwards;
     }
 
     .campaign-image-container {
