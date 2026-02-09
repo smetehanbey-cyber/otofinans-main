@@ -393,12 +393,12 @@ function AboutFAQSection() {
         {/* Section Header */}
         <div className="text-center mb-8 sm:mb-12">
           <h2
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3"
+            className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
             style={{ color: "#0f367e" }}
           >
             Hakkımızda
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto">
             2010 yılından beri Türkiye'nin otomotiv finansmanında güvenilen ismiyle, size hizmet vermekten gurur duyuyoruz.
           </p>
         </div>
