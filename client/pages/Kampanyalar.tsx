@@ -97,9 +97,10 @@ function KampanyalarCardsSection() {
               className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
               style={{
                 border: "2px solid rgba(15, 54, 126, 0.1)",
+                ...(campaign.id === 1 && { padding: "0" }),
               }}
             >
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-2 p-2 md:p-3" : "gap-6 p-6 md:p-8"} ${campaign.id === 1 ? "md:min-h-[420px]" : ""}`}>
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-0 p-0" : "gap-6 p-6 md:p-8"} ${campaign.id === 1 ? "md:min-h-[420px]" : ""}`}>
                 {/* Image */}
                 <div className={`flex items-center justify-center w-full ${campaign.id === 1 ? "h-full p-0" : "h-auto"}`}>
                   <img
