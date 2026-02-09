@@ -341,46 +341,28 @@ export default function Finansmanlar() {
   );
 }
 
-function AboutFAQSection() {
+function FinansmanlarFAQSection() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const faqItems = [
-    {
-      id: "since2010",
-      title: "2010 Yılından Beri Sektörde",
-      description:
-        "Oto Finans Global, 2010 yılından beri otomotiv finansmanı sektöründe lider konumda yer almaktadır. Uzun yılların deneyimi ve sektörel bilgisiyle müşterilerimize en iyi hizmeti sunmaktayız.",
-    },
-    {
-      id: "mission",
-      title: "Misyonumuz",
-      description:
-        "Oto Finans olarak misyonumuz, her Türk vatandaşının hayalindeki aracına sahip olabilmesini sağlamak. En düşük faiz oranları, hızlı onay süreci ve müşteri memnuniyeti bizim temel hedeflerimizdir.",
-    },
-    {
-      id: "vision",
-      title: "Vizyonumuz",
-      description:
-        "Türkiye'nin en güvenilir ve müşteri odaklı otomotiv finansman platformu olurken sağladığımız hizmeti her zaman daha iyi hale getirmek.",
-    },
-    {
-      id: "experience",
-      title: "Tecrübe ve Uzmanlık",
-      description:
-        "2010 yılından itibaren binlerce müşteriye hizmet vermişiz. Ticari araçlardan kişisel otomobillere, motorsikletlerden minibüslere kadar geniş araç yelpazesi için finansman çözümleri sunuyoruz.",
-    },
-    {
-      id: "values",
-      title: "Değerlerimiz",
-      description:
-        "Güvenilirlik, şeffaflık, hızlılık ve müşteri memnuniyeti bizim temel değerlerimizdir. Her işlemde etik ilkeleri gözetir ve yasalara tam uyum sağlarız.",
-    },
-    {
-      id: "team",
-      title: "Profesyonel Ekibimiz",
-      description:
-        "Finans ve müşteri ilişkileri alanında yetkin profesyonellerden oluşan ekibimiz, 7/24 müşteri desteği sunmaktadır. Sizin memnuniyetiniz bizim başarımızdır.",
-    },
+  const banks = [
+    { name: "Akbank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Garanti Bank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "İş Bankası", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Halk Bank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Ziraat Bankası", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "QNB Finans", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "TEB", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Denizbank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Şekerbank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "HSBC", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "QuickFinans", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "TürkiyeFinans", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "VakıfKatılım", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "alBaraka", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "arabamtaksit", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi" },
+    { name: "Burgan Bank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "OtoSOR", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi" },
+    { name: "otovadeli.com", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi" },
   ];
 
   const toggleExpand = (id: string) => {
@@ -396,40 +378,40 @@ function AboutFAQSection() {
             className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
             style={{ color: "#0f367e" }}
           >
-            Hakkımızda
+            Finansmanlar
           </h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            2010 yılından beri Türkiye'nin otomotiv finansmanında güvenilen ismiyle, size hizmet vermekten gurur duyuyoruz.
+            Tüm bankalar ve finansman kuruluşlarının sunduğu ürün ve hizmetler. Her banka için mevcut finansman seçeneklerini keşfedin.
           </p>
         </div>
 
-        {/* FAQ Accordion */}
+        {/* Banks Accordion */}
         <div className="max-w-3xl mx-auto space-y-4">
-          {faqItems.map((item) => (
+          {banks.map((bank, idx) => (
             <div
-              key={item.id}
+              key={idx}
               className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
             >
               {/* Header */}
               <button
-                onClick={() => toggleExpand(item.id)}
+                onClick={() => toggleExpand(bank.name)}
                 className="w-full px-6 py-4 sm:py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
                 style={{
-                  backgroundColor: expandedId === item.id ? "#f3f4f6" : "#ffffff",
+                  backgroundColor: expandedId === bank.name ? "#f3f4f6" : "#ffffff",
                 }}
               >
                 <h3
                   className="text-left text-sm sm:text-base font-semibold"
                   style={{ color: "#0f367e" }}
                 >
-                  {item.title}
+                  {bank.name}
                 </h3>
                 <div
                   className="flex-shrink-0 ml-4 text-2xl font-bold transition-transform duration-300"
                   style={{
                     color: "#0f367e",
                     transform:
-                      expandedId === item.id ? "rotate(45deg)" : "rotate(0deg)",
+                      expandedId === bank.name ? "rotate(45deg)" : "rotate(0deg)",
                   }}
                 >
                   +
@@ -437,11 +419,23 @@ function AboutFAQSection() {
               </button>
 
               {/* Content */}
-              {expandedId === item.id && (
+              {expandedId === bank.name && (
                 <div className="px-6 py-4 sm:py-5 border-t border-gray-200 bg-white">
-                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                    {item.description}
-                  </p>
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold text-sm text-gray-900 mb-2">
+                        Sunulan Finansman Seçenekleri:
+                      </h4>
+                      <p className="text-gray-700 text-sm sm:text-base">
+                        {bank.financingTypes}
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-gray-200">
+                      <p className="text-xs text-gray-600">
+                        {bank.name} ile finansman almak için hemen iletişime geçin ve en uygun koşulları öğrenin.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -451,7 +445,7 @@ function AboutFAQSection() {
         {/* CTA Section */}
         <div className="mt-12 sm:mt-16 text-center">
           <p className="text-gray-600 mb-6 text-xs sm:text-sm">
-            Bize daha yakından tanıyabilir ya da başlamak için hemen iletişime geçebilirsiniz.
+            Banka seçiminizi yaptınız mı? Hemen iletişime geçin ve finansman başvurusu yapın.
           </p>
           <a
             href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
