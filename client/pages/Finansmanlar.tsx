@@ -135,7 +135,7 @@ function FinansmanlarFAQSection() {
         {/* CTA Section */}
         <div className="mt-12 sm:mt-16 text-center">
           <p className="text-gray-600 mb-6 text-xs sm:text-sm">
-            Banka seçiminizi yaptınız mı? Hemen iletişime geçin ve finansman başvurusu yapın.
+            Banka seçiminizi yaptınız mı? Hemen iletişime geçin ve finansman başvurusu hangi bankadan daha uygun fiyata kullanabileceğinizin bilgisi sizlere verelim.
           </p>
           <a
             href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
