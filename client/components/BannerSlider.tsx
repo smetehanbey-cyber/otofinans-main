@@ -63,36 +63,6 @@ export default function BannerSlider() {
             alt={`Campaign slide ${index + 1}`}
             className="w-full h-full object-cover"
           />
-
-          {/* Gradient overlay and text for slide 1 */}
-          {slide.gradient && (
-            <div className={`absolute inset-0 ${slide.gradient}`} />
-          )}
-
-          {slide.leftImage && slide.title && (
-            <div className="absolute inset-0 flex items-center px-4 sm:px-8 z-10">
-              <div className="flex gap-4 sm:gap-6 items-center w-full">
-                {/* Left Image */}
-                <div className="flex-shrink-0 w-24 sm:w-32 md:w-40 h-24 sm:h-32 md:h-40 overflow-hidden rounded-lg">
-                  <img
-                    src={slide.leftImage}
-                    alt="Campaign"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Text Content */}
-                <div className="text-white">
-                  <h2 className="text-lg sm:text-2xl md:text-3xl font-bold mb-2">
-                    {slide.title}
-                  </h2>
-                  <p className="text-xs sm:text-sm md:text-base font-medium leading-relaxed whitespace-pre-line">
-                    {slide.subtitle}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       ))}
 
