@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const banksBase = [
   { name: "Akbank", code: "AKB", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40cf2a6e226b47bd9314e9bbaede9785?format=webp&width=800&height=1200" },
@@ -22,7 +22,77 @@ const banksBase = [
 ];
 
 export default function BankLogosCarousel() {
+  const [scrollPos, setScrollPos] = useState(0);
+  const [isMouseOver, setIsMouseOver] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [lastMouseX, setLastMouseX] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const duplicatedBanks = [...banksBase, ...banksBase];
+  const itemWidth = 140; // approximate width per item with gap
+
+  // Auto-scroll when not hovering
+  useEffect(() => {
+    if (!isMouseOver) {
+      autoScrollRef.current = setInterval(() => {
+        setScrollPos((prev) => (prev + 1) % (banksBase.length * itemWidth));
+      }, 50); // Slow scroll speed
+    } else {
+      if (autoScrollRef.current) {
+        clearInterval(autoScrollRef.current);
+      }
+    }
+
+    return () => {
+      if (autoScrollRef.current) {
+        clearInterval(autoScrollRef.current);
+      }
+    };
+  }, [isMouseOver]);
+
+  const handleMouseEnter = () => {
+    setIsMouseOver(true);
+    if (autoScrollRef.current) {
+      clearInterval(autoScrollRef.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsMouseOver(false);
+    setHoveredIndex(null);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const containerWidth = rect.width;
+    const centerX = containerWidth / 2;
+
+    // Calculate direction and speed based on mouse position
+    const distanceFromCenter = mouseX - centerX;
+    const maxDistance = containerWidth / 2;
+    const normalizedDistance = Math.max(-1, Math.min(1, distanceFromCenter / maxDistance));
+    
+    // Speed multiplier: -1 (fast left) to 1 (fast right)
+    const speedMultiplier = normalizedDistance * 3; // 3x speed variation
+
+    // Update scroll position based on mouse movement
+    setScrollPos((prev) => {
+      let newPos = prev + speedMultiplier;
+      // Keep it within bounds
+      const maxScroll = banksBase.length * itemWidth;
+      return ((newPos % maxScroll) + maxScroll) % maxScroll;
+    });
+
+    // Calculate hovered item based on mouse position
+    const itemIndex = Math.floor((mouseX / containerWidth) * banksBase.length);
+    setHoveredIndex(itemIndex % banksBase.length);
+
+    setLastMouseX(mouseX);
+  };
 
   return (
     <div className="w-full">
@@ -47,13 +117,18 @@ export default function BankLogosCarousel() {
           user-select: none;
           height: auto;
           background-color: rgba(243, 244, 246, 1);
+          cursor: grab;
+        }
+
+        .bank-carousel-wrapper:active {
+          cursor: grabbing;
         }
 
         .bank-carousel-track {
           display: flex;
           gap: 0;
           position: relative;
-          animation: scrollLeft 468s linear infinite;
+          transition: transform 0.1s linear;
         }
 
         .bank-item {
@@ -67,7 +142,7 @@ export default function BankLogosCarousel() {
           font-weight: 500;
           white-space: nowrap;
           opacity: 1;
-          padding: 7px 16px;
+          padding: 8px 16px;
         }
 
         .bank-logo {
@@ -83,6 +158,14 @@ export default function BankLogosCarousel() {
           color: #1e3a8a;
           overflow: hidden;
           flex-shrink: 0;
+          transition: all 0.3s ease;
+        }
+
+        .bank-item:hover .bank-logo {
+          width: 48px;
+          height: 48px;
+          box-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.5);
+          transform: scale(1.2);
         }
 
         .bank-logo img {
@@ -114,8 +197,19 @@ export default function BankLogosCarousel() {
         }
       `}</style>
 
-      <div className="bank-carousel-wrapper">
-        <div className="bank-carousel-track">
+      <div
+        ref={containerRef}
+        className="bank-carousel-wrapper"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+      >
+        <div
+          className="bank-carousel-track"
+          style={{
+            transform: `translateX(-${scrollPos}px)`,
+          }}
+        >
           {duplicatedBanks.map((bank, index) => (
             <div key={index} className="bank-item">
               <div className="bank-logo">
