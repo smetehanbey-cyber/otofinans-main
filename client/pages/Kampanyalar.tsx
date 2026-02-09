@@ -53,6 +53,48 @@ function KampanyalarCardsSection() {
       animation: greenFillProgress 13s ease-in-out forwards;
     }
 
+    @keyframes showWhatsApp {
+      0% {
+        opacity: 0;
+      }
+      99% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .campaign-button-link .whatsapp-icon {
+      opacity: 0;
+      display: none;
+    }
+
+    .campaign-button-wrapper:hover .campaign-button-link .whatsapp-icon {
+      animation: showWhatsApp 13s ease-in-out forwards;
+      display: inline-block;
+    }
+
+    .campaign-button-link .button-text {
+      display: inline-block;
+    }
+
+    .campaign-button-wrapper:hover .campaign-button-link .button-text {
+      animation: fadeOutText 13s ease-in-out forwards;
+    }
+
+    @keyframes fadeOutText {
+      0% {
+        opacity: 1;
+      }
+      99% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
     .campaign-image-container {
       position: relative;
       overflow: hidden;
