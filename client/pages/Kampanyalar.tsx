@@ -90,8 +90,8 @@ function KampanyalarCardsSection() {
     }
 
     .campaign-button-link .whatsapp-text {
+      position: absolute;
       opacity: 0;
-      display: none;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link .whatsapp-text {
