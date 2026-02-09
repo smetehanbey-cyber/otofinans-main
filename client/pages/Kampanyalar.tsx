@@ -203,18 +203,7 @@ function KampanyalarCardsSection() {
                       }}
                     >
                       <span className="button-text">Hemen Başvur</span>
-                    </a>
-                    <a
-                      href="https://wa.me/905324098440?text=Krediler%20hakkında%20bilgi%20almak%20istiyorum."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="whatsapp-icon-outer"
-                    >
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1024px-WhatsApp.svg.png"
-                        alt="WhatsApp"
-                        style={{ width: "50px", height: "50px" }}
-                      />
+                      <span className="whatsapp-text">WhatsApp</span>
                     </a>
                   </div>
                 </div>
