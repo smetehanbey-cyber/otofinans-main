@@ -72,17 +72,22 @@ export default function Index() {
                 <BannerSlider />
 
                 {/* Contact Info */}
-                <div className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
+                <a
+                  href="https://wa.me/905324098440?text=Kredi%20Başvurusu%20Yapmak%20İstiyorum"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors block"
+                >
                   <p className="text-xs text-blue-100 mb-1">
                     Bizimle İletişime Geç
                   </p>
-                  <p className="text-lg sm:text-xl font-bold">
+                  <p className="text-lg sm:text-xl font-bold text-white">
                     +90 532 409 8440
                   </p>
                   <p className="text-blue-100 text-sm mt-2">
                     Limitini Etkilemeden Hemen Bilgi Al
                   </p>
-                </div>
+                </a>
               </div>
             </div>
           </div>
