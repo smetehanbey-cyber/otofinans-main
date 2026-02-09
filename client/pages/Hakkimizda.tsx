@@ -398,7 +398,7 @@ function AboutFAQSection() {
           >
             Hakkımızda
           </h2>
-          <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
             2010 yılından beri Türkiye'nin otomotiv finansmanında güvenilen ismiyle, size hizmet vermekten gurur duyuyoruz.
           </p>
         </div>
