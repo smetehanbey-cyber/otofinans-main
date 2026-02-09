@@ -6,33 +6,27 @@ import BankLogosCarousel from "@/components/BankLogosCarousel";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 
-function KampanyalarFAQSection() {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-
-  const banks = [
-    { name: "Akbank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40cf2a6e226b47bd9314e9bbaede9785?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "Garanti Bank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ff1c781a50b284c6a85ed62586fd10241?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "İş Bankası", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fdf32cba7a967459194ccbe6afe31254c?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "Halk Bank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2e0f2e6ff00a495abd1a1d832520c890?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "Ziraat Bankası", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7a0de587811f4d6c897da9512983b25b?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "QNB Finans", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F8ede5914db55457e95c3ec0d3bf78b23?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "TEB", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F8a13ada2623d40eaa2e8914fae816fd8?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "Denizbank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2cfe529a3dab4b26bfa9414505f4c954?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "Şekerbank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fffc318966ca642c4b9d1a5553f26886c?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "HSBC", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F0f5042ee709541ddb8367172214095c5?format=webp&width=800&height=1200", financingTypes: "Teminatlı Taşıt Kredisi" },
-    { name: "QuickFinans", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fac222f367e8a4bd48bdeb71d77198659?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "TürkiyeFinans", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fa6758614b57645c5906135614a3e72b4?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "VakıfKatılım", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fcbdde0484d924ae4aaa1710328f43c05?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "alBaraka", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F83b94514be2f42f4be86a42ffa88acc7?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "arabamtaksit", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ffc2df4b1455e4508b4cf6129d52069cc?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi" },
-    { name: "Burgan Bank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F505da3d1d93a41f59e62e18381b84283?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "OtoSOR", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4169ff414504baebf1f91ef4ffaad7e?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi" },
-    { name: "otovadeli.com", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4b1136e327a45d9a4585303fb14f28c?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi" },
+function KampanyalarCardsSection() {
+  const campaigns = [
+    {
+      id: 1,
+      title: "Peşinatsız Destek",
+      description: "30 Dakikada Kredi! Aracın Hemen Kapında",
+      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ff329dab32b8b4963a78a5ef2afa7501a?format=webp&width=800&height=1200",
+    },
+    {
+      id: 2,
+      title: "Hızlı Kredi Desteği",
+      description: "20 Yaş'a Kadar Tüm Aracılarda Kredi Onayı OtoFinansında",
+      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ff329dab32b8b4963a78a5ef2afa7501a?format=webp&width=800&height=1200",
+    },
+    {
+      id: 3,
+      title: "Ön Onaylı +800.000TL Kredi Limitini Hazır!",
+      description: "Limitini Etkilemeden Ön Onaylı Kredini Hemen Kullan! Fırsatları kaçırma!",
+      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ff329dab32b8b4963a78a5ef2afa7501a?format=webp&width=800&height=1200",
+    },
   ];
-
-  const toggleExpand = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
 
   return (
     <section className="py-8 sm:py-12 bg-gray-50">
@@ -45,106 +39,56 @@ function KampanyalarFAQSection() {
           >
             Kampanyalar
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Tüm bankalar ve finansman kuruluşlarının sunduğu ürün ve hizmetler. Her banka için mevcut finansman seçeneklerini keşfedin.
-          </p>
         </div>
 
-        {/* Banks Accordion */}
-        <div className="max-w-3xl mx-auto space-y-4">
-          {banks.map((bank, idx) => (
+        {/* Campaign Cards */}
+        <div className="max-w-4xl mx-auto space-y-6">
+          {campaigns.map((campaign) => (
             <div
-              key={idx}
-              className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
+              key={campaign.id}
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+              style={{
+                border: "2px solid rgba(15, 54, 126, 0.1)",
+              }}
             >
-              {/* Header */}
-              <button
-                onClick={() => toggleExpand(bank.name)}
-                className="w-full px-6 py-4 sm:py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
-                style={{
-                  backgroundColor: expandedId === bank.name ? "#f3f4f6" : "#ffffff",
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  {bank.logo && (
-                    <img
-                      src={bank.logo}
-                      alt={bank.name}
-                      className="w-10 h-10 object-contain flex-shrink-0"
-                    />
-                  )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8">
+                {/* Image */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={campaign.image}
+                    alt={campaign.title}
+                    className="w-full h-auto max-h-64 object-contain"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col justify-center">
                   <h3
-                    className="text-left text-sm sm:text-base font-semibold"
+                    className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
                     style={{ color: "#0f367e" }}
                   >
-                    {bank.name}
+                    {campaign.title}
                   </h3>
-                </div>
-                <div
-                  className="flex-shrink-0 ml-4 text-2xl font-bold transition-transform duration-300"
-                  style={{
-                    color: "#0f367e",
-                    transform:
-                      expandedId === bank.name ? "rotate(45deg)" : "rotate(0deg)",
-                  }}
-                >
-                  +
-                </div>
-              </button>
-
-              {/* Content */}
-              {expandedId === bank.name && (
-                <div className="px-6 py-4 sm:py-5 border-t border-gray-200 bg-white">
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="font-semibold text-sm text-gray-900 mb-3">
-                        Sunulan Finansman Seçenekleri:
-                      </h4>
-                      <div className="flex items-center gap-3 overflow-x-auto pb-2 flex-wrap">
-                        {bank.financingTypes.split(", ").map((type, typeIdx) => (
-                          <div
-                            key={typeIdx}
-                            className="flex items-center justify-center px-5 py-2 border-2 flex-shrink-0 transition-all rounded-full whitespace-nowrap"
-                            style={{
-                              borderColor: "rgba(255, 255, 255, 0.6)",
-                              background: "linear-gradient(to right, #0f367e, #1a4d9e)",
-                            }}
-                          >
-                            <span
-                              className="text-center text-xs sm:text-sm font-semibold"
-                              style={{ color: "#ffffff" }}
-                            >
-                              {type}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="pt-3 border-t border-gray-200">
-                      <p className="text-xs text-gray-600">
-                        {bank.name} ile finansman almak için hemen iletişime geçin ve en uygun koşulları öğrenin.
-                      </p>
-                    </div>
+                  <p className="text-sm sm:text-base text-gray-700 mb-6 leading-relaxed">
+                    {campaign.description}
+                  </p>
+                  <div>
+                    <a
+                      href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-3 text-white font-bold text-sm sm:text-base rounded-full hover:opacity-90 transition-opacity duration-200 w-full sm:w-auto"
+                      style={{
+                        background: "linear-gradient(to right, #0f367e, #1a4d9e)",
+                      }}
+                    >
+                      Hemen Başvur
+                    </a>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           ))}
-        </div>
-
-        {/* CTA Section */}
-        <div className="mt-8 sm:mt-10 text-center px-4">
-          <p className="text-gray-600 mb-6 text-xs sm:text-sm max-w-2xl mx-auto">
-            Hemen iletişime geçin ve finansman başvurusu hangi bankadan daha uygun fiyata kullanabileceğinizin bilgisi sizlere verelim.
-          </p>
-          <a
-            href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-6 py-2 sm:px-8 sm:py-3 bg-blue-600 text-white font-semibold text-xs sm:text-sm rounded-full hover:bg-blue-700 transition-colors duration-200"
-          >
-            İletişime Geç
-          </a>
         </div>
       </div>
     </section>
