@@ -65,12 +65,21 @@ function FinansmanlarFAQSection() {
                   backgroundColor: expandedId === bank.name ? "#f3f4f6" : "#ffffff",
                 }}
               >
-                <h3
-                  className="text-left text-sm sm:text-base font-semibold"
-                  style={{ color: "#0f367e" }}
-                >
-                  {bank.name}
-                </h3>
+                <div className="flex items-center gap-3">
+                  {bank.logo && (
+                    <img
+                      src={bank.logo}
+                      alt={bank.name}
+                      className="w-10 h-10 object-contain flex-shrink-0"
+                    />
+                  )}
+                  <h3
+                    className="text-left text-sm sm:text-base font-semibold"
+                    style={{ color: "#0f367e" }}
+                  >
+                    {bank.name}
+                  </h3>
+                </div>
                 <div
                   className="flex-shrink-0 ml-4 text-2xl font-bold transition-transform duration-300"
                   style={{
