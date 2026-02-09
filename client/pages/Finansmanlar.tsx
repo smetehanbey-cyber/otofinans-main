@@ -6,6 +6,142 @@ import BankLogosCarousel from "@/components/BankLogosCarousel";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 
+function FinansmanlarFAQSection() {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const banks = [
+    { name: "Akbank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Garanti Bank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "İş Bankası", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Halk Bank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Ziraat Bankası", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "QNB Finans", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "TEB", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Denizbank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "Şekerbank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "HSBC", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "QuickFinans", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "TürkiyeFinans", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "VakıfKatılım", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "alBaraka", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "arabamtaksit", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi" },
+    { name: "Burgan Bank", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Motorsiklet Kredisi" },
+    { name: "OtoSOR", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi" },
+    { name: "otovadeli.com", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi" },
+  ];
+
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
+  return (
+    <section className="py-8 sm:py-12 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h2
+            className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
+            style={{ color: "#0f367e" }}
+          >
+            Finansmanlar
+          </h2>
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
+            Tüm bankalar ve finansman kuruluşlarının sunduğu ürün ve hizmetler. Her banka için mevcut finansman seçeneklerini keşfedin.
+          </p>
+        </div>
+
+        {/* Banks Accordion */}
+        <div className="max-w-3xl mx-auto space-y-4">
+          {banks.map((bank, idx) => (
+            <div
+              key={idx}
+              className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
+            >
+              {/* Header */}
+              <button
+                onClick={() => toggleExpand(bank.name)}
+                className="w-full px-6 py-4 sm:py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                style={{
+                  backgroundColor: expandedId === bank.name ? "#f3f4f6" : "#ffffff",
+                }}
+              >
+                <h3
+                  className="text-left text-sm sm:text-base font-semibold"
+                  style={{ color: "#0f367e" }}
+                >
+                  {bank.name}
+                </h3>
+                <div
+                  className="flex-shrink-0 ml-4 text-2xl font-bold transition-transform duration-300"
+                  style={{
+                    color: "#0f367e",
+                    transform:
+                      expandedId === bank.name ? "rotate(45deg)" : "rotate(0deg)",
+                  }}
+                >
+                  +
+                </div>
+              </button>
+
+              {/* Content */}
+              {expandedId === bank.name && (
+                <div className="px-6 py-4 sm:py-5 border-t border-gray-200 bg-white">
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold text-sm text-gray-900 mb-2">
+                        Sunulan Finansman Seçenekleri:
+                      </h4>
+                      <p className="text-gray-700 text-sm sm:text-base">
+                        {bank.financingTypes}
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-gray-200">
+                      <p className="text-xs text-gray-600">
+                        {bank.name} ile finansman almak için hemen iletişime geçin ve en uygun koşulları öğrenin.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-12 sm:mt-16 text-center">
+          <p className="text-gray-600 mb-6 text-xs sm:text-sm">
+            Banka seçiminizi yaptınız mı? Hemen iletişime geçin ve finansman başvurusu yapın.
+          </p>
+          <a
+            href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-6 py-2 sm:px-8 sm:py-3 bg-blue-600 text-white font-semibold text-xs sm:text-sm rounded-full hover:bg-blue-700 transition-colors duration-200"
+          >
+            İletişime Geç
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      className="h-6 w-6 text-blue-300 flex-shrink-0"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+    >
+      <path
+        fillRule="evenodd"
+        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 export default function Finansmanlar() {
   return (
     <div className="min-h-screen bg-white">
