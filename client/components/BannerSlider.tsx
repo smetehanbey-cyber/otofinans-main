@@ -13,11 +13,7 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F806ff78bb9704eb3b5f3c7b3edb0a7de?format=webp&width=800&height=1200",
-    leftImage: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7457fb25352f4eacb4fae7353cd88308?format=webp&width=800&height=1200",
-    title: "Hızlı Kredi Desteği",
-    subtitle: "20 Yaş'a Kadar Tüm Araçlarda\nKredi Onayı OtoFinans'ta!",
-    gradient: "bg-gradient-to-r from-blue-900/80 to-transparent"
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7457fb25352f4eacb4fae7353cd88308?format=webp&width=800&height=1200"
   },
   {
     id: 2,
