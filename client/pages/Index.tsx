@@ -293,10 +293,12 @@ export default function Index() {
               <ul className="space-y-2 text-sm">
                 <li>
                   <a
-                    href="tel:+905324098440"
+                    href="https://wa.me/905324098440?text=Kredi%20Başvurusu%20Yapmak%20İstiyorum"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-white transition-colors"
                   >
-                    Telefon: +90 532 409 8440
+                    WhatsApp: +90 532 409 8440
                   </a>
                 </li>
                 <li>
