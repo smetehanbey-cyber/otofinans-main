@@ -142,10 +142,7 @@ export default function Header() {
             <button
               onClick={() => {
                 setIsOpen(false);
-                const element = document.getElementById("credit-calculator");
-                if (element) {
-                  element.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
+                handleCreditCalculatorClick();
               }}
               className="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium"
             >
