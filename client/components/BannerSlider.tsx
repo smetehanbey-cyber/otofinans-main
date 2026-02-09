@@ -10,7 +10,7 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7457fb25352f4eacb4fae7353cd88308?format=webp&width=800&height=1200",
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F4f4dc4fab7af43208f6ddd06f3ec064e?format=webp&width=800&height=1200",
     leftText: "Hızlı\nKredi\nDesteği"
   },
   {
