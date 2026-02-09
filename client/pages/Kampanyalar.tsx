@@ -104,7 +104,7 @@ function KampanyalarCardsSection() {
                       href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-3 text-white font-bold text-sm sm:text-base rounded-full hover:opacity-90 transition-opacity duration-200 w-full sm:w-auto border-2"
+                      className="campaign-button-link inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-3 text-white font-bold text-sm sm:text-base rounded-full hover:opacity-90 w-full sm:w-auto border-2"
                       style={{
                         background: "linear-gradient(to right, #0f367e, #1a4d9e)",
                         borderColor: "#2563eb",
