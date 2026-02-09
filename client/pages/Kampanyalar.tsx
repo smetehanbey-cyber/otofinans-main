@@ -27,8 +27,9 @@ function KampanyalarCardsSection() {
     .campaign-button-link {
       position: relative;
       display: inline-flex !important;
-      overflow: visible;
+      overflow: hidden;
       color: white !important;
+      border-radius: 9999px;
     }
 
     .campaign-button-link::before {
