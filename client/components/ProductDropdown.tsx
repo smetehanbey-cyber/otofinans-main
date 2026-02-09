@@ -127,7 +127,7 @@ export default function ProductDropdown() {
                     }}
                   >
                     {/* Product Image */}
-                    <div className="relative w-full h-24 bg-gray-100 overflow-hidden">
+                    <div className="relative w-full h-28 bg-gray-100 overflow-hidden">
                       <img
                         src={product.image}
                         alt={product.title}
