@@ -105,12 +105,11 @@ function KampanyalarCardsSection() {
               className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
               style={{
                 border: "2px solid rgba(15, 54, 126, 0.1)",
-                ...(campaign.id === 1 && { padding: "0" }),
               }}
             >
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-0 p-0" : "gap-3 p-3 md:p-4"} ${campaign.id === 1 ? "md:min-h-[250px]" : ""}`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 md:p-4">
                 {/* Image */}
-                <div className="campaign-image-container flex items-center justify-center w-full overflow-hidden" style={{ height: campaign.id === 1 ? "100%" : "auto" }}>
+                <div className="campaign-image-container flex items-center justify-center w-full overflow-hidden h-auto">
                   <img
                     src={campaign.image}
                     alt={campaign.title}
@@ -118,14 +117,14 @@ function KampanyalarCardsSection() {
                     style={{
                       border: "3px solid #0f367e",
                       borderRadius: "32px",
-                      height: campaign.id === 1 ? "100%" : "256px",
+                      height: "256px",
                       width: "100%",
                     }}
                   />
                 </div>
 
                 {/* Content */}
-                <div className={`flex flex-col justify-center ${campaign.id === 1 ? "p-2 md:p-2" : "p-3 md:p-4"}`}>
+                <div className="flex flex-col justify-center p-3 md:p-4">
                   <h3
                     className="font-bold text-xl sm:text-2xl mb-2"
                     style={{ color: "#0f367e" }}
