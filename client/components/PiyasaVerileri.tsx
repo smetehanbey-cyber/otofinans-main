@@ -34,6 +34,8 @@ export default function PiyasaVerileri() {
 
   // Fetch market data from backend
   useEffect(() => {
+    let isMounted = true;
+
     const fetchMarketData = async () => {
       let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
@@ -56,12 +58,13 @@ export default function PiyasaVerileri() {
         }
 
         const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
           setMarketData(data);
         }
       } catch (error) {
         if (timeoutId) clearTimeout(timeoutId);
         // Silent fail - keep showing previous data (graceful degradation)
+        // Error is intentionally suppressed to avoid console spam
       }
     };
 
@@ -72,6 +75,7 @@ export default function PiyasaVerileri() {
     const interval = setInterval(fetchMarketData, 1 * 60 * 1000);
 
     return () => {
+      isMounted = false;
       clearInterval(interval);
     };
   }, []);
