@@ -123,19 +123,28 @@ export default function CreditCalculator() {
       const wasVisible = tableVisible;
       if (!tableVisible) {
         tableRef.current.style.opacity = "1";
-        tableRef.current.style.maxHeight = "2000px";
+        tableRef.current.style.maxHeight = "none";
+        tableRef.current.style.overflow = "visible";
       }
+
+      // Wait for DOM to update
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       const canvas = await html2canvas(tableRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
         useCORS: true,
+        allowTaint: true,
+        logging: false,
+        windowHeight: tableRef.current.scrollHeight,
+        windowWidth: tableRef.current.scrollWidth,
       });
 
       // Restore original visibility state
       if (!wasVisible) {
         tableRef.current.style.opacity = "0";
         tableRef.current.style.maxHeight = "0px";
+        tableRef.current.style.overflow = "hidden";
       }
 
       const link = document.createElement("a");
