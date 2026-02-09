@@ -153,15 +153,18 @@ export default function ProductDropdown() {
 
                     {/* Button */}
                     <div className="px-3 py-3">
-                      <button
-                        className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200"
+                      <a
+                        href="https://wa.me/905324098440?text=Kredi%20Başvurusu%20Yapmak%20İstiyorum"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200 inline-block text-center"
                         style={{
                           border: "2px solid #3b82f6",
                           backgroundColor: "transparent",
                         }}
                       >
                         {product.buttonText}
-                      </button>
+                      </a>
                     </div>
                   </div>
                 ))}
