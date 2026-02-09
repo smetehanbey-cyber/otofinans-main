@@ -40,7 +40,7 @@ export default function BankLogosCarousel() {
           display: flex;
           align-items: center;
           overflow: hidden;
-          padding: 12px 16px;
+          padding: 10px 16px 12px 16px;
           gap: 0;
           width: 100%;
           position: relative;
