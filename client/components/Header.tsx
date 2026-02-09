@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Search } from "lucide-react";
 import ProductDropdown from "./ProductDropdown";
 
