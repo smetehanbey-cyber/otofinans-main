@@ -105,8 +105,8 @@ export default function Hakkimizda() {
           </p>
         </div>
 
-        {/* Credit Calculator Section */}
-        <CreditCalculator />
+        {/* About Us FAQ Section */}
+        <AboutFAQSection />
 
         {/* Market Data Section */}
         <PiyasaVerileri />
