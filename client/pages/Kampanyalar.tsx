@@ -52,6 +52,20 @@ function KampanyalarCardsSection() {
     .campaign-button-wrapper:hover .campaign-button-link::before {
       animation: greenFillProgress 13s ease-in-out forwards;
     }
+
+    .campaign-image-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .campaign-image-container img {
+      position: relative;
+      transition: transform 0.3s ease-out;
+    }
+
+    .campaign-image-container:hover img {
+      transform: scale(1.02);
+    }
   `;
 
   const campaigns = [
