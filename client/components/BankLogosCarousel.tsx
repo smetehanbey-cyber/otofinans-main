@@ -44,20 +44,6 @@ export default function BankLogosCarousel() {
           padding: 8px 16px;
           gap: 16px;
           width: 100%;
-          position: relative;
-        }
-
-        .bank-carousel-wrapper::before {
-          content: '';
-          position: absolute;
-          top: 12px;
-          bottom: 12px;
-          left: 0;
-          right: 0;
-          background: white;
-          opacity: 0.9;
-          z-index: 0;
-          pointer-events: none;
         }
 
         .bank-carousel-track {
