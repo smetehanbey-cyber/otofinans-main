@@ -391,16 +391,18 @@ export default function CreditCalculator() {
                   <h3
                     style={{
                       margin: "0",
+                      padding: "0",
                       fontSize: "clamp(12px, 2.5vw, 20px)",
                       fontWeight: "bold",
                       letterSpacing: "0.5px",
                       fontFamily: '"Paytone One", sans-serif',
                       textAlign: "left",
-                      lineHeight: "1.2",
+                      lineHeight: "1.1",
                       whiteSpace: "normal",
                       wordBreak: "break-word",
                       display: "flex",
                       alignItems: "center",
+                      height: "100%",
                     }}
                   >
                     {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
