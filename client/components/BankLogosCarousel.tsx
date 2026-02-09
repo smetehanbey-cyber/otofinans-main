@@ -21,54 +21,25 @@ const banksBase = [
   { name: "otovadeli.com", code: "OVD", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4b1136e327a45d9a4585303fb14f28c?format=webp&width=800&height=1200" },
 ];
 
-// Create infinite loop by repeating the array
-const banks = [...banksBase, ...banksBase, ...banksBase];
-
 export default function BankLogosCarousel() {
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [centerIndex, setCenterIndex] = useState(0);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const ITEM_WIDTH = 70; // Width + gap
-  const SCROLL_DURATION = 600; // Smooth scroll duration in ms
-
-  // Start with first set (so first bank appears centered)
-  const INITIAL_OFFSET = banksBase.length * ITEM_WIDTH;
-
-  // Auto-scroll every 2 seconds
+  // Auto-advance every 2 seconds
   useEffect(() => {
-    const autoScroll = () => {
-      setScrollOffset((prev) => prev + ITEM_WIDTH);
-      scrollTimeoutRef.current = setTimeout(autoScroll, 2000);
+    const autoAdvance = () => {
+      setCenterIndex((prev) => (prev + 1) % banksBase.length);
+      timeoutRef.current = setTimeout(autoAdvance, 2000);
     };
 
-    // Start with initial offset to show first bank centered
-    setScrollOffset(INITIAL_OFFSET);
-    scrollTimeoutRef.current = setTimeout(autoScroll, 2000);
+    timeoutRef.current = setTimeout(autoAdvance, 2000);
 
     return () => {
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
     };
   }, []);
-
-  // Apply scroll with smooth transition
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.style.transition = `transform ${SCROLL_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`;
-      containerRef.current.style.transform = `translateX(-${scrollOffset}px)`;
-    }
-  }, [scrollOffset]);
-
-  // Prevent mouse/touch interaction
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    e.preventDefault();
-  };
 
   return (
     <div className="w-full bg-gray-50 border-y border-gray-200">
@@ -77,18 +48,16 @@ export default function BankLogosCarousel() {
           display: flex;
           justify-content: center;
           align-items: center;
-          overflow: hidden;
-          padding: 20px 0;
-          position: relative;
-          width: 100%;
+          overflow-x: auto;
+          padding: 20px 16px;
+          gap: 16px;
+          -webkit-overflow-scrolling: touch;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
 
-        .bank-carousel-container {
-          display: flex;
-          gap: 16px;
-          padding: 0 16px;
-          will-change: transform;
-          position: relative;
+        .bank-carousel-wrapper::-webkit-scrollbar {
+          display: none;
         }
 
         .bank-item {
@@ -101,11 +70,10 @@ export default function BankLogosCarousel() {
           font-size: 13px;
           font-weight: 500;
           white-space: nowrap;
+          transition: transform 0.4s ease, opacity 0.4s ease;
           opacity: 0.5;
-          transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
-        /* Center item - ortada gelen item */
         .bank-item.center-item {
           transform: scale(1.3);
           opacity: 1;
@@ -150,51 +118,24 @@ export default function BankLogosCarousel() {
           font-weight: 700;
           font-size: 13px;
         }
-
-        /* Center indicator - invisible reference point */
-        .center-indicator {
-          position: absolute;
-          left: 50%;
-          top: 0;
-          bottom: 0;
-          width: 70px;
-          margin-left: -35px;
-          pointer-events: none;
-        }
       `}</style>
 
-      <div className="bank-carousel-wrapper" onWheel={handleWheel} onTouchStart={handleTouchStart}>
-        {/* Center indicator */}
-        <div className="center-indicator"></div>
-
-        {/* Scrolling container */}
-        <div
-          className="bank-carousel-container"
-          ref={containerRef}
-        >
-          {banks.map((bank, index) => {
-            // Calculate if this item is in the center position
-            const centerPosition = Math.round(scrollOffset / ITEM_WIDTH) % banksBase.length;
-            const itemPosition = index % banksBase.length;
-            const isCenterItem = itemPosition === centerPosition;
-
-            return (
-              <div
-                key={index}
-                className={`bank-item ${isCenterItem ? "center-item" : ""}`}
-              >
-                <div className="bank-logo">
-                  {bank.logo ? (
-                    <img src={bank.logo} alt={bank.name} />
-                  ) : (
-                    bank.code
-                  )}
-                </div>
-                <span className="bank-name">{bank.name}</span>
-              </div>
-            );
-          })}
-        </div>
+      <div className="bank-carousel-wrapper">
+        {banksBase.map((bank, index) => (
+          <div
+            key={index}
+            className={`bank-item ${index === centerIndex ? "center-item" : ""}`}
+          >
+            <div className="bank-logo">
+              {bank.logo ? (
+                <img src={bank.logo} alt={bank.name} />
+              ) : (
+                bank.code
+              )}
+            </div>
+            <span className="bank-name">{bank.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
