@@ -199,7 +199,7 @@ export default function CreditCalculator() {
   };
 
   return (
-    <section className="py-4 sm:py-8 bg-white">
+    <section id="credit-calculator" className="py-4 sm:py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-left mb-2 sm:mb-3">
