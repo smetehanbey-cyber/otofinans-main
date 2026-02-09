@@ -58,7 +58,9 @@ export default function Index() {
                 </ul>
 
                 <a
-                  href="tel:+905324098440"
+                  href="https://wa.me/905324098440?text=Kredi%20Başvurusu%20Yapmak%20İstiyorum"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
                 >
                   OtoFinanslı Ol →
