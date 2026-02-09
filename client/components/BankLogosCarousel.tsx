@@ -50,8 +50,8 @@ export default function BankLogosCarousel() {
         .bank-carousel-wrapper::before {
           content: '';
           position: absolute;
-          top: 30px;
-          bottom: 60px;
+          top: 12px;
+          bottom: 12px;
           left: 0;
           right: 0;
           background: white;
