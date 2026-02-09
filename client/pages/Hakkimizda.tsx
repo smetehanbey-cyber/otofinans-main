@@ -439,7 +439,7 @@ function AboutFAQSection() {
               {/* Content */}
               {expandedId === item.id && (
                 <div className="px-6 py-4 sm:py-5 border-t border-gray-200 bg-white">
-                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                  <p className="text-gray-700 leading-relaxed text-xs sm:text-sm">
                     {item.description}
                   </p>
                 </div>
