@@ -20,7 +20,7 @@ const products = [
   {
     id: 3,
     title: "Ön Onaylı +800.000TL Kredi Limitin Hazır!",
-    subtitle: "Limitini Etkilemeden Ön Onaylı Kredinini Hemen Kullan!",
+    subtitle: "Limitini Etkilemeden Ön Onaylı Kredinini Hemen Kullan! Fırsatları kaçırma!",
     image:
       "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F208b71039a474d89b38a8ba38d113503?format=webp&width=800&height=1200",
     buttonText: "Hemen Başvur",
