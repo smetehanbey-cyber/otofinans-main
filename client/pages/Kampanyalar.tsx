@@ -211,7 +211,7 @@ export default function Kampanyalar() {
         </div>
 
         {/* Kampanyalar Section */}
-        <KampanyalarFAQSection />
+        <KampanyalarCardsSection />
 
         {/* Market Data Section */}
         <PiyasaVerileri />
