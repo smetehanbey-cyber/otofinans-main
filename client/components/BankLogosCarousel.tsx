@@ -111,17 +111,18 @@ export default function BankLogosCarousel() {
         }
 
         .bank-item {
-          flex: 0 0 ${itemWidth}px;
+          flex: 0 0 160px;
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
           align-items: center;
-          gap: 8px;
+          gap: 12px;
           text-gray-700;
           font-size: 13px;
           font-weight: 500;
           white-space: nowrap;
           opacity: 0.4;
           transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          padding: 8px 12px;
         }
 
         .bank-item.center-item {
