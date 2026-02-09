@@ -160,14 +160,32 @@ export default function BankLogosCarousel() {
 
         .bank-name {
           color: #374151;
-          font-size: 11px;
+          font-size: 12px;
+          text-align: left;
+          flex: 1;
           transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .bank-item.center-item .bank-name {
           color: #0f367e;
           font-weight: 700;
-          font-size: 12px;
+          font-size: 13px;
+        }
+
+        @media (max-width: 640px) {
+          .bank-item {
+            flex: 0 0 140px;
+          }
+
+          .bank-name {
+            font-size: 11px;
+          }
+
+          .bank-item.center-item .bank-name {
+            font-size: 12px;
+          }
         }
       `}</style>
 
