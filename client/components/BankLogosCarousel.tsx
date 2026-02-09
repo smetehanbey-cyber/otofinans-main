@@ -28,7 +28,7 @@ export default function BankLogosCarousel() {
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const itemWidth = 110; // width of each bank item in pixels
+  const itemWidth = 160; // width of each bank item in pixels
   const centerOffset = itemWidth / 2;
 
   // Reset auto-advance timer
