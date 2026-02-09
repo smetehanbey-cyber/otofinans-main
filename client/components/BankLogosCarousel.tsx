@@ -88,13 +88,14 @@ export default function BankLogosCarousel() {
           display: flex;
           align-items: center;
           overflow: hidden;
-          padding: 8px 16px;
+          padding: 12px 16px;
           gap: 0;
           width: 100%;
           position: relative;
           cursor: grab;
           user-select: none;
-          height: 120px;
+          height: auto;
+          background-color: rgba(243, 244, 246, 1);
         }
 
         .bank-carousel-wrapper.dragging {
