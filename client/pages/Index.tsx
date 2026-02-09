@@ -254,17 +254,17 @@ export default function Index() {
                 </li>
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    Ürünler
+                    Kredi Hesapla
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    Kurumsal
+                    İş Ortaklığı
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    İletişim
+                    Finansmanlar
                   </a>
                 </li>
               </ul>
