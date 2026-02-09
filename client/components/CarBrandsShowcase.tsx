@@ -30,7 +30,6 @@ const carBrands = [
   "Mitsubishi",
   "Isuzu",
   "Dodge",
-  "Cadillac",
 ];
 
 // Car images - different per brand
@@ -81,6 +80,7 @@ const carImages: Record<string, string> = {
     "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F019369dedd9c4793ac443b0c24a78c73?format=webp&width=800&height=1200",
   Isuzu:
     "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F846be8b724cd4ca7b8b512f58a4f1d98?format=webp&width=800&height=1200",
+  Dodge: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fb0935b136e7047b5927a8dca0b327203?format=webp&width=800&height=1200",
   // Default image for all other brands
   default:
     "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F369a614627794587a4636344173097f8?format=webp&width=800&height=1200",
