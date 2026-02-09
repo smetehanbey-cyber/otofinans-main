@@ -154,7 +154,7 @@ export default function ProductDropdown() {
                     {/* Button */}
                     <div className="px-3 py-3">
                       <a
-                        href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum%20%F0%9F%A4%9D%F0%9F%8F%BB"
+                        href="https://wa.me/905324098440?text=Kredi%20ba%C5%9Fvurusu%20yapmak%20istiyorum.%20%F0%9F%A4%9D%F0%9F%8F%BB%F0%9F%A4%9D"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200 inline-block text-center"
