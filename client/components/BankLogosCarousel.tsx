@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
 const banksBase = [
   { name: "Akbank", code: "AKB", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40cf2a6e226b47bd9314e9bbaede9785?format=webp&width=800&height=1200" },
@@ -22,68 +22,20 @@ const banksBase = [
 ];
 
 export default function BankLogosCarousel() {
-  const [scroll, setScroll] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef(0);
-  const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const itemWidth = 160; // width of each bank item in pixels
-  const centerOffset = itemWidth / 2;
-
-  // Reset auto-advance timer
-  const resetAutoAdvance = () => {
-    if (autoAdvanceRef.current) {
-      clearTimeout(autoAdvanceRef.current);
-    }
-    autoAdvanceRef.current = setTimeout(() => {
-      setScroll((prev) => prev + itemWidth);
-    }, 2000);
-  };
-
-  useEffect(() => {
-    resetAutoAdvance();
-    return () => {
-      if (autoAdvanceRef.current) {
-        clearTimeout(autoAdvanceRef.current);
-      }
-    };
-  }, [scroll]);
-
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    setIsDragging(true);
-    dragStartRef.current = "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
-  };
-
-  const handleDragEnd = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging) return;
-
-    const dragEndPos =
-      "changedTouches" in e ? e.changedTouches[0].clientX : (e as React.MouseEvent).clientX;
-    const dragDistance = dragStartRef.current - dragEndPos;
-
-    setIsDragging(false);
-
-    if (Math.abs(dragDistance) > 30) {
-      setScroll((prev) => prev + (dragDistance > 0 ? itemWidth : -itemWidth));
-      if (autoAdvanceRef.current) {
-        clearTimeout(autoAdvanceRef.current);
-      }
-    } else {
-      resetAutoAdvance();
-    }
-  };
-
-  const getCenterIndex = () => {
-    return Math.round(scroll / itemWidth) % banksBase.length;
-  };
-
-  const centerIndex = getCenterIndex();
   const duplicatedBanks = [...banksBase, ...banksBase];
 
   return (
     <div className="w-full">
       <style>{`
+        @keyframes scrollLeft {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
         .bank-carousel-wrapper {
           display: flex;
           align-items: center;
@@ -92,22 +44,16 @@ export default function BankLogosCarousel() {
           gap: 0;
           width: 100%;
           position: relative;
-          cursor: grab;
           user-select: none;
           height: auto;
           background-color: rgba(243, 244, 246, 1);
-        }
-
-        .bank-carousel-wrapper.dragging {
-          cursor: grabbing;
         }
 
         .bank-carousel-track {
           display: flex;
           gap: 0;
           position: relative;
-          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-          transform: translateX(calc(-160px * var(--scroll-index)));
+          animation: scrollLeft 80s linear infinite;
         }
 
         .bank-item {
@@ -120,18 +66,13 @@ export default function BankLogosCarousel() {
           font-size: 13px;
           font-weight: 500;
           white-space: nowrap;
-          opacity: 0.4;
-          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          opacity: 1;
           padding: 8px 12px;
         }
 
-        .bank-item.center-item {
-          opacity: 1;
-        }
-
         .bank-logo {
-          width: 40px;
-          height: 40px;
+          width: 32px;
+          height: 32px;
           background: linear-gradient(to bottom right, #93c5fd, #60a5fa);
           border-radius: 50%;
           display: flex;
@@ -142,20 +83,13 @@ export default function BankLogosCarousel() {
           color: #1e3a8a;
           overflow: hidden;
           flex-shrink: 0;
-          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .bank-item.center-item .bank-logo {
-          width: 60px;
-          height: 60px;
-          box-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.5);
         }
 
         .bank-logo img {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          padding: 6px;
+          padding: 4px;
         }
 
         .bank-name {
@@ -163,15 +97,8 @@ export default function BankLogosCarousel() {
           font-size: 12px;
           text-align: left;
           flex: 1;
-          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           overflow: hidden;
           text-overflow: ellipsis;
-        }
-
-        .bank-item.center-item .bank-name {
-          color: #0f367e;
-          font-weight: 700;
-          font-size: 13px;
         }
 
         @media (max-width: 640px) {
@@ -182,44 +109,23 @@ export default function BankLogosCarousel() {
           .bank-name {
             font-size: 11px;
           }
-
-          .bank-item.center-item .bank-name {
-            font-size: 12px;
-          }
         }
       `}</style>
 
-      <div
-        ref={containerRef}
-        className={`bank-carousel-wrapper ${isDragging ? "dragging" : ""}`}
-        style={{ "--scroll-index": Math.round(scroll / itemWidth) } as React.CSSProperties}
-        onMouseDown={handleDragStart}
-        onMouseUp={handleDragEnd}
-        onMouseLeave={handleDragEnd}
-        onTouchStart={handleDragStart}
-        onTouchEnd={handleDragEnd}
-      >
+      <div className="bank-carousel-wrapper">
         <div className="bank-carousel-track">
-          {duplicatedBanks.map((bank, index) => {
-            const bankIndex = index % banksBase.length;
-            const isCenter = bankIndex === centerIndex;
-
-            return (
-              <div
-                key={index}
-                className={`bank-item ${isCenter ? "center-item" : ""}`}
-              >
-                <div className="bank-logo">
-                  {bank.logo ? (
-                    <img src={bank.logo} alt={bank.name} />
-                  ) : (
-                    bank.code
-                  )}
-                </div>
-                <span className="bank-name">{bank.name}</span>
+          {duplicatedBanks.map((bank, index) => (
+            <div key={index} className="bank-item">
+              <div className="bank-logo">
+                {bank.logo ? (
+                  <img src={bank.logo} alt={bank.name} />
+                ) : (
+                  bank.code
+                )}
               </div>
-            );
-          })}
+              <span className="bank-name">{bank.name}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
