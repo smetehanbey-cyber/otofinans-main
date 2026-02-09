@@ -152,7 +152,7 @@ export default function ProductDropdown() {
                     </div>
 
                     {/* Button */}
-                    <div className="px-2 py-2 mt-auto">
+                    <div className="px-3 py-3">
                       <button
                         className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200"
                         style={{
