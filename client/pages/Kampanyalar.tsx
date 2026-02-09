@@ -7,6 +7,39 @@ import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 
 function KampanyalarCardsSection() {
+  // Add CSS styles for the progress bar animation
+  const progressBarStyles = `
+    @keyframes greenProgressBar {
+      from {
+        width: 0%;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+    .campaign-button-wrapper {
+      position: relative;
+      display: inline-flex;
+      width: 100%;
+    }
+
+    .campaign-button-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      background-color: #22c55e;
+      width: 0%;
+      border-radius: 0 0 24px 0;
+    }
+
+    .campaign-button-wrapper:hover::after {
+      animation: greenProgressBar 3s ease-in-out forwards;
+    }
+  `;
+
   const campaigns = [
     {
       id: 1,
