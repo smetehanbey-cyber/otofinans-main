@@ -116,23 +116,17 @@ function KampanyalarCardsSection() {
             >
               <div className={`grid grid-cols-1 md:grid-cols-2 ${campaign.id === 1 ? "gap-0 p-0" : "gap-3 p-3 md:p-4"} ${campaign.id === 1 ? "md:min-h-[250px]" : ""}`}>
                 {/* Image */}
-                <div className={`flex items-center justify-center w-full overflow-hidden ${campaign.id === 1 ? "h-full" : "h-auto"}`}>
+                <div className="campaign-image-container flex items-center justify-center w-full overflow-hidden" style={{ height: campaign.id === 1 ? "100%" : "auto" }}>
                   <img
                     src={campaign.image}
                     alt={campaign.title}
                     className="w-full object-cover"
-                    style={
-                      campaign.id === 1
-                        ? {
-                            border: "3px solid #0f367e",
-                            borderRadius: "32px",
-                            height: "100%",
-                            width: "100%",
-                          }
-                        : {
-                            maxHeight: "256px",
-                          }
-                    }
+                    style={{
+                      border: "3px solid #0f367e",
+                      borderRadius: "32px",
+                      height: campaign.id === 1 ? "100%" : "256px",
+                      width: "100%",
+                    }}
                   />
                 </div>
 
