@@ -97,12 +97,28 @@ function FinansmanlarFAQSection() {
                 <div className="px-6 py-4 sm:py-5 border-t border-gray-200 bg-white">
                   <div className="space-y-3">
                     <div>
-                      <h4 className="font-semibold text-sm text-gray-900 mb-2">
+                      <h4 className="font-semibold text-sm text-gray-900 mb-3">
                         Sunulan Finansman Seçenekleri:
                       </h4>
-                      <p className="text-gray-700 text-sm sm:text-base">
-                        {bank.financingTypes}
-                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {bank.financingTypes.split(", ").map((type, typeIdx) => (
+                          <div
+                            key={typeIdx}
+                            className="flex items-center justify-center w-28 h-28 rounded-full border-2 transition-colors"
+                            style={{
+                              borderColor: "#0f367e",
+                              backgroundColor: "#f0f4ff",
+                            }}
+                          >
+                            <span
+                              className="text-center text-xs sm:text-sm font-semibold px-2"
+                              style={{ color: "#0f367e" }}
+                            >
+                              {type}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     <div className="pt-3 border-t border-gray-200">
                       <p className="text-xs text-gray-600">
