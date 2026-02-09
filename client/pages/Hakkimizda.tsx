@@ -379,7 +379,7 @@ function AboutFAQSection() {
       id: "team",
       title: "Profesyonel Ekibimiz",
       description:
-        "Finans, hukuk ve müşteri ilişkileri alanında yetkin profesyonellerden oluşan ekibimiz, 7/24 müşteri desteği sunmaktadır. Sizin memnuniyetiniz bizim başarımızdır.",
+        "Finans ve müşteri ilişkileri alanında yetkin profesyonellerden oluşan ekibimiz, 7/24 müşteri desteği sunmaktadır. Sizin memnuniyetiniz bizim başarımızdır.",
     },
   ];
 
