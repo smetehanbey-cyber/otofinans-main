@@ -35,47 +35,53 @@ export default function PiyasaVerileri() {
   // Fetch market data from backend
   useEffect(() => {
     let isMounted = true;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const fetchMarketData = async () => {
-      let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
       try {
         const controller = new AbortController();
         timeoutId = setTimeout(() => controller.abort(), 5000);
 
+        // Only attempt to fetch if not already in an error state
+        // to avoid repeated failed requests
         const response = await fetch("/api/market-data", {
+          method: "GET",
           signal: controller.signal,
           headers: {
             Accept: "application/json",
+            "Content-Type": "application/json",
           },
-          credentials: "same-origin",
         });
 
-        if (timeoutId) clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          return;
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
         }
 
-        const data = await response.json();
-        if (isMounted && Array.isArray(data) && data.length > 0) {
-          setMarketData(data);
+        if (response.ok) {
+          const data = await response.json();
+          if (isMounted && Array.isArray(data) && data.length > 0) {
+            setMarketData(data);
+          }
         }
-      } catch (error) {
-        if (timeoutId) clearTimeout(timeoutId);
-        // Silent fail - keep showing previous data (graceful degradation)
-        // Error is intentionally suppressed to avoid console spam
+      } catch (_error) {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
+        // Silently ignore fetch errors - use default data
       }
     };
 
-    // Fetch immediately
+    // Fetch immediately on mount
     fetchMarketData();
 
-    // Set up interval to fetch every minute for updates
-    const interval = setInterval(fetchMarketData, 1 * 60 * 1000);
+    // Set up interval to fetch every 2 minutes for updates
+    const interval = setInterval(fetchMarketData, 2 * 60 * 1000);
 
     return () => {
       isMounted = false;
+      if (timeoutId) clearTimeout(timeoutId);
       clearInterval(interval);
     };
   }, []);
