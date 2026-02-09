@@ -51,7 +51,7 @@ export default function BankLogosCarousel() {
           content: '';
           position: absolute;
           top: 30px;
-          bottom: 30px;
+          bottom: 60px;
           left: 0;
           right: 0;
           background: white;
