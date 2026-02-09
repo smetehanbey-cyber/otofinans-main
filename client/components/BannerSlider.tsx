@@ -15,7 +15,8 @@ const slides: Slide[] = [
   },
   {
     id: 2,
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fc1e84adb0bf5499caeb0dca48580914d?format=webp&width=800&height=1200"
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe62bdab1f6b146358e8ccf8799a1258c?format=webp&width=800&height=1200",
+    leftText: "Peşinatsız\nKredi\nDesteği"
   },
   {
     id: 3,
