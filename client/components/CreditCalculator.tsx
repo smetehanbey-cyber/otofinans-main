@@ -330,11 +330,11 @@ export default function CreditCalculator() {
           {/* Payment Schedule Table for PNG Export */}
           <div
             ref={tableRef}
-            className="p-6"
+            className="p-4 sm:p-6"
             style={{
               backgroundColor: "#ffffff",
               opacity: tableVisible ? 1 : 0,
-              maxHeight: tableVisible ? "2000px" : "0px",
+              maxHeight: tableVisible ? "3000px" : "0px",
               overflow: "hidden",
               marginBottom: tableVisible ? "32px" : "0px",
               transition:
