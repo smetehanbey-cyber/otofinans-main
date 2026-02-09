@@ -63,11 +63,11 @@ export default function BankLogosCarousel() {
           align-items: center;
           gap: 8px;
           text-gray-700;
-          font-size: 13px;
+          font-size: 15px;
           font-weight: 500;
           white-space: nowrap;
           opacity: 1;
-          padding: 8px 16px;
+          padding: 10px 16px;
         }
 
         .bank-logo {
