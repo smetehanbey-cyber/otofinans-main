@@ -128,8 +128,6 @@ function KampanyalarCardsSection() {
                     alt={campaign.title}
                     className="w-full object-cover"
                     style={{
-                      border: "3px solid #0f367e",
-                      borderRadius: "32px",
                       height: "256px",
                       width: "100%",
                     }}
