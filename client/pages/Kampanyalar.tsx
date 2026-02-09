@@ -101,23 +101,24 @@ function KampanyalarCardsSection() {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8">
                 {/* Image */}
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center w-full h-full">
                   <img
                     src={campaign.image}
                     alt={campaign.title}
                     className="w-full h-full object-cover"
-                    style={{
-                      ...(campaign.id === 1 && {
-                        border: "3px solid #2563eb",
-                        borderRadius: "32px",
-                        padding: "0",
-                        maxHeight: "400px",
-                        minHeight: "300px",
-                      }),
-                      ...(!campaign.id || campaign.id !== 1) && {
-                        maxHeight: "256px",
-                      },
-                    }}
+                    style={
+                      campaign.id === 1
+                        ? {
+                            border: "3px solid #2563eb",
+                            borderRadius: "32px",
+                            padding: "0",
+                            maxHeight: "400px",
+                            minHeight: "300px",
+                          }
+                        : {
+                            maxHeight: "256px",
+                          }
+                    }
                   />
                 </div>
 
