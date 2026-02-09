@@ -29,7 +29,7 @@ export default function BannerSlider() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 16000);
+    }, 10000);
     return () => clearInterval(interval);
   }, []);
 
