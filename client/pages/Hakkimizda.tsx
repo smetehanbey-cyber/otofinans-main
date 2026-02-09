@@ -341,6 +341,132 @@ export default function Hakkimizda() {
   );
 }
 
+function AboutFAQSection() {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const faqItems = [
+    {
+      id: "since2010",
+      title: "2010 Yılından Beri Sektörde",
+      description:
+        "Oto Finans Global, 2010 yılından beri otomotiv finansmanı sektöründe lider konumda yer almaktadır. Uzun yılların deneyimi ve sektörel bilgisiyle müşterilerimize en iyi hizmeti sunmaktayız.",
+    },
+    {
+      id: "mission",
+      title: "Misyonumuz",
+      description:
+        "Oto Finans olarak misyonumuz, her Türk vatandaşının hayalindeki aracına sahip olabilmesini sağlamak. En düşük faiz oranları, hızlı onay süreci ve müşteri memnuniyeti bizim temel hedeflerimizdir.",
+    },
+    {
+      id: "vision",
+      title: "Vizyonumuz",
+      description:
+        "Türkiye'nin en güvenilir ve müşteri odaklı otomotiv finansman platformu olmak. Teknoloji ve insan dokunuşunu birleştirerek, her müşteriye kişiye özel çözümler sunmak istiyoruz.",
+    },
+    {
+      id: "experience",
+      title: "Tecrübe ve Uzmanlık",
+      description:
+        "2010 yılından itibaren binlerce müşteriye hizmet vermişiz. Ticari araçlardan kişisel otomobillere, motorsikletlerden minibüslere kadar geniş araç yelpazesi için finansman çözümleri sunuyoruz.",
+    },
+    {
+      id: "values",
+      title: "Değerlerimiz",
+      description:
+        "Güvenilirlik, şeffaflık, hızlılık ve müşteri memnuniyeti bizim temel değerlerimizdir. Her işlemde etik ilkeleri gözetir ve yasalara tam uyum sağlarız.",
+    },
+    {
+      id: "team",
+      title: "Profesyonel Ekibimiz",
+      description:
+        "Finans, hukuk ve müşteri ilişkileri alanında yetkin profesyonellerden oluşan ekibimiz, 7/24 müşteri desteği sunmaktadır. Sizin memnuniyetiniz bizim başarımızdır.",
+    },
+  ];
+
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
+  return (
+    <section className="py-8 sm:py-12 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3"
+            style={{ color: "#0f367e" }}
+          >
+            Hakkımızda
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            2010 yılından beri Türkiye'nin otomotiv finansmanında güvenilen ismiyle, size hizmet vermekten gurur duyuyoruz.
+          </p>
+        </div>
+
+        {/* FAQ Accordion */}
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqItems.map((item) => (
+            <div
+              key={item.id}
+              className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
+            >
+              {/* Header */}
+              <button
+                onClick={() => toggleExpand(item.id)}
+                className="w-full px-6 py-4 sm:py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                style={{
+                  backgroundColor: expandedId === item.id ? "#f3f4f6" : "#ffffff",
+                }}
+              >
+                <h3
+                  className="text-left text-base sm:text-lg font-semibold"
+                  style={{ color: "#0f367e" }}
+                >
+                  {item.title}
+                </h3>
+                <div
+                  className="flex-shrink-0 ml-4 text-2xl font-bold transition-transform duration-300"
+                  style={{
+                    color: "#0f367e",
+                    transform:
+                      expandedId === item.id ? "rotate(45deg)" : "rotate(0deg)",
+                  }}
+                >
+                  +
+                </div>
+              </button>
+
+              {/* Content */}
+              {expandedId === item.id && (
+                <div className="px-6 py-4 sm:py-5 border-t border-gray-200 bg-white">
+                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                    {item.description}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-12 sm:mt-16 text-center">
+          <p className="text-gray-600 mb-6 text-lg">
+            Bize daha yakından tanıyabilir ya da başlamak için hemen iletişime geçebilirsiniz.
+          </p>
+          <a
+            href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-8 py-3 sm:px-10 sm:py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors duration-200"
+          >
+            WhatsApp İle İletişime Geç
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CheckIcon() {
   return (
     <svg
