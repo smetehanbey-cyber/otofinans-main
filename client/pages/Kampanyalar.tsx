@@ -106,7 +106,7 @@ function KampanyalarCardsSection() {
                   <p className="text-sm sm:text-base text-gray-700 mb-6 leading-relaxed">
                     {campaign.description}
                   </p>
-                  <div>
+                  <div className="campaign-button-wrapper">
                     <a
                       href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                       target="_blank"
