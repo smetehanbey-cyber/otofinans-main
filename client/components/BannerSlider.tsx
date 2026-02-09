@@ -4,12 +4,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface Slide {
   id: number;
   image: string;
+  leftText?: string;
 }
 
 const slides: Slide[] = [
   {
     id: 1,
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7457fb25352f4eacb4fae7353cd88308?format=webp&width=800&height=1200"
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F7457fb25352f4eacb4fae7353cd88308?format=webp&width=800&height=1200",
+    leftText: "Hızlı\nKredi\nDesteği"
   },
   {
     id: 2,
