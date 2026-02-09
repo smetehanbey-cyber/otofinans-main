@@ -173,7 +173,7 @@ export default function CarBrandsShowcase() {
         }
       `}</style>
 
-      <div className="max-w-full">
+      <div className="max-w-full overflow-hidden md:overflow-visible">
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
