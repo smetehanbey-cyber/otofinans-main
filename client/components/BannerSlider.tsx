@@ -3,34 +3,21 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Slide {
   id: number;
-  title: string;
-  subtitle: string;
-  color: string;
-  gradient: string;
-  rightImage?: string;
+  image: string;
 }
 
 const slides: Slide[] = [
   {
     id: 1,
-    title: "Hayalindeki Araç",
-    subtitle: "30 Dakika'da Kapında",
-    color: "from-blue-700 to-blue-900",
-    gradient: "bg-gradient-to-r from-blue-600 via-blue-700 to-blue-900"
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F806ff78bb9704eb3b5f3c7b3edb0a7de?format=webp&width=800&height=1200"
   },
   {
     id: 2,
-    title: "%0.99'dan Başlayan",
-    subtitle: "En düşük oranlar",
-    color: "from-indigo-700 to-indigo-900",
-    gradient: "bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-900"
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fc1e84adb0bf5499caeb0dca48580914d?format=webp&width=800&height=1200"
   },
   {
     id: 3,
-    title: "OtoFinans'la",
-    subtitle: "Avantajlarını Bugün Keşfet!",
-    color: "from-blue-800 to-slate-900",
-    gradient: "bg-gradient-to-r from-blue-700 via-blue-800 to-slate-900"
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe20d5ea14b024c48aa3ec3733755c026?format=webp&width=800&height=1200"
   }
 ];
 
