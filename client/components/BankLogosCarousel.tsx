@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 
 const banksBase = [
   { name: "Akbank", code: "AKB", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40cf2a6e226b47bd9314e9bbaede9785?format=webp&width=800&height=1200" },
@@ -21,46 +22,114 @@ const banksBase = [
   { name: "otovadeli.com", code: "OVD", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4b1136e327a45d9a4585303fb14f28c?format=webp&width=800&height=1200" },
 ];
 
-// Duplicate the array multiple times for seamless looping
-const banks = [...banksBase, ...banksBase, ...banksBase];
-
 export default function BankLogosCarousel() {
-  // Calculate animation duration based on number of items
-  // Each item takes about 8-10 seconds to scroll across screen
-  const animationDuration = 220;
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "center",
+    loop: true,
+    skipSnaps: false,
+  });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   return (
     <div className="w-full bg-gray-50 border-y border-gray-200 overflow-hidden">
       <style>{`
-        @keyframes scroll-infinite {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-33.333%);
-          }
+        .embla {
+          overflow: hidden;
         }
-
-        .scroll-animation {
-          animation: scroll-infinite ${animationDuration}s linear infinite;
+        
+        .embla__container {
+          display: flex;
+          gap: 16px;
+          padding: 16px 0;
+        }
+        
+        .embla__slide {
+          flex: 0 0 auto;
+          min-width: 0;
+          padding: 0 12px;
+        }
+        
+        .bank-item {
+          transition: transform 0.3s ease, opacity 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-gray-700;
+          font-size: 14px;
+          font-weight: 500;
+          white-space: nowrap;
+        }
+        
+        .bank-logo {
+          width: 32px;
+          height: 32px;
+          background: linear-gradient(to bottom right, #93c5fd, #60a5fa);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: bold;
+          color: #1e3a8a;
+          overflow: hidden;
+          transition: transform 0.3s ease;
+          flex-shrink: 0;
+        }
+        
+        .bank-logo img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          padding: 4px;
+        }
+        
+        .bank-item.selected {
+          transform: scale(1.15);
+        }
+        
+        .bank-item.selected .bank-logo {
+          transform: scale(1.2);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .bank-item:not(.selected) {
+          opacity: 0.6;
         }
       `}</style>
 
-      <div className="h-10 flex items-center relative overflow-hidden">
-        <div className="scroll-animation flex whitespace-nowrap gap-0">
-          {banks.map((bank, index) => (
+      <div className="embla" ref={emblaRef}>
+        <div className="embla__container">
+          {banksBase.map((bank, index) => (
             <div
               key={index}
-              className="px-6 flex items-center gap-2 text-gray-700 text-sm font-medium flex-shrink-0 min-w-max"
+              className="embla__slide"
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-blue-400 rounded-full flex items-center justify-center text-xs font-bold text-blue-900 overflow-hidden">
-                {bank.logo ? (
-                  <img src={bank.logo} alt={bank.name} className="w-full h-full object-contain p-1" />
-                ) : (
-                  bank.code
-                )}
+              <div
+                className={`bank-item ${selectedIndex === index ? "selected" : ""}`}
+              >
+                <div className="bank-logo">
+                  {bank.logo ? (
+                    <img src={bank.logo} alt={bank.name} />
+                  ) : (
+                    bank.code
+                  )}
+                </div>
+                <span>{bank.name}</span>
               </div>
-              <span className="whitespace-nowrap">{bank.name}</span>
             </div>
           ))}
         </div>
