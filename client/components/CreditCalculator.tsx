@@ -644,7 +644,7 @@ export default function CreditCalculator() {
               </svg>
             </button>
             <a
-              href="https://wa.me/905324098440?text=Kredi%20ba%C5%9Fvurusu%20yapmak%20istiyorum.%20%F0%9F%A4%9D%F0%9F%8F%BB%F0%9F%A4%9D"
+              href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 text-center"
