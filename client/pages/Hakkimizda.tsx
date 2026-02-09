@@ -361,7 +361,7 @@ function AboutFAQSection() {
       id: "vision",
       title: "Vizyonumuz",
       description:
-        "Türkiye'nin en güvenilir ve müşteri odaklı otomotiv finansman platformu olmak. Teknoloji ve insan dokunuşunu birleştirerek, her müşteriye kişiye özel çözümler sunmak istiyoruz.",
+        "Türkiye'nin en güvenilir ve müşteri odaklı otomotiv finansman platformu olurken sağladığımız hizmeti her zaman daha iyi hale getirmek.",
     },
     {
       id: "experience",
