@@ -225,7 +225,7 @@ export default function CarBrandsShowcase() {
         </div>
 
         {/* Mobile Version - Horizontal Scroll */}
-        <div className="md:hidden w-full overflow-x-auto -mx-4 px-4">
+        <div className="md:hidden w-full mobile-brands-scroll">
           <div className="flex gap-4 p-4 w-fit">
             {carBrands.map((brand, index) => (
               <div
