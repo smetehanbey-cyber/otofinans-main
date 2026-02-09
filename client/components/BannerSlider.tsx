@@ -20,7 +20,7 @@ const slides: Slide[] = [
   },
   {
     id: 3,
-    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe20d5ea14b024c48aa3ec3733755c026?format=webp&width=800&height=1200"
+    image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F71a1b3632df74f2f82bad68431b08ead?format=webp&width=800&height=1200"
   }
 ];
 
