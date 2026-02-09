@@ -100,13 +100,13 @@ export default function ProductDropdown() {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            {/* Blue toned content area - Full width */}
+            {/* Content area - Full width */}
             <div
               className="shadow-xl"
               style={{
                 borderTop: "2px solid #1f3a93",
                 pointerEvents: "auto",
-                backgroundColor: "#f0f4ff",
+                backgroundColor: "#ffffff",
               }}
             >
               {/* Dropdown Header */}
