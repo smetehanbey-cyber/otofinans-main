@@ -57,17 +57,17 @@ export default function BankLogosCarousel() {
         }
 
         .bank-item {
-          flex: 0 0 160px;
+          flex: 0 0 auto;
           display: flex;
           flex-direction: row;
           align-items: center;
-          gap: 12px;
+          gap: 8px;
           text-gray-700;
           font-size: 13px;
           font-weight: 500;
           white-space: nowrap;
           opacity: 1;
-          padding: 8px 12px;
+          padding: 8px 16px;
         }
 
         .bank-logo {
