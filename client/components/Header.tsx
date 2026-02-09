@@ -10,7 +10,7 @@ export default function Header() {
     <>
       <header className="bg-white shadow-md sticky top-0 z-50">
         {/* Top Navigation Bar */}
-        <div className="border-b border-gray-200 bg-gray-100">
+        <div className="border-b border-gray-200 bg-gray-100 hidden md:block">
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
             <div className="flex justify-center items-center h-10">
               {/* Top Navigation Links - Centered */}
