@@ -65,14 +65,29 @@ function KampanyalarCardsSection() {
       }
     }
 
-    .campaign-button-link .whatsapp-icon {
+    .campaign-button-wrapper {
+      position: relative;
+    }
+
+    .whatsapp-icon-outer {
+      position: absolute;
+      right: -70px;
+      top: 50%;
+      transform: translateY(-50%);
       opacity: 0;
+      pointer-events: none;
+    }
+
+    .campaign-button-wrapper:hover .whatsapp-icon-outer {
+      animation: showWhatsApp 13s ease-in-out forwards;
+    }
+
+    .campaign-button-link .whatsapp-icon {
       display: none;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link .whatsapp-icon {
       animation: showWhatsApp 13s ease-in-out forwards;
-      display: inline-block;
     }
 
     .campaign-button-link .button-text {
