@@ -92,6 +92,10 @@ function KampanyalarCardsSection() {
     .campaign-button-link .whatsapp-text {
       position: absolute;
       opacity: 0;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link .whatsapp-text {
