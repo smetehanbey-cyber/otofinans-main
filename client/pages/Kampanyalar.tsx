@@ -99,9 +99,9 @@ function KampanyalarCardsSection() {
                 border: "2px solid rgba(15, 54, 126, 0.1)",
               }}
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8">
+              <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8 ${campaign.id === 1 ? "md:min-h-[420px]" : ""}`}>
                 {/* Image */}
-                <div className="flex items-center justify-center w-full h-full">
+                <div className={`flex items-center justify-center w-full ${campaign.id === 1 ? "h-full" : "h-auto"}`}>
                   <img
                     src={campaign.image}
                     alt={campaign.title}
