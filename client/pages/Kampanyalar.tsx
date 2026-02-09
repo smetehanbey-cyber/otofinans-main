@@ -90,7 +90,7 @@ function KampanyalarCardsSection() {
         </div>
 
         {/* Campaign Cards */}
-        <div className="max-w-4xl mx-auto space-y-1">
+        <div className="max-w-4xl mx-auto space-y-0">
           {campaigns.map((campaign) => (
             <div
               key={campaign.id}
