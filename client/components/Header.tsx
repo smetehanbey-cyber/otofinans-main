@@ -40,18 +40,6 @@ export default function Header() {
                   Ürünler
                 </Link>
               </nav>
-
-              {/* Mobile menu button */}
-              <button
-                className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-foreground hover:text-primary transition-colors"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                {isOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
-              </button>
             </div>
           </div>
         </div>
