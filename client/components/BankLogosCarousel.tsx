@@ -49,7 +49,7 @@ export default function BankLogosCarousel() {
         .bank-carousel-track {
           display: flex;
           gap: 16px;
-          animation: scrollLeft 100s linear infinite;
+          animation: scrollLeft 150s linear infinite;
           position: relative;
           z-index: 1;
         }
