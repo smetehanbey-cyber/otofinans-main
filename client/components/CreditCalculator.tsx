@@ -403,6 +403,7 @@ export default function CreditCalculator() {
                       display: "flex",
                       alignItems: "center",
                       height: "100%",
+                      transform: "translateY(-4px)",
                     }}
                   >
                     {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
