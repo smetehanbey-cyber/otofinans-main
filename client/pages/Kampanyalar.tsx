@@ -106,6 +106,11 @@ function KampanyalarCardsSection() {
                     src={campaign.image}
                     alt={campaign.title}
                     className="w-full h-auto max-h-64 object-contain"
+                    style={{
+                      border: "3px solid #2563eb",
+                      borderRadius: "32px",
+                      padding: "8px",
+                    }}
                   />
                 </div>
 
