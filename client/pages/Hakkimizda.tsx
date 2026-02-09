@@ -450,7 +450,7 @@ function AboutFAQSection() {
 
         {/* CTA Section */}
         <div className="mt-12 sm:mt-16 text-center">
-          <p className="text-gray-600 mb-6 text-lg">
+          <p className="text-gray-600 mb-6 text-base sm:text-lg">
             Bize daha yakından tanıyabilir ya da başlamak için hemen iletişime geçebilirsiniz.
           </p>
           <a
