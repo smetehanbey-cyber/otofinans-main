@@ -391,29 +391,40 @@ export default function CreditCalculator() {
               }}
             ></div>
 
-            {/* Table */}
-            <table
+            {/* Table Wrapper for Horizontal Scroll on Mobile */}
+            <div
               style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                fontSize: "14px",
-                fontFamily: '"Paytone One", sans-serif',
+                overflowX: "auto",
+                overflowY: "visible",
+                WebkitOverflowScrolling: "touch",
+                marginBottom: "0",
               }}
             >
+              {/* Table */}
+              <table
+                style={{
+                  width: "100%",
+                  minWidth: "900px",
+                  borderCollapse: "collapse",
+                  fontSize: "clamp(12px, 2.5vw, 14px)",
+                  fontFamily: '"Paytone One", sans-serif',
+                }}
+              >
               <thead>
                 <tr style={{ backgroundColor: "#1800ae", color: "#ffffff" }}>
                   <th
                     style={{
                       border: "2px solid #1800ae",
-                      padding: "20px 6px",
+                      padding: "12px 4px",
                       textAlign: "center",
                       verticalAlign: "middle",
                       fontWeight: "bold",
-                      fontSize: "23px",
+                      fontSize: "clamp(14px, 2.5vw, 23px)",
                       fontFamily: '"Paytone One", sans-serif',
-                      letterSpacing: "2px",
-                      height: "60px",
+                      letterSpacing: "1px",
+                      height: "auto",
                       lineHeight: "1.2",
+                      minWidth: "90px",
                     }}
                   >
                     PEŞİNAT
@@ -421,15 +432,15 @@ export default function CreditCalculator() {
                   <th
                     style={{
                       border: "2px solid #1800ae",
-                      padding: "20px 0 20px 6px",
+                      padding: "12px 4px",
                       textAlign: "center",
                       verticalAlign: "middle",
                       fontWeight: "bold",
-                      fontSize: "23px",
+                      fontSize: "clamp(14px, 2.5vw, 23px)",
                       fontFamily: '"Paytone One", sans-serif',
-                      letterSpacing: "2px",
-                      minWidth: "123px",
-                      height: "60px",
+                      letterSpacing: "1px",
+                      minWidth: "110px",
+                      height: "auto",
                       lineHeight: "1.2",
                     }}
                   >
@@ -438,15 +449,15 @@ export default function CreditCalculator() {
                   <th
                     style={{
                       border: "2px solid #1800ae",
-                      padding: "20px",
+                      padding: "12px 4px",
                       textAlign: "center",
                       verticalAlign: "middle",
                       fontWeight: "bold",
-                      fontSize: "23px",
+                      fontSize: "clamp(14px, 2.5vw, 23px)",
                       fontFamily: '"Paytone One", sans-serif',
-                      letterSpacing: "2px",
-                      minWidth: "123px",
-                      height: "60px",
+                      letterSpacing: "1px",
+                      minWidth: "90px",
+                      height: "auto",
                       lineHeight: "1.2",
                     }}
                   >
@@ -455,15 +466,15 @@ export default function CreditCalculator() {
                   <th
                     style={{
                       border: "2px solid #1800ae",
-                      padding: "20px",
+                      padding: "12px 4px",
                       textAlign: "center",
                       verticalAlign: "middle",
                       fontWeight: "bold",
-                      fontSize: "23px",
+                      fontSize: "clamp(14px, 2.5vw, 23px)",
                       fontFamily: '"Paytone One", sans-serif',
-                      letterSpacing: "2px",
-                      minWidth: "123px",
-                      height: "60px",
+                      letterSpacing: "1px",
+                      minWidth: "90px",
+                      height: "auto",
                       lineHeight: "1.2",
                     }}
                   >
@@ -472,15 +483,15 @@ export default function CreditCalculator() {
                   <th
                     style={{
                       border: "2px solid #1800ae",
-                      padding: "20px",
+                      padding: "12px 4px",
                       textAlign: "center",
                       verticalAlign: "middle",
                       fontWeight: "bold",
-                      fontSize: "23px",
+                      fontSize: "clamp(14px, 2.5vw, 23px)",
                       fontFamily: '"Paytone One", sans-serif',
-                      letterSpacing: "2px",
-                      minWidth: "123px",
-                      height: "60px",
+                      letterSpacing: "1px",
+                      minWidth: "90px",
+                      height: "auto",
                       lineHeight: "1.2",
                     }}
                   >
@@ -489,15 +500,15 @@ export default function CreditCalculator() {
                   <th
                     style={{
                       border: "2px solid #1800ae",
-                      padding: "20px",
+                      padding: "12px 4px",
                       textAlign: "center",
                       verticalAlign: "middle",
                       fontWeight: "bold",
-                      fontSize: "23px",
+                      fontSize: "clamp(14px, 2.5vw, 23px)",
                       fontFamily: '"Paytone One", sans-serif',
-                      letterSpacing: "2px",
-                      minWidth: "123px",
-                      height: "60px",
+                      letterSpacing: "1px",
+                      minWidth: "90px",
+                      height: "auto",
                       lineHeight: "1.2",
                     }}
                   >
@@ -506,15 +517,15 @@ export default function CreditCalculator() {
                   <th
                     style={{
                       border: "2px solid #1800ae",
-                      padding: "20px",
+                      padding: "12px 4px",
                       textAlign: "center",
                       verticalAlign: "middle",
                       fontWeight: "bold",
-                      fontSize: "23px",
+                      fontSize: "clamp(14px, 2.5vw, 23px)",
                       fontFamily: '"Paytone One", sans-serif',
-                      letterSpacing: "2px",
-                      minWidth: "123px",
-                      height: "60px",
+                      letterSpacing: "1px",
+                      minWidth: "90px",
+                      height: "auto",
                       lineHeight: "1.2",
                     }}
                   >
@@ -531,15 +542,16 @@ export default function CreditCalculator() {
                     <td
                       style={{
                         border: "1px solid #6d2fce",
-                        padding: "16px 6px",
+                        padding: "12px 4px",
                         textAlign: "center",
                         verticalAlign: "middle",
-                        fontSize: "17px",
+                        fontSize: "clamp(11px, 2vw, 17px)",
                         fontWeight: "bold",
                         fontFamily: '"Arimo", sans-serif',
-                        letterSpacing: "1px",
-                        height: "60px",
+                        letterSpacing: "0.5px",
+                        height: "auto",
                         lineHeight: "1.2",
+                        minWidth: "90px",
                       }}
                     >
                       %{row.downPaymentPercent} (
@@ -551,15 +563,15 @@ export default function CreditCalculator() {
                     <td
                       style={{
                         border: "1px solid #6d2fce",
-                        padding: "16px 0 16px 6px",
+                        padding: "12px 4px",
                         textAlign: "center",
                         verticalAlign: "middle",
                         fontWeight: "bold",
-                        fontSize: "17px",
+                        fontSize: "clamp(11px, 2vw, 17px)",
                         fontFamily: '"Arimo", sans-serif',
-                        minWidth: "123px",
-                        letterSpacing: "1px",
-                        height: "60px",
+                        minWidth: "110px",
+                        letterSpacing: "0.5px",
+                        height: "auto",
                         lineHeight: "1.2",
                       }}
                     >
@@ -573,15 +585,15 @@ export default function CreditCalculator() {
                         key={termIdx}
                         style={{
                           border: "1px solid #6d2fce",
-                          padding: "16px",
+                          padding: "12px 4px",
                           textAlign: "center",
                           verticalAlign: "middle",
-                          fontSize: "17px",
+                          fontSize: "clamp(11px, 2vw, 17px)",
                           fontWeight: "bold",
                           fontFamily: '"Arimo", sans-serif',
-                          minWidth: "123px",
-                          letterSpacing: "1px",
-                          height: "60px",
+                          minWidth: "90px",
+                          letterSpacing: "0.5px",
+                          height: "auto",
                           lineHeight: "1.2",
                         }}
                       >
@@ -594,7 +606,8 @@ export default function CreditCalculator() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+              </table>
+            </div>
           </div>
 
           {/* Action Buttons */}
