@@ -131,7 +131,7 @@ function KampanyalarCardsSection() {
                         borderColor: "#2563eb",
                       }}
                     >
-                      Hemen Başvur
+                      <span>Hemen Başvur</span>
                     </a>
                   </div>
                 </div>
