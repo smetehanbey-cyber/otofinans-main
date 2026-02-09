@@ -132,9 +132,14 @@ export default function Header() {
               Ürün ve Hizmet
             </Link>
             <div className="px-4 py-2 space-y-2 border-t border-gray-200">
-              <button className="w-full px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-100">
+              <a
+                href="https://wa.me/905324098440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full block px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-100 text-center transition-colors"
+              >
                 Aracını Hızlı Sat
-              </button>
+              </a>
               <a
                 href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                 target="_blank"
