@@ -27,7 +27,7 @@ function KampanyalarCardsSection() {
     .campaign-button-link {
       position: relative;
       display: inline-flex !important;
-      z-index: 1;
+      overflow: hidden;
     }
 
     .campaign-button-link::before {
@@ -38,15 +38,8 @@ function KampanyalarCardsSection() {
       width: 0%;
       height: 100%;
       background: linear-gradient(to right, #22c55e, #16a34a);
-      border-radius: 24px;
-      z-index: 1;
+      z-index: 10;
       pointer-events: none;
-    }
-
-    .campaign-button-link::after {
-      content: '';
-      position: relative;
-      z-index: 2;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link::before {
