@@ -117,7 +117,7 @@ export default function ProductDropdown() {
               </div>
 
               {/* Products Grid */}
-              <div className="grid grid-cols-3 gap-3 p-4 max-w-6xl mx-auto">
+              <div className="grid grid-cols-3 gap-4 p-6 max-w-6xl mx-auto">
                 {products.map((product) => (
                   <div
                     key={product.id}
