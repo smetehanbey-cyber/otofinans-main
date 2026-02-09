@@ -10,9 +10,9 @@ export default function Header() {
     <>
       <header className="bg-white shadow-md sticky top-0 z-50">
         {/* Top Navigation Bar */}
-        <div className="border-b border-gray-300" style={{ height: "clamp(3px, 2.5vw, 40px)", backgroundColor: "#e5e7eb" }}>
+        <div className="border-b border-gray-300" style={{ backgroundColor: "#e5e7eb" }}>
           <div className="max-w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-center items-center h-full hidden md:flex">
+            <div className="flex justify-center items-center py-2 hidden md:flex">
               {/* Top Navigation Links - Centered */}
               <nav className="hidden md:flex items-center gap-3 justify-center text-xs">
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
