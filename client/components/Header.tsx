@@ -5,6 +5,18 @@ import ProductDropdown from "./ProductDropdown";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCreditCalculatorClick = () => {
+    navigate("/");
+    // Scroll to calculator after navigation
+    setTimeout(() => {
+      const element = document.getElementById("credit-calculator");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  };
 
   return (
     <>
