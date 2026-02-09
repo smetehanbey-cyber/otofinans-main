@@ -29,25 +29,18 @@ function KampanyalarCardsSection() {
       display: inline-flex !important;
       overflow: hidden;
       color: white !important;
-      z-index: 10;
+      mix-blend-mode: darken;
     }
 
     .campaign-button-link::before {
       content: '';
       position: absolute;
-      inset: 0;
+      top: 0;
+      left: 0;
       width: 0%;
+      height: 100%;
       background: linear-gradient(to right, #22c55e, #16a34a);
       pointer-events: none;
-      z-index: 1;
-    }
-
-    .campaign-button-link::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
     }
 
     .campaign-button-wrapper:hover .campaign-button-link::before {
