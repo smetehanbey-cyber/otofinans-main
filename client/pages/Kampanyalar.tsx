@@ -56,11 +56,18 @@ function KampanyalarCardsSection() {
     .campaign-image-container {
       position: relative;
       overflow: hidden;
+      border: 3px solid #0f367e;
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .campaign-image-container img {
       position: relative;
       transition: transform 0.3s ease-out;
+      border: none;
+      border-radius: 29px;
     }
 
     .campaign-image-container:hover img {
