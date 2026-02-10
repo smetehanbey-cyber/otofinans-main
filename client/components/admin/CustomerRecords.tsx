@@ -9,6 +9,7 @@ export default function CustomerRecords() {
   const [editingData, setEditingData] = useState<Partial<Customer>>({});
   const [showForm, setShowForm] = useState(false);
   const [archiveConfirmId, setArchiveConfirmId] = useState<number | null>(null);
+  const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(null);
   const [newCustomer, setNewCustomer] = useState({
     name: "",
     email: "",
