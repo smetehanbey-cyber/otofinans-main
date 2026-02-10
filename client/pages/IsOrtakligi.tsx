@@ -1,220 +1,253 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import Header from "@/components/Header";
 import BannerSlider from "@/components/BannerSlider";
 import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
+import { TrendingUp, Users, Zap, Award } from "lucide-react";
 
-function IsOrtakligiCardsSection() {
-  // Add CSS styles for the progress bar animation
-  const progressBarStyles = `
-    @keyframes greenFillProgress {
-      from {
-        width: 0%;
-      }
-      to {
-        width: 100%;
-      }
-    }
+function PartnershipForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    companyName: "",
+    experience: "",
+    message: "",
+  });
 
-    .partnership-button-wrapper {
-      position: relative;
-      display: block;
-      width: 100%;
-    }
+  const [submitted, setSubmitted] = useState(false);
 
-    .partnership-button-link {
-      position: relative;
-      display: inline-flex !important;
-      overflow: hidden;
-      color: white !important;
-      border-radius: 9999px;
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-    .partnership-button-link::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(to right, #22c55e, #16a34a);
-      pointer-events: none;
-      z-index: 0;
-      border-radius: 9999px;
-    }
-
-    .partnership-button-link span {
-      position: relative;
-      z-index: 2;
-      color: white !important;
-    }
-
-    .partnership-button-wrapper:hover .partnership-button-link::before {
-      animation: greenFillProgress 13s ease-in-out forwards;
-    }
-
-    @keyframes showWhatsApp {
-      0% {
-        opacity: 0;
-      }
-      99% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
-    .partnership-button-wrapper {
-      position: relative;
-    }
-
-    .partnership-button-link .button-text {
-      display: inline-block;
-    }
-
-    .partnership-button-wrapper:hover .partnership-button-link .button-text {
-      animation: fadeOutText 13s ease-in-out forwards;
-    }
-
-    @keyframes fadeOutText {
-      0% {
-        opacity: 1;
-      }
-      99% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-      }
-    }
-
-    .partnership-button-link .whatsapp-text {
-      position: absolute;
-      opacity: 0;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-    }
-
-    .partnership-button-wrapper:hover .partnership-button-link .whatsapp-text {
-      animation: showWhatsApp 13s ease-in-out forwards;
-    }
-
-    .partnership-image-container {
-      position: relative;
-      overflow: hidden;
-      border: 3px solid #0f367e;
-      border-radius: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .partnership-image-container img {
-      position: relative;
-      transition: transform 0.3s ease-out;
-      border: none;
-      border-radius: 29px;
-    }
-
-    .partnership-image-container:hover img {
-      transform: scale(1.02);
-    }
-  `;
-
-  const partnerships = [
-    {
-      id: 1,
-      title: "Hızlı Kredi Desteği",
-      description: "20 Yaş'a Kadar Tüm Aracılarda Kredi Onayı OtoFinansında",
-      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F92045d3d960f406e80a0a36b4ec1ada0?format=webp&width=800&height=1200",
-    },
-    {
-      id: 2,
-      title: "Ön Onaylı +800.000TL Kredi Limitini Hazır!",
-      description: "Limitini Etkilemeden Ön Onaylı Kredini Hemen Kullan! Fırsatları kaçırma!",
-      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F0195001f0f1644c09ed8556737d376ca?format=webp&width=800&height=1200",
-    },
-    {
-      id: 3,
-      title: "Peşinatsız Destek",
-      description: "30 Dakikada Kredi! Aracın Hemen Kapında",
-      image: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F78d5f17173244bcda7edc13b4e5a7301?format=webp&width=800&height=1200",
-    },
-  ];
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log("Form submitted:", formData);
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        companyName: "",
+        experience: "",
+        message: "",
+      });
+    }, 3000);
+  };
 
   return (
-    <section className="py-4 sm:py-6 bg-gray-50">
-      <style>{progressBarStyles}</style>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-3 sm:mb-4">
+    <section className="py-8 sm:py-12 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Benefits Grid */}
+        <div className="mb-12">
           <h2
-            className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8"
             style={{ color: "#0f367e" }}
           >
-            İş Ortaklığı Fırsatları
+            Yetkili Bayi Ortağımız Olun
           </h2>
+          <p className="text-center text-gray-700 mb-8 text-lg">
+            OtoFinans ile hızlı büyüme, güçlü destek ve yüksek kazanç fırsatı
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Benefit Card 1 */}
+            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
+                <TrendingUp className="w-6 h-6" style={{ color: "#0f367e" }} />
+              </div>
+              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
+                Hızlı Büyüme
+              </h3>
+              <p className="text-gray-600 text-sm">
+                İlk 6 ayda %150 gelir artışı potansiyeli
+              </p>
+            </div>
+
+            {/* Benefit Card 2 */}
+            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
+                <Users className="w-6 h-6" style={{ color: "#0f367e" }} />
+              </div>
+              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
+                Güçlü Destek
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Adanmış proje yöneticisi ve 24/7 teknik destek
+              </p>
+            </div>
+
+            {/* Benefit Card 3 */}
+            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
+                <Zap className="w-6 h-6" style={{ color: "#0f367e" }} />
+              </div>
+              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
+                Hızlı Onay
+              </h3>
+              <p className="text-gray-600 text-sm">
+                30 dakikada başvuru değerlendirmesi ve onay
+              </p>
+            </div>
+
+            {/* Benefit Card 4 */}
+            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
+                <Award className="w-6 h-6" style={{ color: "#0f367e" }} />
+              </div>
+              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
+                Premium Fırsatlar
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Rekabetçi komisyon oranları ve bonus programları
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Partnership Cards */}
-        <div className="max-w-4xl mx-auto space-y-0">
-          {partnerships.map((partnership) => (
-            <div
-              key={partnership.id}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-              style={{
-                border: "2px solid rgba(15, 54, 126, 0.1)",
-              }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 md:p-4">
-                {/* Image */}
-                <div className="partnership-image-container w-full h-auto">
-                  <img
-                    src={partnership.image}
-                    alt={partnership.title}
-                    className="w-full object-cover"
-                    style={{
-                      height: "256px",
-                      width: "100%",
-                    }}
-                  />
-                </div>
+        {/* Form Section */}
+        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 sm:p-8">
+          <h3 className="text-2xl font-bold mb-2" style={{ color: "#0f367e" }}>
+            Ortaklık Başvurusu
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Lütfen aşağıdaki formu doldurun. En kısa sürede sizinle iletişime geçeceğiz.
+          </p>
 
-                {/* Content */}
-                <div className="flex flex-col justify-center p-3 md:p-4">
-                  <h3
-                    className="font-bold text-xl sm:text-2xl mb-2"
-                    style={{ color: "#0f367e" }}
-                  >
-                    {partnership.title}
-                  </h3>
-                  <p className="text-base sm:text-lg text-gray-700 leading-tight mb-4">
-                    {partnership.description}
-                  </p>
-                  <div className="partnership-button-wrapper">
-                    <a
-                      href="https://wa.me/905324098440?text=İş%20Ortaklığı%20hakkında%20bilgi%20almak%20istiyorum."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="partnership-button-link inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-3 text-white font-bold text-sm sm:text-base rounded-full hover:opacity-90 w-full sm:w-auto border-2"
-                      style={{
-                        background: "linear-gradient(to right, #0f367e, #1a4d9e)",
-                        borderColor: "#2563eb",
-                      }}
-                    >
-                      <span className="button-text">Hemen Başvur</span>
-                      <span className="whatsapp-text">WhatsApp</span>
-                    </a>
-                  </div>
-                </div>
+          {submitted && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-green-700 font-medium">
+                ✓ Başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.
+              </p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Ad Soyad *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  placeholder="Adınızı yazınız"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  E-posta *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  placeholder="E-posta adresiniz"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Telefon *
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  placeholder="+90 5XX XXX XXXX"
+                />
+              </div>
+
+              {/* Company Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Şirket Adı *
+                </label>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  placeholder="Şirketinizin adı"
+                />
+              </div>
+
+              {/* Experience */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Sektördeki Deneyim *
+                </label>
+                <select
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                >
+                  <option value="">Deneyim seviyesini seçiniz</option>
+                  <option value="0-1">0-1 yıl</option>
+                  <option value="1-3">1-3 yıl</option>
+                  <option value="3-5">3-5 yıl</option>
+                  <option value="5+">5+ yıl</option>
+                </select>
               </div>
             </div>
-          ))}
+
+            {/* Message */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Mesajınız
+              </label>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={4}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                placeholder="Ortaklık hakkında sorularınız veya özel talepleriniz..."
+              ></textarea>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full py-3 px-4 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white font-bold rounded-lg hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors text-lg"
+            >
+              Başvuruyu Gönder
+            </button>
+          </form>
+
+          <p className="text-xs text-gray-500 mt-4 text-center">
+            Verileriniz güvenlidir ve sadece ortaklık süreci için kullanılacaktır.
+          </p>
         </div>
       </div>
     </section>
