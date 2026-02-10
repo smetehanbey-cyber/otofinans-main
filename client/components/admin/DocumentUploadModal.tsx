@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 import { Upload, X, FileText, Download, Trash2 } from "lucide-react";
+
+// Fresh Supabase client instance for each upload (avoid token cache issues)
+const createSupabaseClient = () => createClient(
+  "https://fqevluscuzzvzgkzmrrj.supabase.co",
+  "sb_publishable_pzSebwhZQoSJyUrhx8glxw_TkoSECw2"
+);
 
 interface Document {
   id: number;
