@@ -324,7 +324,7 @@ export default function CustomerRecords() {
                   key={customer.id}
                   className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     {editingId === customer.id ? (
                       <input
                         type="text"
@@ -335,13 +335,13 @@ export default function CustomerRecords() {
                             name: e.target.value
                           })
                         }
-                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
                       />
                     ) : (
                       <span className="text-gray-800">{customer.name}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     {editingId === customer.id ? (
                       <input
                         type="text"
@@ -352,13 +352,13 @@ export default function CustomerRecords() {
                             tc: e.target.value
                           })
                         }
-                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
                       />
                     ) : (
                       <span className="text-gray-800">{customer.tc}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     {editingId === customer.id ? (
                       <input
                         type="tel"
@@ -369,13 +369,13 @@ export default function CustomerRecords() {
                             phone: e.target.value
                           })
                         }
-                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
                       />
                     ) : (
                       <span className="text-gray-800">{customer.phone}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 max-w-[150px]">
+                  <td className="px-2 py-2 max-w-[150px] text-sm">
                     {editingId === customer.id ? (
                       <textarea
                         value={editingData.message || ""}
@@ -385,13 +385,13 @@ export default function CustomerRecords() {
                             message: e.target.value
                           })
                         }
-                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
                         rows={2}
                       />
                     ) : (
                       <div className="relative">
                         <span
-                          className="text-gray-700 text-sm block truncate cursor-help"
+                          className="text-gray-700 text-xs block truncate cursor-help"
                           onMouseEnter={(e) => {
                             setHoveredMessageId(customer.id);
                             const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -406,7 +406,7 @@ export default function CustomerRecords() {
                         </span>
                         {hoveredMessageId === customer.id && customer.message && (
                           <div
-                            className="fixed bg-gray-900 text-white text-sm p-3 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700"
+                            className="fixed bg-gray-900 text-white text-xs p-2 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700"
                             style={{
                               top: `${tooltipPos.top}px`,
                               left: `${tooltipPos.left}px`
@@ -419,7 +419,7 @@ export default function CustomerRecords() {
                       </div>
                     )}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     {editingId === customer.id ? (
                       <select
                         value={editingData.process || "Beklemede"}
@@ -429,14 +429,14 @@ export default function CustomerRecords() {
                             process: e.target.value as "Beklemede" | "Onaylandı"
                           })
                         }
-                        className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
                       >
                         <option value="Beklemede">Beklemede</option>
                         <option value="Onaylandı">Onaylandı</option>
                       </select>
                     ) : (
                       <span
-                        className={`inline-block px-3 py-1 rounded-full font-semibold text-sm ${
+                        className={`inline-block px-2 py-0.5 rounded-full font-semibold text-xs ${
                           customer.process === "Beklemede"
                             ? "bg-yellow-100 text-yellow-800"
                             : "bg-green-100 text-green-800"
@@ -446,11 +446,11 @@ export default function CustomerRecords() {
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-gray-600 text-sm">
+                  <td className="px-2 py-2 text-gray-600 text-xs">
                     {new Date(customer.created_at).toLocaleDateString("tr-TR")}
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-center gap-2">
+                  <td className="px-2 py-2">
+                    <div className="flex justify-center gap-1">
                       {editingId === customer.id ? (
                         <>
                           <button
