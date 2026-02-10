@@ -324,7 +324,7 @@ export default function CustomerRecords() {
                   key={customer.id}
                   className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-2 py-2 text-sm">
+                  <td className="px-2 py-2" style={{fontSize: '15px'}}>
                     {editingId === customer.id ? (
                       <input
                         type="text"
@@ -335,7 +335,8 @@ export default function CustomerRecords() {
                             name: e.target.value
                           })
                         }
-                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
+                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        style={{fontSize: '15px'}}
                       />
                     ) : (
                       <span className="text-gray-800">{customer.name}</span>
