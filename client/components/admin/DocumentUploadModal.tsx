@@ -71,6 +71,8 @@ export default function DocumentUploadModal({
     setUploading(true);
 
     try {
+      const supabase = createSupabaseClient();
+
       for (const file of Array.from(files)) {
         try {
           // Validate file extension instead of MIME type
