@@ -463,7 +463,8 @@ export default function CustomerRecords() {
                         <>
                           <button
                             onClick={() => handleUpdateCustomer(customer.id)}
-                            className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs transition-colors"
+                            className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                            style={{fontSize: '13px'}}
                           >
                             Kaydet
                           </button>
@@ -472,7 +473,8 @@ export default function CustomerRecords() {
                               setEditingId(null);
                               setEditingData({});
                             }}
-                            className="px-2 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 text-xs transition-colors"
+                            className="px-2 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 transition-colors"
+                            style={{fontSize: '13px'}}
                           >
                             İptal
                           </button>
