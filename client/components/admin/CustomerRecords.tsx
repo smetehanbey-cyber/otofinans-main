@@ -10,6 +10,7 @@ export default function CustomerRecords() {
   const [showForm, setShowForm] = useState(false);
   const [archiveConfirmId, setArchiveConfirmId] = useState<number | null>(null);
   const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(null);
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
   const [newCustomer, setNewCustomer] = useState({
     name: "",
     email: "",
