@@ -8,6 +8,17 @@ import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 
 export default function Hakkimizda() {
+  const navigate = useNavigate();
+  const handleCreditCalculatorClick = () => {
+    navigate("/");
+    setTimeout(() => {
+      const element = document.getElementById("credit-calculator");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
