@@ -35,6 +35,21 @@ function CreditQuery() {
   );
 }
 
+// Taşıt Stok (Vehicle Stock) Component
+function VehicleStock() {
+  return (
+    <div className="p-6 space-y-6">
+      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+        <h2 className="text-lg font-semibold text-green-900 mb-2">Taşıt Stok</h2>
+        <p className="text-green-700">Araç envanteri ve stok yönetim sistemi</p>
+      </div>
+      <div className="text-gray-500 text-center py-12">
+        <p>Taşıt stok yönetim sistemi yakında aktif olacaktır</p>
+      </div>
+    </div>
+  );
+}
+
 export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
