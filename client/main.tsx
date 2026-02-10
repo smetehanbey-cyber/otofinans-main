@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Hakkimizda from "./pages/Hakkimizda";
 import Finansmanlar from "./pages/Finansmanlar";
 import Kampanyalar from "./pages/Kampanyalar";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
