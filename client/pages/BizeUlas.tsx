@@ -24,7 +24,7 @@ function HeadquartersAndMap() {
             OtoFinans Global - Türkiye'nin Taksitli Araç Satış Platformu
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
             {/* İletişim Adresi */}
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 border border-blue-200">
               <div className="flex items-center gap-4 mb-4">
