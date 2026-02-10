@@ -92,7 +92,7 @@ export default function ArchivedRecords() {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
                   <button
                     onClick={() => handleSort("name")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -100,7 +100,7 @@ export default function ArchivedRecords() {
                     Ad Soyad <SortIcon field="name" />
                   </button>
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
                   <button
                     onClick={() => handleSort("tc")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -108,7 +108,7 @@ export default function ArchivedRecords() {
                     TC <SortIcon field="tc" />
                   </button>
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
                   <button
                     onClick={() => handleSort("phone")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -116,7 +116,7 @@ export default function ArchivedRecords() {
                     Telefon <SortIcon field="phone" />
                   </button>
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
                   <button
                     onClick={() => handleSort("message")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -124,7 +124,7 @@ export default function ArchivedRecords() {
                     Mesaj <SortIcon field="message" />
                   </button>
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
                   <button
                     onClick={() => handleSort("process")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -132,7 +132,7 @@ export default function ArchivedRecords() {
                     Süreci <SortIcon field="process" />
                   </button>
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
                   <button
                     onClick={() => handleSort("created_at")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -140,7 +140,7 @@ export default function ArchivedRecords() {
                     Tarih <SortIcon field="created_at" />
                   </button>
                 </th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-700">
+                <th className="px-2 py-2 text-center font-semibold text-gray-700 text-sm">
                   İşlemler
                 </th>
               </tr>
@@ -151,23 +151,23 @@ export default function ArchivedRecords() {
                   key={customer.id}
                   className="border-b border-gray-200 hover:bg-gray-50 transition-colors opacity-75"
                 >
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     <span className="text-gray-700">{customer.name}</span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     <span className="text-gray-700">{customer.tc}</span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     <span className="text-gray-700">{customer.phone}</span>
                   </td>
-                  <td className="px-4 py-3 max-w-xs truncate">
-                    <span className="text-gray-600 text-sm">
+                  <td className="px-2 py-2 max-w-xs truncate text-xs">
+                    <span className="text-gray-600">
                       {customer.message || "-"}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2 text-sm">
                     <span
-                      className={`inline-block px-3 py-1 rounded-full font-semibold text-sm ${
+                      className={`inline-block px-2 py-0.5 rounded-full font-semibold text-xs ${
                         customer.process === "Beklemede"
                           ? "bg-yellow-100 text-yellow-800"
                           : "bg-green-100 text-green-800"
@@ -176,14 +176,14 @@ export default function ArchivedRecords() {
                       {customer.process}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-600 text-sm">
+                  <td className="px-2 py-2 text-gray-600 text-xs">
                     {new Date(customer.created_at).toLocaleDateString("tr-TR")}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2">
                     <div className="flex justify-center">
                       <button
                         onClick={() => handleRestoreCustomer(customer.id)}
-                        className="p-2 text-green-600 hover:bg-green-50 rounded transition-colors"
+                        className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors"
                         title="Geri Yükle"
                       >
                         <RotateCcw className="h-4 w-4" />
