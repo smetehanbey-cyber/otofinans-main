@@ -13,7 +13,7 @@ supabase.auth.signInAnonymously().catch((err) => {
 export interface Customer {
   id: number;
   name: string;
-  tc: string;
+  email: string;
   phone: string;
   message: string;
   created_at: string;
