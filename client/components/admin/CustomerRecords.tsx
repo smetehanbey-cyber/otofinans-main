@@ -453,7 +453,7 @@ export default function CustomerRecords() {
                             <Edit2 className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => handleArchiveCustomer(customer.id)}
+                            onClick={() => setArchiveConfirmId(customer.id)}
                             className="p-2 text-orange-600 hover:bg-orange-50 rounded transition-colors"
                             title="Arşive Taşı"
                           >
