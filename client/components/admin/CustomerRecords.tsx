@@ -373,7 +373,7 @@ export default function CustomerRecords() {
                       <span className="text-gray-800">{customer.phone}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 w-40 max-w-[160px]">
+                  <td className="px-4 py-3 max-w-[150px]">
                     {editingId === customer.id ? (
                       <textarea
                         value={editingData.message || ""}
