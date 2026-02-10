@@ -106,22 +106,22 @@ export default function CustomerRecords() {
   };
 
   // Archive customer
-  const handleArchiveCustomer = async (id: number) => {
-    if (!confirm("Bu müşteri kaydını arşive taşımak istediğinize emin misiniz?")) {
-      return;
-    }
+  const handleArchiveCustomer = async () => {
+    if (archiveConfirmId === null) return;
 
     try {
       const { error } = await supabase
         .from("customers")
         .update({ status: "archived" })
-        .eq("id", id);
+        .eq("id", archiveConfirmId);
 
       if (error) throw error;
+      setArchiveConfirmId(null);
       fetchCustomers();
     } catch (error) {
       console.error("Error archiving customer:", error);
       alert("Hata: Müşteri arşivlenemedi");
+      setArchiveConfirmId(null);
     }
   };
 
