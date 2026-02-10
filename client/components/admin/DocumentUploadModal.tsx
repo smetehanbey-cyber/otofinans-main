@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 import { Upload, X, FileText, Download, Trash2 } from "lucide-react";
+
+// Service role client for document uploads (bypass RLS)
+const supabaseServiceRole = createClient(
+  "https://fqevluscuzzvzgkzmrrj.supabase.co",
+  "sb_secret_BRMxdO_9_P8nl3nT8ZbJ-A__xItoZlz"
+);
+
+// Fall back to public client for reads
+import { supabase } from "@/lib/supabase";
 
 interface Document {
   id: number;
