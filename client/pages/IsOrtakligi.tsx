@@ -369,8 +369,8 @@ export default function IsOrtakligi() {
           </p>
         </div>
 
-        {/* İş Ortaklığı Section */}
-        <IsOrtakligiCardsSection />
+        {/* Partnership Form Section */}
+        <PartnershipForm />
 
         {/* Market Data Section */}
         <PiyasaVerileri />
