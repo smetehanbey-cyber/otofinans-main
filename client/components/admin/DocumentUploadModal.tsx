@@ -33,7 +33,6 @@ export default function DocumentUploadModal({
   const fetchDocuments = async () => {
     try {
       setLoading(true);
-      const supabase = createSupabaseClient();
       const { data, error: fetchError } = await supabase
         .from("documents")
         .select("*")
