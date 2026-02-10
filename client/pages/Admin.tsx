@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, LogOut, ChevronRight } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
+import ArchivedRecords from "@/components/admin/ArchivedRecords";
 
 export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -14,6 +15,12 @@ export default function Admin() {
       label: "Gelen Talep",
       icon: "📋",
       component: CustomerRecords
+    },
+    {
+      id: "archived-records",
+      label: "Arşive Bak",
+      icon: "🗂️",
+      component: ArchivedRecords
     },
     // İleride eklenecek menüler
     // {
