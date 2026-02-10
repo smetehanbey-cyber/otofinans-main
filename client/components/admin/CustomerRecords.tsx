@@ -15,7 +15,7 @@ export default function CustomerRecords() {
   const [selectedCustomerForDocs, setSelectedCustomerForDocs] = useState<number | null>(null);
   const [newCustomer, setNewCustomer] = useState({
     name: "",
-    email: "",
+    tc: "",
     phone: "",
     message: "",
     process: "Beklemede" as "Beklemede" | "Onaylandı"
@@ -48,7 +48,7 @@ export default function CustomerRecords() {
 
   // Add new customer
   const handleAddCustomer = async () => {
-    if (!newCustomer.name || !newCustomer.email) {
+    if (!newCustomer.name || !newCustomer.tc) {
       alert("Ad ve TC zorunludur!");
       return;
     }
@@ -57,7 +57,7 @@ export default function CustomerRecords() {
       const { error } = await supabase.from("customers").insert([
         {
           name: newCustomer.name,
-          email: newCustomer.email,
+          tc: newCustomer.tc,
           phone: newCustomer.phone || "",
           message: newCustomer.message || "",
           process: newCustomer.process,
@@ -67,7 +67,7 @@ export default function CustomerRecords() {
 
       if (error) throw error;
 
-      setNewCustomer({ name: "", email: "", phone: "", message: "", process: "Beklemede" });
+      setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
       setShowForm(false);
       fetchCustomers();
     } catch (error) {
@@ -78,7 +78,7 @@ export default function CustomerRecords() {
 
   // Update customer
   const handleUpdateCustomer = async (id: number) => {
-    if (!editingData.name || !editingData.email) {
+    if (!editingData.name || !editingData.tc) {
       alert("Ad ve TC zorunludur!");
       return;
     }
@@ -87,7 +87,7 @@ export default function CustomerRecords() {
       // Only send the fields that have changed
       const updateData = {
         name: editingData.name,
-        email: editingData.email,
+        tc: editingData.tc,
         phone: editingData.phone || "",
         message: editingData.message || "",
         process: editingData.process || "Beklemede"
@@ -193,9 +193,9 @@ export default function CustomerRecords() {
             <input
               type="text"
               placeholder="TC"
-              value={newCustomer.email}
+              value={newCustomer.tc}
               onChange={(e) =>
-                setNewCustomer({ ...newCustomer, email: e.target.value })
+                setNewCustomer({ ...newCustomer, tc: e.target.value })
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
@@ -241,7 +241,7 @@ export default function CustomerRecords() {
             <button
               onClick={() => {
                 setShowForm(false);
-                setNewCustomer({ name: "", email: "", phone: "", message: "", process: "Beklemede" });
+                setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
               }}
               className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors"
             >
@@ -275,10 +275,10 @@ export default function CustomerRecords() {
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
                   <button
-                    onClick={() => handleSort("email")}
+                    onClick={() => handleSort("tc")}
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
-                    TC <SortIcon field="email" />
+                    TC <SortIcon field="tc" />
                   </button>
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
@@ -345,17 +345,17 @@ export default function CustomerRecords() {
                     {editingId === customer.id ? (
                       <input
                         type="text"
-                        value={editingData.email || ""}
+                        value={editingData.tc || ""}
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            email: e.target.value
+                            tc: e.target.value
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                       />
                     ) : (
-                      <span className="text-gray-800">{customer.email}</span>
+                      <span className="text-gray-800">{customer.tc}</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
