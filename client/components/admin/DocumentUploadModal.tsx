@@ -227,7 +227,7 @@ export default function DocumentUploadModal({
               <input
                 type="file"
                 multiple
-                accept=".pdf,.png,.jpg,.jpeg"
+                accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
                 onChange={(e) => handleFileUpload(e.target.files)}
                 className="hidden"
               />
