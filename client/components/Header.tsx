@@ -48,7 +48,7 @@ export default function Header() {
                 <Link to="/isortakligi" className="text-gray-700 hover:text-primary font-medium">
                   İş Ortaklığı
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link to="/bizeulas" className="text-gray-700 hover:text-primary font-medium">
                   Bize Ulaş
                 </Link>
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
