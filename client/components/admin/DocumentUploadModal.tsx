@@ -27,6 +27,7 @@ export default function DocumentUploadModal({
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   // Fetch documents for this customer
   const fetchDocuments = async () => {
