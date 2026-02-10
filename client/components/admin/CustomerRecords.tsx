@@ -241,7 +241,7 @@ export default function CustomerRecords() {
             <button
               onClick={() => {
                 setShowForm(false);
-                setNewCustomer({ name: "", email: "", phone: "", message: "", process: "Beklemede" });
+                setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
               }}
               className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors"
             >
