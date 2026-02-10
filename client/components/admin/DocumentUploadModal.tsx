@@ -166,15 +166,15 @@ export default function DocumentUploadModal({
       // Extract file path from URL
       const filePath = fileUrl.split("/").slice(-2).join("/");
 
-      // Delete from storage
-      const { error: deleteStorageError } = await supabase.storage
+      // Delete from storage using service role
+      const { error: deleteStorageError } = await supabaseServiceRole.storage
         .from("documents")
         .remove([filePath]);
 
       if (deleteStorageError) throw deleteStorageError;
 
-      // Delete from database
-      const { error: deleteDbError } = await supabase
+      // Delete from database using service role
+      const { error: deleteDbError } = await supabaseServiceRole
         .from("documents")
         .delete()
         .eq("id", docId);
