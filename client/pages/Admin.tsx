@@ -43,9 +43,6 @@ export default function Admin() {
   const activeMenuItem = allMenuItems.find(item => item.id === activeMenu);
   const ActiveComponent = activeMenuItem?.component || CustomerRecords;
 
-  const activeMenuItem = menuItems.find(item => item.id === activeMenu);
-  const ActiveComponent = activeMenuItem?.component || CustomerRecords;
-
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
