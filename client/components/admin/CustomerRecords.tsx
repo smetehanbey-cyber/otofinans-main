@@ -191,11 +191,11 @@ export default function CustomerRecords() {
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
             <input
-              type="email"
-              placeholder="Email"
-              value={newCustomer.email}
+              type="text"
+              placeholder="TC"
+              value={newCustomer.tc}
               onChange={(e) =>
-                setNewCustomer({ ...newCustomer, email: e.target.value })
+                setNewCustomer({ ...newCustomer, tc: e.target.value })
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
@@ -275,10 +275,10 @@ export default function CustomerRecords() {
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
                   <button
-                    onClick={() => handleSort("email")}
+                    onClick={() => handleSort("tc")}
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
-                    Email <SortIcon field="email" />
+                    TC <SortIcon field="tc" />
                   </button>
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
@@ -344,18 +344,18 @@ export default function CustomerRecords() {
                   <td className="px-4 py-3">
                     {editingId === customer.id ? (
                       <input
-                        type="email"
-                        value={editingData.email || ""}
+                        type="text"
+                        value={editingData.tc || ""}
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            email: e.target.value
+                            tc: e.target.value
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                       />
                     ) : (
-                      <span className="text-gray-800">{customer.email}</span>
+                      <span className="text-gray-800">{customer.tc}</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
