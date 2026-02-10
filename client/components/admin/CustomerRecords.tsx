@@ -75,9 +75,18 @@ export default function CustomerRecords() {
     }
 
     try {
+      // Only send the fields that have changed
+      const updateData = {
+        name: editingData.name,
+        email: editingData.email,
+        phone: editingData.phone || "",
+        message: editingData.message || "",
+        process: editingData.process || "Beklemede"
+      };
+
       const { error } = await supabase
         .from("customers")
-        .update(editingData)
+        .update(updateData)
         .eq("id", id);
 
       if (error) throw error;
@@ -87,7 +96,7 @@ export default function CustomerRecords() {
       fetchCustomers();
     } catch (error) {
       console.error("Error updating customer:", error);
-      alert("Hata: Müşteri güncellenemedi");
+      alert("Hata: Müşteri güncellenemedi. Lütfen formu kontrol edin.");
     }
   };
 
