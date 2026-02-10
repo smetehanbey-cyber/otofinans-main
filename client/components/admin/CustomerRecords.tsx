@@ -372,7 +372,7 @@ export default function CustomerRecords() {
                       <span className="text-gray-800">{customer.phone}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 max-w-xs">
+                  <td className="px-4 py-3 w-40 max-w-[160px]">
                     {editingId === customer.id ? (
                       <textarea
                         value={editingData.message || ""}
@@ -386,7 +386,7 @@ export default function CustomerRecords() {
                         rows={2}
                       />
                     ) : (
-                      <div className="relative">
+                      <div className="relative group">
                         <span
                           className="text-gray-700 text-sm block truncate cursor-help"
                           onMouseEnter={() => setHoveredMessageId(customer.id)}
@@ -395,9 +395,9 @@ export default function CustomerRecords() {
                           {customer.message || "-"}
                         </span>
                         {hoveredMessageId === customer.id && customer.message && (
-                          <div className="absolute left-0 top-full mt-2 z-50 bg-gray-900 text-white text-sm p-3 rounded shadow-lg max-w-xs break-words">
+                          <div className="fixed bg-gray-900 text-white text-sm p-3 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700">
                             {customer.message}
-                            <div className="absolute bottom-full left-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                            <div className="absolute bottom-full left-2 w-2 h-2 bg-gray-900 border-t border-l border-gray-700 transform rotate-45"></div>
                           </div>
                         )}
                       </div>
