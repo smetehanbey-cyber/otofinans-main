@@ -156,76 +156,70 @@ function HeadquartersAndMap() {
             Türkiye Genelinde Hizmet Veriş Ağımız
           </h3>
           <div className="flex justify-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg border-2" style={{ borderColor: "#0f367e" }}>
-              <svg
-                ref={mapRef}
-                viewBox="0 0 750 500"
-                className="w-full max-w-2xl h-auto transition-opacity duration-200"
-                onMouseMove={handleMouseMove}
-                onMouseLeave={() => setHoveredCity(null)}
-                style={{ backgroundColor: "#e8f0f8" }}
-              >
-                {/* Türkiye Harita Şekli (Basitleştirilmiş) */}
-                <path
-                  d="M 150 100 Q 200 80 250 90 Q 300 85 350 95 Q 400 90 450 100 Q 500 95 550 110 Q 600 120 650 100 Q 680 110 700 150 Q 710 200 700 250 Q 695 300 680 350 Q 670 380 640 400 Q 600 420 550 430 Q 500 435 450 440 Q 400 438 350 440 Q 300 438 250 435 Q 200 432 150 430 Q 120 425 100 400 Q 80 360 75 300 Q 70 240 80 180 Q 90 140 150 100 Z"
-                  fill="#c2e0f5"
-                  stroke="#0f367e"
-                  strokeWidth="2"
+            <div className="bg-white p-6 rounded-lg shadow-lg border-2 w-full max-w-3xl" style={{ borderColor: "#0f367e" }}>
+              <div className="relative">
+                {/* Türkiye Haritası */}
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Turkey_location_map.svg/1200px-Turkey_location_map.svg.png"
+                  alt="Türkiye Haritası"
+                  className="w-full h-auto rounded-lg"
                 />
 
-                {/* Şehir Pinleri */}
-                {turkishCities.map((city) => (
-                  <g key={city.name}>
-                    {/* Hover Effect Çemberi */}
-                    {hoveredCity === city.name && (
-                      <circle
-                        cx={city.x}
-                        cy={city.y}
-                        r="35"
-                        fill="rgba(15, 54, 126, 0.1)"
-                        stroke="#0f367e"
-                        strokeWidth="2"
-                        strokeDasharray="5,5"
-                      />
-                    )}
-
-                    {/* Pin Noktası */}
-                    <circle
-                      cx={city.x}
-                      cy={city.y}
-                      r="8"
-                      fill="#0f367e"
-                      stroke="white"
-                      strokeWidth="2"
+                {/* Şehir Pinleri Overlay */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {turkishCities.map((city) => (
+                    <div
+                      key={city.name}
+                      className="absolute w-4 h-4 pointer-events-auto group"
                       style={{
-                        cursor: "pointer",
-                        transition: "all 0.3s ease",
-                        transform:
-                          hoveredCity === city.name
-                            ? `scale(1.5) translate(${city.x * 0.02}px, ${city.y * 0.02}px)`
-                            : "scale(1)",
+                        left: `${(city.x / 750) * 100}%`,
+                        top: `${(city.y / 500) * 100}%`,
+                        transform: "translate(-50%, -50%)",
                       }}
                       onMouseEnter={() => setHoveredCity(city.name)}
                       onMouseLeave={() => setHoveredCity(null)}
-                    />
+                    >
+                      {/* Pin Noktası */}
+                      <div
+                        className="w-3 h-3 rounded-full bg-blue-900 border-2 border-white shadow-lg transition-all duration-300 cursor-pointer"
+                        style={{
+                          transform:
+                            hoveredCity === city.name ? "scale(1.8)" : "scale(1)",
+                        }}
+                      />
 
-                    {/* Şehir Adı (Hover Üzerine) */}
-                    {hoveredCity === city.name && (
-                      <text
-                        x={city.x}
-                        y={city.y - 30}
-                        textAnchor="middle"
-                        fontSize="12"
-                        fontWeight="bold"
-                        fill="#0f367e"
-                        className="pointer-events-none"
-                      >
-                        {city.name}
-                      </text>
-                    )}
-                  </g>
-                ))}
-              </svg>
+                      {/* Hover Effect Çemberi */}
+                      {hoveredCity === city.name && (
+                        <div
+                          className="absolute w-10 h-10 border-2 border-dashed rounded-full"
+                          style={{
+                            left: "50%",
+                            top: "50%",
+                            transform: "translate(-50%, -50%)",
+                            borderColor: "#0f367e",
+                            pointerEvents: "none",
+                          }}
+                        />
+                      )}
+
+                      {/* Şehir Adı Tooltip */}
+                      {hoveredCity === city.name && (
+                        <div
+                          className="absolute bg-blue-900 text-white px-3 py-1 rounded-lg whitespace-nowrap text-xs font-semibold shadow-lg pointer-events-none"
+                          style={{
+                            left: "50%",
+                            top: "-30px",
+                            transform: "translateX(-50%)",
+                            zIndex: 10,
+                          }}
+                        >
+                          {city.name}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
               <p className="text-center text-gray-600 text-sm mt-4">
                 Mouse üzerinde şehirlerin üzerine gelerek bölge bilgilerini görebilirsiniz
               </p>
