@@ -20,6 +20,21 @@ function AuthorizedDealers() {
   );
 }
 
+// Kredi Sorgula (Credit Query) Component
+function CreditQuery() {
+  return (
+    <div className="p-6 space-y-6">
+      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+        <h2 className="text-lg font-semibold text-purple-900 mb-2">Kredi Sorgula</h2>
+        <p className="text-purple-700">Müşteri kredi sorgulama ve kontrol sistemi</p>
+      </div>
+      <div className="text-gray-500 text-center py-12">
+        <p>Kredi sorgula sistemi yakında aktif olacaktır</p>
+      </div>
+    </div>
+  );
+}
+
 export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
@@ -53,6 +68,18 @@ export default function Admin() {
           id: "dealers",
           label: "Yetkili Bayiler",
           component: AuthorizedDealers
+        }
+      ]
+    },
+    {
+      id: "kredi-sorgula",
+      label: "Kredi Sorgula",
+      icon: "🔍",
+      items: [
+        {
+          id: "credit-query",
+          label: "Kredi Sorgula",
+          component: CreditQuery
         }
       ]
     }
