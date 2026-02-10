@@ -20,21 +20,6 @@ function AuthorizedDealers() {
   );
 }
 
-// Görev Takibi (Task Tracking) Component
-function TaskTracking() {
-  return (
-    <div className="p-6 space-y-6">
-      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-        <h2 className="text-lg font-semibold text-green-900 mb-2">Görev Takibi</h2>
-        <p className="text-green-700">Araç satış görevlerinin durumunu takip edin</p>
-      </div>
-      <div className="text-gray-500 text-center py-12">
-        <p>Görev takibi sistemi yakında aktif olacaktır</p>
-      </div>
-    </div>
-  );
-}
-
 export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
@@ -68,18 +53,6 @@ export default function Admin() {
           id: "dealers",
           label: "Yetkili Bayiler",
           component: AuthorizedDealers
-        }
-      ]
-    },
-    {
-      id: "aracini-hizli-sat",
-      label: "Aracını Hızlı Sat",
-      icon: "🚗",
-      items: [
-        {
-          id: "task-tracking",
-          label: "Görev Takibi",
-          component: TaskTracking
         }
       ]
     }
