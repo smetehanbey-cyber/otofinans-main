@@ -52,6 +52,7 @@ export default function DocumentUploadModal({
     if (isOpen) {
       fetchDocuments();
       setError(null);
+      setSuccess(null);
     }
   }, [isOpen, customerId]);
 
