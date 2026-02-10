@@ -13,4 +13,6 @@ export interface Customer {
   message: string;
   created_at: string;
   updated_at: string;
+  status: "active" | "archived";
+  process: "Beklemede" | "Onaylandı";
 }
