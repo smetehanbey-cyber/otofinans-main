@@ -236,7 +236,7 @@ export default function DocumentUploadModal({
               </span>
             </label>
             <p className="text-xs text-gray-500 mt-3">
-              PDF, PNG, JPG (Max 5MB)
+              PDF, PNG, JPG (Max 10MB)
             </p>
           </div>
 
