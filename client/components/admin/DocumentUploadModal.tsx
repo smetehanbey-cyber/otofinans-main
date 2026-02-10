@@ -59,64 +59,85 @@ export default function DocumentUploadModal({
     if (!files || files.length === 0) return;
 
     setError(null);
+    setUploading(true);
 
-    for (const file of Array.from(files)) {
-      // Validate file type
-      const allowedTypes = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
-      if (!allowedTypes.includes(file.type)) {
-        setError("Sadece PDF, PNG ve JPG dosyaları yüklenebilir");
-        continue;
-      }
+    try {
+      for (const file of Array.from(files)) {
+        try {
+          // Validate file extension instead of MIME type
+          const allowedExtensions = ["pdf", "png", "jpg", "jpeg"];
+          const fileExt = file.name.split(".").pop()?.toLowerCase();
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError("Dosya boyutu 5MB'dan küçük olmalıdır");
-        continue;
-      }
-
-      try {
-        setUploading(true);
-
-        // Create unique file name
-        const timestamp = Date.now();
-        const fileExt = file.name.split(".").pop();
-        const fileName = `${customerId}/${timestamp}_${file.name}`;
-
-        // Upload to Supabase Storage
-        const { error: uploadError } = await supabase.storage
-          .from("documents")
-          .upload(fileName, file, {
-            cacheControl: "3600",
-            upsert: false
-          });
-
-        if (uploadError) throw uploadError;
-
-        // Get public URL
-        const { data } = supabase.storage
-          .from("documents")
-          .getPublicUrl(fileName);
-
-        // Save to database
-        const { error: dbError } = await supabase.from("documents").insert([
-          {
-            customer_id: customerId,
-            file_name: file.name,
-            file_url: data.publicUrl,
-            file_type: fileExt?.toLowerCase()
+          if (!fileExt || !allowedExtensions.includes(fileExt)) {
+            throw new Error(`${file.name}: Sadece PDF, PNG ve JPG dosyaları yüklenebilir`);
           }
-        ]);
 
-        if (dbError) throw dbError;
+          // Validate file size (max 10MB)
+          if (file.size > 10 * 1024 * 1024) {
+            throw new Error(`${file.name}: Dosya boyutu 10MB'dan küçük olmalıdır`);
+          }
 
-        // Refresh documents list
-        fetchDocuments();
-      } catch (err) {
-        console.error("Error uploading file:", err);
-        setError(`Dosya yükleme hatası: ${file.name}`);
-      } finally {
-        setUploading(false);
+          console.log(`Uploading file: ${file.name}, Size: ${file.size}, Type: ${file.type}`);
+
+          // Create unique file name
+          const timestamp = Date.now();
+          const randomStr = Math.random().toString(36).substring(2, 8);
+          const fileName = `${customerId}/${timestamp}_${randomStr}_${file.name}`;
+
+          // Upload to Supabase Storage
+          const { error: uploadError, data: uploadData } = await supabase.storage
+            .from("documents")
+            .upload(fileName, file, {
+              cacheControl: "3600",
+              upsert: true
+            });
+
+          if (uploadError) {
+            console.error("Upload error:", uploadError);
+            throw new Error(`Yükleme hatası: ${uploadError.message}`);
+          }
+
+          console.log("File uploaded successfully:", uploadData);
+
+          // Get public URL
+          const { data: urlData } = supabase.storage
+            .from("documents")
+            .getPublicUrl(fileName);
+
+          console.log("Public URL:", urlData.publicUrl);
+
+          // Save to database
+          const { error: dbError, data: dbData } = await supabase
+            .from("documents")
+            .insert([
+              {
+                customer_id: customerId,
+                file_name: file.name,
+                file_url: urlData.publicUrl,
+                file_type: fileExt
+              }
+            ]);
+
+          if (dbError) {
+            console.error("Database error:", dbError);
+            throw new Error(`Veritabanı hatası: ${dbError.message}`);
+          }
+
+          console.log("Document saved to database:", dbData);
+        } catch (fileError) {
+          console.error(`Error with file ${file.name}:`, fileError);
+          setError(fileError instanceof Error ? fileError.message : "Dosya yükleme hatası");
+          break;
+        }
       }
+
+      // Refresh documents list after all uploads
+      await fetchDocuments();
+    } catch (err) {
+      console.error("Upload process error:", err);
+      setError(err instanceof Error ? err.message : "Yükleme işlemi sırasında hata oluştu");
+    } finally {
+      setUploading(false);
     }
   };
 
