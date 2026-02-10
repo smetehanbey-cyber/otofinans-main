@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, LogOut, ChevronRight } from "lucide-react";
+import { Menu, X, LogOut, ChevronRight, ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
@@ -8,32 +8,40 @@ import ArchivedRecords from "@/components/admin/ArchivedRecords";
 export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
+  const [expandedGroup, setExpandedGroup] = useState("gelen-talep");
 
-  const menuItems = [
+  const menuGroups = [
     {
-      id: "customer-records",
+      id: "gelen-talep",
       label: "Gelen Talep",
       icon: "📋",
-      component: CustomerRecords
-    },
-    {
-      id: "archived-records",
-      label: "Arşive Bak",
-      icon: "🗂️",
-      component: ArchivedRecords
-    },
-    // İleride eklenecek menüler
+      items: [
+        {
+          id: "customer-records",
+          label: "Gelen Talep",
+          component: CustomerRecords
+        },
+        {
+          id: "archived-records",
+          label: "Arşive Bak",
+          icon: "🗂️",
+          component: ArchivedRecords
+        }
+      ]
+    }
+    // İleride eklenecek grup menüler
     // {
     //   id: "reports",
     //   label: "Raporlar",
     //   icon: "📊",
-    // },
-    // {
-    //   id: "settings",
-    //   label: "Ayarlar",
-    //   icon: "⚙️",
+    //   items: [...]
     // }
   ];
+
+  // Flatten menu items to find active component
+  const allMenuItems = menuGroups.flatMap(group => group.items);
+  const activeMenuItem = allMenuItems.find(item => item.id === activeMenu);
+  const ActiveComponent = activeMenuItem?.component || CustomerRecords;
 
   const activeMenuItem = menuItems.find(item => item.id === activeMenu);
   const ActiveComponent = activeMenuItem?.component || CustomerRecords;
