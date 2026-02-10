@@ -213,16 +213,20 @@ export default function DocumentUploadModal({
 
           {/* Drag-Drop Area */}
           <div
-            onDragEnter={() => setDragActive(true)}
+            onDragEnter={() => !uploading && setDragActive(true)}
             onDragLeave={() => setDragActive(false)}
-            onDragOver={(e) => e.preventDefault()}
+            onDragOver={(e) => !uploading && e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
-              setDragActive(false);
-              handleFileUpload(e.dataTransfer.files);
+              if (!uploading) {
+                setDragActive(false);
+                handleFileUpload(e.dataTransfer.files);
+              }
             }}
             className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-              dragActive
+              uploading
+                ? "border-gray-300 bg-gray-50 cursor-not-allowed opacity-50"
+                : dragActive
                 ? "border-blue-600 bg-blue-50"
                 : "border-gray-300 hover:border-gray-400"
             }`}
