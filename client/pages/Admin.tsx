@@ -216,16 +216,6 @@ export default function Admin() {
         {/* Main Content */}
         <div className="flex-1 overflow-auto">
           <div className="p-6">
-            {/* Page Header */}
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-800">
-                {activeMenuItem?.label}
-              </h1>
-              <p className="text-gray-600 mt-1">
-                Müşteri talep ve kayıtlarını yönetin
-              </p>
-            </div>
-
             {/* Content */}
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <ActiveComponent />
