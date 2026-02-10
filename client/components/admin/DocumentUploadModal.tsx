@@ -84,7 +84,11 @@ export default function DocumentUploadModal({
           // Create unique file name
           const timestamp = Date.now();
           const randomStr = Math.random().toString(36).substring(2, 8);
-          const fileName = `${customerId}/${timestamp}_${randomStr}_${file.name}`;
+          // Sanitize file name - remove spaces and special characters
+          const sanitizedFileName = file.name
+            .replace(/\s+/g, "_")
+            .replace(/[^a-zA-Z0-9._-]/g, "");
+          const fileName = `${customerId}/${timestamp}_${randomStr}_${sanitizedFileName}`;
 
           // Upload to Supabase Storage
           const { error: uploadError, data: uploadData } = await supabase.storage
