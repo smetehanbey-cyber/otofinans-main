@@ -197,6 +197,13 @@ export default function DocumentUploadModal({
 
         {/* Modal Content */}
         <div className="p-6 space-y-6">
+          {/* Success Message */}
+          {success && (
+            <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-sm text-green-700 font-medium">{success}</p>
+            </div>
+          )}
+
           {/* Error Message */}
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
