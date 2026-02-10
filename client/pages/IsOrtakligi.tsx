@@ -31,8 +31,22 @@ function PartnershipForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+
+    // Form verilerini mesaj formatında birleştir
+    const messageText = `Ortaklık Başvurusu
+
+Ad Soyad: ${formData.name}
+E-posta: ${formData.email}
+Telefon: ${formData.phone}
+Şirket Adı: ${formData.companyName}
+Sektördeki Deneyim: ${formData.experience}
+${formData.message ? `Mesaj: ${formData.message}` : ''}`;
+
+    // WhatsApp link'i oluştur ve aç
+    const whatsappUrl = `https://wa.me/905324098440?text=${encodeURIComponent(messageText)}`;
+    window.open(whatsappUrl, '_blank');
+
+    // Başarı mesajı göster ve formu temizle
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
