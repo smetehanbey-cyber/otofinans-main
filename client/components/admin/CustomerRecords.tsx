@@ -387,18 +387,31 @@ export default function CustomerRecords() {
                         rows={2}
                       />
                     ) : (
-                      <div className="relative group">
+                      <div className="relative">
                         <span
                           className="text-gray-700 text-sm block truncate cursor-help"
-                          onMouseEnter={() => setHoveredMessageId(customer.id)}
+                          onMouseEnter={(e) => {
+                            setHoveredMessageId(customer.id);
+                            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                            setTooltipPos({
+                              top: rect.bottom + 5,
+                              left: rect.left
+                            });
+                          }}
                           onMouseLeave={() => setHoveredMessageId(null)}
                         >
                           {customer.message || "-"}
                         </span>
                         {hoveredMessageId === customer.id && customer.message && (
-                          <div className="fixed bg-gray-900 text-white text-sm p-3 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700">
+                          <div
+                            className="fixed bg-gray-900 text-white text-sm p-3 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700"
+                            style={{
+                              top: `${tooltipPos.top}px`,
+                              left: `${tooltipPos.left}px`
+                            }}
+                          >
                             {customer.message}
-                            <div className="absolute bottom-full left-2 w-2 h-2 bg-gray-900 border-t border-l border-gray-700 transform rotate-45"></div>
+                            <div className="absolute bottom-full left-2 w-2 h-2 bg-gray-900 border-t border-l border-gray-700"></div>
                           </div>
                         )}
                       </div>
