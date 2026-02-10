@@ -482,6 +482,13 @@ export default function CustomerRecords() {
                             <Edit2 className="h-4 w-4" />
                           </button>
                           <button
+                            onClick={() => setSelectedCustomerForDocs(customer.id)}
+                            className="p-2 text-purple-600 hover:bg-purple-50 rounded transition-colors"
+                            title="Dosyalar"
+                          >
+                            <FileText className="h-4 w-4" />
+                          </button>
+                          <button
                             onClick={() => setArchiveConfirmId(customer.id)}
                             className="p-2 text-orange-600 hover:bg-orange-50 rounded transition-colors"
                             title="Arşive Taşı"
@@ -503,6 +510,15 @@ export default function CustomerRecords() {
       <div className="mt-4 text-sm text-gray-600">
         Toplam: <span className="font-semibold">{customers.length}</span> aktif müşteri
       </div>
+
+      {/* Document Upload Modal */}
+      {selectedCustomerForDocs !== null && (
+        <DocumentUploadModal
+          customerId={selectedCustomerForDocs}
+          isOpen={selectedCustomerForDocs !== null}
+          onClose={() => setSelectedCustomerForDocs(null)}
+        />
+      )}
 
       {/* Archive Confirmation Modal */}
       {archiveConfirmId !== null && (
