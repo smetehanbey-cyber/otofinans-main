@@ -15,7 +15,7 @@ export default function CustomerRecords() {
   const [selectedCustomerForDocs, setSelectedCustomerForDocs] = useState<number | null>(null);
   const [newCustomer, setNewCustomer] = useState({
     name: "",
-    email: "",
+    tc: "",
     phone: "",
     message: "",
     process: "Beklemede" as "Beklemede" | "Onaylandı"
@@ -48,8 +48,8 @@ export default function CustomerRecords() {
 
   // Add new customer
   const handleAddCustomer = async () => {
-    if (!newCustomer.name || !newCustomer.email) {
-      alert("Ad ve Email zorunludur!");
+    if (!newCustomer.name || !newCustomer.tc) {
+      alert("Ad ve TC zorunludur!");
       return;
     }
 
@@ -57,7 +57,7 @@ export default function CustomerRecords() {
       const { error } = await supabase.from("customers").insert([
         {
           name: newCustomer.name,
-          email: newCustomer.email,
+          tc: newCustomer.tc,
           phone: newCustomer.phone || "",
           message: newCustomer.message || "",
           process: newCustomer.process,
@@ -67,7 +67,7 @@ export default function CustomerRecords() {
 
       if (error) throw error;
 
-      setNewCustomer({ name: "", email: "", phone: "", message: "", process: "Beklemede" });
+      setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
       setShowForm(false);
       fetchCustomers();
     } catch (error) {
@@ -78,8 +78,8 @@ export default function CustomerRecords() {
 
   // Update customer
   const handleUpdateCustomer = async (id: number) => {
-    if (!editingData.name || !editingData.email) {
-      alert("Ad ve Email zorunludur!");
+    if (!editingData.name || !editingData.tc) {
+      alert("Ad ve TC zorunludur!");
       return;
     }
 
@@ -87,7 +87,7 @@ export default function CustomerRecords() {
       // Only send the fields that have changed
       const updateData = {
         name: editingData.name,
-        email: editingData.email,
+        tc: editingData.tc,
         phone: editingData.phone || "",
         message: editingData.message || "",
         process: editingData.process || "Beklemede"
