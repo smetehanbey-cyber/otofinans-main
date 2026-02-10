@@ -5,6 +5,21 @@ import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
 
+// Yetkili Bayiler (Authorized Dealers) Component
+function AuthorizedDealers() {
+  return (
+    <div className="p-6 space-y-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h2 className="text-lg font-semibold text-blue-900 mb-2">Yetkili Bayiler Yönetimi</h2>
+        <p className="text-blue-700">Yetkili bayi kaydı ve yönetim sistemi</p>
+      </div>
+      <div className="text-gray-500 text-center py-12">
+        <p>Yetkili bayiler bölümü yakında aktif olacaktır</p>
+      </div>
+    </div>
+  );
+}
+
 export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
@@ -28,14 +43,19 @@ export default function Admin() {
           component: ArchivedRecords
         }
       ]
+    },
+    {
+      id: "yetkili-bayiler",
+      label: "Yetkili Bayiler",
+      icon: "🏢",
+      items: [
+        {
+          id: "dealers",
+          label: "Yetkili Bayiler",
+          component: AuthorizedDealers
+        }
+      ]
     }
-    // İleride eklenecek grup menüler
-    // {
-    //   id: "reports",
-    //   label: "Raporlar",
-    //   icon: "📊",
-    //   items: [...]
-    // }
   ];
 
   // Flatten menu items to find active component
