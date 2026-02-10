@@ -135,6 +135,8 @@ export default function DocumentUploadModal({
 
       // Refresh documents list after all uploads
       await fetchDocuments();
+      setSuccess("Dosyalar başarıyla yüklendi!");
+      setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       console.error("Upload process error:", err);
       setError(err instanceof Error ? err.message : "Yükleme işlemi sırasında hata oluştu");
