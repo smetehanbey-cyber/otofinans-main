@@ -5,6 +5,11 @@ const supabaseKey = "sb_publishable_pzSebwhZQoSJyUrhx8glxw_TkoSECw2";
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Initialize anonymous session
+supabase.auth.signInAnonymously().catch((err) => {
+  console.log("Anonymous sign-in (may already be signed in):", err.message);
+});
+
 export interface Customer {
   id: number;
   name: string;
