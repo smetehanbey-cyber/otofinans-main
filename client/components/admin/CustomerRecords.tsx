@@ -455,7 +455,7 @@ export default function CustomerRecords() {
                         <>
                           <button
                             onClick={() => handleUpdateCustomer(customer.id)}
-                            className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm transition-colors"
+                            className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs transition-colors"
                           >
                             Kaydet
                           </button>
@@ -464,7 +464,7 @@ export default function CustomerRecords() {
                               setEditingId(null);
                               setEditingData({});
                             }}
-                            className="px-3 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 text-sm transition-colors"
+                            className="px-2 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 text-xs transition-colors"
                           >
                             İptal
                           </button>
@@ -476,21 +476,21 @@ export default function CustomerRecords() {
                               setEditingId(customer.id);
                               setEditingData(customer);
                             }}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                            className="p-1 text-blue-600 hover:bg-blue-50 rounded transition-colors"
                             title="Düzenle"
                           >
                             <Edit2 className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => setSelectedCustomerForDocs(customer.id)}
-                            className="p-2 text-purple-600 hover:bg-purple-50 rounded transition-colors"
+                            className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
                             title="Dosyalar"
                           >
                             <FileText className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => setArchiveConfirmId(customer.id)}
-                            className="p-2 text-orange-600 hover:bg-orange-50 rounded transition-colors"
+                            className="p-1 text-orange-600 hover:bg-orange-50 rounded transition-colors"
                             title="Arşive Taşı"
                           >
                             <Archive className="h-4 w-4" />
