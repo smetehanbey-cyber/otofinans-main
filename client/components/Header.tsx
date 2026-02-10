@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Search } from "lucide-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isAdminPage = location.pathname === "/admin";
 
   const handleCreditCalculatorClick = () => {
     navigate("/");
@@ -20,43 +22,45 @@ export default function Header() {
   return (
     <>
       <header className="bg-white shadow-md sticky top-0 z-50">
-        {/* Top Navigation Bar */}
-        <div className="border-b border-gray-300" style={{ backgroundColor: "#e5e7eb" }}>
-          <div className="max-w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-center items-center py-2 hidden md:flex">
-              {/* Top Navigation Links - Centered */}
-              <nav className="hidden md:flex items-center gap-3 justify-center text-xs">
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
-                  Ana Sayfa
-                </Link>
-                <Link to="/hakkimizda" className="text-gray-700 hover:text-primary font-medium">
-                  Hakkımızda
-                </Link>
-                <Link to="/finansmanlar" className="text-gray-700 hover:text-primary font-medium">
-                  Finansmanlar
-                </Link>
-                <Link to="/kampanyalar" className="text-gray-700 hover:text-primary font-medium">
-                  Kampanyalar
-                </Link>
-                <button
-                  onClick={handleCreditCalculatorClick}
-                  className="text-gray-700 hover:text-primary font-medium cursor-pointer"
-                >
-                  Kredi Hesaplama
-                </button>
-                <Link to="/isortakligi" className="text-gray-700 hover:text-primary font-medium">
-                  İş Ortaklığı
-                </Link>
-                <Link to="/bizeulas" className="text-gray-700 hover:text-primary font-medium">
-                  Bize Ulaş
-                </Link>
-                <Link to="/admin" className="text-gray-700 hover:text-primary font-medium">
-                  Admin
-                </Link>
-              </nav>
+        {/* Top Navigation Bar - Hidden on Admin Page */}
+        {!isAdminPage && (
+          <div className="border-b border-gray-300" style={{ backgroundColor: "#e5e7eb" }}>
+            <div className="max-w-full px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-center items-center py-2 hidden md:flex">
+                {/* Top Navigation Links - Centered */}
+                <nav className="hidden md:flex items-center gap-3 justify-center text-xs">
+                  <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                    Ana Sayfa
+                  </Link>
+                  <Link to="/hakkimizda" className="text-gray-700 hover:text-primary font-medium">
+                    Hakkımızda
+                  </Link>
+                  <Link to="/finansmanlar" className="text-gray-700 hover:text-primary font-medium">
+                    Finansmanlar
+                  </Link>
+                  <Link to="/kampanyalar" className="text-gray-700 hover:text-primary font-medium">
+                    Kampanyalar
+                  </Link>
+                  <button
+                    onClick={handleCreditCalculatorClick}
+                    className="text-gray-700 hover:text-primary font-medium cursor-pointer"
+                  >
+                    Kredi Hesaplama
+                  </button>
+                  <Link to="/isortakligi" className="text-gray-700 hover:text-primary font-medium">
+                    İş Ortaklığı
+                  </Link>
+                  <Link to="/bizeulas" className="text-gray-700 hover:text-primary font-medium">
+                    Bize Ulaş
+                  </Link>
+                  <Link to="/admin" className="text-gray-700 hover:text-primary font-medium">
+                    Admin
+                  </Link>
+                </nav>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Main Header Section */}
         <div className="border-b-2" style={{ borderColor: '#0f367e' }}>
