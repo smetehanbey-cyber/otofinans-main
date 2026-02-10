@@ -273,7 +273,7 @@ export default function CustomerRecords() {
                     Ad Soyad <SortIcon field="name" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   <button
                     onClick={() => handleSort("tc")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -281,7 +281,7 @@ export default function CustomerRecords() {
                     TC <SortIcon field="tc" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   <button
                     onClick={() => handleSort("phone")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -289,7 +289,7 @@ export default function CustomerRecords() {
                     Telefon <SortIcon field="phone" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   <button
                     onClick={() => handleSort("message")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -297,7 +297,7 @@ export default function CustomerRecords() {
                     Mesaj <SortIcon field="message" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   <button
                     onClick={() => handleSort("process")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -305,7 +305,7 @@ export default function CustomerRecords() {
                     Süreci <SortIcon field="process" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   <button
                     onClick={() => handleSort("created_at")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -313,7 +313,7 @@ export default function CustomerRecords() {
                     Tarih <SortIcon field="created_at" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-gray-700 text-sm">
+                <th className="px-2 py-2 text-center font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   İşlemler
                 </th>
               </tr>
