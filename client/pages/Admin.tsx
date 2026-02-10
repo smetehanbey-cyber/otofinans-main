@@ -97,6 +97,18 @@ export default function Admin() {
           component: CreditQuery
         }
       ]
+    },
+    {
+      id: "tasit-stok",
+      label: "Taşıt Stok",
+      icon: "🚗",
+      items: [
+        {
+          id: "vehicle-stock",
+          label: "Taşıt Stok",
+          component: VehicleStock
+        }
+      ]
     }
   ];
 
