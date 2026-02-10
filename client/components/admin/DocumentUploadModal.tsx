@@ -238,6 +238,7 @@ export default function DocumentUploadModal({
               <input
                 type="file"
                 multiple
+                disabled={uploading}
                 accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
                 onChange={(e) => {
                   handleFileUpload(e.target.files);
@@ -245,8 +246,12 @@ export default function DocumentUploadModal({
                 }}
                 className="hidden"
               />
-              <span className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer font-medium">
-                Dosya Seç
+              <span className={`px-4 py-2 rounded-lg transition-colors cursor-pointer font-medium inline-block ${
+                uploading
+                  ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  : "bg-blue-600 text-white hover:bg-blue-700"
+              }`}>
+                {uploading ? "Yükleniyor..." : "Dosya Seç"}
               </span>
             </label>
             <p className="text-xs text-gray-500 mt-3">
