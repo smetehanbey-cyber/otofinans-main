@@ -1,269 +1,250 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import BannerSlider from "@/components/BannerSlider";
 import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
-import { TrendingUp, Users, Zap, Award } from "lucide-react";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
-function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    companyName: "",
-    subject: "",
-    message: "",
-  });
+function HeadquartersAndMap() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
+  const mapRef = useRef<SVGSVGElement>(null);
 
-  const [submitted, setSubmitted] = useState(false);
+  // Türkiye'nin il konumları (yaklaşık koordinatlar - SVG koordinat sistemi)
+  const turkishCities = [
+    { name: "İstanbul", x: 280, y: 120 },
+    { name: "Ankara", x: 400, y: 180 },
+    { name: "İzmir", x: 200, y: 220 },
+    { name: "Bursa", x: 310, y: 150 },
+    { name: "Antalya", x: 380, y: 320 },
+    { name: "Gaziantep", x: 480, y: 240 },
+    { name: "Konya", x: 380, y: 240 },
+    { name: "Adana", x: 460, y: 280 },
+    { name: "Diyarbakır", x: 550, y: 260 },
+    { name: "Van", x: 620, y: 200 },
+    { name: "Erzurum", x: 580, y: 140 },
+    { name: "Rize", x: 620, y: 100 },
+    { name: "Trabzon", x: 600, y: 90 },
+    { name: "Samsun", x: 500, y: 80 },
+    { name: "Sinop", x: 450, y: 70 },
+    { name: "Kastamonu", x: 420, y: 100 },
+    { name: "Çankırı", x: 420, y: 130 },
+    { name: "Kayseri", x: 470, y: 180 },
+    { name: "Sivas", x: 500, y: 150 },
+    { name: "Tokat", x: 520, y: 120 },
+  ];
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Form verilerini mesaj formatında birleştir
-    const messageText = `İletişim Formu
-
-Ad Soyad: ${formData.name}
-E-posta: ${formData.email}
-Telefon: ${formData.phone}
-Şirket Adı: ${formData.companyName}
-Konu: ${formData.subject}
-${formData.message ? `Mesaj: ${formData.message}` : ''}`;
-
-    // WhatsApp link'i oluştur ve aç
-    const whatsappUrl = `https://wa.me/905324098440?text=${encodeURIComponent(messageText)}`;
-    window.open(whatsappUrl, '_blank');
-
-    // Başarı mesajı göster ve formu temizle
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        companyName: "",
-        subject: "",
-        message: "",
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    const rect = mapRef.current?.getBoundingClientRect();
+    if (rect) {
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
       });
-    }, 3000);
+    }
   };
 
   return (
-    <section className="py-8 sm:py-12 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Benefits Grid */}
+    <section className="py-12 sm:py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Genel Merkez Bilgileri */}
         <div className="mb-12">
           <h2
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8"
+            className="text-3xl sm:text-4xl font-bold text-center mb-2"
             style={{ color: "#0f367e" }}
           >
-            Bize Ulaşın
+            Genel Merkez
           </h2>
-          <p className="text-center text-gray-700 mb-8 text-lg">
-            Sorularınız, önerileriniz ve talepleriniz için bize her zaman ulaşabilirsiniz
+          <p className="text-center text-gray-600 mb-10 text-lg">
+            OtoFinans Global - Türkiye'nin Taksitli Araç Satış Platformu
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Contact Channel 1 */}
-            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
-                <TrendingUp className="w-6 h-6" style={{ color: "#0f367e" }} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {/* İletişim Adresi */}
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 border border-blue-200">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold" style={{ color: "#0f367e" }}>
+                  Adres
+                </h3>
               </div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
-                Hızlı Yanıt
-              </h3>
-              <p className="text-gray-600 text-sm">
-                24 saat içinde cevap vermesi
+              <p className="text-gray-700 font-semibold mb-2">OtoFinans Global</p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                İstanbul Caddesi No: 123<br />
+                Şişli, İstanbul 34000<br />
+                Türkiye
               </p>
             </div>
 
-            {/* Contact Channel 2 */}
-            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
-                <Users className="w-6 h-6" style={{ color: "#0f367e" }} />
+            {/* Telefon */}
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-8 border border-green-200">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                  <Phone className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold" style={{ color: "#0f367e" }}>
+                  Telefon
+                </h3>
               </div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
-                Profesyonel Destek
-              </h3>
+              <p className="text-gray-700 font-semibold mb-2">Müşteri Hizmetleri</p>
+              <p className="text-2xl font-bold text-green-600 mb-2">
+                +90 532 409 8440
+              </p>
               <p className="text-gray-600 text-sm">
-                Deneyimli ve eğitimli ekibimiz
+                Pazartesi - Cuma: 09:00 - 18:00<br />
+                Cumartesi: 10:00 - 16:00
               </p>
             </div>
 
-            {/* Contact Channel 3 */}
-            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
-                <Zap className="w-6 h-6" style={{ color: "#0f367e" }} />
+            {/* E-posta */}
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-8 border border-purple-200">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold" style={{ color: "#0f367e" }}>
+                  E-posta
+                </h3>
               </div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
-                Çok Kanallı
-              </h3>
-              <p className="text-gray-600 text-sm">
-                WhatsApp, Email ve Form desteği
+              <p className="text-gray-700 font-semibold mb-2">İletişim E-postası</p>
+              <p className="text-sm text-purple-600 font-semibold mb-4 break-all">
+                bilgi@otofinansglobal.com
               </p>
+              <a
+                href="mailto:bilgi@otofinansglobal.com"
+                className="inline-block text-sm font-medium text-purple-600 hover:text-purple-700 underline"
+              >
+                E-posta Gönder →
+              </a>
             </div>
+          </div>
+        </div>
 
-            {/* Contact Channel 4 */}
-            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
-                <Award className="w-6 h-6" style={{ color: "#0f367e" }} />
-              </div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: "#0f367e" }}>
-                Gizlilik Garantisi
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Verileriniz tamamen güvenli
+        {/* Çalışma Saatleri */}
+        <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-lg p-8 mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <Clock className="w-8 h-8 text-white" />
+            <h3 className="text-2xl font-bold text-white">Çalışma Saatleri</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white">
+            <div>
+              <p className="font-semibold text-lg mb-2">Hafta İçi (Pazartesi - Cuma)</p>
+              <p className="text-blue-100 text-lg">09:00 - 18:00</p>
+            </div>
+            <div>
+              <p className="font-semibold text-lg mb-2">Cumartesi</p>
+              <p className="text-blue-100 text-lg">10:00 - 16:00</p>
+            </div>
+            <div>
+              <p className="font-semibold text-lg mb-2">Pazar</p>
+              <p className="text-blue-100 text-lg">Kapalı</p>
+            </div>
+            <div>
+              <p className="font-semibold text-lg mb-2">Acil Durum (WhatsApp)</p>
+              <p className="text-blue-100 text-lg">24/7 Açık</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Türkiye Haritası */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-bold text-center mb-8" style={{ color: "#0f367e" }}>
+            Türkiye Genelinde Hizmet Veriş Ağımız
+          </h3>
+          <div className="flex justify-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg border-2" style={{ borderColor: "#0f367e" }}>
+              <svg
+                ref={mapRef}
+                viewBox="0 0 750 500"
+                className="w-full max-w-2xl h-auto transition-opacity duration-200"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={() => setHoveredCity(null)}
+                style={{ backgroundColor: "#e8f0f8" }}
+              >
+                {/* Türkiye Harita Şekli (Basitleştirilmiş) */}
+                <path
+                  d="M 150 100 Q 200 80 250 90 Q 300 85 350 95 Q 400 90 450 100 Q 500 95 550 110 Q 600 120 650 100 Q 680 110 700 150 Q 710 200 700 250 Q 695 300 680 350 Q 670 380 640 400 Q 600 420 550 430 Q 500 435 450 440 Q 400 438 350 440 Q 300 438 250 435 Q 200 432 150 430 Q 120 425 100 400 Q 80 360 75 300 Q 70 240 80 180 Q 90 140 150 100 Z"
+                  fill="#c2e0f5"
+                  stroke="#0f367e"
+                  strokeWidth="2"
+                />
+
+                {/* Şehir Pinleri */}
+                {turkishCities.map((city) => (
+                  <g key={city.name}>
+                    {/* Hover Effect Çemberi */}
+                    {hoveredCity === city.name && (
+                      <circle
+                        cx={city.x}
+                        cy={city.y}
+                        r="35"
+                        fill="rgba(15, 54, 126, 0.1)"
+                        stroke="#0f367e"
+                        strokeWidth="2"
+                        strokeDasharray="5,5"
+                      />
+                    )}
+
+                    {/* Pin Noktası */}
+                    <circle
+                      cx={city.x}
+                      cy={city.y}
+                      r="8"
+                      fill="#0f367e"
+                      stroke="white"
+                      strokeWidth="2"
+                      style={{
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        transform:
+                          hoveredCity === city.name
+                            ? `scale(1.5) translate(${city.x * 0.02}px, ${city.y * 0.02}px)`
+                            : "scale(1)",
+                      }}
+                      onMouseEnter={() => setHoveredCity(city.name)}
+                      onMouseLeave={() => setHoveredCity(null)}
+                    />
+
+                    {/* Şehir Adı (Hover Üzerine) */}
+                    {hoveredCity === city.name && (
+                      <text
+                        x={city.x}
+                        y={city.y - 30}
+                        textAnchor="middle"
+                        fontSize="12"
+                        fontWeight="bold"
+                        fill="#0f367e"
+                        className="pointer-events-none"
+                      >
+                        {city.name}
+                      </text>
+                    )}
+                  </g>
+                ))}
+              </svg>
+              <p className="text-center text-gray-600 text-sm mt-4">
+                Mouse üzerinde şehirlerin üzerine gelerek bölge bilgilerini görebilirsiniz
               </p>
             </div>
           </div>
         </div>
 
-        {/* Form Section */}
-        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 sm:p-8">
-          <h3 className="text-2xl font-bold mb-2" style={{ color: "#0f367e" }}>
-            İletişim Formu
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Lütfen aşağıdaki formu doldurun. En kısa sürede sizinle iletişime geçeceğiz.
-          </p>
-
-          {submitted && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-green-700 font-medium">
-                ✓ Mesajınız başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.
-              </p>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Ad Soyad *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  placeholder="Adınızı yazınız"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  E-posta *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  placeholder="E-posta adresiniz"
-                />
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Telefon *
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  placeholder="+90 5XX XXX XXXX"
-                />
-              </div>
-
-              {/* Company Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Şirket Adı
-                </label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  placeholder="Şirketinizin adı (opsiyonel)"
-                />
-              </div>
-
-              {/* Subject */}
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Konu *
-                </label>
-                <select
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                >
-                  <option value="">Konu seçiniz</option>
-                  <option value="Kredi Başvurusu">Kredi Başvurusu</option>
-                  <option value="Aracımı Satmak">Aracımı Satmak</option>
-                  <option value="Teknik Destek">Teknik Destek</option>
-                  <option value="Genel Soru">Genel Soru</option>
-                  <option value="Geri Bildirim">Geri Bildirim</option>
-                  <option value="Diğer">Diğer</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Message */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Mesajınız *
-              </label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={4}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                placeholder="Lütfen detaylı bir açıklama yapınız..."
-              ></textarea>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full py-3 px-4 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white font-bold rounded-lg hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors text-lg"
-            >
-              Mesajı Gönder
-            </button>
-          </form>
-
-          <p className="text-xs text-gray-500 mt-4 text-center">
-            Verileriniz güvenlidir ve sadece iletişim süreci için kullanılacaktır.
-          </p>
+        {/* Bilgi Kartı */}
+        <div className="bg-blue-50 border-l-4" style={{ borderColor: "#0f367e" }}>
+          <div className="p-6">
+            <h4 className="font-bold text-lg mb-3" style={{ color: "#0f367e" }}>
+              ℹ️ Bilgilendirme
+            </h4>
+            <p className="text-gray-700">
+              OtoFinans Global olarak tüm Türkiye'de hizmet vermekteyiz. Şehriniz haritada gösterilmese bile,
+              WhatsApp (+90 532 409 8440) veya email (bilgi@otofinansglobal.com) yoluyla iletişime geçebilirsiniz.
+              Müşteri memnuniyeti bizim önceliğimizdir.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -314,7 +295,7 @@ export default function BizeUlas() {
                 </h1>
                 <p className="text-base sm:text-lg text-blue-100 mb-3 sm:mb-4">
                   Sorularınız, önerileriniz ve tavsiyeleriniz için bizi WhatsApp,
-                  Email veya formu aracılığıyla iletişime geçebilirsiniz.
+                  Email veya telefon aracılığıyla iletişime geçebilirsiniz.
                 </p>
                 <ul className="space-y-2 sm:space-y-2.5 mb-4">
                   <li className="flex items-center gap-3 text-sm sm:text-base">
@@ -384,8 +365,8 @@ export default function BizeUlas() {
           </p>
         </div>
 
-        {/* Contact Form Section */}
-        <ContactForm />
+        {/* Headquarters & Map Section */}
+        <HeadquartersAndMap />
 
         {/* Market Data Section */}
         <PiyasaVerileri />
