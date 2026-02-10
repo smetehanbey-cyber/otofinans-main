@@ -1,51 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Header from "@/components/Header";
 import BannerSlider from "@/components/BannerSlider";
 import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
-import { MapPin, Phone, Mail, Clock, AlertCircle } from "lucide-react";
-import { GoogleMap, LoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 function HeadquartersAndMap() {
-  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
-  const [selectedCity, setSelectedCity] = useState<string | null>(null);
-
-  // Türkiye'nin il konumları (Google Maps koordinatları - Latitude, Longitude)
-  const turkishCities = [
-    { name: "İstanbul", lat: 41.0082, lng: 28.9784 },
-    { name: "Ankara", lat: 39.9334, lng: 32.8597 },
-    { name: "İzmir", lat: 38.4161, lng: 27.1380 },
-    { name: "Bursa", lat: 40.1957, lng: 29.1792 },
-    { name: "Antalya", lat: 36.9271, lng: 30.7133 },
-    { name: "Gaziantep", lat: 37.0662, lng: 37.3833 },
-    { name: "Konya", lat: 37.8713, lng: 32.4827 },
-    { name: "Adana", lat: 36.9909, lng: 35.3213 },
-    { name: "Diyarbakır", lat: 37.9144, lng: 40.2306 },
-    { name: "Van", lat: 38.6010, lng: 43.5890 },
-    { name: "Erzurum", lat: 39.9199, lng: 41.2767 },
-    { name: "Rize", lat: 40.7265, lng: 40.5227 },
-    { name: "Trabzon", lat: 40.6271, lng: 39.7605 },
-    { name: "Samsun", lat: 41.2869, lng: 35.6921 },
-    { name: "Sinop", lat: 42.0265, lng: 35.1537 },
-    { name: "Kastamonu", lat: 41.3887, lng: 33.7827 },
-    { name: "Çankırı", lat: 40.6022, lng: 34.9519 },
-    { name: "Kayseri", lat: 38.7269, lng: 35.4858 },
-    { name: "Sivas", lat: 39.6485, lng: 36.4901 },
-    { name: "Tokat", lat: 40.3131, lng: 36.5548 },
-  ];
-
-  const mapContainerStyle = {
-    width: "100%",
-    height: "500px",
-    borderRadius: "8px",
-  };
-
-  const center = {
-    lat: 38.9637,
-    lng: 35.2433, // Türkiye'nin merkezi
-  };
 
   return (
     <section className="py-12 sm:py-16 bg-white">
