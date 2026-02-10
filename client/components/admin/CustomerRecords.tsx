@@ -474,6 +474,43 @@ export default function CustomerRecords() {
       <div className="mt-4 text-sm text-gray-600">
         Toplam: <span className="font-semibold">{customers.length}</span> aktif müşteri
       </div>
+
+      {/* Archive Confirmation Modal */}
+      {archiveConfirmId !== null && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-4 rounded-t-lg">
+              <h2 className="text-lg font-bold">Arşive Taşı</h2>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6">
+              <p className="text-gray-700 text-base leading-relaxed mb-6">
+                <span className="font-semibold">Emin misin?</span>
+                <br />
+                Bu kayıt arşive taşınacak ve arşivde görünmeye başlayacak.
+              </p>
+
+              {/* Modal Actions */}
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() => setArchiveConfirmId(null)}
+                  className="px-6 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Hayır
+                </button>
+                <button
+                  onClick={handleArchiveCustomer}
+                  className="px-6 py-2 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"
+                >
+                  Evet
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
