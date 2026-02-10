@@ -45,7 +45,7 @@ export default function Header() {
                 >
                   Kredi Hesaplama
                 </button>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+                <Link to="/isortakligi" className="text-gray-700 hover:text-primary font-medium">
                   İş Ortaklığı
                 </Link>
                 <Link to="/" className="text-gray-700 hover:text-primary font-medium">
