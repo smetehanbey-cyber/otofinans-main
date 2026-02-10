@@ -102,10 +102,10 @@ export default function Admin() {
                   {/* Group Header */}
                   <button
                     onClick={() => setExpandedGroup(isExpanded ? "" : group.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative ${
                       hasActiveItem
                         ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
-                        : "text-gray-700 hover:bg-gray-50"
+                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600"
                     }`}
                   >
                     <span className="text-xl">{group.icon}</span>
