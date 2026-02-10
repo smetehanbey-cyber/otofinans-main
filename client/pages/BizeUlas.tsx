@@ -88,7 +88,7 @@ function HeadquartersAndMap() {
         </div>
 
         {/* Çalışma Saatleri */}
-        <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-lg p-8 mb-12">
+        <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-lg p-8 border border-blue-800 max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
             <Clock className="w-8 h-8 text-white" />
             <h3 className="text-2xl font-bold text-white">Çalışma Saatleri</h3>
