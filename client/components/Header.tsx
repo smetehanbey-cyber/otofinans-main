@@ -160,6 +160,9 @@ export default function Header() {
             <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               Ürün ve Hizmet
             </Link>
+            <Link to="/admin" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+              Admin
+            </Link>
             <div className="px-4 py-2 space-y-2 border-t border-gray-200">
               <a
                 href="https://wa.me/905324098440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
