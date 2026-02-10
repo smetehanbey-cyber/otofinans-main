@@ -11,6 +11,7 @@ import Hakkimizda from "./pages/Hakkimizda";
 import Finansmanlar from "./pages/Finansmanlar";
 import Kampanyalar from "./pages/Kampanyalar";
 import IsOrtakligi from "./pages/IsOrtakligi";
+import BizeUlas from "./pages/BizeUlas";
 import AdminProtected from "./pages/AdminProtected";
 import NotFound from "./pages/NotFound";
 
