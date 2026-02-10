@@ -76,29 +76,58 @@ export default function Admin() {
 
           {/* Menu Items */}
           <nav className="flex-1 p-4 space-y-2">
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveMenu(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  activeMenu === item.id
-                    ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <span className="text-xl">{item.icon}</span>
-                {sidebarOpen && (
-                  <>
-                    <span className="flex-1 text-left font-medium">
-                      {item.label}
-                    </span>
-                    {activeMenu === item.id && (
-                      <ChevronRight className="h-4 w-4" />
+            {menuGroups.map((group) => {
+              const isExpanded = expandedGroup === group.id;
+              const hasActiveItem = group.items.some(item => item.id === activeMenu);
+
+              return (
+                <div key={group.id}>
+                  {/* Group Header */}
+                  <button
+                    onClick={() => setExpandedGroup(isExpanded ? "" : group.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                      hasActiveItem
+                        ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    <span className="text-xl">{group.icon}</span>
+                    {sidebarOpen && (
+                      <>
+                        <span className="flex-1 text-left font-medium">
+                          {group.label}
+                        </span>
+                        {isExpanded ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-              </button>
-            ))}
+                  </button>
+
+                  {/* Sub Items */}
+                  {isExpanded && sidebarOpen && (
+                    <div className="ml-6 mt-1 space-y-1 border-l-2 border-gray-200 pl-4">
+                      {group.items.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => setActiveMenu(item.id)}
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-all ${
+                            activeMenu === item.id
+                              ? "bg-blue-100 text-blue-700 font-medium"
+                              : "text-gray-600 hover:text-gray-800 hover:bg-gray-100"
+                          }`}
+                        >
+                          {item.icon && <span>{item.icon}</span>}
+                          <span className="text-left">{item.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </nav>
 
           {/* Sidebar Footer */}
