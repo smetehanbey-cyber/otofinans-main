@@ -51,9 +51,6 @@ export default function Header() {
                 <Link to="/bizeulas" className="text-gray-700 hover:text-primary font-medium">
                   Bize Ulaş
                 </Link>
-                <Link to="/" className="text-gray-700 hover:text-primary font-medium">
-                  Ürünler
-                </Link>
                 <Link to="/admin" className="text-gray-700 hover:text-primary font-medium">
                   Admin
                 </Link>
