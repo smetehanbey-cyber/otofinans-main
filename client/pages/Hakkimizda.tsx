@@ -259,24 +259,36 @@ export default function Hakkimizda() {
               <h3 className="text-white font-semibold mb-4">Hızlı Linkler</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <button
+                    onClick={() => navigate("/")}
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                  >
                     Ana Sayfa
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <button
+                    onClick={handleCreditCalculatorClick}
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                  >
                     Kredi Hesapla
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <button
+                    onClick={() => navigate("/isortakligi")}
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                  >
                     İş Ortaklığı
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <button
+                    onClick={() => navigate("/finansmanlar")}
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                  >
                     Finansmanlar
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
