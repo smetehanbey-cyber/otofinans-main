@@ -83,12 +83,10 @@ export default function Header() {
                   </Link>
                   <div className="h-4 border-l border-gray-300"></div>
                   <a
-                    href="https://wa.me/905324098440?text=Mevcut%20arac%C4%B1m%C4%B1n%20%C3%BCzerine%20kredi%20kullanmak%20istiyorum."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors"
+                    href=""
+                    className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors cursor-default"
                   >
-                    Aracım İçin
+                    Araçlarımız
                   </a>
                 </div>
               </div>
