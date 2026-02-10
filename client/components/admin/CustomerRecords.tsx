@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase, Customer } from "@/lib/supabase";
-import { Archive, Edit2, Plus, ChevronUp, ChevronDown } from "lucide-react";
+import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText } from "lucide-react";
+import DocumentUploadModal from "./DocumentUploadModal";
 
 export default function CustomerRecords() {
   const [customers, setCustomers] = useState<Customer[]>([]);
