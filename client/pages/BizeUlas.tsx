@@ -157,72 +157,62 @@ function HeadquartersAndMap() {
             Türkiye Genelinde Hizmet Veriş Ağımız
           </h3>
           <div className="flex justify-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg border-2 w-full max-w-3xl" style={{ borderColor: "#0f367e" }}>
-              <div className="relative">
-                {/* Türkiye Haritası */}
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Turkey_location_map.svg/1200px-Turkey_location_map.svg.png"
-                  alt="Türkiye Haritası"
-                  className="w-full h-auto rounded-lg"
-                />
-
-                {/* Şehir Pinleri Overlay */}
-                <div className="absolute inset-0 pointer-events-none">
-                  {turkishCities.map((city) => (
-                    <div
-                      key={city.name}
-                      className="absolute w-4 h-4 pointer-events-auto group"
-                      style={{
-                        left: `${(city.x / 750) * 100}%`,
-                        top: `${(city.y / 500) * 100}%`,
-                        transform: "translate(-50%, -50%)",
-                      }}
-                      onMouseEnter={() => setHoveredCity(city.name)}
-                      onMouseLeave={() => setHoveredCity(null)}
-                    >
-                      {/* Pin Noktası */}
-                      <div
-                        className="w-3 h-3 rounded-full bg-blue-900 border-2 border-white shadow-lg transition-all duration-300 cursor-pointer"
-                        style={{
-                          transform:
-                            hoveredCity === city.name ? "scale(1.8)" : "scale(1)",
-                        }}
-                      />
-
-                      {/* Hover Effect Çemberi */}
-                      {hoveredCity === city.name && (
-                        <div
-                          className="absolute w-10 h-10 border-2 border-dashed rounded-full"
-                          style={{
-                            left: "50%",
-                            top: "50%",
-                            transform: "translate(-50%, -50%)",
-                            borderColor: "#0f367e",
-                            pointerEvents: "none",
-                          }}
-                        />
-                      )}
-
-                      {/* Şehir Adı Tooltip */}
-                      {hoveredCity === city.name && (
-                        <div
-                          className="absolute bg-blue-900 text-white px-3 py-1 rounded-lg whitespace-nowrap text-xs font-semibold shadow-lg pointer-events-none"
-                          style={{
-                            left: "50%",
-                            top: "-30px",
-                            transform: "translateX(-50%)",
-                            zIndex: 10,
-                          }}
-                        >
-                          {city.name}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+            <div className="bg-white p-6 rounded-lg shadow-lg border-2 w-full max-w-4xl" style={{ borderColor: "#0f367e" }}>
+              {!import.meta.env.VITE_GOOGLE_MAPS_API_KEY ? (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <AlertCircle className="w-6 h-6 text-yellow-600" />
+                    <h4 className="font-bold text-yellow-800">Google Maps API Anahtarı Gerekli</h4>
+                  </div>
+                  <p className="text-yellow-700 mb-4">
+                    Google Maps'i kullanmak için API anahtarını `.env` dosyasına eklemeniz gerekir.
+                  </p>
+                  <code className="bg-yellow-100 px-3 py-2 rounded text-sm text-yellow-900 block mb-4">
+                    VITE_GOOGLE_MAPS_API_KEY=your_api_key_here
+                  </code>
+                  <p className="text-xs text-yellow-600">
+                    <a href="https://console.cloud.google.com/apis/library/maps-backend.googleapis.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-yellow-700">
+                      Google Cloud Console'dan API anahtarı alın →
+                    </a>
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+                  <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={6}>
+                    {turkishCities.map((city) => (
+                      <MarkerF
+                        key={city.name}
+                        position={{ lat: city.lat, lng: city.lng }}
+                        title={city.name}
+                        onMouseOver={() => setHoveredCity(city.name)}
+                        onMouseOut={() => setHoveredCity(null)}
+                        onClick={() => setSelectedCity(city.name)}
+                        icon={{
+                          path: google.maps.SymbolPath.CIRCLE,
+                          scale: hoveredCity === city.name ? 10 : 8,
+                          fillColor: "#0f367e",
+                          fillOpacity: 1,
+                          strokeColor: "white",
+                          strokeWeight: 2,
+                        }}
+                      >
+                        {selectedCity === city.name && (
+                          <InfoWindowF onCloseClick={() => setSelectedCity(null)}>
+                            <div className="bg-white p-2 rounded">
+                              <h4 className="font-bold text-blue-900">{city.name}</h4>
+                              <p className="text-xs text-gray-600 mt-1">
+                                OtoFinans Hizmet Bölgesi
+                              </p>
+                            </div>
+                          </InfoWindowF>
+                        )}
+                      </MarkerF>
+                    ))}
+                  </GoogleMap>
+                </LoadScript>
+              )}
               <p className="text-center text-gray-600 text-sm mt-4">
-                Mouse üzerinde şehirlerin üzerine gelerek bölge bilgilerini görebilirsiniz
+                Şehirlerin üzerine gelip tıklayarak detayları görebilirsiniz
               </p>
             </div>
           </div>
