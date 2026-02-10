@@ -265,7 +265,7 @@ export default function CustomerRecords() {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
-                <th className="px-2 py-2 text-left font-semibold text-gray-700 text-sm">
+                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   <button
                     onClick={() => handleSort("name")}
                     className="flex items-center gap-2 hover:text-blue-600"
