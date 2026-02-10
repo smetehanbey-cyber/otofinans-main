@@ -51,7 +51,11 @@ export default function CustomerRecords() {
     try {
       const { error } = await supabase.from("customers").insert([
         {
-          ...newCustomer,
+          name: newCustomer.name,
+          email: newCustomer.email,
+          phone: newCustomer.phone || "",
+          message: newCustomer.message || "",
+          process: newCustomer.process,
           status: "active"
         }
       ]);
@@ -63,7 +67,7 @@ export default function CustomerRecords() {
       fetchCustomers();
     } catch (error) {
       console.error("Error adding customer:", error);
-      alert("Hata: Müşteri eklenemedi");
+      alert("Hata: Müşteri eklenemedi. Lütfen formu kontrol edin.");
     }
   };
 
