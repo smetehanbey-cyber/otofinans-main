@@ -99,8 +99,8 @@ export default function DocumentUploadModal({
             .replace(/[^a-zA-Z0-9._-]/g, "");
           const fileName = `${customerId}/${timestamp}_${randomStr}_${sanitizedFileName}`;
 
-          // Upload to Supabase Storage
-          const { error: uploadError, data: uploadData } = await supabase.storage
+          // Upload to Supabase Storage using service role
+          const { error: uploadError, data: uploadData } = await supabaseServiceRole.storage
             .from("documents")
             .upload(fileName, file, {
               cacheControl: "3600",
@@ -115,14 +115,14 @@ export default function DocumentUploadModal({
           console.log("File uploaded successfully:", uploadData);
 
           // Get public URL
-          const { data: urlData } = supabase.storage
+          const { data: urlData } = supabaseServiceRole.storage
             .from("documents")
             .getPublicUrl(fileName);
 
           console.log("Public URL:", urlData.publicUrl);
 
-          // Save to database
-          const { error: dbError, data: dbData } = await supabase
+          // Save to database using service role
+          const { error: dbError, data: dbData } = await supabaseServiceRole
             .from("documents")
             .insert([
               {
