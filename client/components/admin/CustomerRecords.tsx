@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase, Customer } from "@/lib/supabase";
-import { Trash2, Edit2, Plus, ChevronUp, ChevronDown } from "lucide-react";
+import { Archive, Edit2, Plus, ChevronUp, ChevronDown } from "lucide-react";
 
 export default function CustomerRecords() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -12,18 +12,20 @@ export default function CustomerRecords() {
     name: "",
     email: "",
     phone: "",
-    message: ""
+    message: "",
+    process: "Beklemede" as "Beklemede" | "Onaylandı"
   });
   const [sortField, setSortField] = useState<keyof Customer>("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  // Fetch customers
+  // Fetch active customers only
   const fetchCustomers = async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
         .from("customers")
         .select("*")
+        .eq("status", "active")
         .order(sortField, { ascending: sortOrder === "asc" });
 
       if (error) throw error;
@@ -47,11 +49,16 @@ export default function CustomerRecords() {
     }
 
     try {
-      const { error } = await supabase.from("customers").insert([newCustomer]);
+      const { error } = await supabase.from("customers").insert([
+        {
+          ...newCustomer,
+          status: "active"
+        }
+      ]);
 
       if (error) throw error;
 
-      setNewCustomer({ name: "", email: "", phone: "", message: "" });
+      setNewCustomer({ name: "", email: "", phone: "", message: "", process: "Beklemede" });
       setShowForm(false);
       fetchCustomers();
     } catch (error) {
@@ -84,23 +91,39 @@ export default function CustomerRecords() {
     }
   };
 
-  // Delete customer
-  const handleDeleteCustomer = async (id: number) => {
-    if (!confirm("Bu müşteri kaydını silmek istediğinize emin misiniz?")) {
+  // Archive customer
+  const handleArchiveCustomer = async (id: number) => {
+    if (!confirm("Bu müşteri kaydını arşive taşımak istediğinize emin misiniz?")) {
       return;
     }
 
     try {
       const { error } = await supabase
         .from("customers")
-        .delete()
+        .update({ status: "archived" })
         .eq("id", id);
 
       if (error) throw error;
       fetchCustomers();
     } catch (error) {
-      console.error("Error deleting customer:", error);
-      alert("Hata: Müşteri silinemedi");
+      console.error("Error archiving customer:", error);
+      alert("Hata: Müşteri arşivlenemedi");
+    }
+  };
+
+  // Update process status
+  const handleUpdateProcess = async (id: number, process: "Beklemede" | "Onaylandı") => {
+    try {
+      const { error } = await supabase
+        .from("customers")
+        .update({ process })
+        .eq("id", id);
+
+      if (error) throw error;
+      fetchCustomers();
+    } catch (error) {
+      console.error("Error updating process:", error);
+      alert("Hata: Durum güncellenemedi");
     }
   };
 
@@ -167,13 +190,26 @@ export default function CustomerRecords() {
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
+            <select
+              value={newCustomer.process}
+              onChange={(e) =>
+                setNewCustomer({
+                  ...newCustomer,
+                  process: e.target.value as "Beklemede" | "Onaylandı"
+                })
+              }
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+            >
+              <option value="Beklemede">Beklemede</option>
+              <option value="Onaylandı">Onaylandı</option>
+            </select>
             <textarea
               placeholder="Mesaj"
               value={newCustomer.message}
               onChange={(e) =>
                 setNewCustomer({ ...newCustomer, message: e.target.value })
               }
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 col-span-2"
               rows={2}
             />
           </div>
@@ -187,7 +223,7 @@ export default function CustomerRecords() {
             <button
               onClick={() => {
                 setShowForm(false);
-                setNewCustomer({ name: "", email: "", phone: "", message: "" });
+                setNewCustomer({ name: "", email: "", phone: "", message: "", process: "Beklemede" });
               }}
               className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors"
             >
@@ -204,7 +240,7 @@ export default function CustomerRecords() {
         </div>
       ) : customers.length === 0 ? (
         <div className="text-center py-8">
-          <p className="text-gray-600">Müşteri kaydı bulunamadı</p>
+          <p className="text-gray-600">Aktif müşteri kaydı bulunamadı</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
@@ -241,6 +277,14 @@ export default function CustomerRecords() {
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
                     Mesaj <SortIcon field="message" />
+                  </button>
+                </th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                  <button
+                    onClick={() => handleSort("process")}
+                    className="flex items-center gap-2 hover:text-blue-600"
+                  >
+                    Süreci <SortIcon field="process" />
                   </button>
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
@@ -332,6 +376,33 @@ export default function CustomerRecords() {
                       </span>
                     )}
                   </td>
+                  <td className="px-4 py-3">
+                    {editingId === customer.id ? (
+                      <select
+                        value={editingData.process || "Beklemede"}
+                        onChange={(e) =>
+                          setEditingData({
+                            ...editingData,
+                            process: e.target.value as "Beklemede" | "Onaylandı"
+                          })
+                        }
+                        className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      >
+                        <option value="Beklemede">Beklemede</option>
+                        <option value="Onaylandı">Onaylandı</option>
+                      </select>
+                    ) : (
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full font-semibold text-sm ${
+                          customer.process === "Beklemede"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-green-100 text-green-800"
+                        }`}
+                      >
+                        {customer.process}
+                      </span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-gray-600 text-sm">
                     {new Date(customer.created_at).toLocaleDateString("tr-TR")}
                   </td>
@@ -368,11 +439,11 @@ export default function CustomerRecords() {
                             <Edit2 className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => handleDeleteCustomer(customer.id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
-                            title="Sil"
+                            onClick={() => handleArchiveCustomer(customer.id)}
+                            className="p-2 text-orange-600 hover:bg-orange-50 rounded transition-colors"
+                            title="Arşive Taşı"
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Archive className="h-4 w-4" />
                           </button>
                         </>
                       )}
@@ -387,7 +458,7 @@ export default function CustomerRecords() {
 
       {/* Total Count */}
       <div className="mt-4 text-sm text-gray-600">
-        Toplam: <span className="font-semibold">{customers.length}</span> müşteri
+        Toplam: <span className="font-semibold">{customers.length}</span> aktif müşteri
       </div>
     </div>
   );
