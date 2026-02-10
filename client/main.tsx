@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Hakkimizda from "./pages/Hakkimizda";
 import Finansmanlar from "./pages/Finansmanlar";
 import Kampanyalar from "./pages/Kampanyalar";
+import IsOrtakligi from "./pages/IsOrtakligi";
 import AdminProtected from "./pages/AdminProtected";
 import NotFound from "./pages/NotFound";
 
