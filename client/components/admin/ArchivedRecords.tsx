@@ -102,10 +102,10 @@ export default function ArchivedRecords() {
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
                   <button
-                    onClick={() => handleSort("email")}
+                    onClick={() => handleSort("tc")}
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
-                    Email <SortIcon field="email" />
+                    TC <SortIcon field="tc" />
                   </button>
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
@@ -155,7 +155,7 @@ export default function ArchivedRecords() {
                     <span className="text-gray-700">{customer.name}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-gray-700">{customer.email}</span>
+                    <span className="text-gray-700">{customer.tc}</span>
                   </td>
                   <td className="px-4 py-3">
                     <span className="text-gray-700">{customer.phone}</span>
