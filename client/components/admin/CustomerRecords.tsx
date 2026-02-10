@@ -193,9 +193,9 @@ export default function CustomerRecords() {
             <input
               type="text"
               placeholder="TC"
-              value={newCustomer.tc}
+              value={newCustomer.email}
               onChange={(e) =>
-                setNewCustomer({ ...newCustomer, tc: e.target.value })
+                setNewCustomer({ ...newCustomer, email: e.target.value })
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
@@ -241,7 +241,7 @@ export default function CustomerRecords() {
             <button
               onClick={() => {
                 setShowForm(false);
-                setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
+                setNewCustomer({ name: "", email: "", phone: "", message: "", process: "Beklemede" });
               }}
               className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors"
             >
@@ -275,10 +275,10 @@ export default function CustomerRecords() {
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
                   <button
-                    onClick={() => handleSort("tc")}
+                    onClick={() => handleSort("email")}
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
-                    TC <SortIcon field="tc" />
+                    TC <SortIcon field="email" />
                   </button>
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-700">
@@ -345,17 +345,17 @@ export default function CustomerRecords() {
                     {editingId === customer.id ? (
                       <input
                         type="text"
-                        value={editingData.tc || ""}
+                        value={editingData.email || ""}
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            tc: e.target.value
+                            email: e.target.value
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                       />
                     ) : (
-                      <span className="text-gray-800">{customer.tc}</span>
+                      <span className="text-gray-800">{customer.email}</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
