@@ -163,6 +163,8 @@ export default function DocumentUploadModal({
     if (!confirm("Bu dosyayı silmek istediğinize emin misiniz?")) return;
 
     try {
+      const supabase = createSupabaseClient();
+
       // Extract file path from URL
       const filePath = fileUrl.split("/").slice(-2).join("/");
 
