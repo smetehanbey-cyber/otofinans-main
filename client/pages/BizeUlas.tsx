@@ -187,7 +187,6 @@ function HeadquartersAndMap() {
                         onMouseOver={() => setHoveredCity(city.name)}
                         onMouseOut={() => setHoveredCity(null)}
                         onClick={() => setSelectedCity(city.name)}
-                        icon="http://maps.google.com/mapfiles/ms/icons/0f367e-dot.png"
                       >
                         {selectedCity === city.name && (
                           <InfoWindowF onCloseClick={() => setSelectedCity(null)}>
