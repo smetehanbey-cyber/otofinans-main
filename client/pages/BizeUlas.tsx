@@ -187,11 +187,7 @@ function HeadquartersAndMap() {
                         onMouseOver={() => setHoveredCity(city.name)}
                         onMouseOut={() => setHoveredCity(null)}
                         onClick={() => setSelectedCity(city.name)}
-                        icon={{
-                          url: `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><circle cx="16" cy="16" r="${hoveredCity === city.name ? 10 : 8}" fill="%230f367e" stroke="white" stroke-width="2"/></svg>`,
-                          scaledSize: new (window as any).google.maps.Size(32, 32),
-                          anchor: new (window as any).google.maps.Point(16, 16),
-                        }}
+                        icon="http://maps.google.com/mapfiles/ms/icons/0f367e-dot.png"
                       >
                         {selectedCity === city.name && (
                           <InfoWindowF onCloseClick={() => setSelectedCity(null)}>
