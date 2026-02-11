@@ -99,9 +99,11 @@
 }
 
 @layer base {
-  html {
-    color-scheme: light !important;
+  /* Disable dark mode completely - force light mode everywhere */
+  html, :root {
+    color-scheme: light only !important;
     background-color: #ffffff !important;
+    background: #ffffff !important;
   }
 
   * {
@@ -111,7 +113,39 @@
   body {
     @apply bg-background text-foreground font-montserrat;
     background-color: #ffffff !important;
+    background: #ffffff !important;
+    color-scheme: light only !important;
+  }
+
+  /* Override system dark mode preferences */
+  @media (prefers-color-scheme: dark) {
+    html, body, :root, * {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      background: #ffffff !important;
+    }
+  }
+
+  /* Disable Tailwind dark mode class */
+  .dark {
+    display: none !important;
+  }
+
+  /* Override input dark mode styling */
+  input, textarea, select {
+    background-color: #ffffff !important;
+    color: #000000 !important;
     color-scheme: light !important;
+  }
+
+  /* Override all potential dark mode colors */
+  :root {
+    --background: 0 0% 100% !important;
+    --foreground: 218 35% 15% !important;
+    --card: 0 0% 100% !important;
+    --card-foreground: 218 35% 15% !important;
+    --popover: 0 0% 100% !important;
+    --popover-foreground: 218 35% 15% !important;
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
