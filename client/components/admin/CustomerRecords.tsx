@@ -29,6 +29,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   });
   const [sortField, setSortField] = useState<keyof Customer>("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -176,17 +177,36 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     );
   };
 
+  // Filter customers based on search query
+  const filteredCustomers = customers.filter((customer) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      customer.name.toLowerCase().includes(query) ||
+      customer.tc.toLowerCase().includes(query) ||
+      customer.phone.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="p-6">
-      {/* Add Customer Button */}
+      {/* Add Customer Button and Search */}
       {!showForm && (
-        <button
-          onClick={() => setShowForm(true)}
-          className="mb-6 flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <Plus className="h-5 w-5" />
-          Yeni Müşteri Ekle
-        </button>
+        <div className="mb-6 flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="h-5 w-5" />
+            Yeni Müşteri Ekle
+          </button>
+          <input
+            type="text"
+            placeholder="TC, Ad veya Telefon ile ara..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
       )}
 
       {/* Add Customer Form */}
@@ -273,6 +293,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         <div className="text-center py-8">
           <p className="text-gray-600">Aktif müşteri kaydı bulunamadı</p>
         </div>
+      ) : filteredCustomers.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600">Arama kriterlerine uygun müşteri bulunamadı</p>
+        </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
@@ -335,7 +359,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               </tr>
             </thead>
             <tbody>
-              {customers.map((customer) => (
+              {filteredCustomers.map((customer) => (
                 <tr
                   key={customer.id}
                   className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
@@ -554,7 +578,15 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
       {/* Total Count */}
       <div className="mt-4 text-sm text-gray-600">
-        Toplam: <span className="font-semibold">{customers.length}</span> aktif müşteri
+        {searchQuery ? (
+          <>
+            Bulunan: <span className="font-semibold">{filteredCustomers.length}</span> / Toplam: <span className="font-semibold">{customers.length}</span> müşteri
+          </>
+        ) : (
+          <>
+            Toplam: <span className="font-semibold">{customers.length}</span> aktif müşteri
+          </>
+        )}
       </div>
 
       {/* Document Upload Modal */}
