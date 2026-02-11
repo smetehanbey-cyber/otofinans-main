@@ -102,8 +102,8 @@ export default function CarBrandsShowcase() {
     const mouseX = e.clientX - rect.left;
     const containerWidth = rect.width;
 
-    // Item width + gap: ~70px per item
-    const itemWithGap = 70;
+    // Item width + gap: ~100px per item (60px for 2K+)
+    const itemWithGap = window.innerWidth >= 2560 ? 85 : 70;
     const totalWidth = carBrands.length * itemWithGap;
     const maxScroll = Math.max(0, totalWidth - containerWidth);
 
@@ -127,17 +127,67 @@ export default function CarBrandsShowcase() {
         .car-item-hover {
           animation: carHover 0.3s ease-out forwards;
         }
-        .carousel-container {
-          scroll-behavior: smooth;
-          display: grid;
-          grid-auto-flow: column;
-          gap: 0;
+
+        /* Desktop Mode - Mouse Interactive */
+        .carousel-container-desktop {
+          display: flex;
+          gap: 1rem;
           padding: 1rem;
-          width: 100%;
-          align-items: center;
-          justify-content: space-around;
+          transition-timing-function: cubic-bezier(0.33, 0.66, 0.66, 1);
+          transition-duration: 80ms;
+          width: fit-content;
+          overflow: visible;
         }
 
+        .car-item-desktop {
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .car-circle-desktop {
+          width: 70px;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 3px solid #3b82f6;
+          border-radius: 50%;
+          background-color: #eff6ff;
+          overflow: hidden;
+          transition: all 0.3s ease-out;
+        }
+
+        .car-circle-desktop img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        /* 2K+ Desktop Mode */
+        @media (min-width: 2560px) {
+          .carousel-container-desktop {
+            gap: 1.5rem;
+          }
+
+          .car-item-desktop {
+            gap: 1rem;
+          }
+
+          .car-circle-desktop {
+            width: 100px;
+            height: 140px;
+            border-width: 4px;
+          }
+
+          .car-item-desktop p {
+            font-size: 0.875rem;
+          }
+        }
+
+        /* Mobile Mode - Horizontal Scroll */
         .mobile-brands-scroll {
           overflow-x: auto;
           overflow-y: hidden;
@@ -158,97 +208,70 @@ export default function CarBrandsShowcase() {
           border-radius: 2px;
         }
 
-        .car-item {
-          flex: 1;
-          min-width: 0;
+        .car-item-mobile {
+          flex-shrink: 0;
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 0.5rem;
         }
 
-        .car-circle {
-          width: 100%;
-          aspect-ratio: 1 / 1.4;
-          max-width: 100px;
+        .car-circle-mobile {
+          width: 50px;
+          height: 70px;
           display: flex;
           align-items: center;
           justify-content: center;
+          border: 3px solid #3b82f6;
+          border-radius: 50%;
+          background-color: #eff6ff;
+          overflow: hidden;
+          transition: all 0.3s ease-out;
         }
 
-        @media (max-width: 768px) {
-          .carousel-container {
-            display: flex;
-            gap: 1rem;
-            width: fit-content;
-            overflow-x: auto;
-            padding: 1rem;
-          }
+        .car-circle-mobile img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
 
-          .car-item {
-            flex-shrink: 0;
-            min-width: 60px;
-          }
-
-          .car-circle {
-            width: 50px;
-            height: 70px;
-            max-width: unset;
-          }
-
-          .brands-scroll-container {
-            overflow-x: auto;
-            overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-          }
-
-          .brands-scroll-container::-webkit-scrollbar {
-            height: 4px;
-          }
-
-          .brands-scroll-container::-webkit-scrollbar-track {
-            background: #f0f0f0;
-          }
-
-          .brands-scroll-container::-webkit-scrollbar-thumb {
-            background: #c0c0c0;
-            border-radius: 2px;
-          }
+        .car-circle-mobile:hover {
+          transform: scale(1.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
       `}</style>
 
       <div className="w-full">
+        {/* Desktop Mode - Mouse Interactive */}
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
-          className="brands-scroll-container hidden md:block w-full cursor-grab active:cursor-grabbing overflow-hidden"
+          className="hidden md:block w-full cursor-grab active:cursor-grabbing overflow-hidden bg-white py-4"
         >
-          <div className="carousel-container">
+          <div
+            className="carousel-container-desktop"
+            style={{
+              transform: `translateX(-${scrollPos}px)`,
+            }}
+          >
             {carBrands.map((brand, index) => (
               <div
                 key={index}
+                className="car-item-desktop"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className="car-item"
               >
-                {/* Oval Blue Frame with Car Image or Logo */}
                 <div
-                  className={`
-                    car-circle
-                    border-3 border-blue-500 rounded-full
-                    bg-blue-50 overflow-hidden
-                    transition-all duration-300 ease-out
-                    ${hoveredIndex === index ? "car-item-hover shadow-lg" : ""}
-                  `}
+                  className={`car-circle-desktop ${
+                    hoveredIndex === index ? "car-item-hover shadow-lg" : ""
+                  }`}
                 >
                   <img
                     src={getCarImage(brand)}
                     alt={brand}
-                    className="pointer-events-none object-contain w-full h-full"
+                    className="pointer-events-none object-contain"
                   />
                 </div>
-
-                {/* Brand Name */}
                 <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
                   {brand}
                 </p>
@@ -257,24 +280,18 @@ export default function CarBrandsShowcase() {
           </div>
         </div>
 
-        {/* Mobile Version - Horizontal Scroll */}
-        <div className="md:hidden w-full mobile-brands-scroll">
+        {/* Mobile Mode - Horizontal Scroll */}
+        <div className="md:hidden w-full mobile-brands-scroll bg-white py-4">
           <div className="flex gap-4 p-4 w-fit">
             {carBrands.map((brand, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
-              >
-                {/* Oval Blue Frame with Car Image or Logo */}
-                <div className="flex items-center justify-center w-[50px] h-[70px] border-3 border-blue-500 rounded-full bg-blue-50 overflow-hidden transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg">
+              <div key={index} className="car-item-mobile">
+                <div className="car-circle-mobile">
                   <img
                     src={getCarImage(brand)}
                     alt={brand}
-                    className="pointer-events-none object-contain w-full h-full"
+                    className="pointer-events-none object-contain"
                   />
                 </div>
-
-                {/* Brand Name */}
                 <p className="text-xs font-semibold text-gray-700 text-center whitespace-nowrap">
                   {brand}
                 </p>
