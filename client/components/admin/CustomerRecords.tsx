@@ -592,6 +592,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         }}
                       >
                         <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
+                        <span> </span>
                         {customer.phone.slice(3, 6)} {customer.phone.slice(6, 9)} {customer.phone.slice(9, 11)} {customer.phone.slice(11, 13)}
                       </a>
                     )}
