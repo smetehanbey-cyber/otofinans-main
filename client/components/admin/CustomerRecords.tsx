@@ -435,7 +435,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     onClick={() => handleSort("phone")}
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
-                    Tel {!isMobile && "efon"} <SortIcon field="phone" />
+                    Telefon <SortIcon field="phone" />
                   </button>
                 </th>
                 {!isMobile && (
@@ -529,7 +529,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         style={{fontSize: isMobile ? '12px' : '15px'}}
                       />
                     ) : (
-                      <span className="text-gray-800 block max-w-[100px] truncate">{customer.name}</span>
+                      <span className="text-gray-800 block">{customer.name}</span>
                     )}
                   </td>
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
@@ -573,7 +573,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-800 block max-w-[100px] truncate">{isMobile ? customer.phone.slice(-9) : customer.phone}</span>
+                      <span className="text-gray-800 block">{customer.phone}</span>
                     )}
                   </td>
                   {!isMobile && (
