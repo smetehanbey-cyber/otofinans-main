@@ -583,7 +583,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           fontSize: isMobile ? '12px' : '15px',
                           textDecoration: 'none',
                           color: 'inherit',
-                          wordSpacing: '3px'
+                          wordSpacing: '1px'
                         }}
                         onCopy={(e) => {
                           e.preventDefault();
