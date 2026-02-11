@@ -95,8 +95,8 @@ export default function CarBrandsShowcase() {
   const [scrollPos, setScrollPos] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Create duplicated brands list with repeat at end
-  const duplicatedBrands = [...carBrands, ...carBrands];
+  // Create infinite repeat for car brands (loop 10 times for smooth infinite scroll)
+  const duplicatedBrands = Array(10).fill(null).flatMap(() => carBrands);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;

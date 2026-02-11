@@ -629,9 +629,16 @@ export default function IsOrtakligi() {
           </div>
 
           <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <p className="text-sm" style={{ letterSpacing: "1.5px" }}>
-              TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
-            </p>
+            <div className="flex items-center gap-4">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
+                alt="Oto Finans Global Logo"
+                className="h-10 w-auto"
+              />
+              <p className="text-sm" style={{ letterSpacing: "1.5px" }}>
+                TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
+              </p>
+            </div>
             <p className="text-sm">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
             </p>
