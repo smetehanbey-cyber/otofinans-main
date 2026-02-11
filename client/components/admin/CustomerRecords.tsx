@@ -179,12 +179,25 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
   // Filter customers based on search query
   const filteredCustomers = customers.filter((customer) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      customer.name.toLowerCase().includes(query) ||
-      customer.tc.toLowerCase().includes(query) ||
-      customer.phone.toLowerCase().includes(query)
-    );
+    const query = searchQuery.toLowerCase().trim();
+
+    // If search query is empty, show all
+    if (!query) return true;
+
+    // Search by name
+    if (customer.name.toLowerCase().includes(query)) return true;
+
+    // Search by full TC or last 9 digits of TC
+    if (customer.tc.includes(query)) return true;
+    const tcLast9 = customer.tc.slice(-9);
+    if (tcLast9.includes(query)) return true;
+
+    // Search by full phone or last 9 digits of phone
+    if (customer.phone.includes(query)) return true;
+    const phoneLast9 = customer.phone.slice(-9);
+    if (phoneLast9.includes(query)) return true;
+
+    return false;
   });
 
   return (
