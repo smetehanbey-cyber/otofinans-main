@@ -105,11 +105,14 @@ export default function CarBrandsShowcase() {
     // Item width + gap: ~100px per item (60px for 2K+)
     const itemWithGap = window.innerWidth >= 2560 ? 85 : 70;
     const totalWidth = carBrands.length * itemWithGap;
-    const maxScroll = Math.max(0, totalWidth - containerWidth);
+    // Allow scrolling beyond container to show rightmost items
+    const maxScroll = Math.max(0, totalWidth);
 
     const mouseRatio = mouseX / containerWidth;
-    const newScrollPos = Math.round(mouseRatio * maxScroll);
-    const clampedScrollPos = Math.max(0, Math.min(newScrollPos, maxScroll));
+    // Speed multiplier for faster mouse movement (1.3x speed)
+    const speedMultiplier = 1.3;
+    const newScrollPos = Math.round(mouseRatio * maxScroll * speedMultiplier);
+    const clampedScrollPos = Math.max(0, newScrollPos);
     setScrollPos(clampedScrollPos);
   };
 
@@ -164,6 +167,7 @@ export default function CarBrandsShowcase() {
           width: 100%;
           height: 100%;
           object-fit: contain;
+          display: none;
         }
 
         /* 2K+ Desktop Mode */
@@ -233,6 +237,7 @@ export default function CarBrandsShowcase() {
           width: 100%;
           height: 100%;
           object-fit: contain;
+          display: none;
         }
 
         .car-circle-mobile:hover {
