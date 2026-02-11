@@ -129,6 +129,13 @@ export default function CarBrandsShowcase() {
         }
         .carousel-container {
           scroll-behavior: smooth;
+          display: grid;
+          grid-auto-flow: column;
+          gap: 0;
+          padding: 1rem;
+          width: 100%;
+          align-items: center;
+          justify-content: space-around;
         }
 
         .mobile-brands-scroll {
@@ -151,7 +158,44 @@ export default function CarBrandsShowcase() {
           border-radius: 2px;
         }
 
+        .car-item {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .car-circle {
+          width: 100%;
+          aspect-ratio: 1 / 1.4;
+          max-width: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
         @media (max-width: 768px) {
+          .carousel-container {
+            display: flex;
+            gap: 1rem;
+            width: fit-content;
+            overflow-x: auto;
+            padding: 1rem;
+          }
+
+          .car-item {
+            flex-shrink: 0;
+            min-width: 60px;
+          }
+
+          .car-circle {
+            width: 50px;
+            height: 70px;
+            max-width: unset;
+          }
+
           .brands-scroll-container {
             overflow-x: auto;
             overflow-y: hidden;
@@ -173,31 +217,24 @@ export default function CarBrandsShowcase() {
         }
       `}</style>
 
-      <div className="max-w-full">
+      <div className="w-full">
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
           className="brands-scroll-container hidden md:block w-full cursor-grab active:cursor-grabbing overflow-hidden"
         >
-          <div
-            className="carousel-container flex gap-4 p-4 transition-transform duration-200 ease-out"
-            style={{
-              transform: `translateX(-${scrollPos}px)`,
-              width: "fit-content",
-            }}
-          >
+          <div className="carousel-container">
             {carBrands.map((brand, index) => (
               <div
                 key={index}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
+                className="car-item"
               >
                 {/* Oval Blue Frame with Car Image or Logo */}
                 <div
                   className={`
-                    flex items-center justify-center
-                    w-[50px] h-[90px]
+                    car-circle
                     border-3 border-blue-500 rounded-full
                     bg-blue-50 overflow-hidden
                     transition-all duration-300 ease-out
@@ -207,11 +244,7 @@ export default function CarBrandsShowcase() {
                   <img
                     src={getCarImage(brand)}
                     alt={brand}
-                    className="pointer-events-none object-contain"
-                    style={{
-                      width: "190px",
-                      height: "190px",
-                    }}
+                    className="pointer-events-none object-contain w-full h-full"
                   />
                 </div>
 
@@ -233,15 +266,11 @@ export default function CarBrandsShowcase() {
                 className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
               >
                 {/* Oval Blue Frame with Car Image or Logo */}
-                <div className="flex items-center justify-center w-[50px] h-[90px] border-3 border-blue-500 rounded-full bg-blue-50 overflow-hidden transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg">
+                <div className="flex items-center justify-center w-[50px] h-[70px] border-3 border-blue-500 rounded-full bg-blue-50 overflow-hidden transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg">
                   <img
                     src={getCarImage(brand)}
                     alt={brand}
-                    className="pointer-events-none object-contain"
-                    style={{
-                      width: "190px",
-                      height: "190px",
-                    }}
+                    className="pointer-events-none object-contain w-full h-full"
                   />
                 </div>
 
