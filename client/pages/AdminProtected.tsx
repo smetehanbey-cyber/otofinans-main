@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Admin from "./Admin";
 import { Lock, Eye, EyeOff } from "lucide-react";
 
+// Master password - kullanıcılar bunu girdikten sonra PIN ekranına geçerler
 const ADMIN_PASSWORD = "703697";
 
 export default function AdminProtected() {
@@ -13,7 +14,7 @@ export default function AdminProtected() {
 
   // Check if already authenticated in session
   useEffect(() => {
-    const isAuth = sessionStorage.getItem("adminAuthenticated");
+    const isAuth = localStorage.getItem("adminAuthenticated");
     if (isAuth === "true") {
       setIsAuthenticated(true);
     }
@@ -21,13 +22,19 @@ export default function AdminProtected() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
-    if (password === ADMIN_PASSWORD) {
+    console.log("Attempting login with password:", password);
+    console.log("Expected password:", ADMIN_PASSWORD);
+
+    if (password.trim() === ADMIN_PASSWORD) {
+      console.log("Password correct!");
       setIsAuthenticated(true);
       setError("");
-      sessionStorage.setItem("adminAuthenticated", "true");
+      localStorage.setItem("adminAuthenticated", "true");
       setPassword("");
     } else {
+      console.log("Password incorrect!");
       setError("Şifre yanlış! Lütfen tekrar deneyin.");
       setPassword("");
     }
@@ -38,14 +45,24 @@ export default function AdminProtected() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       <Header />
 
       {/* Password Protected Screen */}
-      <div className="flex items-center justify-center min-h-[calc(100vh-200px)] bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+      <div
+        className="flex items-center justify-center min-h-[calc(100vh-200px)] px-4"
+        style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}
+      >
+        <style>{`
+          /* Force white background on all devices */
+          html, body {
+            background-color: #ffffff !important;
+            color-scheme: light !important;
+          }
+        `}</style>
         <div className="w-full max-w-md">
           {/* Card */}
-          <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-10">
+          <div className="rounded-2xl shadow-2xl p-8 md:p-10" style={{ backgroundColor: '#ffffff' }}>
             {/* Icon */}
             <div className="flex justify-center mb-6">
               <div className="p-4 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full">
@@ -75,6 +92,13 @@ export default function AdminProtected() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Şifrenizi giriniz..."
                     className="w-full px-4 py-3 pr-12 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
+                    style={{
+                      backgroundColor: '#ffffff',
+                      color: '#000000',
+                      colorScheme: 'light',
+                      WebkitAppearance: 'none',
+                      appearance: 'none'
+                    }}
                     autoFocus
                   />
                   <button
