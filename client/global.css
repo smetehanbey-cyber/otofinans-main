@@ -98,6 +98,41 @@
   }
 }
 
+/* Force light theme on Android */
+html {
+  color-scheme: light !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+body {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color-scheme: light !important;
+  color: #000000 !important;
+}
+
+/* Override all gray colors to white on mobile/Android */
+@media (max-width: 1024px) {
+  html, body, div {
+    background-color: #ffffff !important;
+    color-scheme: light !important;
+  }
+
+  .bg-gray-50, .bg-gray-100, .bg-gray-200 {
+    background-color: #ffffff !important;
+  }
+
+  /* Override Tailwind's gray scales */
+  [class*="bg-gray"] {
+    background-color: #ffffff !important;
+  }
+
+  [class*="from-gray"], [class*="to-gray"] {
+    background-color: #ffffff !important;
+  }
+}
+
 @layer base {
   html {
     color-scheme: light !important;
