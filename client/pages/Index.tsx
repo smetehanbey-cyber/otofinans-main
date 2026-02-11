@@ -252,7 +252,7 @@ export default function Index() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/admin"
                     className="hover:text-white transition-colors text-blue-300 font-semibold"
                   >
                     Admin
