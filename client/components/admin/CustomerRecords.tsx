@@ -114,6 +114,21 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     }
 
     try {
+      // Check if phone number already exists
+      if (newCustomer.phone) {
+        const { data: existingCustomer, error: checkError } = await supabase
+          .from("customers")
+          .select("id, phone")
+          .eq("phone", newCustomer.phone)
+          .eq("status", "active")
+          .single();
+
+        if (existingCustomer) {
+          alert("Bu telefon numarasında kayıt zaten mevcut!");
+          return;
+        }
+      }
+
       const { error } = await supabase.from("customers").insert([
         {
           name: newCustomer.name,
