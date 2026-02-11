@@ -363,7 +363,7 @@ export default function Hakkimizda() {
                 src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
                 alt="Oto Finans Global Logo"
                 className="w-auto"
-                style={{ height: '58px' }}
+                style={{ height: '54px' }}
               />
               <p className="text-sm" style={{ letterSpacing: "1.5px" }}>
                 TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
