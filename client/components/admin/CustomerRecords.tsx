@@ -3,7 +3,13 @@ import { supabase, Customer } from "@/lib/supabase";
 import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText } from "lucide-react";
 import DocumentUploadModal from "./DocumentUploadModal";
 
-export default function CustomerRecords() {
+interface LoggedInUser {
+  id: number;
+  name: string;
+  pin: string;
+}
+
+export default function CustomerRecords({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -29,7 +35,7 @@ export default function CustomerRecords() {
       setLoading(true);
       const { data, error } = await supabase
         .from("customers")
-        .select("*")
+        .select("*, added_by")
         .eq("status", "active")
         .order(sortField, { ascending: sortOrder === "asc" });
 
@@ -61,7 +67,8 @@ export default function CustomerRecords() {
           phone: newCustomer.phone || "",
           message: newCustomer.message || "",
           process: newCustomer.process,
-          status: "active"
+          status: "active",
+          added_by: loggedInUser?.name || "Bilinmeyen"
         }
       ]);
 
@@ -313,6 +320,9 @@ export default function CustomerRecords() {
                     Tarih <SortIcon field="created_at" />
                   </button>
                 </th>
+                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
+                  Yetkili Kişi
+                </th>
                 <th className="px-2 py-2 text-center font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   İşlemler
                 </th>
@@ -456,6 +466,11 @@ export default function CustomerRecords() {
                   </td>
                   <td className="px-2 py-2 text-gray-600" style={{fontSize: '14px'}}>
                     {new Date(customer.created_at).toLocaleDateString("tr-TR")}
+                  </td>
+                  <td className="px-2 py-2" style={{fontSize: '14px'}}>
+                    <span className="inline-block px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800">
+                      {(customer as any).added_by || "-"}
+                    </span>
                   </td>
                   <td className="px-2 py-2">
                     <div className="flex justify-center gap-1">

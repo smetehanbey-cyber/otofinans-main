@@ -4,6 +4,7 @@ import { Menu, X, LogOut, ChevronRight, ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
+import { supabase } from "@/lib/supabase";
 
 // Yetkili Bayiler (Authorized Dealers) Component
 function AuthorizedDealers() {
@@ -51,9 +52,53 @@ function VehicleStock() {
 }
 
 export default function Admin() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<{ id: number; name: string; pin: string } | null>(null);
+  const [pin, setPin] = useState("");
+  const [loginError, setLoginError] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
   const [expandedGroup, setExpandedGroup] = useState("gelen-talep");
+
+  // Handle Login
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+
+    if (!pin.trim()) {
+      setLoginError("PIN giriniz");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from("authorized_persons")
+        .select("id, name, pin")
+        .eq("pin", pin)
+        .single();
+
+      if (error || !data) {
+        setLoginError("Hatalı PIN");
+        setPin("");
+        return;
+      }
+
+      setLoggedInUser(data);
+      setIsLoggedIn(true);
+      setPin("");
+    } catch (error) {
+      setLoginError("Giriş başarısız");
+      setPin("");
+    }
+  };
+
+  // Handle Logout
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setLoggedInUser(null);
+    setPin("");
+    setLoginError("");
+  };
 
   const menuGroups = [
     {
@@ -115,7 +160,77 @@ export default function Admin() {
   // Flatten menu items to find active component
   const allMenuItems = menuGroups.flatMap(group => group.items);
   const activeMenuItem = allMenuItems.find(item => item.id === activeMenu);
-  const ActiveComponent = activeMenuItem?.component || CustomerRecords;
+  let ActiveComponent = activeMenuItem?.component || CustomerRecords;
+
+  // Wrap CustomerRecords to pass loggedInUser
+  if (activeMenuItem?.id === "customer-records") {
+    ActiveComponent = () => <CustomerRecords loggedInUser={loggedInUser} />;
+  } else if (activeMenuItem?.id === "archived-records") {
+    ActiveComponent = () => <ArchivedRecords />;
+  }
+
+  // Login Screen
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-lg shadow-2xl p-8">
+            {/* Logo and Title */}
+            <div className="text-center mb-8">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F4ab72f175d0542049f90dff7a3b5c790?format=webp&width=800&height=1200"
+                alt="Oto Finans Global"
+                className="h-12 w-auto mx-auto mb-4"
+              />
+              <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
+              <p className="text-gray-600 text-sm mt-2">Yetkili personel girişi</p>
+            </div>
+
+            {/* Login Form */}
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  PIN
+                </label>
+                <input
+                  type="password"
+                  placeholder="PIN giriniz"
+                  value={pin}
+                  onChange={(e) => setPin(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  maxLength="6"
+                  autoFocus
+                />
+              </div>
+
+              {/* Error Message */}
+              {loginError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-700">{loginError}</p>
+                </div>
+              )}
+
+              {/* Login Button */}
+              <button
+                type="submit"
+                className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg"
+              >
+                Giriş Yap
+              </button>
+            </form>
+
+            {/* Help Text */}
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-xs text-blue-700">
+                <span className="font-semibold">Test PIN'leri:</span><br />
+                900860 (Beyza), 900500 (Duygu), 900750 (Erkut), 900900 (Gökhan), 100900 (Mete)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -203,13 +318,21 @@ export default function Admin() {
 
           {/* Sidebar Footer */}
           <div className="p-4 border-t border-gray-200">
-            <Link
-              to="/"
-              className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-all"
+            <div className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 mb-3">
+              {sidebarOpen && (
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-800">{loggedInUser?.name}</p>
+                  <p className="text-xs text-gray-500">{loggedInUser?.pin}</p>
+                </div>
+              )}
+            </div>
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg transition-all"
             >
               <LogOut className="h-5 w-5" />
               {sidebarOpen && <span className="font-medium">Çıkış</span>}
-            </Link>
+            </button>
           </div>
         </div>
 
