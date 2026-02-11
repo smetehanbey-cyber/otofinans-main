@@ -250,12 +250,12 @@ export default function Hakkimizda() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="/admin"
-                    className="hover:text-white transition-colors text-blue-300 font-semibold"
+                  <button
+                    onClick={() => navigate("/admin")}
+                    className="hover:text-white transition-colors text-blue-300 font-semibold bg-none border-none p-0 cursor-pointer text-left"
                   >
                     Admin
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
