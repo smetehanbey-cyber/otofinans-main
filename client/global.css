@@ -1,5 +1,13 @@
 /** @import must precede all other statements */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Paytone+One&family=Arimo&display=swap");
+/* Using display=swap for faster font rendering with system fallback */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+
+/* Provide explicit font fallback stack */
+@font-face {
+  font-family: 'Montserrat-Fallback';
+  src: local('-apple-system'), local('BlinkMacSystemFont'), local('Segoe UI'), local('Roboto'), local('Oxygen'), local('Ubuntu'), local('Cantarell'), local('Fira Sans'), local('Droid Sans'), local('Helvetica Neue');
+  font-display: fallback;
+}
 
 @tailwind base;
 @tailwind components;
@@ -104,16 +112,21 @@
     color-scheme: light only !important;
     background-color: #ffffff !important;
     background: #ffffff !important;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100% !important;
+    -ms-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
     width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
+    scroll-behavior: auto;
   }
 
   * {
     @apply border-border;
-    -webkit-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100% !important;
+    box-sizing: border-box;
   }
 
   body {
@@ -121,12 +134,15 @@
     background-color: #ffffff !important;
     background: #ffffff !important;
     color-scheme: light only !important;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow-x: hidden !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-touch-callout: none;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   /* Override system dark mode preferences */
@@ -193,16 +209,37 @@
     display: flex;
     flex-direction: column;
     background-color: #ffffff !important;
+    margin: 0;
+    padding: 0;
   }
 
   /* Fix container and layout issues */
-  header, main, section, footer, nav, div {
+  header, main, section, footer, nav {
     box-sizing: border-box;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   /* Prevent horizontal scroll on mobile */
   body, html {
+    width: 100%;
     max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  /* Fix Tailwind containers on mobile */
+  .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Fix mx-auto containers */
+  .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   /* Fix images and responsive media */
@@ -210,29 +247,43 @@
     max-width: 100%;
     height: auto;
     display: block;
+    margin: 0;
+    padding: 0;
   }
 
   /* Fix button and input size on mobile */
   button, input, select, textarea {
     box-sizing: border-box;
+    max-width: 100%;
   }
 
-  /* Responsive text sizes */
-  @media (max-width: 640px) {
-    body {
-      font-size: 14px;
+  /* Responsive text sizes - no layout shifts */
+  @media (max-width: 768px) {
+    * {
       margin: 0;
       padding: 0;
-      width: 100%;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-size: 14px;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100vw !important;
+      overflow-x: hidden !important;
     }
 
     h1, .text-3xl, .text-2xl {
-      font-size: clamp(1.5rem, 5vw, 2.25rem);
+      font-size: 1.75rem;
       margin: 0;
     }
 
     h2, .text-xl {
-      font-size: clamp(1.25rem, 4vw, 1.875rem);
+      font-size: 1.4rem;
+      margin: 0;
+    }
+
+    p, .text-base {
       margin: 0;
     }
 
@@ -241,43 +292,125 @@
       min-height: 44px;
       min-width: 44px;
       padding: 8px 12px !important;
+      margin: 0 !important;
+      border: 1px solid #ccc;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-color: #ffffff !important;
+      color: #000000 !important;
     }
 
     button {
       min-height: 44px;
       min-width: 44px;
       padding: 8px 12px !important;
+      margin: 0 !important;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
     }
 
-    /* Android specific fixes */
-    input, textarea, select, button {
-      margin: 0;
-      padding: 8px 12px;
-      -webkit-user-select: text;
-      user-select: text;
+    /* Fix container widths */
+    .container, main, section, article {
+      max-width: 100vw !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
     }
 
-    /* Fix layout shifts */
-    * {
+    /* Ensure images don't overflow */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Fix flex containers */
+    .flex, .flex-col, .flex-row {
       margin: 0;
       padding: 0;
     }
+  }
 
-    div, section, article, header, footer, nav {
-      box-sizing: border-box;
+  /* Android specific fixes - always apply */
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  /* Fix safe area padding for notch devices */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: max(0, env(safe-area-inset-left));
+      padding-right: max(0, env(safe-area-inset-right));
     }
   }
 
-  /* Android specific color fixes */
-  @supports (padding: max(0px)) {
+  /* Fix layout for landscape mode */
+  @media (orientation: landscape) {
     body {
-      padding-left: max(0px, env(safe-area-inset-left));
-      padding-right: max(0px, env(safe-area-inset-right));
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+  }
+
+  /* Fix virtual keyboard issues */
+  @media (max-height: 500px) {
+    body {
+      overflow-y: auto;
     }
 
-    input, textarea, select {
-      padding-left: max(8px, calc(8px + env(safe-area-inset-left)));
-      padding-right: max(8px, calc(8px + env(safe-area-inset-right)));
+    input:focus, textarea:focus {
+      position: relative;
+      z-index: 1000;
+    }
+  }
+
+  /* Disable animations that cause layout shifts */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Force GPU acceleration on mobile */
+  @media (max-width: 768px) {
+    * {
+      -webkit-transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+    }
+
+    img, video {
+      -webkit-backface-visibility: hidden;
+    }
+  }
+
+  /* Explicit height resets for common problematic elements */
+  @media (max-width: 768px) {
+    section {
+      margin: 0;
+      padding: 1rem;
+    }
+
+    article {
+      margin: 0;
+      padding: 1rem;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
     }
   }
 

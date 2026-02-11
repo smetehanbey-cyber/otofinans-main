@@ -2,18 +2,47 @@
 <html lang="en" style="color-scheme: light only !important;">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="light only" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="apple-mobile-web-app-status-bar-style" content="white" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <style>
+      /* Prevent layout shift - load system fonts first */
+      @font-face {
+        font-family: 'Montserrat';
+        src: local('Montserrat'), local('Montserrat-Regular');
+        font-weight: 400;
+        font-display: fallback;
+      }
+
+      @font-face {
+        font-family: 'Montserrat';
+        src: local('Montserrat'), local('Montserrat-Bold');
+        font-weight: 700;
+        font-display: fallback;
+      }
+
       /* Force light mode everywhere - disable dark mode completely */
       html, body, :root {
         color-scheme: light only !important;
         background-color: #ffffff !important;
         background: #ffffff !important;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
       }
+
+      /* Prevent layout shift from scrollbar */
+      html {
+        overflow-y: scroll;
+      }
+
       /* Override system dark mode preferences */
       @media (prefers-color-scheme: dark) {
         html, body, :root {
