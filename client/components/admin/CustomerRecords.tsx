@@ -349,7 +349,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   setNewCustomer({ ...newCustomer, phone: formattedPhone })
                 }}
                 maxLength="10"
-                className="pl-12 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 w-full font-bold text-black"
+                className="pl-12 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
               />
             </div>
             <select
@@ -553,7 +553,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
                       <div className="relative flex items-center">
-                        <span className="absolute left-1 font-semibold text-gray-700 pointer-events-none" style={{fontSize: isMobile ? '10px' : '12px'}}>+90</span>
+                        <span className="absolute left-1 font-semibold text-gray-700 pointer-events-none" style={{fontSize: isMobile ? '11px' : '13px'}}>+90</span>
                         <input
                           type="tel"
                           inputMode="numeric"
@@ -568,15 +568,12 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                             })
                           }}
                           maxLength="10"
-                          className="pl-7 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 w-full font-bold text-black"
+                          className="pl-7 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
                           style={{fontSize: isMobile ? '12px' : '15px'}}
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-800 block">
-                        <span style={{fontSize: isMobile ? '11px' : '12px', color: '#666'}}>+90</span>
-                        <span className="font-bold text-black">{customer.phone.replace(/^\+90/, "")}</span>
-                      </span>
+                      <span className="text-gray-800 block">{customer.phone}</span>
                     )}
                   </td>
                   {!isMobile && (
