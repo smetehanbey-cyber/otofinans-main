@@ -53,7 +53,7 @@ function VehicleStock() {
 
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState<{ id: number; name: string; pin: string } | null>(null);
+  const [loggedInUser, setLoggedInUser] = useState<{ id: number; name: string; pin: string; is_admin: boolean } | null>(null);
   const [pin, setPin] = useState("");
   const [loginError, setLoginError] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -73,7 +73,7 @@ export default function Admin() {
     try {
       const { data, error } = await supabase
         .from("authorized_persons")
-        .select("id, name, pin")
+        .select("id, name, pin, is_admin")
         .eq("pin", pin)
         .single();
 
@@ -83,7 +83,7 @@ export default function Admin() {
         return;
       }
 
-      setLoggedInUser(data);
+      setLoggedInUser(data as any);
       setIsLoggedIn(true);
       setPin("");
     } catch (error) {
@@ -323,6 +323,9 @@ export default function Admin() {
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-800">{loggedInUser?.name}</p>
                   <p className="text-xs text-gray-500">{loggedInUser?.pin}</p>
+                  <p className={`text-xs font-semibold mt-1 ${loggedInUser?.is_admin ? 'text-green-700' : 'text-blue-700'}`}>
+                    {loggedInUser?.is_admin ? '👑 Admin' : '👤 Personel'}
+                  </p>
                 </div>
               )}
             </div>

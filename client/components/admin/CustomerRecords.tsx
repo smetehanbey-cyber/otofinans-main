@@ -7,6 +7,7 @@ interface LoggedInUser {
   id: number;
   name: string;
   pin: string;
+  is_admin: boolean;
 }
 
 export default function CustomerRecords({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
@@ -92,13 +93,18 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
     try {
       // Only send the fields that have changed
-      const updateData = {
+      const updateData: any = {
         name: editingData.name,
         tc: editingData.tc,
         phone: editingData.phone || "",
         message: editingData.message || "",
         process: editingData.process || "Beklemede"
       };
+
+      // Only allow admins to update added_by field
+      if (loggedInUser?.is_admin) {
+        updateData.added_by = (editingData as any).added_by || "";
+      }
 
       const { error } = await supabase
         .from("customers")
@@ -468,9 +474,24 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     {new Date(customer.created_at).toLocaleDateString("tr-TR")}
                   </td>
                   <td className="px-2 py-2" style={{fontSize: '14px'}}>
-                    <span className="inline-block px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800">
-                      {(customer as any).added_by || "-"}
-                    </span>
+                    {editingId === customer.id && loggedInUser?.is_admin ? (
+                      <input
+                        type="text"
+                        value={(editingData as any).added_by || ""}
+                        onChange={(e) =>
+                          setEditingData({
+                            ...editingData,
+                            added_by: e.target.value
+                          })
+                        }
+                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        style={{fontSize: '14px'}}
+                      />
+                    ) : (
+                      <span className="inline-block px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800">
+                        {(customer as any).added_by || "-"}
+                      </span>
+                    )}
                   </td>
                   <td className="px-2 py-2">
                     <div className="flex justify-center gap-1">
