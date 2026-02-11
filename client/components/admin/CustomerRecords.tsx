@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase, Customer } from "@/lib/supabase";
-import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText } from "lucide-react";
+import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText, Smartphone } from "lucide-react";
 import DocumentUploadModal from "./DocumentUploadModal";
 
 interface LoggedInUser {
@@ -32,6 +32,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAuthorizedPerson, setSelectedAuthorizedPerson] = useState<string | null>(null);
   const [showAuthorizedPersonDropdown, setShowAuthorizedPersonDropdown] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [animatingIds, setAnimatingIds] = useState<Set<number>>(new Set());
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -55,6 +57,51 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   useEffect(() => {
     fetchCustomers();
   }, [sortField, sortOrder]);
+
+  // Handle responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Real-time subscription to customers table
+  useEffect(() => {
+    const channel = supabase
+      .channel("customers-updates")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "customers" },
+        async (payload) => {
+          // Only refresh for active customers
+          if (payload.new && payload.new.status === "active") {
+            // Add animation effect to the updated row
+            const customerId = payload.new.id;
+            setAnimatingIds(prev => new Set(prev).add(customerId));
+
+            // Refresh data
+            fetchCustomers();
+
+            // Remove animation after 800ms
+            setTimeout(() => {
+              setAnimatingIds(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(customerId);
+                return newSet;
+              });
+            }, 800);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Add new customer
   const handleAddCustomer = async () => {
@@ -213,23 +260,37 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   });
 
   return (
-    <div className="p-6">
+    <div className={`${isMobile ? "p-3" : "p-6"}`}>
+      <style>{`
+        @keyframes rowUpdate {
+          0% {
+            background-color: rgb(191 219 254);
+          }
+          100% {
+            background-color: transparent;
+          }
+        }
+        .row-animate {
+          animation: rowUpdate 0.8s ease-out;
+        }
+      `}</style>
+
       {/* Add Customer Button and Search */}
       {!showForm && (
-        <div className="mb-6 flex flex-col sm:flex-row gap-3">
+        <div className={`mb-6 flex flex-col gap-2 ${isMobile ? "" : "sm:flex-row sm:gap-3"}`}>
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className={`flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${isMobile ? "w-full sm:w-auto" : ""}`}
           >
-            <Plus className="h-5 w-5" />
-            Yeni Müşteri Ekle
+            <Plus className={isMobile ? "h-4 w-4" : "h-5 w-5"} />
+            {isMobile ? "Ekle" : "Yeni Müşteri Ekle"}
           </button>
           <input
             type="text"
-            placeholder="TC, Ad veya Telefon ile ara..."
+            placeholder={isMobile ? "Ara..." : "TC, Ad veya Telefon ile ara..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className={`px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm ${isMobile ? "w-full" : "flex-1"}`}
           />
         </div>
       )}
@@ -324,19 +385,19 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           <p className="text-gray-600">Arama kriterlerine uygun müşteri bulunamadı</p>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"}`}>
+          <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
-                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px'}}>
                   <button
                     onClick={() => handleSort("name")}
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
-                    Ad Soyad <SortIcon field="name" />
+                    Ad {!isMobile && "Soyad"} <SortIcon field="name" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px'}}>
                   <button
                     onClick={() => handleSort("tc")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -344,23 +405,25 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     TC <SortIcon field="tc" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px'}}>
                   <button
                     onClick={() => handleSort("phone")}
                     className="flex items-center gap-2 hover:text-blue-600"
                   >
-                    Telefon <SortIcon field="phone" />
+                    Tel {!isMobile && "efon"} <SortIcon field="phone" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
-                  <button
-                    onClick={() => handleSort("message")}
-                    className="flex items-center gap-2 hover:text-blue-600"
-                  >
-                    Mesaj <SortIcon field="message" />
-                  </button>
-                </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
+                {!isMobile && (
+                  <th className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap" style={{fontSize: '15px'}}>
+                    <button
+                      onClick={() => handleSort("message")}
+                      className="flex items-center gap-2 hover:text-blue-600"
+                    >
+                      Mesaj <SortIcon field="message" />
+                    </button>
+                  </th>
+                )}
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px'}}>
                   <button
                     onClick={() => handleSort("process")}
                     className="flex items-center gap-2 hover:text-blue-600"
@@ -368,20 +431,22 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     Süreci <SortIcon field="process" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
-                  <button
-                    onClick={() => handleSort("created_at")}
-                    className="flex items-center gap-2 hover:text-blue-600"
-                  >
-                    Tarih <SortIcon field="created_at" />
-                  </button>
-                </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700 relative" style={{fontSize: '15px'}}>
+                {!isMobile && (
+                  <th className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap" style={{fontSize: '15px'}}>
+                    <button
+                      onClick={() => handleSort("created_at")}
+                      className="flex items-center gap-2 hover:text-blue-600"
+                    >
+                      Tarih <SortIcon field="created_at" />
+                    </button>
+                  </th>
+                )}
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 relative whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px'}}>
                   <button
                     onClick={() => setShowAuthorizedPersonDropdown(!showAuthorizedPersonDropdown)}
                     className="flex items-center gap-2 hover:text-blue-600 cursor-pointer"
                   >
-                    Yetkili Kişi {selectedAuthorizedPerson && <span className="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">Filtre aktif</span>}
+                    {isMobile ? "Y.K" : "Yetkili Kişi"} {selectedAuthorizedPerson && <span className={`text-white px-1 py-0.5 rounded-full ${isMobile ? "text-xs" : "text-xs"}`} style={{fontSize: '10px', backgroundColor: '#2563eb'}}>✓</span>}
                   </button>
                   {showAuthorizedPersonDropdown && (
                     <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 min-w-max">
@@ -420,9 +485,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               {filteredCustomers.map((customer) => (
                 <tr
                   key={customer.id}
-                  className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                  className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
+                    animatingIds.has(customer.id) ? "row-animate" : ""
+                  }`}
                 >
-                  <td className="px-2 py-2" style={{fontSize: '15px'}}>
+                  <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
                       <input
                         type="text"
@@ -434,13 +501,13 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: '15px'}}
+                        style={{fontSize: isMobile ? '12px' : '15px'}}
                       />
                     ) : (
-                      <span className="text-gray-800">{customer.name}</span>
+                      <span className="text-gray-800 block max-w-[100px] truncate">{customer.name}</span>
                     )}
                   </td>
-                  <td className="px-2 py-2" style={{fontSize: '15px'}}>
+                  <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
                       <input
                         type="text"
@@ -452,13 +519,13 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: '15px'}}
+                        style={{fontSize: isMobile ? '12px' : '15px'}}
                       />
                     ) : (
-                      <span className="text-gray-800">{customer.tc}</span>
+                      <span className="text-gray-800 block max-w-[100px] truncate">{isMobile ? customer.tc.slice(-9) : customer.tc}</span>
                     )}
                   </td>
-                  <td className="px-2 py-2" style={{fontSize: '15px'}}>
+                  <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
                       <input
                         type="tel"
@@ -470,60 +537,62 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: '15px'}}
+                        style={{fontSize: isMobile ? '12px' : '15px'}}
                       />
                     ) : (
-                      <span className="text-gray-800">{customer.phone}</span>
+                      <span className="text-gray-800 block max-w-[100px] truncate">{isMobile ? customer.phone.slice(-9) : customer.phone}</span>
                     )}
                   </td>
-                  <td className="px-2 py-2 max-w-[150px]" style={{fontSize: '14px'}}>
-                    {editingId === customer.id ? (
-                      <textarea
-                        value={editingData.message || ""}
-                        onChange={(e) =>
-                          setEditingData({
-                            ...editingData,
-                            message: e.target.value
-                          })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: '14px'}}
-                        rows={2}
-                      />
-                    ) : (
-                      <div className="relative">
-                        <span
-                          className="text-gray-700 block truncate cursor-help"
+                  {!isMobile && (
+                    <td className="px-2 py-2 max-w-[150px]" style={{fontSize: '14px'}}>
+                      {editingId === customer.id ? (
+                        <textarea
+                          value={editingData.message || ""}
+                          onChange={(e) =>
+                            setEditingData({
+                              ...editingData,
+                              message: e.target.value
+                            })
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                           style={{fontSize: '14px'}}
-                          onMouseEnter={(e) => {
-                            setHoveredMessageId(customer.id);
-                            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                            setTooltipPos({
-                              top: rect.bottom + 5,
-                              left: rect.left
-                            });
-                          }}
-                          onMouseLeave={() => setHoveredMessageId(null)}
-                        >
-                          {customer.message || "-"}
-                        </span>
-                        {hoveredMessageId === customer.id && customer.message && (
-                          <div
-                            className="fixed bg-gray-900 text-white p-2 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700"
-                            style={{fontSize: '13px'}}
-                            style={{
-                              top: `${tooltipPos.top}px`,
-                              left: `${tooltipPos.left}px`
+                          rows={2}
+                        />
+                      ) : (
+                        <div className="relative">
+                          <span
+                            className="text-gray-700 block truncate cursor-help"
+                            style={{fontSize: '14px'}}
+                            onMouseEnter={(e) => {
+                              setHoveredMessageId(customer.id);
+                              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                              setTooltipPos({
+                                top: rect.bottom + 5,
+                                left: rect.left
+                              });
                             }}
+                            onMouseLeave={() => setHoveredMessageId(null)}
                           >
-                            {customer.message}
-                            <div className="absolute bottom-full left-2 w-2 h-2 bg-gray-900 border-t border-l border-gray-700"></div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-2 py-2" style={{fontSize: '14px'}}>
+                            {customer.message || "-"}
+                          </span>
+                          {hoveredMessageId === customer.id && customer.message && (
+                            <div
+                              className="fixed bg-gray-900 text-white p-2 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700"
+                              style={{fontSize: '13px'}}
+                              style={{
+                                top: `${tooltipPos.top}px`,
+                                left: `${tooltipPos.left}px`
+                              }}
+                            >
+                              {customer.message}
+                              <div className="absolute bottom-full left-2 w-2 h-2 bg-gray-900 border-t border-l border-gray-700"></div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  )}
+                  <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '14px'}}>
                     {editingId === customer.id ? (
                       <select
                         value={editingData.process || "Beklemede"}
@@ -534,7 +603,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           })
                         }
                         className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: '14px'}}
+                        style={{fontSize: isMobile ? '12px' : '14px'}}
                       >
                         <option value="Beklemede">Beklemede</option>
                         <option value="Onaylandı">Onaylandı</option>
@@ -542,23 +611,25 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                       </select>
                     ) : (
                       <span
-                        className={`inline-block px-2 py-0.5 rounded-full font-semibold ${
+                        className={`inline-block px-2 py-0.5 rounded-full font-semibold whitespace-nowrap ${
                           customer.process === "Beklemede"
                             ? "bg-yellow-100 text-yellow-800"
                             : customer.process === "Kredi Onayda"
                             ? "bg-blue-100 text-blue-800"
                             : "bg-green-100 text-green-800"
                         }`}
-                        style={{fontSize: '13px'}}
+                        style={{fontSize: isMobile ? '11px' : '13px'}}
                       >
-                        {customer.process}
+                        {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : "K") : customer.process}
                       </span>
                     )}
                   </td>
-                  <td className="px-2 py-2 text-gray-600" style={{fontSize: '14px'}}>
-                    {new Date(customer.created_at).toLocaleDateString("tr-TR")}
-                  </td>
-                  <td className="px-2 py-2" style={{fontSize: '14px'}}>
+                  {!isMobile && (
+                    <td className="px-2 py-2 text-gray-600" style={{fontSize: '14px'}}>
+                      {new Date(customer.created_at).toLocaleDateString("tr-TR")}
+                    </td>
+                  )}
+                  <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '14px'}}>
                     {editingId === customer.id && loggedInUser?.is_admin ? (
                       <input
                         type="text"
@@ -570,34 +641,34 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: '14px'}}
+                        style={{fontSize: isMobile ? '12px' : '14px'}}
                       />
                     ) : (
-                      <span className="inline-block px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800">
+                      <span className="inline-block px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800 whitespace-nowrap" style={{fontSize: isMobile ? '11px' : '13px'}}>
                         {customer.added_by || "-"}
                       </span>
                     )}
                   </td>
                   <td className="px-2 py-2">
-                    <div className="flex justify-center gap-1">
+                    <div className={`flex justify-center gap-1`}>
                       {editingId === customer.id ? (
                         <>
                           <button
                             onClick={() => handleUpdateCustomer(customer.id)}
-                            className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
-                            style={{fontSize: '13px'}}
+                            className={`text-white rounded hover:opacity-80 transition-opacity ${isMobile ? "px-1 py-0.5 text-xs" : "px-2 py-1 text-xs"}`}
+                            style={{backgroundColor: '#16a34a', fontSize: isMobile ? '11px' : '13px'}}
                           >
-                            Kaydet
+                            {isMobile ? "K" : "Kaydet"}
                           </button>
                           <button
                             onClick={() => {
                               setEditingId(null);
                               setEditingData({});
                             }}
-                            className="px-2 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 transition-colors"
-                            style={{fontSize: '13px'}}
+                            className={`bg-gray-400 text-white rounded hover:bg-gray-500 transition-colors ${isMobile ? "px-1 py-0.5 text-xs" : "px-2 py-1 text-xs"}`}
+                            style={{fontSize: isMobile ? '11px' : '13px'}}
                           >
-                            İptal
+                            {isMobile ? "✕" : "İptal"}
                           </button>
                         </>
                       ) : (
@@ -610,21 +681,21 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                             className="p-1 text-blue-600 hover:bg-blue-50 rounded transition-colors"
                             title="Düzenle"
                           >
-                            <Edit2 className="h-4 w-4" />
+                            <Edit2 className={isMobile ? "h-3 w-3" : "h-4 w-4"} />
                           </button>
                           <button
                             onClick={() => setSelectedCustomerForDocs(customer.id)}
                             className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors"
                             title="Dosyalar"
                           >
-                            <FileText className="h-4 w-4" />
+                            <FileText className={isMobile ? "h-3 w-3" : "h-4 w-4"} />
                           </button>
                           <button
                             onClick={() => setArchiveConfirmId(customer.id)}
                             className="p-1 text-orange-600 hover:bg-orange-50 rounded transition-colors"
                             title="Arşive Taşı"
                           >
-                            <Archive className="h-4 w-4" />
+                            <Archive className={isMobile ? "h-3 w-3" : "h-4 w-4"} />
                           </button>
                         </>
                       )}
@@ -638,7 +709,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       )}
 
       {/* Total Count */}
-      <div className="mt-4 text-sm text-gray-600">
+      <div className={`mt-4 text-gray-600 ${isMobile ? "text-xs" : "text-sm"}`}>
         {selectedAuthorizedPerson ? (
           <>
             <span className="font-semibold">{selectedAuthorizedPerson}</span> tarafından eklenen: <span className="font-semibold">{filteredCustomers.length}</span> / Toplam: <span className="font-semibold">{customers.length}</span> müşteri

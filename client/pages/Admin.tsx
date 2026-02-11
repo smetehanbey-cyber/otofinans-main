@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, LogOut, ChevronRight, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut, ChevronRight, ChevronDown, Smartphone } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
@@ -60,6 +60,26 @@ export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
   const [expandedGroup, setExpandedGroup] = useState("gelen-talep");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isLandscape, setIsLandscape] = useState(window.innerHeight < window.innerWidth);
+
+  // Handle responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsLandscape(window.innerHeight < window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Auto-collapse sidebar on mobile
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
+  }, [isMobile]);
 
   // Handle Login
   const handleLogin = async (e: React.FormEvent) => {
@@ -186,6 +206,15 @@ export default function Admin() {
             animation: shake 0.6s ease-in-out;
           }
         `}</style>
+
+        {/* Mobile Landscape Warning */}
+        {isMobile && !isLandscape && (
+          <div className="fixed top-4 left-4 right-4 bg-yellow-400 text-yellow-900 p-3 rounded-lg shadow-lg flex items-center gap-2 z-50">
+            <Smartphone className="h-5 w-5 flex-shrink-0" />
+            <span className="text-sm font-semibold">Cihazı yatay çevirerek daha iyi görüntü elde edebilirsiniz</span>
+          </div>
+        )}
+
         <div className={`w-full max-w-md ${shakeError ? 'shake-animation' : ''}`}>
           <div className="bg-white rounded-lg shadow-2xl p-8">
             {/* Logo and Title */}
@@ -239,15 +268,23 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <Header />
 
-      <div className="flex h-[calc(100vh-200px)]">
+      {/* Mobile Landscape Warning */}
+      {isMobile && !isLandscape && (
+        <div className="bg-yellow-400 text-yellow-900 p-3 text-center text-sm font-semibold flex items-center justify-center gap-2">
+          <Smartphone className="h-5 w-5" />
+          Cihazı yatay çevirerek daha iyi görüntü elde edebilirsiniz
+        </div>
+      )}
+
+      <div className={`flex flex-1 overflow-hidden ${isMobile ? "h-auto" : "h-[calc(100vh-200px)]"}`}>
         {/* Sidebar */}
         <div
           className={`bg-white shadow-lg transition-all duration-300 ${
-            sidebarOpen ? "w-64" : "w-20"
-          } flex flex-col border-r border-gray-200`}
+            sidebarOpen ? (isMobile ? "w-full fixed inset-0 top-[var(--header-height)]" : "w-64") : (isMobile ? "w-0" : "w-20")
+          } flex flex-col border-r border-gray-200 ${isMobile && sidebarOpen ? "z-40" : ""}`}
         >
           {/* Sidebar Header */}
           <div className="p-4 border-b border-gray-200 flex items-center justify-between">
@@ -304,7 +341,10 @@ export default function Admin() {
                       {group.items.map((item) => (
                         <button
                           key={item.id}
-                          onClick={() => setActiveMenu(item.id)}
+                          onClick={() => {
+                            setActiveMenu(item.id);
+                            if (isMobile) setSidebarOpen(false);
+                          }}
                           className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-all ${
                             activeMenu === item.id
                               ? "bg-blue-100 text-blue-700 font-medium"
@@ -346,14 +386,14 @@ export default function Admin() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-auto flex flex-col">
-          <div className="p-6 flex-1 flex flex-col">
+        <div className={`flex-1 overflow-auto flex flex-col ${isMobile && sidebarOpen ? "hidden" : ""}`}>
+          <div className={`${isMobile ? "p-3 sm:p-4" : "p-6"} flex-1 flex flex-col`}>
             {/* Page Header */}
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-800">
+            <div className="mb-4 sm:mb-6">
+              <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
                 {activeMenuItem?.label}
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-gray-600 mt-1 text-sm">
                 Müşteri talep ve kayıtlarını yönetin
               </p>
             </div>
