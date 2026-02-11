@@ -56,6 +56,7 @@ export default function Admin() {
   const [loggedInUser, setLoggedInUser] = useState<{ id: number; name: string; pin: string; is_admin: boolean } | null>(null);
   const [pin, setPin] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [shakeError, setShakeError] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
   const [expandedGroup, setExpandedGroup] = useState("gelen-talep");
@@ -78,8 +79,10 @@ export default function Admin() {
         .single();
 
       if (error || !data) {
-        setLoginError("Hatalı PIN");
+        setLoginError("Parolayı yanlış girdiniz!");
+        setShakeError(true);
         setPin("");
+        setTimeout(() => setShakeError(false), 600);
         return;
       }
 
@@ -173,7 +176,17 @@ export default function Admin() {
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
+        <style>{`
+          @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+          }
+          .shake-animation {
+            animation: shake 0.6s ease-in-out;
+          }
+        `}</style>
+        <div className={`w-full max-w-md ${shakeError ? 'shake-animation' : ''}`}>
           <div className="bg-white rounded-lg shadow-2xl p-8">
             {/* Logo and Title */}
             <div className="text-center mb-8">
@@ -219,13 +232,6 @@ export default function Admin() {
               </button>
             </form>
 
-            {/* Help Text */}
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-xs text-blue-700">
-                <span className="font-semibold">Test PIN'leri:</span><br />
-                900860 (Beyza), 900500 (Duygu), 900750 (Erkut), 900900 (Gökhan), 100900 (Mete)
-              </p>
-            </div>
           </div>
         </div>
       </div>
