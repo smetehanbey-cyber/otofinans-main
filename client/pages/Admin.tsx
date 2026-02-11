@@ -215,11 +215,16 @@ export default function Admin() {
   // Login Screen
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}>
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#ffffff', colorScheme: 'light', color: '#000000' }}>
         <style>{`
+          * {
+            background-color: #ffffff !important;
+            color-scheme: light !important;
+          }
           html, body {
             background-color: #ffffff !important;
             color-scheme: light !important;
+            color: #000000 !important;
           }
           @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -321,7 +326,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}>
       <Header />
 
       {/* Mobile Landscape Warning */}
@@ -338,6 +343,7 @@ export default function Admin() {
           className={`bg-white shadow-lg transition-all duration-300 ${
             sidebarOpen ? (isMobile ? "w-full fixed inset-0 top-[var(--header-height)]" : "w-64") : (isMobile ? "w-0" : "w-20")
           } flex flex-col border-r border-gray-200 ${isMobile && sidebarOpen ? "z-40" : ""}`}
+          style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}
         >
           {/* Sidebar Header */}
           <div className="p-4 border-b border-gray-200 flex items-center justify-between">
@@ -346,7 +352,12 @@ export default function Admin() {
             )}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-1 rounded-lg transition-colors"
+              style={{
+                backgroundColor: 'transparent',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
             >
               {sidebarOpen ? (
                 <X className="h-5 w-5" />
@@ -367,11 +378,12 @@ export default function Admin() {
                   {/* Group Header */}
                   <button
                     onClick={() => setExpandedGroup(isExpanded ? "" : group.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative ${
-                      hasActiveItem
-                        ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600"
-                    }`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative`}
+                    style={{
+                      backgroundColor: hasActiveItem ? '#eff6ff' : '#ffffff',
+                      color: hasActiveItem ? '#2563eb' : '#374151',
+                      borderLeft: hasActiveItem ? '4px solid #2563eb' : 'none',
+                    }}
                   >
                     <span className="text-xl">{group.icon}</span>
                     {sidebarOpen && (
@@ -398,11 +410,12 @@ export default function Admin() {
                             setActiveMenu(item.id);
                             if (isMobile) setSidebarOpen(false);
                           }}
-                          className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-all ${
-                            activeMenu === item.id
-                              ? "bg-blue-100 text-blue-700 font-medium"
-                              : "text-gray-600 hover:text-gray-800 hover:bg-gray-100"
-                          }`}
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-all`}
+                          style={{
+                            backgroundColor: activeMenu === item.id ? '#dbeafe' : '#ffffff',
+                            color: activeMenu === item.id ? '#1d4ed8' : '#4b5563',
+                            fontWeight: activeMenu === item.id ? '500' : '400',
+                          }}
                         >
                           {item.icon && <span>{item.icon}</span>}
                           <span className="text-left">{item.label}</span>
@@ -430,7 +443,16 @@ export default function Admin() {
             </div>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg transition-all"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all"
+              style={{ color: '#374151', backgroundColor: '#ffffff' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#fef2f2';
+                e.currentTarget.style.color = '#b91c1c';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#ffffff';
+                e.currentTarget.style.color = '#374151';
+              }}
             >
               <LogOut className="h-5 w-5" />
               {sidebarOpen && <span className="font-medium">Çıkış</span>}
