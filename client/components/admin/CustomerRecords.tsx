@@ -574,13 +574,23 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-800 block" style={{fontSize: isMobile ? '12px' : '15px'}}>
-                        <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
-                        <span style={{marginRight: '1px', display: 'inline'}}>{customer.phone.slice(3, 6)}</span>
-                        <span style={{marginRight: '1px', display: 'inline'}}>{customer.phone.slice(6, 9)}</span>
-                        <span style={{marginRight: '1px', display: 'inline'}}>{customer.phone.slice(9, 11)}</span>
-                        <span style={{display: 'inline'}}>{customer.phone.slice(11, 13)}</span>
-                      </span>
+                      <a
+                        href={`https://wa.me/${customer.phone.replace(/[^0-9]/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-800 hover:text-gray-800 active:text-gray-800 block no-underline"
+                        style={{fontSize: isMobile ? '12px' : '15px', textDecoration: 'none', color: 'inherit'}}
+                      >
+                        <span style={{fontSize: isMobile ? '10px' : '13px', userSelect: 'none'}}>+90</span>
+                        <span style={{userSelect: 'none'}}>‌</span>
+                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(3, 6)}</span>
+                        <span style={{userSelect: 'none'}}>‌</span>
+                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(6, 9)}</span>
+                        <span style={{userSelect: 'none'}}>‌</span>
+                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(9, 11)}</span>
+                        <span style={{userSelect: 'none'}}>‌</span>
+                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(11, 13)}</span>
+                      </a>
                     )}
                   </td>
                   {!isMobile && (
