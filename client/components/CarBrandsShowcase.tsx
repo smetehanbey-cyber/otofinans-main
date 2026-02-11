@@ -94,9 +94,24 @@ export default function CarBrandsShowcase() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [scrollPos, setScrollPos] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
 
   // Create infinite repeat for car brands (loop 10 times for smooth infinite scroll)
   const duplicatedBrands = Array(10).fill(null).flatMap(() => carBrands);
+
+  const calculateScrollPos = (xPosition: number, containerWidth: number) => {
+    // Item width + gap: ~100px per item (60px for 2K+)
+    const itemWithGap = window.innerWidth >= 2560 ? 85 : 70;
+    const totalWidth = duplicatedBrands.length * itemWithGap;
+    // Allow scrolling beyond container to show rightmost items
+    const maxScroll = Math.max(0, totalWidth);
+
+    const ratio = xPosition / containerWidth;
+    // Speed multiplier reduced by 50% (from 1.3 to 0.65)
+    const speedMultiplier = 0.65;
+    const newScrollPos = Math.round(ratio * maxScroll * speedMultiplier);
+    return Math.max(0, newScrollPos);
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -105,18 +120,17 @@ export default function CarBrandsShowcase() {
     const mouseX = e.clientX - rect.left;
     const containerWidth = rect.width;
 
-    // Item width + gap: ~100px per item (60px for 2K+)
-    const itemWithGap = window.innerWidth >= 2560 ? 85 : 70;
-    const totalWidth = duplicatedBrands.length * itemWithGap;
-    // Allow scrolling beyond container to show rightmost items
-    const maxScroll = Math.max(0, totalWidth);
+    setScrollPos(calculateScrollPos(mouseX, containerWidth));
+  };
 
-    const mouseRatio = mouseX / containerWidth;
-    // Speed multiplier for faster mouse movement (1.3x speed)
-    const speedMultiplier = 1.3;
-    const newScrollPos = Math.round(mouseRatio * maxScroll * speedMultiplier);
-    const clampedScrollPos = Math.max(0, newScrollPos);
-    setScrollPos(clampedScrollPos);
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!mobileContainerRef.current) return;
+
+    const rect = mobileContainerRef.current.getBoundingClientRect();
+    const touchX = e.touches[0].clientX - rect.left;
+    const containerWidth = rect.width;
+
+    setScrollPos(calculateScrollPos(touchX, containerWidth));
   };
 
   return (
@@ -279,9 +293,20 @@ export default function CarBrandsShowcase() {
           </div>
         </div>
 
-        {/* Mobile Mode - Horizontal Scroll */}
-        <div className="md:hidden w-full mobile-brands-scroll bg-white py-4">
-          <div className="flex gap-4 p-4 w-fit">
+        {/* Mobile Mode - Touch Interactive */}
+        <div
+          ref={mobileContainerRef}
+          onTouchMove={handleTouchMove}
+          className="md:hidden w-full overflow-hidden bg-white py-4 cursor-grab active:cursor-grabbing"
+        >
+          <div
+            className="flex gap-4 p-4 w-fit transition-transform"
+            style={{
+              transform: `translateX(-${scrollPos}px)`,
+              transitionDuration: "80ms",
+              transitionTimingFunction: "cubic-bezier(0.33, 0.66, 0.66, 1)",
+            }}
+          >
             {duplicatedBrands.map((brand, index) => (
               <div key={index} className="car-item-mobile">
                 <div className="car-circle-mobile">
