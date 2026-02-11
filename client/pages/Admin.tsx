@@ -91,14 +91,24 @@ export default function Admin() {
       return;
     }
 
+    if (pin.length < 6) {
+      setLoginError("PIN 6 haneli olmalıdır");
+      return;
+    }
+
     try {
+      console.log("Logging in with PIN:", pin);
+
       const { data, error } = await supabase
         .from("authorized_persons")
         .select("id, name, pin, is_admin")
         .eq("pin", pin)
         .single();
 
-      if (error || !data) {
+      console.log("Query result - Data:", data, "Error:", error);
+
+      if (error) {
+        console.error("Supabase error:", error);
         setLoginError("Parolayı yanlış girdiniz!");
         setShakeError(true);
         setPin("");
@@ -106,11 +116,21 @@ export default function Admin() {
         return;
       }
 
+      if (!data) {
+        setLoginError("Parolayı yanlış girdiniz!");
+        setShakeError(true);
+        setPin("");
+        setTimeout(() => setShakeError(false), 600);
+        return;
+      }
+
+      console.log("Login successful:", data);
       setLoggedInUser(data as any);
       setIsLoggedIn(true);
       setPin("");
     } catch (error) {
-      setLoginError("Giriş başarısız");
+      console.error("Login error:", error);
+      setLoginError("Giriş başarısız. Lütfen tekrar deneyiniz.");
       setPin("");
     }
   };
@@ -195,8 +215,12 @@ export default function Admin() {
   // Login Screen
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center p-4" style={{ colorScheme: 'light' }}>
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}>
         <style>{`
+          html, body {
+            background-color: #ffffff !important;
+            color-scheme: light !important;
+          }
           @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
@@ -213,6 +237,14 @@ export default function Admin() {
           .login-card label,
           .login-card button {
             color-scheme: light;
+          }
+          /* Input styling fix for Android */
+          .login-card input[type="text"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: #ffffff !important;
+            color: #000000 !important;
           }
         `}</style>
 
@@ -244,14 +276,25 @@ export default function Admin() {
                   PIN
                 </label>
                 <input
-                  type="password"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="PIN giriniz"
                   value={pin}
-                  onChange={(e) => setPin(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9]/g, '');
+                    setPin(value.slice(0, 6));
+                  }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                  style={{ backgroundColor: '#ffffff', color: '#000000', colorScheme: 'light' }}
+                  style={{
+                    backgroundColor: '#ffffff',
+                    color: '#000000',
+                    colorScheme: 'light',
+                    WebkitAppearance: 'none',
+                    appearance: 'none'
+                  }}
                   maxLength="6"
                   autoFocus
+                  autoComplete="off"
                 />
               </div>
 

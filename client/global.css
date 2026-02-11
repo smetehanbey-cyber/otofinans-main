@@ -99,12 +99,19 @@
 }
 
 @layer base {
+  html {
+    color-scheme: light !important;
+    background-color: #ffffff !important;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground font-montserrat;
+    background-color: #ffffff !important;
+    color-scheme: light !important;
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
