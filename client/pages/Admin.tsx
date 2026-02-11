@@ -346,8 +346,8 @@ export default function Admin() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-auto">
-          <div className="p-6">
+        <div className="flex-1 overflow-auto flex flex-col">
+          <div className="p-6 flex-1 flex flex-col">
             {/* Page Header */}
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-800">
@@ -359,8 +359,10 @@ export default function Admin() {
             </div>
 
             {/* Content */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <ActiveComponent />
+            <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+              <div className="flex-1 overflow-auto">
+                <ActiveComponent />
+              </div>
             </div>
           </div>
         </div>
