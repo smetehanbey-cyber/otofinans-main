@@ -576,7 +576,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     ) : (
                       <span className="text-gray-800 block" style={{fontSize: isMobile ? '12px' : '15px'}}>
                         <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
-                        <span style={{letterSpacing: '1px'}}>{customer.phone.replace(/^\+90/, "")}</span>
+                        <span style={{marginRight: '1px', display: 'inline'}}>{customer.phone.slice(3, 6)}</span>
+                        <span style={{marginRight: '1px', display: 'inline'}}>{customer.phone.slice(6, 9)}</span>
+                        <span style={{marginRight: '1px', display: 'inline'}}>{customer.phone.slice(9, 11)}</span>
+                        <span style={{display: 'inline'}}>{customer.phone.slice(11, 13)}</span>
                       </span>
                     )}
                   </td>
