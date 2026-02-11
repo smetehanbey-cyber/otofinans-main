@@ -195,7 +195,7 @@ export default function Admin() {
   // Login Screen
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center p-4" style={{ colorScheme: 'light' }}>
         <style>{`
           @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -204,6 +204,15 @@ export default function Admin() {
           }
           .shake-animation {
             animation: shake 0.6s ease-in-out;
+          }
+          /* Force white backgrounds on Android */
+          .login-card {
+            background-color: #ffffff !important;
+          }
+          .login-card input,
+          .login-card label,
+          .login-card button {
+            color-scheme: light;
           }
         `}</style>
 
@@ -216,7 +225,7 @@ export default function Admin() {
         )}
 
         <div className={`w-full max-w-md ${shakeError ? 'shake-animation' : ''}`}>
-          <div className="bg-white rounded-lg shadow-2xl p-8">
+          <div className="login-card rounded-lg shadow-2xl p-8" style={{ backgroundColor: '#ffffff' }}>
             {/* Logo and Title */}
             <div className="text-center mb-8">
               <img
@@ -240,6 +249,7 @@ export default function Admin() {
                   value={pin}
                   onChange={(e) => setPin(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  style={{ backgroundColor: '#ffffff', color: '#000000', colorScheme: 'light' }}
                   maxLength="6"
                   autoFocus
                 />
@@ -247,7 +257,7 @@ export default function Admin() {
 
               {/* Error Message */}
               {loginError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <div className="p-3 rounded-lg border border-red-200" style={{ backgroundColor: '#fef2f2' }}>
                   <p className="text-sm text-red-700">{loginError}</p>
                 </div>
               )}
