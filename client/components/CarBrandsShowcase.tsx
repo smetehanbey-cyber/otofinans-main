@@ -95,6 +95,9 @@ export default function CarBrandsShowcase() {
   const [scrollPos, setScrollPos] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Create duplicated brands list with repeat at end
+  const duplicatedBrands = [...carBrands, ...carBrands];
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
 
@@ -104,7 +107,7 @@ export default function CarBrandsShowcase() {
 
     // Item width + gap: ~100px per item (60px for 2K+)
     const itemWithGap = window.innerWidth >= 2560 ? 85 : 70;
-    const totalWidth = carBrands.length * itemWithGap;
+    const totalWidth = duplicatedBrands.length * itemWithGap;
     // Allow scrolling beyond container to show rightmost items
     const maxScroll = Math.max(0, totalWidth);
 
@@ -156,9 +159,6 @@ export default function CarBrandsShowcase() {
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 3px solid #3b82f6;
-          border-radius: 50%;
-          background-color: #eff6ff;
           overflow: hidden;
           transition: all 0.3s ease-out;
         }
@@ -167,7 +167,6 @@ export default function CarBrandsShowcase() {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          display: none;
         }
 
         /* 2K+ Desktop Mode */
@@ -183,7 +182,6 @@ export default function CarBrandsShowcase() {
           .car-circle-desktop {
             width: 100px;
             height: 140px;
-            border-width: 4px;
           }
 
           .car-item-desktop p {
@@ -226,9 +224,6 @@ export default function CarBrandsShowcase() {
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 3px solid #3b82f6;
-          border-radius: 50%;
-          background-color: #eff6ff;
           overflow: hidden;
           transition: all 0.3s ease-out;
         }
@@ -237,7 +232,6 @@ export default function CarBrandsShowcase() {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          display: none;
         }
 
         .car-circle-mobile:hover {
@@ -259,7 +253,7 @@ export default function CarBrandsShowcase() {
               transform: `translateX(-${scrollPos}px)`,
             }}
           >
-            {carBrands.map((brand, index) => (
+            {duplicatedBrands.map((brand, index) => (
               <div
                 key={index}
                 className="car-item-desktop"
@@ -288,7 +282,7 @@ export default function CarBrandsShowcase() {
         {/* Mobile Mode - Horizontal Scroll */}
         <div className="md:hidden w-full mobile-brands-scroll bg-white py-4">
           <div className="flex gap-4 p-4 w-fit">
-            {carBrands.map((brand, index) => (
+            {duplicatedBrands.map((brand, index) => (
               <div key={index} className="car-item-mobile">
                 <div className="car-circle-mobile">
                   <img
