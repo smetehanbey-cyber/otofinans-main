@@ -573,7 +573,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-800 block" style={{fontSize: isMobile ? '12px' : '15px'}}>
+                      <span className="text-gray-800 block" style={{fontSize: isMobile ? '12px' : '15px', letterSpacing: '0.5px'}}>
                         <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
                         <span>{customer.phone.replace(/^\+90/, "")}</span>
                       </span>
