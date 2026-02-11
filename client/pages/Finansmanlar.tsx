@@ -399,16 +399,27 @@ export default function Finansmanlar() {
       <footer className="bg-slate-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Brand with Logo - Logo on left, text on right */}
-            <div className="flex flex-row items-center gap-3">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
-                alt="Oto Finans Global Logo"
-                className="h-12 w-auto flex-shrink-0"
-              />
-              <p className="text-xs text-gray-400" style={{ letterSpacing: "0.5px" }}>
-                TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
-              </p>
+            {/* Yetkili Bayi and Admin Links */}
+            <div>
+              <h3 className="text-white font-semibold mb-4">Erişim</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-white transition-colors text-blue-300 font-semibold"
+                  >
+                    Yetkili Bayi Girişi
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-white transition-colors text-blue-300 font-semibold"
+                  >
+                    Admin
+                  </a>
+                </li>
+              </ul>
             </div>
 
             {/* Quick Links */}
@@ -446,22 +457,6 @@ export default function Finansmanlar() {
                   >
                     Finansmanlar
                   </button>
-                </li>
-                <li className="border-t border-gray-600 pt-2 mt-2">
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors text-blue-300 font-semibold"
-                  >
-                    Yetkili Bayi Girişi
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors text-blue-300 font-semibold"
-                  >
-                    Admin
-                  </a>
                 </li>
               </ul>
             </div>
