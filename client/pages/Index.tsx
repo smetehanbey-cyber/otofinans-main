@@ -65,7 +65,7 @@ export default function Index() {
                   </li>
                   <li className="flex items-center gap-3 text-base sm:text-lg">
                     <CheckIcon />
-                    <span>24/7 müşteri destek hizmeti</span>
+                    <span>7/24 müşteri destek hizmeti</span>
                   </li>
                 </ul>
 

@@ -100,7 +100,7 @@ ${formData.message ? `Mesaj: ${formData.message}` : ''}`;
                 Güçlü Destek
               </h3>
               <p className="text-gray-600 text-sm">
-                Adanmış proje yöneticisi ve 24/7 teknik destek
+                Adanmış proje yöneticisi ve 7/24 teknik destek
               </p>
             </div>
 

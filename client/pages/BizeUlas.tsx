@@ -109,7 +109,7 @@ function HeadquartersAndMap() {
             </div>
             <div>
               <p className="font-semibold text-lg mb-2">Acil Durum (WhatsApp)</p>
-              <p className="text-blue-100 text-lg">24/7 Açık</p>
+              <p className="text-blue-100 text-lg">7/24 Açık</p>
             </div>
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function BizeUlas() {
                   </li>
                   <li className="flex items-center gap-3 text-base sm:text-lg">
                     <CheckIcon />
-                    <span>24/7 Müşteri Destek</span>
+                    <span>7/24 Müşteri Destek</span>
                   </li>
                   <li className="flex items-center gap-3 text-base sm:text-lg">
                     <CheckIcon />
@@ -324,7 +324,7 @@ export default function BizeUlas() {
 
                 <p className="text-sm sm:text-base lg:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
                   OtoFinans müşteri destek ekibi, tüm sorularınızı yanıtlamak ve
-                  talebinizi karşılamak için 24/7 çalışır. Bize ulaşın, en kısa
+                  talebinizi karşılamak için 7/24 çalışır. Bize ulaşın, en kısa
                   sürede yardımcı olabiliriz.
                 </p>
 
