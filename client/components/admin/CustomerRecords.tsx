@@ -337,7 +337,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
             <div className="relative flex items-center">
-              <span className="absolute left-3 font-semibold text-gray-700 pointer-events-none" style={{fontSize: '10px'}}>+90</span>
+              <span className="absolute left-3 font-semibold text-gray-700 pointer-events-none" style={{fontSize: '12px'}}>+90</span>
               <input
                 type="tel"
                 inputMode="numeric"
@@ -553,7 +553,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
                       <div className="relative flex items-center">
-                        <span className="absolute left-1 font-semibold text-gray-700 pointer-events-none" style={{fontSize: isMobile ? '9px' : '11px'}}>+90</span>
+                        <span className="absolute left-1 font-semibold text-gray-700 pointer-events-none" style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
                         <input
                           type="tel"
                           inputMode="numeric"
@@ -573,7 +573,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-800 block">{customer.phone}</span>
+                      <span className="text-gray-800 block" style={{fontSize: isMobile ? '12px' : '15px'}}>
+                        <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
+                        <span>{customer.phone.replace(/^\+90/, "")}</span>
+                      </span>
                     )}
                   </td>
                   {!isMobile && (
