@@ -98,51 +98,22 @@
   }
 }
 
-/* Force light theme on Android */
-html {
-  color-scheme: light !important;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-}
-
-body {
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  color-scheme: light !important;
-  color: #000000 !important;
-}
-
-/* Override all gray colors to white on mobile/Android */
-@media (max-width: 1024px) {
-  html, body, div {
-    background-color: #ffffff !important;
-    color-scheme: light !important;
-  }
-
-  .bg-gray-50, .bg-gray-100, .bg-gray-200 {
-    background-color: #ffffff !important;
-  }
-
-  /* Override Tailwind's gray scales */
-  [class*="bg-gray"] {
-    background-color: #ffffff !important;
-  }
-
-  [class*="from-gray"], [class*="to-gray"] {
-    background-color: #ffffff !important;
-  }
-}
-
 @layer base {
   /* Disable dark mode completely - force light mode everywhere */
   html, :root {
     color-scheme: light only !important;
     background-color: #ffffff !important;
     background: #ffffff !important;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   * {
     @apply border-border;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -150,6 +121,12 @@ body {
     background-color: #ffffff !important;
     background: #ffffff !important;
     color-scheme: light only !important;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* Override system dark mode preferences */
@@ -171,6 +148,32 @@ body {
     background-color: #ffffff !important;
     color: #000000 !important;
     color-scheme: light !important;
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 4px;
+  }
+
+  /* Prevent zoom on input focus on mobile */
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  /* Fix scrollbar and layout shifts */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Prevent layout shift from scrollbar appearing/disappearing */
+  body {
+    scrollbar-gutter: stable;
   }
 
   /* Override all potential dark mode colors */
@@ -181,6 +184,101 @@ body {
     --card-foreground: 218 35% 15% !important;
     --popover: 0 0% 100% !important;
     --popover-foreground: 218 35% 15% !important;
+  }
+
+  /* Ensure root element is properly sized */
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff !important;
+  }
+
+  /* Fix container and layout issues */
+  header, main, section, footer, nav, div {
+    box-sizing: border-box;
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  body, html {
+    max-width: 100%;
+  }
+
+  /* Fix images and responsive media */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Fix button and input size on mobile */
+  button, input, select, textarea {
+    box-sizing: border-box;
+  }
+
+  /* Responsive text sizes */
+  @media (max-width: 640px) {
+    body {
+      font-size: 14px;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    h1, .text-3xl, .text-2xl {
+      font-size: clamp(1.5rem, 5vw, 2.25rem);
+      margin: 0;
+    }
+
+    h2, .text-xl {
+      font-size: clamp(1.25rem, 4vw, 1.875rem);
+      margin: 0;
+    }
+
+    input, textarea, select {
+      font-size: 16px !important;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 12px !important;
+    }
+
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 12px !important;
+    }
+
+    /* Android specific fixes */
+    input, textarea, select, button {
+      margin: 0;
+      padding: 8px 12px;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    /* Fix layout shifts */
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    div, section, article, header, footer, nav {
+      box-sizing: border-box;
+    }
+  }
+
+  /* Android specific color fixes */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: max(0px, env(safe-area-inset-left));
+      padding-right: max(0px, env(safe-area-inset-right));
+    }
+
+    input, textarea, select {
+      padding-left: max(8px, calc(8px + env(safe-area-inset-left)));
+      padding-right: max(8px, calc(8px + env(safe-area-inset-right)));
+    }
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
