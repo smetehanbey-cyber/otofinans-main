@@ -588,7 +588,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         <span style={{userSelect: 'none'}}>‌</span>
                         <span style={{userSelect: 'auto'}}>{customer.phone.slice(6, 9)}</span>
                         <span style={{userSelect: 'none'}}>‌</span>
-                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(9, 13)}</span>
+                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(9, 11)}</span>
+                        <span style={{userSelect: 'none'}}>‌</span>
+                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(11, 13)}</span>
                       </a>
                     )}
                   </td>
