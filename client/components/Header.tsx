@@ -129,7 +129,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <nav className="md:hidden border-t border-gray-200 pb-4 space-y-2 bg-gray-50">
+          <nav className="md:hidden border-t border-gray-200 pb-4 space-y-2 bg-white">
             <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               Ana Sayfa
             </Link>

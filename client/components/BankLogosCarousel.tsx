@@ -45,7 +45,7 @@ export default function BankLogosCarousel() {
           position: relative;
           user-select: none;
           height: auto;
-          background-color: #f3f4f6;
+          background-color: #ffffff;
         }
 
         .bank-carousel-track {

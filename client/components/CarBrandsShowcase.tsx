@@ -134,7 +134,7 @@ export default function CarBrandsShowcase() {
   };
 
   return (
-    <section className="w-full bg-gradient-to-b from-gray-50 to-white py-6 sm:py-8">
+    <section className="w-full bg-white py-6 sm:py-8">
       <style>{`
         @keyframes carHover {
           from {

@@ -63,7 +63,7 @@ ${formData.message ? `Mesaj: ${formData.message}` : ''}`;
   };
 
   return (
-    <section className="py-8 sm:py-12 bg-gray-50">
+    <section className="py-8 sm:py-12 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Benefits Grid */}
         <div className="mb-12">

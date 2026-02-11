@@ -426,7 +426,7 @@ function AboutFAQSection() {
   };
 
   return (
-    <section className="py-8 sm:py-12 bg-gray-50">
+    <section className="py-8 sm:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-8 sm:mb-12">
@@ -453,7 +453,7 @@ function AboutFAQSection() {
                 onClick={() => toggleExpand(item.id)}
                 className="w-full px-6 py-4 sm:py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
                 style={{
-                  backgroundColor: expandedId === item.id ? "#f3f4f6" : "#ffffff",
+                  backgroundColor: "#ffffff",
                 }}
               >
                 <h3

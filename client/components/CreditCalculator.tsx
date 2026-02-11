@@ -224,7 +224,7 @@ export default function CreditCalculator() {
         </div>
 
         {/* Calculator Section */}
-        <div className="bg-gray-50 rounded-2xl p-8 sm:p-12 border border-gray-200">
+        <div className="bg-white rounded-2xl p-8 sm:p-12 border border-gray-200">
           {/* Input Section */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
             {/* Product Type */}
