@@ -20,4 +20,5 @@ export interface Customer {
   updated_at: string;
   status: "active" | "archived";
   process: "Beklemede" | "Onaylandı";
+  added_by?: string;
 }

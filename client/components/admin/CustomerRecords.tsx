@@ -14,7 +14,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editingData, setEditingData] = useState<Partial<Customer>>({});
+  const [editingData, setEditingData] = useState<Customer | Partial<Customer>>({});
   const [showForm, setShowForm] = useState(false);
   const [archiveConfirmId, setArchiveConfirmId] = useState<number | null>(null);
   const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(null);
@@ -103,7 +103,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
       // Only allow admins to update added_by field
       if (loggedInUser?.is_admin) {
-        updateData.added_by = (editingData as any).added_by || "";
+        updateData.added_by = editingData.added_by || "";
       }
 
       const { error } = await supabase
@@ -477,7 +477,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     {editingId === customer.id && loggedInUser?.is_admin ? (
                       <input
                         type="text"
-                        value={(editingData as any).added_by || ""}
+                        value={editingData.added_by || ""}
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
@@ -489,7 +489,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                       />
                     ) : (
                       <span className="inline-block px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800">
-                        {(customer as any).added_by || "-"}
+                        {customer.added_by || "-"}
                       </span>
                     )}
                   </td>
