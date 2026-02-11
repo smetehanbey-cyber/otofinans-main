@@ -336,15 +336,22 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
-            <input
-              type="tel"
-              placeholder="Telefon"
-              value={newCustomer.phone}
-              onChange={(e) =>
-                setNewCustomer({ ...newCustomer, phone: e.target.value })
-              }
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-            />
+            <div className="relative flex items-center">
+              <span className="absolute left-3 font-semibold text-gray-700 pointer-events-none">+90</span>
+              <input
+                type="tel"
+                inputMode="numeric"
+                placeholder="5XX XXX XX XX"
+                value={newCustomer.phone.replace(/^\+90/, "")}
+                onChange={(e) => {
+                  const digits = e.target.value.replace(/[^0-9]/g, "");
+                  const formattedPhone = digits ? `+90${digits.slice(0, 10)}` : "";
+                  setNewCustomer({ ...newCustomer, phone: formattedPhone })
+                }}
+                maxLength="10"
+                className="pl-12 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
+              />
+            </div>
             <select
               value={newCustomer.process}
               onChange={(e) =>
@@ -545,18 +552,26 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   </td>
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
-                      <input
-                        type="tel"
-                        value={editingData.phone || ""}
-                        onChange={(e) =>
-                          setEditingData({
-                            ...editingData,
-                            phone: e.target.value
-                          })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: isMobile ? '12px' : '15px'}}
-                      />
+                      <div className="relative flex items-center">
+                        <span className="absolute left-1 font-semibold text-gray-700 pointer-events-none" style={{fontSize: isMobile ? '11px' : '13px'}}>+90</span>
+                        <input
+                          type="tel"
+                          inputMode="numeric"
+                          placeholder="5XX XXX XX XX"
+                          value={(editingData.phone || "").replace(/^\+90/, "")}
+                          onChange={(e) => {
+                            const digits = e.target.value.replace(/[^0-9]/g, "");
+                            const formattedPhone = digits ? `+90${digits.slice(0, 10)}` : "";
+                            setEditingData({
+                              ...editingData,
+                              phone: formattedPhone
+                            })
+                          }}
+                          maxLength="10"
+                          className="pl-7 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
+                          style={{fontSize: isMobile ? '12px' : '15px'}}
+                        />
+                      </div>
                     ) : (
                       <span className="text-gray-800 block max-w-[100px] truncate">{isMobile ? customer.phone.slice(-9) : customer.phone}</span>
                     )}
