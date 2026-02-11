@@ -580,6 +580,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         rel="noopener noreferrer"
                         className="text-gray-800 hover:text-gray-800 active:text-gray-800 block no-underline"
                         style={{fontSize: isMobile ? '12px' : '15px', textDecoration: 'none', color: 'inherit'}}
+                        onMouseDown={(e) => e.preventDefault()}
                       >
                         <span style={{fontSize: isMobile ? '10px' : '13px', userSelect: 'none'}}>+90</span>
                         <span style={{userSelect: 'none'}}>‌</span>
@@ -587,9 +588,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         <span style={{userSelect: 'none'}}>‌</span>
                         <span style={{userSelect: 'auto'}}>{customer.phone.slice(6, 9)}</span>
                         <span style={{userSelect: 'none'}}>‌</span>
-                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(9, 11)}</span>
-                        <span style={{userSelect: 'none'}}>‌</span>
-                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(11, 13)}</span>
+                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(9, 13)}</span>
                       </a>
                     )}
                   </td>
