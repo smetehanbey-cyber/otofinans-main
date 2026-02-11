@@ -25,7 +25,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     tc: "",
     phone: "",
     message: "",
-    process: "Beklemede" as "Beklemede" | "Onaylandı"
+    process: "Beklemede" as "Beklemede" | "Onaylandı" | "Kredi Onayda"
   });
   const [sortField, setSortField] = useState<keyof Customer>("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
@@ -146,7 +146,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   };
 
   // Update process status
-  const handleUpdateProcess = async (id: number, process: "Beklemede" | "Onaylandı") => {
+  const handleUpdateProcess = async (id: number, process: "Beklemede" | "Onaylandı" | "Kredi Onayda") => {
     try {
       const { error } = await supabase
         .from("customers")
@@ -271,13 +271,14 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               onChange={(e) =>
                 setNewCustomer({
                   ...newCustomer,
-                  process: e.target.value as "Beklemede" | "Onaylandı"
+                  process: e.target.value as "Beklemede" | "Onaylandı" | "Kredi Onayda"
                 })
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               <option value="Beklemede">Beklemede</option>
               <option value="Onaylandı">Onaylandı</option>
+              <option value="Kredi Onayda">Kredi Onayda</option>
             </select>
             <textarea
               placeholder="Mesaj"
@@ -529,7 +530,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            process: e.target.value as "Beklemede" | "Onaylandı"
+                            process: e.target.value as "Beklemede" | "Onaylandı" | "Kredi Onayda"
                           })
                         }
                         className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -537,12 +538,15 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                       >
                         <option value="Beklemede">Beklemede</option>
                         <option value="Onaylandı">Onaylandı</option>
+                        <option value="Kredi Onayda">Kredi Onayda</option>
                       </select>
                     ) : (
                       <span
                         className={`inline-block px-2 py-0.5 rounded-full font-semibold ${
                           customer.process === "Beklemede"
                             ? "bg-yellow-100 text-yellow-800"
+                            : customer.process === "Kredi Onayda"
+                            ? "bg-blue-100 text-blue-800"
                             : "bg-green-100 text-green-800"
                         }`}
                         style={{fontSize: '13px'}}
