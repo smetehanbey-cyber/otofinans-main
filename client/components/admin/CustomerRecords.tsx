@@ -579,18 +579,20 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-800 hover:text-gray-800 active:text-gray-800 block no-underline"
-                        style={{fontSize: isMobile ? '12px' : '15px', textDecoration: 'none', color: 'inherit'}}
-                        onMouseDown={(e) => e.preventDefault()}
+                        style={{
+                          fontSize: isMobile ? '12px' : '15px',
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          wordSpacing: '3px'
+                        }}
+                        onCopy={(e) => {
+                          e.preventDefault();
+                          const phoneClean = customer.phone.replace(/[^0-9]/g, '');
+                          e.clipboardData?.setData('text/plain', phoneClean);
+                        }}
                       >
-                        <span style={{fontSize: isMobile ? '10px' : '13px', userSelect: 'none'}}>+90</span>
-                        <span style={{userSelect: 'none'}}>‌</span>
-                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(3, 6)}</span>
-                        <span style={{userSelect: 'none'}}>‌</span>
-                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(6, 9)}</span>
-                        <span style={{userSelect: 'none'}}>‌</span>
-                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(9, 11)}</span>
-                        <span style={{userSelect: 'none'}}>‌</span>
-                        <span style={{userSelect: 'auto'}}>{customer.phone.slice(11, 13)}</span>
+                        <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
+                        {customer.phone.slice(3, 6)} {customer.phone.slice(6, 9)} {customer.phone.slice(9, 11)} {customer.phone.slice(11, 13)}
                       </a>
                     )}
                   </td>
