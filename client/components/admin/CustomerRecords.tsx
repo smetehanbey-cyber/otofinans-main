@@ -30,6 +30,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [sortField, setSortField] = useState<keyof Customer>("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedAuthorizedPerson, setSelectedAuthorizedPerson] = useState<string | null>(null);
+  const [showAuthorizedPersonDropdown, setShowAuthorizedPersonDropdown] = useState(false);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -177,11 +179,21 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     );
   };
 
-  // Filter customers based on search query
+  // Get unique authorized persons
+  const uniqueAuthorizedPersons = Array.from(
+    new Set(customers.map((c) => c.added_by).filter((name) => name))
+  ).sort();
+
+  // Filter customers based on search query and selected authorized person
   const filteredCustomers = customers.filter((customer) => {
+    // Filter by selected authorized person
+    if (selectedAuthorizedPerson && customer.added_by !== selectedAuthorizedPerson) {
+      return false;
+    }
+
     const query = searchQuery.toLowerCase().trim();
 
-    // If search query is empty, show all
+    // If search query is empty, show all (after authorized person filter)
     if (!query) return true;
 
     // Search by name
@@ -363,8 +375,40 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     Tarih <SortIcon field="created_at" />
                   </button>
                 </th>
-                <th className="px-2 py-2 text-left font-semibold text-gray-700" style={{fontSize: '15px'}}>
-                  Yetkili Kişi
+                <th className="px-2 py-2 text-left font-semibold text-gray-700 relative" style={{fontSize: '15px'}}>
+                  <button
+                    onClick={() => setShowAuthorizedPersonDropdown(!showAuthorizedPersonDropdown)}
+                    className="flex items-center gap-2 hover:text-blue-600 cursor-pointer"
+                  >
+                    Yetkili Kişi {selectedAuthorizedPerson && <span className="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">Filtre aktif</span>}
+                  </button>
+                  {showAuthorizedPersonDropdown && (
+                    <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 min-w-max">
+                      <button
+                        onClick={() => {
+                          setSelectedAuthorizedPerson(null);
+                          setShowAuthorizedPersonDropdown(false);
+                        }}
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-medium border-b"
+                      >
+                        Tüm Yetkili Kişiler
+                      </button>
+                      {uniqueAuthorizedPersons.map((person) => (
+                        <button
+                          key={person}
+                          onClick={() => {
+                            setSelectedAuthorizedPerson(person);
+                            setShowAuthorizedPersonDropdown(false);
+                          }}
+                          className={`block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm ${
+                            selectedAuthorizedPerson === person ? 'bg-blue-100 font-semibold text-blue-700' : ''
+                          }`}
+                        >
+                          {person}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </th>
                 <th className="px-2 py-2 text-center font-semibold text-gray-700" style={{fontSize: '15px'}}>
                   İşlemler
@@ -591,7 +635,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
       {/* Total Count */}
       <div className="mt-4 text-sm text-gray-600">
-        {searchQuery ? (
+        {selectedAuthorizedPerson ? (
+          <>
+            <span className="font-semibold">{selectedAuthorizedPerson}</span> tarafından eklenen: <span className="font-semibold">{filteredCustomers.length}</span> / Toplam: <span className="font-semibold">{customers.length}</span> müşteri
+          </>
+        ) : searchQuery ? (
           <>
             Bulunan: <span className="font-semibold">{filteredCustomers.length}</span> / Toplam: <span className="font-semibold">{customers.length}</span> müşteri
           </>
