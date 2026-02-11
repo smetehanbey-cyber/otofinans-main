@@ -107,8 +107,8 @@ export default function CarBrandsShowcase() {
     const maxScroll = Math.max(0, totalWidth);
 
     const ratio = xPosition / containerWidth;
-    // Speed multiplier set to 30% for slower, more controlled movement
-    const speedMultiplier = 0.3;
+    // Speed multiplier set to 10% for extremely slow, smooth movement
+    const speedMultiplier = 0.1;
     const newScrollPos = Math.round(ratio * maxScroll * speedMultiplier);
     return Math.max(0, newScrollPos);
   };
