@@ -350,6 +350,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                 }}
                 maxLength="10"
                 className="pl-12 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
+                style={{letterSpacing: '2px'}}
               />
             </div>
             <select
@@ -569,11 +570,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           }}
                           maxLength="10"
                           className="pl-7 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
-                          style={{fontSize: isMobile ? '12px' : '15px'}}
+                          style={{fontSize: isMobile ? '12px' : '15px', letterSpacing: '2px'}}
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-800 block" style={{fontSize: isMobile ? '12px' : '15px', letterSpacing: '0.5px'}}>
+                      <span className="text-gray-800 block" style={{fontSize: isMobile ? '12px' : '15px', letterSpacing: '2px'}}>
                         <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
                         <span>{customer.phone.replace(/^\+90/, "")}</span>
                       </span>
