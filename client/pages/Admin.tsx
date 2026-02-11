@@ -196,7 +196,7 @@ export default function Admin() {
                 className="h-12 w-auto mx-auto mb-4"
               />
               <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
-              <p className="text-gray-600 text-sm mt-2">Yetkili personel girişi</p>
+              <p className="text-gray-600 text-sm mt-2">Yetkili Girişi</p>
             </div>
 
             {/* Login Form */}
