@@ -238,27 +238,27 @@ export default function Index() {
       <footer className="bg-slate-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Brand with Logo */}
-            <div className="flex flex-col items-start text-left space-y-3">
-              <div className="mb-4">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
-                  alt="Oto Finans Global Logo"
-                  className="h-16 w-auto"
-                />
-              </div>
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
-              >
-                Yetkili Bayi Girişi
-              </a>
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
-              >
-                Admin
-              </a>
+            {/* Yetkili Bayi and Admin Links */}
+            <div>
+              <h3 className="text-white font-semibold mb-4">Erişim</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-white transition-colors text-blue-300 font-semibold"
+                  >
+                    Yetkili Bayi Girişi
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-white transition-colors text-blue-300 font-semibold"
+                  >
+                    Admin
+                  </a>
+                </li>
+              </ul>
             </div>
 
             {/* Quick Links */}
@@ -359,9 +359,16 @@ export default function Index() {
           </div>
 
           <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <p className="text-sm" style={{ letterSpacing: "1.5px" }}>
-              TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
-            </p>
+            <div className="flex items-center gap-4">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
+                alt="Oto Finans Global Logo"
+                className="h-8 w-auto"
+              />
+              <p className="text-sm" style={{ letterSpacing: "1.5px" }}>
+                TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
+              </p>
+            </div>
             <p className="text-sm">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
             </p>
