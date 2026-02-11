@@ -564,8 +564,14 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                       ) : (
                         <div className="relative">
                           <span
-                            className="text-gray-700 block truncate cursor-help"
-                            style={{fontSize: '14px'}}
+                            className="text-gray-700 block truncate cursor-pointer select-none"
+                            style={{
+                              fontSize: '14px',
+                              WebkitUserSelect: 'none',
+                              MozUserSelect: 'none',
+                              userSelect: 'none'
+                            }}
+                            title=""
                             onMouseEnter={(e) => {
                               setHoveredMessageId(customer.id);
                               const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
