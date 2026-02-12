@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import ProductDropdown from "./ProductDropdown";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showKendimIcinPanel, setShowKendimIcinPanel] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isAdminPage = location.pathname === "/admin";
@@ -75,111 +75,7 @@ export default function Header() {
 
               {/* Center Section - Filters */}
               <div className="hidden md:flex items-center gap-4">
-                {/* Filter Tabs */}
-                <div className="flex items-center gap-6">
-                  {/* Kendim İçin Dropdown */}
-                  <div className="relative" onMouseEnter={() => setShowKendimIcinPanel(true)} onMouseLeave={() => setShowKendimIcinPanel(false)}>
-                    <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent transition-colors flex items-center gap-1"
-                      style={{ borderColor: showKendimIcinPanel ? '#0f367e' : 'transparent' }}>
-                      Kendim İçin
-                      <ChevronDown className="h-4 w-4" style={{ transform: showKendimIcinPanel ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
-                    </button>
-                    {showKendimIcinPanel && (
-                      <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-screen bg-white border-t-2 shadow-lg z-40" style={{ borderColor: '#0f367e' }}>
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {/* Card 1 */}
-                            <div className="bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg overflow-hidden text-white">
-                              <img
-                                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fdd8caff9d6b44b3ea352c0e1c4b63a4e?format=webp&width=800&height=600"
-                                alt="Peşinatssız Destek"
-                                className="w-full h-40 object-cover"
-                              />
-                              <div className="p-4">
-                                <h3 className="font-bold text-lg mb-2">Peşinatssız Destek</h3>
-                                <p className="text-sm text-blue-100 mb-4">30 Dakikada Kredim Hazır! Aracın Hemen Kapıdal</p>
-                                <a
-                                  href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="w-full block px-4 py-2 bg-white text-blue-900 font-bold rounded text-center hover:bg-gray-100 transition-colors"
-                                >
-                                  Hemen Başvur
-                                </a>
-                              </div>
-                            </div>
-
-                            {/* Card 2 */}
-                            <div className="bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg overflow-hidden text-white">
-                              <img
-                                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fdd8caff9d6b44b3ea352c0e1c4b63a4e?format=webp&width=800&height=600"
-                                alt="Hızlı Kredi Desteği"
-                                className="w-full h-40 object-cover"
-                              />
-                              <div className="p-4">
-                                <h3 className="font-bold text-lg mb-2">Hızlı Kredi Desteği</h3>
-                                <p className="text-sm text-blue-100 mb-4">20 Yaya Kadar Tüm Araçlarda Kredi Onayı OtoFinans'ta.</p>
-                                <a
-                                  href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="w-full block px-4 py-2 bg-white text-blue-900 font-bold rounded text-center hover:bg-gray-100 transition-colors"
-                                >
-                                  Hemen Başvur
-                                </a>
-                              </div>
-                            </div>
-
-                            {/* Card 3 */}
-                            <div className="bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg overflow-hidden text-white">
-                              <img
-                                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fdd8caff9d6b44b3ea352c0e1c4b63a4e?format=webp&width=800&height=600"
-                                alt="Ön Onaylı Kredi Limiti"
-                                className="w-full h-40 object-cover"
-                              />
-                              <div className="p-4">
-                                <h3 className="font-bold text-lg mb-2">Ön Onaylı +800.000TL Kredi Limiti Hazır!</h3>
-                                <p className="text-sm text-blue-100 mb-4">Limitini Etkilemeden Hemen Bilgi Al</p>
-                                <a
-                                  href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="w-full block px-4 py-2 bg-white text-blue-900 font-bold rounded text-center hover:bg-gray-100 transition-colors"
-                                >
-                                  Hemen Başvur
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="h-4 border-l border-gray-300"></div>
-                  {/* Aracım İçin Dropdown */}
-                  <div className="relative group">
-                    <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent group-hover:border-primary transition-colors flex items-center gap-1">
-                      Aracım İçin
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
-                    <div className="absolute left-0 mt-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                      <a
-                        href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 first:rounded-t-lg font-medium"
-                      >
-                        Kredi Kullan
-                      </a>
-                      <Link
-                        to="/admin"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 last:rounded-b-lg font-medium"
-                      >
-                        Admin Panel
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                <ProductDropdown />
               </div>
 
               {/* Search and Buttons */}
