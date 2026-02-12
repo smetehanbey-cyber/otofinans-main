@@ -378,54 +378,14 @@ export default function CreditCalculator() {
               backgroundColor: "#ffffff",
               opacity: tableVisible ? 1 : 0,
               maxHeight: tableVisible ? "2000px" : "0px",
-              overflow: "visible",
+              overflow: "hidden",
               marginBottom: tableVisible ? "32px" : "0px",
               transition:
                 "opacity 0.6s ease-in-out, maxHeight 0.6s ease-in-out, transform 0.6s ease-in-out, margin-bottom 0.6s ease-in-out",
               transform: tableVisible ? "translateY(0)" : "translateY(-20px)",
             }}
           >
-            {/* Header - Sticky at top */}
-            <div
-              style={{
-                backgroundColor: "#1a2b7d",
-                color: "#ffffff",
-                padding: "20px",
-                marginBottom: "0",
-                borderRadius: "0",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexWrap: "wrap",
-                position: "sticky",
-                top: "0",
-                zIndex: "20",
-                borderBottom: "5px solid #6d2fce",
-              }}
-            >
-              <div style={{ flex: 1, minWidth: "0" }}>
-                <h3
-                  style={{
-                    margin: "0",
-                    fontSize: "clamp(14px, 4vw, 22px)",
-                    fontWeight: "bold",
-                    letterSpacing: "1px",
-                    fontFamily: '"Paytone One", sans-serif',
-                    wordBreak: "break-word",
-                  }}
-                >
-                  {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
-                  ÖRNEK ÖDEME TABLOSU
-                </h3>
-              </div>
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F475a3c8d7d4e4dda994162d8b3ea3e67?format=webp&width=800&height=1200"
-                alt="Oto Finans Logo"
-                style={{ height: "clamp(40px, 10vw, 65px)", width: "auto", objectFit: "contain", marginLeft: "10px", flexShrink: 0 }}
-              />
-            </div>
-
-            {/* Scrollable Table Wrapper for Mobile - only table scrolls */}
+            {/* Scrollable Table Wrapper for Mobile - header and table scroll together */}
             <div
               style={{
                 overflowX: "auto",
@@ -456,6 +416,44 @@ export default function CreditCalculator() {
                   background: #5a1fb8;
                 }
               `}</style>
+
+              {/* Header - Inside scroll container, moves with table */}
+              <div
+                style={{
+                  backgroundColor: "#1a2b7d",
+                  color: "#ffffff",
+                  padding: "20px",
+                  marginBottom: "0",
+                  borderRadius: "0",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  borderBottom: "5px solid #6d2fce",
+                  minWidth: "1000px",
+                }}
+              >
+                <div style={{ flex: 1, minWidth: "0" }}>
+                  <h3
+                    style={{
+                      margin: "0",
+                      fontSize: "clamp(14px, 4vw, 22px)",
+                      fontWeight: "bold",
+                      letterSpacing: "1px",
+                      fontFamily: '"Paytone One", sans-serif',
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
+                    ÖRNEK ÖDEME TABLOSU
+                  </h3>
+                </div>
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F475a3c8d7d4e4dda994162d8b3ea3e67?format=webp&width=800&height=1200"
+                  alt="Oto Finans Logo"
+                  style={{ height: "clamp(40px, 10vw, 65px)", width: "auto", objectFit: "contain", marginLeft: "10px", flexShrink: 0 }}
+                />
+              </div>
 
               {/* Table */}
               <table
