@@ -421,15 +421,47 @@ export default function CreditCalculator() {
               }}
             ></div>
 
-            {/* Table */}
-            <table
+            {/* Scrollable Table Wrapper for Mobile */}
+            <div
               style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                fontSize: "14px",
-                fontFamily: '"Paytone One", sans-serif',
+                overflowX: "auto",
+                overflowY: "hidden",
+                WebkitOverflowScrolling: "touch",
+                msOverflowStyle: "-ms-autohiding-scrollbar",
               }}
+              className="scrollable-table-container"
             >
+              <style>{`
+                .scrollable-table-container {
+                  scrollbar-width: thin;
+                  scrollbar-color: #6d2fce #e5e7eb;
+                }
+                .scrollable-table-container::-webkit-scrollbar {
+                  height: 6px;
+                }
+                .scrollable-table-container::-webkit-scrollbar-track {
+                  background: #e5e7eb;
+                  border-radius: 10px;
+                }
+                .scrollable-table-container::-webkit-scrollbar-thumb {
+                  background: #6d2fce;
+                  border-radius: 10px;
+                }
+                .scrollable-table-container::-webkit-scrollbar-thumb:hover {
+                  background: #5a1fb8;
+                }
+              `}</style>
+
+              {/* Table */}
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  fontSize: "14px",
+                  fontFamily: '"Paytone One", sans-serif',
+                  minWidth: "1000px",
+                }}
+              >
               <thead>
                 <tr style={{ backgroundColor: "#1800ae", color: "#ffffff" }}>
                   <th
@@ -624,7 +656,8 @@ export default function CreditCalculator() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+              </table>
+            </div>
           </div>
 
           {/* Action Buttons */}
