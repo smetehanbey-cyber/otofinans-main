@@ -141,7 +141,7 @@ export default function CreditCalculator() {
       renderContainer.style.zIndex = "99999";
       renderContainer.style.width = "1024px"; // Fixed width to prevent spreading
       renderContainer.style.overflow = "visible";
-      renderContainer.style.padding = "0";
+      renderContainer.style.padding = "5px"; // 5px white border/padding
       renderContainer.style.margin = "0";
       renderContainer.style.boxSizing = "border-box";
 
