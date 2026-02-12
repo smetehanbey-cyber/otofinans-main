@@ -13,6 +13,23 @@ interface LoggedInUser {
 // Authorized persons list
 const AUTHORIZED_PERSONS = ["Beyza", "Duygu", "Erkut", "Gökhan", "Mete"];
 
+// Turkish-aware uppercase function
+const toTurkishUpperCase = (str: string): string => {
+  const turkishMap: { [key: string]: string } = {
+    'i': 'İ',
+    'ş': 'Ş',
+    'ğ': 'Ğ',
+    'ü': 'Ü',
+    'ö': 'Ö',
+    'ç': 'Ç'
+  };
+
+  return str
+    .split('')
+    .map(char => turkishMap[char] || char.toUpperCase())
+    .join('');
+};
+
 export default function CustomerRecords({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -327,7 +344,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               placeholder="Ad Soyad"
               value={newCustomer.name}
               onChange={(e) =>
-                setNewCustomer({ ...newCustomer, name: e.target.value.toUpperCase() })
+                setNewCustomer({ ...newCustomer, name: toTurkishUpperCase(e.target.value) })
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
@@ -530,14 +547,14 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            name: e.target.value.toUpperCase()
+                            name: toTurkishUpperCase(e.target.value)
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                         style={{fontSize: isMobile ? '12px' : '15px'}}
                       />
                     ) : (
-                      <span className="text-gray-800 block">{customer.name.toUpperCase()}</span>
+                      <span className="text-gray-800 block">{toTurkishUpperCase(customer.name)}</span>
                     )}
                   </td>
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
