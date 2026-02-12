@@ -144,66 +144,6 @@ export default function CreditCalculator() {
       renderContainer.style.padding = "0";
       renderContainer.style.margin = "0";
 
-      // Create main header section with logo and title
-      const mainHeaderDiv = document.createElement("div");
-      mainHeaderDiv.style.backgroundColor = "#0f367e";
-      mainHeaderDiv.style.color = "#ffffff";
-      mainHeaderDiv.style.padding = "40px";
-      mainHeaderDiv.style.display = "flex";
-      mainHeaderDiv.style.justifyContent = "space-between";
-      mainHeaderDiv.style.alignItems = "center";
-      mainHeaderDiv.style.borderBottom = "5px solid #6d2fce";
-      mainHeaderDiv.style.width = "100%";
-      mainHeaderDiv.style.boxSizing = "border-box";
-
-      const logoImg = document.createElement("img");
-      logoImg.src = "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F475a3c8d7d4e4dda994162d8b3ea3e67?format=webp&width=800&height=1200";
-      logoImg.style.height = "80px";
-      logoImg.style.width = "auto";
-      logoImg.style.objectFit = "contain";
-      logoImg.style.marginRight = "30px";
-
-      const titleDiv = document.createElement("div");
-      titleDiv.style.flex = "1";
-      titleDiv.innerHTML = `
-        <h1 style="margin: 0; font-size: 28px; font-weight: bold; letter-spacing: 2px; font-family: 'Paytone One', sans-serif; margin-bottom: 10px;">OTO FİNANS GLOBAL</h1>
-        <p style="margin: 0; font-size: 16px; font-weight: 500; letter-spacing: 1px;">ARAÇ FİNANSMAN ÇÖZÜMLERİ</p>
-      `;
-
-      mainHeaderDiv.appendChild(logoImg);
-      mainHeaderDiv.appendChild(titleDiv);
-      renderContainer.appendChild(mainHeaderDiv);
-
-      // Create info section with calculation details
-      const infoSection = document.createElement("div");
-      infoSection.style.backgroundColor = "#f5f5f5";
-      infoSection.style.padding = "30px 40px";
-      infoSection.style.borderBottom = "3px solid #e0e0e0";
-      infoSection.style.width = "100%";
-      infoSection.style.boxSizing = "border-box";
-      infoSection.style.display = "grid";
-      infoSection.style.gridTemplateColumns = "repeat(4, 1fr)";
-      infoSection.style.gap = "20px";
-
-      const infoItems = [
-        { label: "Araç Fiyatı", value: `${amount.toLocaleString("tr-TR")} ₺` },
-        { label: "Aylık Ödeme", value: formattedMonthly },
-        { label: "Toplam Ödenecek", value: formattedTotal },
-        { label: "Faiz Oranı", value: `%${rate.toFixed(2)}` },
-      ];
-
-      infoItems.forEach((item) => {
-        const itemDiv = document.createElement("div");
-        itemDiv.style.textAlign = "center";
-        itemDiv.innerHTML = `
-          <p style="margin: 0 0 10px 0; color: #666; font-size: 12px; font-weight: 500; letter-spacing: 1px;">${item.label}</p>
-          <p style="margin: 0; color: #0f367e; font-size: 20px; font-weight: bold;">${item.value}</p>
-        `;
-        infoSection.appendChild(itemDiv);
-      });
-
-      renderContainer.appendChild(infoSection);
-
       // Clone the table header from scrollable container
       const headerDiv = scrollContainer.querySelector("div[style*='backgroundColor: rgb(26, 43, 125)']") as HTMLElement;
 
@@ -213,7 +153,7 @@ export default function CreditCalculator() {
         headerClone.style.width = "100%";
         headerClone.style.display = "flex";
         headerClone.style.backgroundColor = "#1a2b7d";
-        headerClone.style.padding = "20px 40px";
+        headerClone.style.padding = "20px";
         headerClone.style.color = "#ffffff";
         headerClone.style.boxSizing = "border-box";
         renderContainer.appendChild(headerClone);
@@ -251,22 +191,6 @@ export default function CreditCalculator() {
       });
 
       renderContainer.appendChild(tableClone);
-
-      // Create footer section
-      const footerDiv = document.createElement("div");
-      footerDiv.style.backgroundColor = "#0f367e";
-      footerDiv.style.color = "#ffffff";
-      footerDiv.style.padding = "30px 40px";
-      footerDiv.style.textAlign = "center";
-      footerDiv.style.width = "100%";
-      footerDiv.style.boxSizing = "border-box";
-      footerDiv.style.borderTop = "3px solid #6d2fce";
-      footerDiv.innerHTML = `
-        <p style="margin: 0; font-size: 14px; font-weight: 500; letter-spacing: 1px;">© 2027 Oto Finans Global. Tüm hakları saklıdır.</p>
-        <p style="margin: 10px 0 0 0; font-size: 12px; font-weight: 400;">www.otofinans.com | info@otofinans.com</p>
-      `;
-      renderContainer.appendChild(footerDiv);
-
       document.body.appendChild(renderContainer);
 
       // Wait for content to be ready
