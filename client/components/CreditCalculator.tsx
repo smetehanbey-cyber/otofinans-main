@@ -117,253 +117,183 @@ export default function CreditCalculator() {
     if (!tableRef.current) return;
 
     try {
-      // Dynamically import html2canvas
-      const html2canvas = (await import("html2canvas")).default;
-
-      // Find all elements we need to modify
-      const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
-      const table = scrollContainer ? scrollContainer.querySelector("table") as HTMLElement : tableRef.current.querySelector("table") as HTMLElement;
-
-      if (!table) {
-        throw new Error("Table not found");
-      }
-
-      // Save original styles
-      const originalTableRefStyle: any = {};
-      const originalScrollContainerStyle: any = {};
-      const originalTableStyle: any = {};
-
-      // Save table ref styles
-      for (let i = 0; i < tableRef.current.style.length; i++) {
-        const prop = tableRef.current.style[i];
-        originalTableRefStyle[prop] = tableRef.current.style.getPropertyValue(prop);
-      }
-
-      // Save scroll container styles
-      if (scrollContainer) {
-        for (let i = 0; i < scrollContainer.style.length; i++) {
-          const prop = scrollContainer.style[i];
-          originalScrollContainerStyle[prop] = scrollContainer.style.getPropertyValue(prop);
-        }
-      }
-
-      // Save table styles
-      for (let i = 0; i < table.style.length; i++) {
-        const prop = table.style[i];
-        originalTableStyle[prop] = table.style.getPropertyValue(prop);
-      }
-
-      // Measure the actual table dimensions
-      const tableRect = table.getBoundingClientRect();
-      let actualTableWidth = table.scrollWidth || tableRect.width || 1200;
-      let actualTableHeight = table.scrollHeight || tableRect.height || 800;
-
-      // Set table ref styles for rendering
-      tableRef.current.style.cssText = `
-        opacity: 1 !important;
-        max-height: none !important;
-        overflow: visible !important;
-        position: fixed !important;
-        left: -9999px !important;
-        top: 0 !important;
-        width: auto !important;
-        height: auto !important;
-        z-index: 9999 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      `;
-
-      // Set scroll container styles for rendering
-      if (scrollContainer) {
-        scrollContainer.style.cssText = `
-          overflow: visible !important;
-          overflow-x: visible !important;
-          overflow-y: visible !important;
-          width: auto !important;
-          height: auto !important;
-          margin: 0 !important;
-          padding: 0 !important;
-        `;
-      }
-
-      // Set table styles for rendering
-      table.style.cssText = `
-        width: auto !important;
-        border-collapse: collapse !important;
-        font-family: "Paytone One", sans-serif !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background-color: #ffffff !important;
-      `;
-
-      // Ensure all cells have visible borders
-      const allCells = table.querySelectorAll("td, th");
-      const cellOriginalStyles: any[] = [];
-
-      allCells.forEach((cell, index) => {
-        const cellElement = cell as HTMLElement;
-        cellOriginalStyles[index] = cellElement.style.cssText;
-        cellElement.style.cssText = `
-          ${cellElement.style.cssText}
-          border: 1px solid #6d2fce !important;
-          border-collapse: collapse !important;
-          display: table-cell !important;
-        `;
+      // Show loading state
+      toast.loading("Ödeme planı hazırlanıyor...", {
+        duration: 1000,
       });
 
-      // Wait for styles to apply and render
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // First, try the server-side approach (more reliable on mobile)
+      const isMobileDevice = /iPhone|iPad|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
 
-      // Calculate final dimensions
-      const finalWidth = Math.ceil(actualTableWidth) + 40;
-      const finalHeight = Math.ceil(actualTableHeight) + 40;
+      if (isMobileDevice) {
+        // For mobile, use server-side generation
+        await downloadViaServer();
+      } else {
+        // For desktop, use html2canvas
+        await downloadViaHtml2Canvas();
+      }
+    } catch (error) {
+      console.error("Error generating PNG:", error);
 
-      console.log("Table dimensions:", { actualTableWidth, actualTableHeight, finalWidth, finalHeight });
+      // If primary method fails, try fallback
+      try {
+        toast.info("Yedek yöntemi kullanılıyor...", { duration: 2000 });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await downloadViaServer();
+      } catch (fallbackError) {
+        console.error("Fallback error:", fallbackError);
+        toast.error("Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.", {
+          duration: 4000,
+          position: "top-center",
+        });
+      }
+    }
+  };
 
-      const canvas = await html2canvas(tableRef.current, {
+  const downloadViaServer = async () => {
+    try {
+      const response = await fetch("/api/payment-schedule-png", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount,
+          installments: duration,
+          data: paymentScheduleData,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      const htmlContent = result.html;
+
+      // Create a hidden iframe to print from
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (!iframeDoc) {
+        throw new Error("Could not access iframe document");
+      }
+
+      iframeDoc.open();
+      iframeDoc.write(htmlContent);
+      iframeDoc.close();
+
+      // Wait for content to load
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Use html2canvas on the iframe content
+      const html2canvas = (await import("html2canvas")).default;
+
+      const canvas = await html2canvas(iframeDoc.body, {
         backgroundColor: "#ffffff",
         scale: 2,
         useCORS: true,
         allowTaint: true,
         logging: false,
-        imageTimeout: 15000,
-        timeout: 15000,
-        windowHeight: finalHeight * 2,
-        windowWidth: finalWidth * 2,
-        width: finalWidth,
-        height: finalHeight,
-        foreignObjectRendering: false,
-        onclone: (clonedDocument) => {
-          // Set body and html styles in cloned document
-          clonedDocument.documentElement.style.cssText = `
-            width: ${finalWidth}px !important;
-            height: ${finalHeight}px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background-color: #ffffff !important;
-          `;
-          clonedDocument.body.style.cssText = `
-            width: ${finalWidth}px !important;
-            height: ${finalHeight}px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background-color: #ffffff !important;
-          `;
-
-          // Fix cloned table ref
-          const clonedTableRef = clonedDocument.querySelector("[data-ref='table']") as HTMLElement;
-          if (clonedTableRef) {
-            clonedTableRef.style.cssText = `
-              opacity: 1 !important;
-              max-height: none !important;
-              overflow: visible !important;
-              position: relative !important;
-              left: 0 !important;
-              top: 0 !important;
-              width: 100% !important;
-              height: auto !important;
-              z-index: 1 !important;
-              margin: 0 !important;
-              padding: 0 !important;
-              background-color: #ffffff !important;
-            `;
-          }
-
-          // Fix cloned scroll container
-          const clonedScrollContainer = clonedDocument.querySelector(".scrollable-table-container") as HTMLElement;
-          if (clonedScrollContainer) {
-            clonedScrollContainer.style.cssText = `
-              overflow: visible !important;
-              overflow-x: visible !important;
-              overflow-y: visible !important;
-              width: 100% !important;
-              height: auto !important;
-              margin: 0 !important;
-              padding: 0 !important;
-            `;
-          }
-
-          // Fix cloned table and its cells
-          const clonedTable = clonedDocument.querySelector("table") as HTMLElement;
-          if (clonedTable) {
-            clonedTable.style.cssText = `
-              width: 100% !important;
-              border-collapse: collapse !important;
-              font-family: "Paytone One", sans-serif !important;
-              margin: 0 !important;
-              padding: 0 !important;
-              background-color: #ffffff !important;
-              border: 1px solid #6d2fce !important;
-            `;
-
-            // Ensure all cells in cloned table have borders
-            const clonedCells = clonedTable.querySelectorAll("td, th");
-            clonedCells.forEach((cell) => {
-              const cellElement = cell as HTMLElement;
-              cellElement.style.cssText = `
-                ${cellElement.getAttribute('style') || ''}
-                border: 1px solid #6d2fce !important;
-                border-collapse: collapse !important;
-                display: table-cell !important;
-                padding: 16px !important;
-                text-align: center !important;
-                vertical-align: middle !important;
-              `;
-            });
-          }
-        }
+        imageTimeout: 20000,
+        timeout: 20000,
       });
 
-      // Restore all original styles
-      tableRef.current.style.cssText = '';
-      Object.keys(originalTableRefStyle).forEach(key => {
-        if (originalTableRefStyle[key]) {
-          tableRef.current!.style.setProperty(key, originalTableRefStyle[key]);
-        }
-      });
+      // Remove iframe
+      document.body.removeChild(iframe);
 
-      if (scrollContainer) {
-        scrollContainer.style.cssText = '';
-        Object.keys(originalScrollContainerStyle).forEach(key => {
-          if (originalScrollContainerStyle[key]) {
-            scrollContainer!.style.setProperty(key, originalScrollContainerStyle[key]);
-          }
-        });
+      // Download the canvas
+      triggerDownload(canvas);
+    } catch (error) {
+      console.error("Server-side download error:", error);
+      throw error;
+    }
+  };
+
+  const downloadViaHtml2Canvas = async () => {
+    if (!tableRef.current) throw new Error("Table reference not found");
+
+    const html2canvas = (await import("html2canvas")).default;
+
+    // Clone the table for proper rendering
+    const cloneContainer = document.createElement("div");
+    cloneContainer.style.position = "fixed";
+    cloneContainer.style.left = "-9999px";
+    cloneContainer.style.top = "0";
+    cloneContainer.style.width = "auto";
+    cloneContainer.style.height = "auto";
+    cloneContainer.style.backgroundColor = "#ffffff";
+    cloneContainer.style.zIndex = "9999";
+    cloneContainer.style.padding = "20px";
+
+    const clonedTable = tableRef.current.cloneNode(true) as HTMLElement;
+    cloneContainer.appendChild(clonedTable);
+    document.body.appendChild(cloneContainer);
+
+    // Fix all styles in the clone
+    const allElements = cloneContainer.querySelectorAll("*");
+    allElements.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      // Ensure all table elements are visible
+      if (htmlEl.tagName === "TABLE" || htmlEl.tagName === "TD" || htmlEl.tagName === "TH") {
+        htmlEl.style.borderCollapse = "collapse";
+        if (htmlEl.tagName === "TD" || htmlEl.tagName === "TH") {
+          htmlEl.style.border = "1px solid #6d2fce";
+          htmlEl.style.display = "table-cell";
+        }
       }
+    });
 
-      table.style.cssText = '';
-      Object.keys(originalTableStyle).forEach(key => {
-        if (originalTableStyle[key]) {
-          table!.style.setProperty(key, originalTableStyle[key]);
-        }
+    // Remove overflow/hidden properties
+    const scrollContainer = cloneContainer.querySelector(".scrollable-table-container") as HTMLElement;
+    if (scrollContainer) {
+      scrollContainer.style.overflow = "visible";
+      scrollContainer.style.overflowX = "visible";
+      scrollContainer.style.overflowY = "visible";
+    }
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      const canvas = await html2canvas(cloneContainer, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        imageTimeout: 20000,
+        timeout: 20000,
       });
 
-      allCells.forEach((cell, index) => {
-        const cellElement = cell as HTMLElement;
-        cellElement.style.cssText = cellOriginalStyles[index];
-      });
+      triggerDownload(canvas);
+    } finally {
+      // Clean up
+      document.body.removeChild(cloneContainer);
+    }
+  };
 
-      // Create and trigger download
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png", 1.0);
-      link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
+  const triggerDownload = (canvas: HTMLCanvasElement) => {
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png", 1.0);
+    link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
 
+    // Use a more reliable download method
+    if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
+      // Mobile: open in new tab for download
+      window.open(link.href, "_blank");
+    } else {
+      // Desktop: direct download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
-      // Show success message
-      toast.success("Ödeme planınız görüntü olarak kayıt edilmiştir", {
-        duration: 4000,
-        position: "top-center",
-      });
-    } catch (error) {
-      console.error("Error generating PNG:", error);
-      toast.error("Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.", {
-        duration: 4000,
-        position: "top-center",
-      });
     }
+
+    toast.success("Ödeme planınız görüntü olarak kayıt edilmiştir", {
+      duration: 4000,
+      position: "top-center",
+    });
   };
 
   // Generate and download payment schedule as Excel
@@ -615,6 +545,8 @@ export default function CreditCalculator() {
                 .scrollable-table-container {
                   scrollbar-width: thin;
                   scrollbar-color: #6d2fce #e5e7eb;
+                  -webkit-box-shadow: inset 0 0 0 1px #6d2fce;
+                  box-shadow: inset 0 0 0 1px #6d2fce;
                 }
                 .scrollable-table-container::-webkit-scrollbar {
                   height: 6px;
@@ -629,6 +561,42 @@ export default function CreditCalculator() {
                 }
                 .scrollable-table-container::-webkit-scrollbar-thumb:hover {
                   background: #5a1fb8;
+                }
+
+                /* Mobile-specific grid fixes */
+                @media (max-width: 768px) {
+                  .scrollable-table-container table {
+                    border-collapse: separate !important;
+                    border-spacing: 0 !important;
+                  }
+
+                  .scrollable-table-container table td,
+                  .scrollable-table-container table th {
+                    border: 1px solid #6d2fce !important;
+                    box-shadow: inset 0 0 0 1px #6d2fce !important;
+                    -webkit-box-shadow: inset 0 0 0 1px #6d2fce !important;
+                  }
+
+                  .scrollable-table-container table thead th {
+                    border: 2px solid #1800ae !important;
+                    box-shadow: inset 0 0 0 2px #1800ae !important;
+                  }
+                }
+
+                /* Ensure borders are always visible */
+                table {
+                  border-collapse: collapse !important;
+                }
+
+                table td,
+                table th {
+                  border: 1px solid #6d2fce !important;
+                  position: relative;
+                }
+
+                table thead th {
+                  border: 2px solid #1800ae !important;
+                  border-collapse: collapse !important;
                 }
               `}</style>
 

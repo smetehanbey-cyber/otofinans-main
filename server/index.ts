@@ -4,6 +4,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleMarketData } from "./routes/market-data";
 import { handleInstagramPosts } from "./routes/instagram-posts";
+import { handlePaymentSchedulePNG } from "./routes/payment-schedule-png";
 
 export function createServer() {
   const app = express();
@@ -22,6 +23,7 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
   app.get("/api/market-data", handleMarketData);
   app.get("/api/instagram-posts", handleInstagramPosts);
+  app.post("/api/payment-schedule-png", handlePaymentSchedulePNG);
 
   return app;
 }
