@@ -110,14 +110,14 @@ export default function ProductDropdown() {
               }}
             >
               {/* Dropdown Header */}
-              <div className="border-b border-gray-100 py-3 text-sm font-semibold text-gray-700 bg-white">
+              <div className="border-b border-gray-100 py-2 text-sm font-semibold text-gray-700 bg-white">
                 <div className="max-w-6xl mx-auto px-4">
                   Kendim İçin Finansal Çözümler
                 </div>
               </div>
 
               {/* Products Grid */}
-              <div className="grid grid-cols-3 gap-4 p-6 max-w-6xl mx-auto">
+              <div className="grid grid-cols-3 gap-4 p-4 pt-6 pb-2 max-w-6xl mx-auto">
                 {products.map((product) => (
                   <div
                     key={product.id}
@@ -138,26 +138,26 @@ export default function ProductDropdown() {
                     {/* Product Content - Flex column to push button down */}
                     <div
                       className="text-white flex flex-col flex-grow"
-                      style={{ backgroundColor: "#0f367e", padding: "12px" }}
+                      style={{ backgroundColor: "#0f367e", padding: "10px" }}
                     >
                       <div className="flex-grow"></div>
-                      <h3 className="font-bold mb-1" style={{ fontSize: "15px" }}>
+                      <h3 className="font-bold mb-0.5" style={{ fontSize: "15px" }}>
                         {product.title}
                       </h3>
                       {product.subtitle && (
-                        <p className="text-blue-100 mb-0" style={{ fontSize: "12px" }}>
+                        <p className="text-blue-100 mb-0" style={{ fontSize: "12px", lineHeight: "1.3" }}>
                           {product.subtitle}
                         </p>
                       )}
                     </div>
 
                     {/* Button */}
-                    <div className="px-3 py-3">
+                    <div className="px-3 py-2">
                       <a
                         href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full py-2 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200 inline-block text-center"
+                        className="w-full py-1.5 font-bold text-xs rounded-full text-white transition-colors hover:border-blue-300 hover:text-blue-200 inline-block text-center"
                         style={{
                           border: "2px solid #3b82f6",
                           backgroundColor: "transparent",
@@ -171,7 +171,7 @@ export default function ProductDropdown() {
               </div>
 
               {/* Pagination Dots */}
-              <div className="flex justify-center gap-1.5 py-3 border-t border-gray-100 bg-white">
+              <div className="flex justify-center gap-1.5 py-2 border-t border-gray-100 bg-white">
                 <div className="w-2 h-2 rounded-full bg-gray-300"></div>
                 <div className="w-2 h-2 rounded-full bg-gray-300"></div>
                 <div className="w-2 h-2 rounded-full bg-gray-300"></div>

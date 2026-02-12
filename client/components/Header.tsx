@@ -88,20 +88,20 @@ export default function Header() {
               {/* Search and Buttons */}
               <div className="hidden md:flex items-center gap-2 flex-shrink-0">
                 <a
-                  href="https://wa.me/905324098440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  Aracını Hızlı Sat
-                </a>
-                <a
                   href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-5 py-1.5 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white rounded text-xs font-semibold hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors"
                 >
                   Kredi Kullan
+                </a>
+                <a
+                  href="https://wa.me/905324098440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Aracını Hızlı Sat
                 </a>
               </div>
 
