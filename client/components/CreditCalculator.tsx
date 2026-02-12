@@ -22,9 +22,10 @@ export default function CreditCalculator() {
 
   // Rate options for different customer types (monthly percentages)
   const rateOptions = [
-    { label: "Esnaf", value: 0.99 },
-    { label: "Şirket", value: 3.7 },
-    { label: "Bireysel", value: 3.8 },
+    { label: "", value: 0.99 },
+    { label: "", value: 3.7 },
+    { label: "", value: 3.8 },
+    { label: "", value: 4.5 },
   ];
 
   // Calculate monthly payment using compound interest formula
