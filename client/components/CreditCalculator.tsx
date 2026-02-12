@@ -120,8 +120,7 @@ export default function CreditCalculator() {
       // Dynamically import html2canvas
       const html2canvas = (await import("html2canvas")).default;
 
-      // Temporarily make table visible for PNG export
-      const wasVisible = tableVisible;
+      // Save original styles
       const originalStyle = {
         opacity: tableRef.current.style.opacity,
         maxHeight: tableRef.current.style.maxHeight,
@@ -129,6 +128,7 @@ export default function CreditCalculator() {
         position: tableRef.current.style.position,
         width: tableRef.current.style.width,
         height: tableRef.current.style.height,
+        zIndex: tableRef.current.style.zIndex,
       };
 
       // Ensure table is fully visible and has proper dimensions
@@ -137,15 +137,30 @@ export default function CreditCalculator() {
       tableRef.current.style.overflow = "visible";
       tableRef.current.style.position = "fixed";
       tableRef.current.style.left = "-9999px";
+      tableRef.current.style.top = "0";
       tableRef.current.style.width = "auto";
       tableRef.current.style.height = "auto";
+      tableRef.current.style.zIndex = "9999";
 
-      // Wait for DOM to update
-      await new Promise(resolve => setTimeout(resolve, 200));
+      // Wait longer for all content to render
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Get the actual dimensions of the table
-      const tableWidth = tableRef.current.scrollWidth || 1200;
-      const tableHeight = tableRef.current.scrollHeight || 800;
+      // Get the actual dimensions of the table including all content
+      const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
+      let tableWidth = 1200;
+      let tableHeight = 800;
+
+      if (scrollContainer) {
+        tableWidth = Math.max(scrollContainer.scrollWidth, 1200);
+        tableHeight = tableRef.current.scrollHeight || 800;
+      } else {
+        tableWidth = tableRef.current.scrollWidth || 1200;
+        tableHeight = tableRef.current.scrollHeight || 800;
+      }
+
+      // Add padding to capture everything
+      tableWidth += 40;
+      tableHeight += 40;
 
       const canvas = await html2canvas(tableRef.current, {
         backgroundColor: "#ffffff",
@@ -153,10 +168,18 @@ export default function CreditCalculator() {
         useCORS: true,
         allowTaint: true,
         logging: false,
-        windowHeight: tableHeight,
-        windowWidth: tableWidth,
+        windowHeight: tableHeight * 2, // Multiply by 2 to ensure full capture
+        windowWidth: tableWidth * 2,
         width: tableWidth,
         height: tableHeight,
+        onclone: (clonedDocument) => {
+          // Ensure cloned element is also visible
+          const clonedElement = clonedDocument.querySelector("[data-ref='table']") as HTMLElement;
+          if (clonedElement) {
+            clonedElement.style.opacity = "1";
+            clonedElement.style.overflow = "visible";
+          }
+        }
       });
 
       // Restore original styles
@@ -164,12 +187,17 @@ export default function CreditCalculator() {
         tableRef.current!.style[key as any] = originalStyle[key as keyof typeof originalStyle];
       });
 
+      // Create downloadable link
       const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
+      link.href = canvas.toDataURL("image/png", 1.0);
       link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
+
+      // Add to body, click, and remove
       document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      setTimeout(() => {
+        link.click();
+        document.body.removeChild(link);
+      }, 100);
 
       // Show success message
       toast.success("Ödeme planınız görüntü olarak kayıt edilmiştir", {
@@ -407,6 +435,7 @@ export default function CreditCalculator() {
           {/* Payment Schedule Table for PNG Export */}
           <div
             ref={tableRef}
+            data-ref="table"
             style={{
               backgroundColor: "#ffffff",
               opacity: tableVisible ? 1 : 0,
