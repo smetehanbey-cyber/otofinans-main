@@ -120,16 +120,11 @@ export default function CreditCalculator() {
       // Dynamically import html2canvas
       const html2canvas = (await import("html2canvas")).default;
 
-      // Get the scrollable container and table
+      // Get the scrollable container - clone it entirely as-is
       const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
 
       if (!scrollContainer) {
         throw new Error("Table container not found");
-      }
-
-      const table = scrollContainer.querySelector("table") as HTMLElement;
-      if (!table) {
-        throw new Error("Table element not found");
       }
 
       // Create a rendering container with proper constraints
@@ -145,58 +140,60 @@ export default function CreditCalculator() {
       renderContainer.style.margin = "0";
       renderContainer.style.boxSizing = "border-box";
 
-      // Find header div by looking for the one with flexbox and dark blue background
-      const headerDiv = scrollContainer.querySelector("div[style*='display: flex']") as HTMLElement;
+      // Clone the entire scrollable container (header + table together)
+      const containerClone = scrollContainer.cloneNode(true) as HTMLElement;
+      containerClone.style.width = "1024px";
+      containerClone.style.minWidth = "1024px";
+      containerClone.style.overflowX = "visible";
+      containerClone.style.overflowY = "visible";
+      containerClone.style.margin = "0";
+      containerClone.style.padding = "0";
+      containerClone.style.boxSizing = "border-box";
 
-      // Clone and add header
+      // Fix header styling
+      const headerDiv = containerClone.querySelector("div[style*='display: flex']") as HTMLElement;
       if (headerDiv) {
-        const headerClone = headerDiv.cloneNode(true) as HTMLElement;
-        headerClone.style.width = "1024px";
-        headerClone.style.boxSizing = "border-box";
-        headerClone.style.minWidth = "1024px";
-        headerClone.style.margin = "0";
-        headerClone.style.padding = "20px";
-        headerClone.style.display = "flex";
-        headerClone.style.backgroundColor = "#1a2b7d";
-        headerClone.style.borderBottom = "5px solid #6d2fce";
-        renderContainer.appendChild(headerClone);
+        headerDiv.style.width = "1024px";
+        headerDiv.style.minWidth = "1024px";
+        headerDiv.style.boxSizing = "border-box";
       }
 
-      // Clone and add table
-      const tableClone = table.cloneNode(true) as HTMLElement;
-      tableClone.style.width = "1024px";
-      tableClone.style.minWidth = "1024px";
-      tableClone.style.borderCollapse = "collapse";
-      tableClone.style.backgroundColor = "#ffffff";
-      tableClone.style.margin = "0";
-      tableClone.style.padding = "0";
-      tableClone.style.boxSizing = "border-box";
-      tableClone.style.display = "block";
+      // Fix table styling
+      const table = containerClone.querySelector("table") as HTMLElement;
+      if (table) {
+        table.style.width = "1024px";
+        table.style.minWidth = "1024px";
+        table.style.borderCollapse = "collapse";
+        table.style.backgroundColor = "#ffffff";
+        table.style.margin = "0";
+        table.style.padding = "0";
+        table.style.boxSizing = "border-box";
 
-      // Fix all cells in cloned table
-      const cells = tableClone.querySelectorAll("td, th");
-      cells.forEach((cell) => {
-        const el = cell as HTMLElement;
-        el.style.border = "1px solid #6d2fce";
-        el.style.borderCollapse = "collapse";
-        el.style.boxSizing = "border-box";
-        el.style.padding = "16px";
-        el.style.textAlign = "center";
-        el.style.verticalAlign = "middle";
-      });
+        // Fix all cells
+        const cells = table.querySelectorAll("td, th");
+        cells.forEach((cell) => {
+          const el = cell as HTMLElement;
+          el.style.border = "1px solid #6d2fce";
+          el.style.borderCollapse = "collapse";
+          el.style.boxSizing = "border-box";
+          el.style.padding = "16px";
+          el.style.textAlign = "center";
+          el.style.verticalAlign = "middle";
+        });
 
-      // Fix header cells
-      const headerCells = tableClone.querySelectorAll("thead th");
-      headerCells.forEach((cell) => {
-        const el = cell as HTMLElement;
-        el.style.border = "2px solid #1800ae";
-        el.style.borderCollapse = "collapse";
-        el.style.backgroundColor = "#1800ae";
-        el.style.color = "#ffffff";
-        el.style.fontWeight = "bold";
-      });
+        // Fix header cells
+        const headerCells = table.querySelectorAll("thead th");
+        headerCells.forEach((cell) => {
+          const el = cell as HTMLElement;
+          el.style.border = "2px solid #1800ae";
+          el.style.borderCollapse = "collapse";
+          el.style.backgroundColor = "#1800ae";
+          el.style.color = "#ffffff";
+          el.style.fontWeight = "bold";
+        });
+      }
 
-      renderContainer.appendChild(tableClone);
+      renderContainer.appendChild(containerClone);
       document.body.appendChild(renderContainer);
 
       // Wait for content to be ready
