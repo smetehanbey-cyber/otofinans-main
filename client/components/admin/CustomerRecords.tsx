@@ -323,7 +323,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               placeholder="Ad Soyad"
               value={newCustomer.name}
               onChange={(e) =>
-                setNewCustomer({ ...newCustomer, name: e.target.value })
+                setNewCustomer({ ...newCustomer, name: e.target.value.toUpperCase() })
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
@@ -525,7 +525,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            name: e.target.value
+                            name: e.target.value.toUpperCase()
                           })
                         }
                         className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
