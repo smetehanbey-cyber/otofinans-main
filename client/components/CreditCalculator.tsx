@@ -331,9 +331,11 @@ export default function CreditCalculator() {
                   type="text"
                   value={amount.toLocaleString("tr-TR")}
                   onChange={(e) => {
-                    const numericValue =
-                      parseInt(e.target.value.replace(/\D/g, "")) || 0;
-                    setAmount(numericValue);
+                    const cleaned = e.target.value.replace(/\D/g, "");
+                    const numericValue = cleaned ? parseInt(cleaned, 10) : 0;
+                    if (numericValue !== amount) {
+                      setAmount(numericValue);
+                    }
                   }}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 />
@@ -599,31 +601,33 @@ export default function CreditCalculator() {
                   borderRadius: "0",
                   display: "flex",
                   justifyContent: "space-between",
-                  alignItems: "center",
+                  alignItems: "flex-start",
                   flexWrap: "wrap",
                   borderBottom: "5px solid #6d2fce",
                   minWidth: "1000px",
+                  gap: "10px",
                 }}
               >
-                <div style={{ flex: 1, minWidth: "0" }}>
+                <div style={{ flex: 1, minWidth: "0", display: "flex", flexDirection: "column" }}>
                   <h3
                     style={{
                       margin: "0",
-                      fontSize: "clamp(14px, 4vw, 22px)",
+                      fontSize: "clamp(14px, 3vw, 24px)",
                       fontWeight: "bold",
-                      letterSpacing: "1px",
+                      letterSpacing: "0.5px",
                       fontFamily: '"Paytone One", sans-serif',
                       wordBreak: "break-word",
+                      whiteSpace: "normal",
+                      lineHeight: "1.3",
                     }}
                   >
-                    {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
-                    ÖRNEK ÖDEME TABLOSU
+                    {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
                   </h3>
                 </div>
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F475a3c8d7d4e4dda994162d8b3ea3e67?format=webp&width=800&height=1200"
                   alt="Oto Finans Logo"
-                  style={{ height: "clamp(40px, 10vw, 65px)", width: "auto", objectFit: "contain", marginLeft: "10px", flexShrink: 0 }}
+                  style={{ height: "clamp(50px, 8vw, 70px)", width: "auto", objectFit: "contain", flexShrink: 0, minWidth: "50px" }}
                 />
               </div>
 
