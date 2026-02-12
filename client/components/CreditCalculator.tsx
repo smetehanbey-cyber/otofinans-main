@@ -131,6 +131,15 @@ export default function CreditCalculator() {
         zIndex: tableRef.current.style.zIndex,
       };
 
+      // Save original styles of scrollable container
+      const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
+      const scrollContainerOriginalStyle: any = {};
+      if (scrollContainer) {
+        scrollContainerOriginalStyle.overflow = scrollContainer.style.overflow;
+        scrollContainerOriginalStyle.overflowX = scrollContainer.style.overflowX;
+        scrollContainerOriginalStyle.overflowY = scrollContainer.style.overflowY;
+      }
+
       // Ensure table is fully visible and has proper dimensions
       tableRef.current.style.opacity = "1";
       tableRef.current.style.maxHeight = "none";
@@ -142,25 +151,34 @@ export default function CreditCalculator() {
       tableRef.current.style.height = "auto";
       tableRef.current.style.zIndex = "9999";
 
+      // Fix scrollable container overflow for proper rendering
+      if (scrollContainer) {
+        scrollContainer.style.overflow = "visible";
+        scrollContainer.style.overflowX = "visible";
+        scrollContainer.style.overflowY = "visible";
+      }
+
       // Wait longer for all content to render
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 600));
 
       // Get the actual dimensions of the table including all content
-      const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
       let tableWidth = 1200;
       let tableHeight = 800;
 
       if (scrollContainer) {
-        tableWidth = Math.max(scrollContainer.scrollWidth, 1200);
-        tableHeight = tableRef.current.scrollHeight || 800;
+        const table = scrollContainer.querySelector("table") as HTMLElement;
+        if (table) {
+          tableWidth = Math.max(table.scrollWidth, 1200);
+          tableHeight = Math.max(tableRef.current.scrollHeight, 800);
+        }
       } else {
         tableWidth = tableRef.current.scrollWidth || 1200;
         tableHeight = tableRef.current.scrollHeight || 800;
       }
 
       // Add padding to capture everything
-      tableWidth += 40;
-      tableHeight += 40;
+      tableWidth += 60;
+      tableHeight += 60;
 
       const canvas = await html2canvas(tableRef.current, {
         backgroundColor: "#ffffff",
@@ -168,17 +186,47 @@ export default function CreditCalculator() {
         useCORS: true,
         allowTaint: true,
         logging: false,
-        windowHeight: tableHeight * 2, // Multiply by 2 to ensure full capture
-        windowWidth: tableWidth * 2,
+        imageTimeout: 10000,
+        timeout: 10000,
+        windowHeight: tableHeight,
+        windowWidth: tableWidth,
         width: tableWidth,
         height: tableHeight,
+        foreignObjectRendering: true,
         onclone: (clonedDocument) => {
-          // Ensure cloned element is also visible
+          // Ensure cloned element is fully visible and has proper styles
           const clonedElement = clonedDocument.querySelector("[data-ref='table']") as HTMLElement;
           if (clonedElement) {
             clonedElement.style.opacity = "1";
             clonedElement.style.overflow = "visible";
+            clonedElement.style.maxHeight = "none";
+            clonedElement.style.position = "relative";
+            clonedElement.style.left = "0";
+            clonedElement.style.top = "0";
           }
+
+          // Fix scrollable container in cloned document
+          const clonedScrollContainer = clonedDocument.querySelector(".scrollable-table-container") as HTMLElement;
+          if (clonedScrollContainer) {
+            clonedScrollContainer.style.overflow = "visible";
+            clonedScrollContainer.style.overflowX = "visible";
+            clonedScrollContainer.style.overflowY = "visible";
+            clonedScrollContainer.style.width = "100%";
+          }
+
+          // Ensure all table borders are visible
+          const tables = clonedDocument.querySelectorAll("table");
+          tables.forEach((table) => {
+            table.style.borderCollapse = "collapse";
+            const cells = table.querySelectorAll("td, th");
+            cells.forEach((cell) => {
+              const styles = window.getComputedStyle(cell);
+              // Ensure borders are preserved
+              if (!cell.style.border) {
+                cell.style.border = styles.border || "1px solid #000";
+              }
+            });
+          });
         }
       });
 
@@ -186,6 +234,13 @@ export default function CreditCalculator() {
       Object.keys(originalStyle).forEach(key => {
         tableRef.current!.style[key as any] = originalStyle[key as keyof typeof originalStyle];
       });
+
+      // Restore scrollable container styles
+      if (scrollContainer) {
+        Object.keys(scrollContainerOriginalStyle).forEach(key => {
+          scrollContainer.style[key] = scrollContainerOriginalStyle[key];
+        });
+      }
 
       // Create downloadable link
       const link = document.createElement("a");
