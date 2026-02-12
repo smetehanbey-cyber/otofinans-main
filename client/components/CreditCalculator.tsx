@@ -337,7 +337,15 @@ export default function CreditCalculator() {
                   id="tableToggle"
                   checked={tableVisible}
                   onChange={(e) => setTableVisible(e.target.checked)}
-                  className="w-3 h-3 cursor-pointer"
+                  style={{
+                    width: "14px",
+                    height: "14px",
+                    cursor: "pointer",
+                    minWidth: "14px",
+                    minHeight: "14px",
+                    flexShrink: 0,
+                    marginTop: "1px",
+                  }}
                 />
                 <label
                   htmlFor="tableToggle"
