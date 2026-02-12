@@ -385,13 +385,8 @@
     }
   }
 
-  /* Force GPU acceleration on mobile */
+  /* Selective GPU acceleration for animated elements only (not global) */
   @media (max-width: 768px) {
-    * {
-      -webkit-transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-    }
-
     img, video {
       -webkit-backface-visibility: hidden;
     }
