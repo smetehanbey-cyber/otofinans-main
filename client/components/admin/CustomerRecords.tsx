@@ -532,7 +532,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         style={{fontSize: isMobile ? '12px' : '15px'}}
                       />
                     ) : (
-                      <span className="text-gray-800 block">{customer.name}</span>
+                      <span className="text-gray-800 block">{customer.name.toUpperCase()}</span>
                     )}
                   </td>
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>

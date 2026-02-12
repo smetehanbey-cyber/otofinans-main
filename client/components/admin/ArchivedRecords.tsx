@@ -152,7 +152,7 @@ export default function ArchivedRecords() {
                   className="border-b border-gray-200 hover:bg-gray-50 transition-colors opacity-75"
                 >
                   <td className="px-2 py-2" style={{fontSize: '15px'}}>
-                    <span className="text-gray-700">{customer.name}</span>
+                    <span className="text-gray-700">{customer.name.toUpperCase()}</span>
                   </td>
                   <td className="px-2 py-2" style={{fontSize: '15px'}}>
                     <span className="text-gray-700">{customer.tc}</span>
