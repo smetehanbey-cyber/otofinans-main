@@ -8,7 +8,7 @@ export default function CreditCalculator() {
   const [amount, setAmount] = useState(100000);
   const [duration, setDuration] = useState(48);
   const [rate, setRate] = useState(0.99);
-  const [tableVisible, setTableVisible] = useState(false);
+  const [tableVisible, setTableVisible] = useState(false); // Table hidden by default
   const [initialLoad, setInitialLoad] = useState(true);
 
   // Show table when any input changes (after initial load)
@@ -319,8 +319,9 @@ export default function CreditCalculator() {
             </div>
           </div>
 
-          {/* Results Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 pb-8 border-b border-gray-200">
+          {/* Results Section - 4 columns aligned with input */}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-gray-200">
+            {/* Column 1 - Ürün alignment */}
             <div>
               <p className="text-xs text-gray-600 mb-2 text-left">
                 Taksit Tutarı
@@ -332,6 +333,8 @@ export default function CreditCalculator() {
                 Peşinatsız Tamamına Kredi Olursa
               </p>
             </div>
+
+            {/* Column 2 - Tutar alignment */}
             <div>
               <p className="text-xs text-gray-600 mb-2 text-left">
                 Ödenecek Toplam Tutar
@@ -340,11 +343,40 @@ export default function CreditCalculator() {
                 {formattedTotal}
               </p>
             </div>
+
+            {/* Column 3 - Vade alignment */}
             <div>
               <p className="text-xs text-gray-600 mb-2 text-left">Oran</p>
               <p className="text-2xl sm:text-3xl font-bold text-primary">
                 %{rate.toFixed(2)}
               </p>
+            </div>
+
+            {/* Column 4 - Oran alignment with Show/Hide checkbox */}
+            <div>
+              <div className="flex items-center gap-2 h-full">
+                <input
+                  type="checkbox"
+                  id="tableToggle"
+                  checked={tableVisible}
+                  onChange={(e) => setTableVisible(e.target.checked)}
+                  style={{
+                    width: "14px",
+                    height: "14px",
+                    cursor: "pointer",
+                    minWidth: "14px",
+                    minHeight: "14px",
+                    flexShrink: 0,
+                    marginTop: "1px",
+                  }}
+                />
+                <label
+                  htmlFor="tableToggle"
+                  className="text-sm text-gray-700 cursor-pointer font-medium"
+                >
+                  {tableVisible ? "Tabloyu Gizle" : "Tabloyu Göster"}
+                </label>
+              </div>
             </div>
           </div>
 
