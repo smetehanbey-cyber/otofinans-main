@@ -609,7 +609,7 @@ export default function CreditCalculator() {
                   marginBottom: "0",
                   borderRadius: "0",
                   display: "flex",
-                  justifyContent: "flex-end",
+                  justifyContent: "space-between",
                   alignItems: "center",
                   flexWrap: "wrap",
                   borderBottom: "5px solid #6d2fce",
@@ -617,7 +617,7 @@ export default function CreditCalculator() {
                   gap: "20px",
                 }}
               >
-                <div style={{ flex: 1, minWidth: "0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ flex: 1, minWidth: "0", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
                   <h3
                     style={{
                       margin: "0",
