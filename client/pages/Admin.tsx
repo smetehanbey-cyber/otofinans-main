@@ -283,7 +283,7 @@ export default function Admin() {
                 <input
                   type="password"
                   inputMode="numeric"
-                  placeholder="PIN giriniz"
+                  placeholder=""
                   value={pin}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '');
@@ -292,13 +292,15 @@ export default function Admin() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                   style={{
                     backgroundColor: '#ffffff',
-                    color: '#000000',
+                    color: '#0f367e',
                     colorScheme: 'light',
                     WebkitAppearance: 'none',
                     appearance: 'none',
-                    letterSpacing: '8px',
+                    letterSpacing: '14px',
                     fontFamily: '"Courier New", monospace',
-                    fontSize: '24px'
+                    fontSize: '36px',
+                    textAlign: 'center',
+                    fontWeight: 'bold'
                   }}
                   maxLength="6"
                   autoFocus
