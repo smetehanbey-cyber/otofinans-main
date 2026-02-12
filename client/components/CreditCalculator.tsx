@@ -139,6 +139,8 @@ export default function CreditCalculator() {
       renderContainer.style.padding = "0";
       renderContainer.style.margin = "0";
       renderContainer.style.boxSizing = "border-box";
+      renderContainer.style.height = "auto";
+      renderContainer.style.minHeight = "0";
 
       // Clone the entire scrollable container (header + table together)
       const containerClone = scrollContainer.cloneNode(true) as HTMLElement;
@@ -149,6 +151,8 @@ export default function CreditCalculator() {
       containerClone.style.margin = "0";
       containerClone.style.padding = "0";
       containerClone.style.boxSizing = "border-box";
+      containerClone.style.height = "auto";
+      containerClone.style.minHeight = "0";
 
       // Fix header styling
       const headerDiv = containerClone.querySelector("div[style*='display: flex']") as HTMLElement;
@@ -199,9 +203,13 @@ export default function CreditCalculator() {
       // Wait for content to be ready
       await new Promise(resolve => setTimeout(resolve, 200));
 
-      // Get the actual content dimensions
-      const contentWidth = renderContainer.scrollWidth;
-      const contentHeight = renderContainer.scrollHeight;
+      // Get the actual content dimensions - ensure no extra whitespace
+      let contentWidth = renderContainer.scrollWidth;
+      let contentHeight = renderContainer.scrollHeight;
+
+      // Force exact dimensions to avoid extra whitespace
+      renderContainer.style.width = contentWidth + "px";
+      renderContainer.style.height = contentHeight + "px";
 
       // Render to canvas with exact dimensions
       const canvas = await html2canvas(renderContainer, {
@@ -216,6 +224,7 @@ export default function CreditCalculator() {
         windowHeight: contentHeight,
         imageTimeout: 25000,
         timeout: 25000,
+        removeContainer: true,
       });
 
       // Clean up
@@ -600,12 +609,12 @@ export default function CreditCalculator() {
                   marginBottom: "0",
                   borderRadius: "0",
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-end",
                   alignItems: "center",
                   flexWrap: "wrap",
                   borderBottom: "5px solid #6d2fce",
                   minWidth: "1000px",
-                  gap: "10px",
+                  gap: "20px",
                 }}
               >
                 <div style={{ flex: 1, minWidth: "0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -619,7 +628,7 @@ export default function CreditCalculator() {
                       wordBreak: "break-word",
                       whiteSpace: "normal",
                       lineHeight: "1.3",
-                      textAlign: "center",
+                      textAlign: "right",
                     }}
                   >
                     {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU
