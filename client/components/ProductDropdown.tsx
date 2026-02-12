@@ -141,11 +141,11 @@ export default function ProductDropdown() {
                       style={{ backgroundColor: "#0f367e", padding: "12px" }}
                     >
                       <div className="flex-grow"></div>
-                      <h3 className="text-sm font-bold mb-1">
+                      <h3 className="font-bold mb-1" style={{ fontSize: "15px" }}>
                         {product.title}
                       </h3>
                       {product.subtitle && (
-                        <p className="text-xs text-blue-100 mb-0">
+                        <p className="text-blue-100 mb-0" style={{ fontSize: "12px" }}>
                           {product.subtitle}
                         </p>
                       )}

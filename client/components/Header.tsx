@@ -74,8 +74,15 @@ export default function Header() {
               </Link>
 
               {/* Center Section - Filters */}
-              <div className="hidden md:flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-6">
                 <ProductDropdown />
+                <div className="h-4 border-l border-gray-300"></div>
+                {/* Aracım İçin Menu */}
+                <div className="flex flex-col items-center">
+                  <button className="text-sm font-medium pb-2 text-gray-700 hover:text-primary transition-colors">
+                    Aracım İçin
+                  </button>
+                </div>
               </div>
 
               {/* Search and Buttons */}
