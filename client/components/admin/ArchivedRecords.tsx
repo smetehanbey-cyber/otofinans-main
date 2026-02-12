@@ -170,7 +170,13 @@ export default function ArchivedRecords() {
                       className={`inline-block px-2 py-0.5 rounded-full font-semibold ${
                         customer.process === "Beklemede"
                           ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
+                          : customer.process === "Kredi Onayda"
+                          ? "bg-blue-100 text-blue-800"
+                          : customer.process === "Onaylandı"
+                          ? "bg-green-100 text-green-800"
+                          : customer.process === "Kullandırıldı"
+                          ? "bg-green-800 text-white"
+                          : "bg-pink-100 text-pink-800"
                       }`}
                       style={{fontSize: '13px'}}
                     >

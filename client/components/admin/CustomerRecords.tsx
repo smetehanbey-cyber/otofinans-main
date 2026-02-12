@@ -28,7 +28,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     tc: "",
     phone: "",
     message: "",
-    process: "Beklemede" as "Beklemede" | "Onaylandı" | "Kredi Onayda"
+    process: "Beklemede" as "Beklemede" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade"
   });
   const [sortField, setSortField] = useState<keyof Customer>("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
@@ -358,7 +358,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               onChange={(e) =>
                 setNewCustomer({
                   ...newCustomer,
-                  process: e.target.value as "Beklemede" | "Onaylandı" | "Kredi Onayda"
+                  process: e.target.value as "Beklemede" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade"
                 })
               }
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -366,6 +366,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               <option value="Beklemede">Beklemede</option>
               <option value="Onaylandı">Onaylandı</option>
               <option value="Kredi Onayda">Kredi Onayda</option>
+              <option value="Kullandırıldı">Kullandırıldı</option>
+              <option value="Red/İade">Red/İade</option>
             </select>
             <textarea
               placeholder="Mesaj"
@@ -659,7 +661,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            process: e.target.value as "Beklemede" | "Onaylandı" | "Kredi Onayda"
+                            process: e.target.value as "Beklemede" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade"
                           })
                         }
                         className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -668,6 +670,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         <option value="Beklemede">Beklemede</option>
                         <option value="Onaylandı">Onaylandı</option>
                         <option value="Kredi Onayda">Kredi Onayda</option>
+                        <option value="Kullandırıldı">Kullandırıldı</option>
+                        <option value="Red/İade">Red/İade</option>
                       </select>
                     ) : (
                       <span
@@ -676,11 +680,15 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                             ? "bg-yellow-100 text-yellow-800"
                             : customer.process === "Kredi Onayda"
                             ? "bg-blue-100 text-blue-800"
-                            : "bg-green-100 text-green-800"
+                            : customer.process === "Onaylandı"
+                            ? "bg-green-100 text-green-800"
+                            : customer.process === "Kullandırıldı"
+                            ? "bg-green-800 text-white"
+                            : "bg-pink-100 text-pink-800"
                         }`}
                         style={{fontSize: isMobile ? '11px' : '13px'}}
                       >
-                        {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : "K") : customer.process}
+                        {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : "R") : customer.process}
                       </span>
                     )}
                   </td>
