@@ -378,14 +378,14 @@ export default function CreditCalculator() {
               backgroundColor: "#ffffff",
               opacity: tableVisible ? 1 : 0,
               maxHeight: tableVisible ? "2000px" : "0px",
-              overflow: "hidden",
+              overflow: "visible",
               marginBottom: tableVisible ? "32px" : "0px",
               transition:
                 "opacity 0.6s ease-in-out, maxHeight 0.6s ease-in-out, transform 0.6s ease-in-out, margin-bottom 0.6s ease-in-out",
               transform: tableVisible ? "translateY(0)" : "translateY(-20px)",
             }}
           >
-            {/* Header - Fixed outside scroll container */}
+            {/* Header - Sticky at top */}
             <div
               style={{
                 backgroundColor: "#1a2b7d",
@@ -397,6 +397,10 @@ export default function CreditCalculator() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 flexWrap: "wrap",
+                position: "sticky",
+                top: "0",
+                zIndex: "20",
+                borderBottom: "5px solid #6d2fce",
               }}
             >
               <div style={{ flex: 1, minWidth: "0" }}>
@@ -420,15 +424,6 @@ export default function CreditCalculator() {
                 style={{ height: "clamp(40px, 10vw, 65px)", width: "auto", objectFit: "contain", marginLeft: "10px", flexShrink: 0 }}
               />
             </div>
-
-            {/* Separator Line */}
-            <div
-              style={{
-                height: "5px",
-                backgroundColor: "#6d2fce",
-                width: "100%",
-              }}
-            ></div>
 
             {/* Scrollable Table Wrapper for Mobile - only table scrolls */}
             <div
