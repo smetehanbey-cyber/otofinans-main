@@ -601,14 +601,14 @@ export default function CreditCalculator() {
                   borderRadius: "0",
                   display: "flex",
                   justifyContent: "space-between",
-                  alignItems: "flex-start",
+                  alignItems: "center",
                   flexWrap: "wrap",
                   borderBottom: "5px solid #6d2fce",
                   minWidth: "1000px",
                   gap: "10px",
                 }}
               >
-                <div style={{ flex: 1, minWidth: "0", display: "flex", flexDirection: "column" }}>
+                <div style={{ flex: 1, minWidth: "0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <h3
                     style={{
                       margin: "0",
@@ -619,6 +619,7 @@ export default function CreditCalculator() {
                       wordBreak: "break-word",
                       whiteSpace: "normal",
                       lineHeight: "1.3",
+                      textAlign: "center",
                     }}
                   >
                     {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ ÖRNEK ÖDEME TABLOSU

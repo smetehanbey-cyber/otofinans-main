@@ -50,7 +50,7 @@ export default function Index() {
                   kadar tüm taşıtlarda geçerli <u>48 Ay Vade</u> seçeneği
                   OtoFinans'ta.
                 </p>
-                <ul className="space-y-3 sm:space-y-3.5 mb-6 sm:mb-8">
+                <ul className="space-y-3 sm:space-y-3.5 mb-4 sm:mb-6">
                   <li className="flex items-center gap-3 text-xs sm:text-sm md:text-base">
                     <CheckIcon />
                     <span>30 dakikada kredi taraması ve onayı</span>
