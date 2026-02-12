@@ -19,6 +19,6 @@ export interface Customer {
   created_at: string;
   updated_at: string;
   status: "active" | "archived";
-  process: "Beklemede" | "Onaylandı" | "Kredi Onayda";
+  process: "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade";
   added_by?: string;
 }
