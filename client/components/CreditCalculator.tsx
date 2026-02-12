@@ -331,29 +331,6 @@ export default function CreditCalculator() {
               <p className="text-xs font-semibold mt-1 text-left" style={{ color: "#0f367e" }}>
                 Peşinatsız Tamamına Kredi Olursa
               </p>
-              <div className="mt-3 flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="tableToggle"
-                  checked={tableVisible}
-                  onChange={(e) => setTableVisible(e.target.checked)}
-                  style={{
-                    width: "14px",
-                    height: "14px",
-                    cursor: "pointer",
-                    minWidth: "14px",
-                    minHeight: "14px",
-                    flexShrink: 0,
-                    marginTop: "1px",
-                  }}
-                />
-                <label
-                  htmlFor="tableToggle"
-                  className="text-sm text-gray-700 cursor-pointer font-medium"
-                >
-                  {tableVisible ? "Tabloyu Gizle" : "Tabloyu Göster"}
-                </label>
-              </div>
             </div>
             <div>
               <p className="text-xs text-gray-600 mb-2 text-left">

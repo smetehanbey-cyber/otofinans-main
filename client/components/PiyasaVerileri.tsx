@@ -155,18 +155,6 @@ export default function PiyasaVerileri() {
           ))}
         </div>
 
-        {/* Navigation Controls - Dots Only */}
-        <div className="flex justify-center items-center gap-2">
-          {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                idx === currentIndex ? "bg-white" : "bg-white/40"
-              }`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );

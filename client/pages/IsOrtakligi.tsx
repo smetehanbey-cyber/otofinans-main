@@ -632,7 +632,7 @@ export default function IsOrtakligi() {
                 style={{ height: '54px' }}
               />
             </div>
-            <p className="text-sm">
+            <p className="text-sm hidden sm:block">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
             </p>
           </div>
