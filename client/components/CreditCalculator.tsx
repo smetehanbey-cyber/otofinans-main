@@ -122,14 +122,30 @@ export default function CreditCalculator() {
 
       // Temporarily make table visible for PNG export
       const wasVisible = tableVisible;
-      if (!tableVisible) {
-        tableRef.current.style.opacity = "1";
-        tableRef.current.style.maxHeight = "none";
-        tableRef.current.style.overflow = "visible";
-      }
+      const originalStyle = {
+        opacity: tableRef.current.style.opacity,
+        maxHeight: tableRef.current.style.maxHeight,
+        overflow: tableRef.current.style.overflow,
+        position: tableRef.current.style.position,
+        width: tableRef.current.style.width,
+        height: tableRef.current.style.height,
+      };
+
+      // Ensure table is fully visible and has proper dimensions
+      tableRef.current.style.opacity = "1";
+      tableRef.current.style.maxHeight = "none";
+      tableRef.current.style.overflow = "visible";
+      tableRef.current.style.position = "fixed";
+      tableRef.current.style.left = "-9999px";
+      tableRef.current.style.width = "auto";
+      tableRef.current.style.height = "auto";
 
       // Wait for DOM to update
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      // Get the actual dimensions of the table
+      const tableWidth = tableRef.current.scrollWidth || 1200;
+      const tableHeight = tableRef.current.scrollHeight || 800;
 
       const canvas = await html2canvas(tableRef.current, {
         backgroundColor: "#ffffff",
@@ -137,16 +153,16 @@ export default function CreditCalculator() {
         useCORS: true,
         allowTaint: true,
         logging: false,
-        windowHeight: tableRef.current.scrollHeight,
-        windowWidth: tableRef.current.scrollWidth,
+        windowHeight: tableHeight,
+        windowWidth: tableWidth,
+        width: tableWidth,
+        height: tableHeight,
       });
 
-      // Restore original visibility state
-      if (!wasVisible) {
-        tableRef.current.style.opacity = "0";
-        tableRef.current.style.maxHeight = "0px";
-        tableRef.current.style.overflow = "hidden";
-      }
+      // Restore original styles
+      Object.keys(originalStyle).forEach(key => {
+        tableRef.current!.style[key as any] = originalStyle[key as keyof typeof originalStyle];
+      });
 
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
@@ -600,7 +616,7 @@ export default function CreditCalculator() {
                         }}
                       >
                         {installment.toLocaleString("tr-TR", {
-                          maximumFractionDigits: 2,
+                          maximumFractionDigits: 0,
                         })}{" "}
                         ₺
                       </td>
