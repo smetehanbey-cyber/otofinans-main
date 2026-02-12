@@ -467,7 +467,7 @@ export default function Admin() {
 
         {/* Main Content */}
         <div className={`flex-1 overflow-auto flex flex-col ${isMobile && sidebarOpen ? "hidden" : ""}`}>
-          <div className={`${isMobile ? "p-3 sm:p-4" : "p-6"} flex-1 flex flex-col`}>
+          <div className={`${isMobile ? "p-3 sm:p-4" : "p-6"} flex-1 flex flex-col mx-auto w-full max-w-7xl`}>
             {/* Page Header */}
             <div className="mb-4 sm:mb-6">
               <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
