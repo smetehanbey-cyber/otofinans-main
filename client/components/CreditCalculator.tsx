@@ -337,7 +337,7 @@ export default function CreditCalculator() {
                   id="tableToggle"
                   checked={tableVisible}
                   onChange={(e) => setTableVisible(e.target.checked)}
-                  className="w-4 h-4 cursor-pointer"
+                  className="w-3 h-3 cursor-pointer"
                 />
                 <label
                   htmlFor="tableToggle"
