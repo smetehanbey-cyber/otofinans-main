@@ -527,9 +527,6 @@ export default function Finansmanlar() {
                 className="w-auto"
                 style={{ height: '54px' }}
               />
-              <p className="text-sm" style={{ letterSpacing: "1.5px" }}>
-                TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
-              </p>
             </div>
             <p className="text-sm">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.

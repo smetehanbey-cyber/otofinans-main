@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,19 +76,55 @@ export default function Header() {
               <div className="hidden md:flex items-center gap-4">
                 {/* Filter Tabs */}
                 <div className="flex items-center gap-6">
-                  <Link
-                    to="/admin"
-                    className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors"
-                  >
-                    Yetkili Bayiler
-                  </Link>
+                  {/* Kendim İçin Dropdown */}
+                  <div className="relative group">
+                    <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent group-hover:border-primary transition-colors flex items-center gap-1">
+                      Kendim İçin
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                    <div className="absolute left-0 mt-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <a
+                        href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 first:rounded-t-lg font-medium"
+                      >
+                        Kredi Kullan
+                      </a>
+                      <a
+                        href="https://wa.me/905324098440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 last:rounded-b-lg font-medium"
+                      >
+                        Aracını Hızlı Sat
+                      </a>
+                    </div>
+                  </div>
                   <div className="h-4 border-l border-gray-300"></div>
-                  <a
-                    href=""
-                    className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent hover:border-primary transition-colors cursor-default"
-                  >
-                    Araçlarımız
-                  </a>
+                  {/* Aracım İçin Dropdown */}
+                  <div className="relative group">
+                    <button className="text-sm text-gray-700 hover:text-primary font-medium pb-1 border-b-2 border-transparent group-hover:border-primary transition-colors flex items-center gap-1">
+                      Aracım İçin
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                    <div className="absolute left-0 mt-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <a
+                        href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 first:rounded-t-lg font-medium"
+                      >
+                        Kredi Kullan
+                      </a>
+                      <Link
+                        to="/admin"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 last:rounded-b-lg font-medium"
+                      >
+                        Admin Panel
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -182,12 +218,6 @@ export default function Header() {
         )}
       </header>
 
-      {/* Tagline Bar - Top */}
-      <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-1.5 text-center">
-        <p className="font-semibold px-4" style={{ fontSize: 'calc(0.875rem - 1.5px)', letterSpacing: '0.7px' }}>
-          TÜRKİYE'NİN TAKSİTLİ ARAÇ SATIŞ PLATFORMU
-        </p>
-      </div>
     </>
   );
 }
