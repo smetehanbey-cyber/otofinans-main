@@ -439,7 +439,6 @@ export default function Admin() {
               {sidebarOpen && (
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-800">{loggedInUser?.name}</p>
-                  <p className="text-xs text-gray-500">{loggedInUser?.pin}</p>
                   <p className={`text-xs font-semibold mt-1 ${loggedInUser?.is_admin ? 'text-green-700' : 'text-blue-700'}`}>
                     {loggedInUser?.is_admin ? '👑 Admin' : '👤 Yetkili'}
                   </p>
