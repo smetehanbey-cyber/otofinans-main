@@ -374,7 +374,6 @@ export default function CreditCalculator() {
           {/* Payment Schedule Table for PNG Export */}
           <div
             ref={tableRef}
-            className="p-6"
             style={{
               backgroundColor: "#ffffff",
               opacity: tableVisible ? 1 : 0,
@@ -386,7 +385,7 @@ export default function CreditCalculator() {
               transform: tableVisible ? "translateY(0)" : "translateY(-20px)",
             }}
           >
-            {/* Header */}
+            {/* Header - Fixed outside scroll container */}
             <div
               style={{
                 backgroundColor: "#1a2b7d",
@@ -397,16 +396,18 @@ export default function CreditCalculator() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                flexWrap: "wrap",
               }}
             >
-              <div>
+              <div style={{ flex: 1, minWidth: "0" }}>
                 <h3
                   style={{
                     margin: "0",
-                    fontSize: "22px",
+                    fontSize: "clamp(14px, 4vw, 22px)",
                     fontWeight: "bold",
-                    letterSpacing: "2px",
+                    letterSpacing: "1px",
                     fontFamily: '"Paytone One", sans-serif',
+                    wordBreak: "break-word",
                   }}
                 >
                   {amount.toLocaleString("tr-TR")} TL ARAÇ İÇİN TAKSİTLİ SATIŞ
@@ -416,7 +417,7 @@ export default function CreditCalculator() {
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F475a3c8d7d4e4dda994162d8b3ea3e67?format=webp&width=800&height=1200"
                 alt="Oto Finans Logo"
-                style={{ height: "65px", width: "auto", objectFit: "contain" }}
+                style={{ height: "clamp(40px, 10vw, 65px)", width: "auto", objectFit: "contain", marginLeft: "10px", flexShrink: 0 }}
               />
             </div>
 
@@ -429,13 +430,14 @@ export default function CreditCalculator() {
               }}
             ></div>
 
-            {/* Scrollable Table Wrapper for Mobile */}
+            {/* Scrollable Table Wrapper for Mobile - only table scrolls */}
             <div
               style={{
                 overflowX: "auto",
                 overflowY: "hidden",
                 WebkitOverflowScrolling: "touch",
                 msOverflowStyle: "-ms-autohiding-scrollbar",
+                width: "100%",
               }}
               className="scrollable-table-container"
             >
