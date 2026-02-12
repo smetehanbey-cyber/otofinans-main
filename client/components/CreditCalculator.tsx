@@ -117,183 +117,119 @@ export default function CreditCalculator() {
     if (!tableRef.current) return;
 
     try {
-      // Show loading state
-      toast.loading("Ödeme planı hazırlanıyor...", {
-        duration: 1000,
-      });
-
-      // First, try the server-side approach (more reliable on mobile)
-      const isMobileDevice = /iPhone|iPad|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
-
-      if (isMobileDevice) {
-        // For mobile, use server-side generation
-        await downloadViaServer();
-      } else {
-        // For desktop, use html2canvas
-        await downloadViaHtml2Canvas();
-      }
-    } catch (error) {
-      console.error("Error generating PNG:", error);
-
-      // If primary method fails, try fallback
-      try {
-        toast.info("Yedek yöntemi kullanılıyor...", { duration: 2000 });
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await downloadViaServer();
-      } catch (fallbackError) {
-        console.error("Fallback error:", fallbackError);
-        toast.error("Tablo oluştururken hata meydana geldi. Lütfen tekrar deneyiniz.", {
-          duration: 4000,
-          position: "top-center",
-        });
-      }
-    }
-  };
-
-  const downloadViaServer = async () => {
-    try {
-      const response = await fetch("/api/payment-schedule-png", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount,
-          installments: duration,
-          data: paymentScheduleData,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      const htmlContent = result.html;
-
-      // Create a hidden iframe to print from
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      document.body.appendChild(iframe);
-
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-      if (!iframeDoc) {
-        throw new Error("Could not access iframe document");
-      }
-
-      iframeDoc.open();
-      iframeDoc.write(htmlContent);
-      iframeDoc.close();
-
-      // Wait for content to load
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Use html2canvas on the iframe content
+      // Dynamically import html2canvas
       const html2canvas = (await import("html2canvas")).default;
 
-      const canvas = await html2canvas(iframeDoc.body, {
-        backgroundColor: "#ffffff",
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        imageTimeout: 20000,
-        timeout: 20000,
-      });
+      // Get the scrollable container
+      const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
 
-      // Remove iframe
-      document.body.removeChild(iframe);
-
-      // Download the canvas
-      triggerDownload(canvas);
-    } catch (error) {
-      console.error("Server-side download error:", error);
-      throw error;
-    }
-  };
-
-  const downloadViaHtml2Canvas = async () => {
-    if (!tableRef.current) throw new Error("Table reference not found");
-
-    const html2canvas = (await import("html2canvas")).default;
-
-    // Clone the table for proper rendering
-    const cloneContainer = document.createElement("div");
-    cloneContainer.style.position = "fixed";
-    cloneContainer.style.left = "-9999px";
-    cloneContainer.style.top = "0";
-    cloneContainer.style.width = "auto";
-    cloneContainer.style.height = "auto";
-    cloneContainer.style.backgroundColor = "#ffffff";
-    cloneContainer.style.zIndex = "9999";
-    cloneContainer.style.padding = "20px";
-
-    const clonedTable = tableRef.current.cloneNode(true) as HTMLElement;
-    cloneContainer.appendChild(clonedTable);
-    document.body.appendChild(cloneContainer);
-
-    // Fix all styles in the clone
-    const allElements = cloneContainer.querySelectorAll("*");
-    allElements.forEach((el) => {
-      const htmlEl = el as HTMLElement;
-      // Ensure all table elements are visible
-      if (htmlEl.tagName === "TABLE" || htmlEl.tagName === "TD" || htmlEl.tagName === "TH") {
-        htmlEl.style.borderCollapse = "collapse";
-        if (htmlEl.tagName === "TD" || htmlEl.tagName === "TH") {
-          htmlEl.style.border = "1px solid #6d2fce";
-          htmlEl.style.display = "table-cell";
-        }
+      if (!scrollContainer) {
+        throw new Error("Table container not found");
       }
-    });
 
-    // Remove overflow/hidden properties
-    const scrollContainer = cloneContainer.querySelector(".scrollable-table-container") as HTMLElement;
-    if (scrollContainer) {
-      scrollContainer.style.overflow = "visible";
-      scrollContainer.style.overflowX = "visible";
-      scrollContainer.style.overflowY = "visible";
-    }
+      // Create a clean copy for rendering
+      const renderContainer = document.createElement("div");
+      renderContainer.style.position = "fixed";
+      renderContainer.style.left = "-9999px";
+      renderContainer.style.top = "0";
+      renderContainer.style.backgroundColor = "#ffffff";
+      renderContainer.style.zIndex = "99999";
+      renderContainer.style.width = "auto";
+      renderContainer.style.padding = "0";
 
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Copy the header and table HTML
+      const headerDiv = scrollContainer.querySelector("div[style*='backgroundColor: rgb(26, 43, 125)']") as HTMLElement;
+      const table = scrollContainer.querySelector("table") as HTMLElement;
 
-      const canvas = await html2canvas(cloneContainer, {
+      if (!table) {
+        throw new Error("Table element not found");
+      }
+
+      // Create a wrapper with both header and table
+      if (headerDiv) {
+        renderContainer.appendChild(headerDiv.cloneNode(true));
+      }
+      renderContainer.appendChild(table.cloneNode(true));
+
+      document.body.appendChild(renderContainer);
+
+      // Ensure all cells have visible borders
+      const allCells = renderContainer.querySelectorAll("td, th");
+      allCells.forEach((cell) => {
+        const el = cell as HTMLElement;
+        el.style.border = "1px solid #6d2fce";
+        el.style.borderCollapse = "collapse";
+      });
+
+      // Set table properties
+      const tableElement = renderContainer.querySelector("table") as HTMLElement;
+      if (tableElement) {
+        tableElement.style.borderCollapse = "collapse";
+        tableElement.style.backgroundColor = "#ffffff";
+        tableElement.style.width = "100%";
+      }
+
+      // Set header properties if exists
+      const headerElement = renderContainer.querySelector("div") as HTMLElement;
+      if (headerElement) {
+        headerElement.style.backgroundColor = "#1a2b7d";
+        headerElement.style.color = "#ffffff";
+        headerElement.style.padding = "20px";
+        headerElement.style.display = "flex";
+        headerElement.style.justifyContent = "space-between";
+        headerElement.style.alignItems = "center";
+      }
+
+      // Wait a moment for rendering
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // Get dimensions
+      const width = renderContainer.scrollWidth || 1200;
+      const height = renderContainer.scrollHeight || 900;
+
+      // Render to canvas
+      const canvas = await html2canvas(renderContainer, {
         backgroundColor: "#ffffff",
         scale: 2,
         useCORS: true,
         allowTaint: true,
         logging: false,
-        imageTimeout: 20000,
-        timeout: 20000,
+        width: width,
+        height: height,
+        windowWidth: width,
+        windowHeight: height,
+        imageTimeout: 30000,
+        timeout: 30000,
       });
 
-      triggerDownload(canvas);
-    } finally {
       // Clean up
-      document.body.removeChild(cloneContainer);
-    }
-  };
+      document.body.removeChild(renderContainer);
 
-  const triggerDownload = (canvas: HTMLCanvasElement) => {
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png", 1.0);
-    link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
+      // Download immediately
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
 
-    // Use a more reliable download method
-    if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
-      // Mobile: open in new tab for download
-      window.open(link.href, "_blank");
-    } else {
-      // Desktop: direct download
+      // Trigger download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    }
 
-    toast.success("Ödeme planınız görüntü olarak kayıt edilmiştir", {
-      duration: 4000,
-      position: "top-center",
-    });
+      // Free memory
+      canvas.remove();
+
+      toast.success("Ödeme planınız indirilmiştir", {
+        duration: 3000,
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("Error generating PNG:", error);
+      toast.error("Ödeme planı indirme başarısız. Lütfen tekrar deneyin.", {
+        duration: 4000,
+        position: "top-center",
+      });
+    }
   };
 
   // Generate and download payment schedule as Excel
@@ -545,6 +481,8 @@ export default function CreditCalculator() {
                 .scrollable-table-container {
                   scrollbar-width: thin;
                   scrollbar-color: #6d2fce #e5e7eb;
+                  -webkit-user-select: none;
+                  user-select: none;
                 }
                 .scrollable-table-container::-webkit-scrollbar {
                   height: 6px;
@@ -561,38 +499,78 @@ export default function CreditCalculator() {
                   background: #5a1fb8;
                 }
 
-                /* Consistent border styling for all views */
+                /* Force grid lines to always be visible */
                 table {
-                  border-collapse: collapse;
+                  border-collapse: collapse !important;
                   width: 100%;
+                  background-color: #ffffff;
+                  table-layout: auto;
                 }
 
                 table td,
                 table th {
-                  border: 1px solid #6d2fce;
-                  padding: 16px;
-                  text-align: center;
-                  vertical-align: middle;
+                  border: 1px solid #6d2fce !important;
+                  padding: 16px !important;
+                  text-align: center !important;
+                  vertical-align: middle !important;
+                  background-color: #ffffff !important;
+                  margin: 0 !important;
+                  outline: 1px solid #6d2fce !important;
                 }
 
                 table thead th {
-                  border: 2px solid #1800ae;
-                  font-weight: bold;
+                  border: 2px solid #1800ae !important;
+                  font-weight: bold !important;
+                  background-color: #1800ae !important;
+                  color: #ffffff !important;
                 }
 
-                /* Mobile optimization - keep same border thickness */
+                /* Mobile specific - ensure borders are visible */
                 @media (max-width: 768px) {
                   table {
-                    border-collapse: collapse;
+                    border-collapse: collapse !important;
+                    table-layout: fixed;
                   }
 
                   table td,
                   table th {
-                    border: 1px solid #6d2fce;
+                    border: 1px solid #6d2fce !important;
+                    border-right: 1px solid #6d2fce !important;
+                    border-bottom: 1px solid #6d2fce !important;
+                    border-left: 1px solid #6d2fce !important;
+                    border-top: 1px solid #6d2fce !important;
+                    outline: 1px solid #6d2fce !important;
+                    -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
                   }
 
                   table thead th {
-                    border: 2px solid #1800ae;
+                    border: 2px solid #1800ae !important;
+                    border-right: 2px solid #1800ae !important;
+                    border-bottom: 2px solid #1800ae !important;
+                    border-left: 2px solid #1800ae !important;
+                    border-top: 2px solid #1800ae !important;
+                  }
+
+                  /* Extra visible lines for mobile */
+                  table tr {
+                    border-bottom: 1px solid #6d2fce !important;
+                  }
+
+                  table thead tr {
+                    border-bottom: 2px solid #1800ae !important;
+                  }
+                }
+
+                /* iOS Safari specific fix */
+                @supports (-webkit-touch-callout: none) {
+                  table td,
+                  table th {
+                    border: 1px solid #6d2fce !important;
+                    -webkit-appearance: none;
+                  }
+                  table thead th {
+                    border: 2px solid #1800ae !important;
                   }
                 }
               `}</style>
