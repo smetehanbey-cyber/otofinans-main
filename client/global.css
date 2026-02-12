@@ -1,6 +1,8 @@
 /** @import must precede all other statements */
 /* Using display=swap for faster font rendering with system fallback */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Paytone+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap");
 
 /* Provide explicit font fallback stack */
 @font-face {
