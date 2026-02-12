@@ -141,7 +141,7 @@ export default function CreditCalculator() {
       renderContainer.style.zIndex = "99999";
       renderContainer.style.width = "1024px"; // Fixed width to prevent spreading
       renderContainer.style.overflow = "visible";
-      renderContainer.style.padding = "5px"; // 5px white border/padding
+      renderContainer.style.padding = "0";
       renderContainer.style.margin = "0";
       renderContainer.style.boxSizing = "border-box";
 
@@ -154,6 +154,11 @@ export default function CreditCalculator() {
         headerClone.style.width = "1024px";
         headerClone.style.boxSizing = "border-box";
         headerClone.style.minWidth = "1024px";
+        headerClone.style.margin = "0";
+        headerClone.style.padding = "20px";
+        headerClone.style.display = "flex";
+        headerClone.style.backgroundColor = "#1a2b7d";
+        headerClone.style.borderBottom = "5px solid #6d2fce";
         renderContainer.appendChild(headerClone);
       }
 
@@ -166,6 +171,7 @@ export default function CreditCalculator() {
       tableClone.style.margin = "0";
       tableClone.style.padding = "0";
       tableClone.style.boxSizing = "border-box";
+      tableClone.style.display = "block";
 
       // Fix all cells in cloned table
       const cells = tableClone.querySelectorAll("td, th");
