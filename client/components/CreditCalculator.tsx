@@ -545,8 +545,6 @@ export default function CreditCalculator() {
                 .scrollable-table-container {
                   scrollbar-width: thin;
                   scrollbar-color: #6d2fce #e5e7eb;
-                  -webkit-box-shadow: inset 0 0 0 1px #6d2fce;
-                  box-shadow: inset 0 0 0 1px #6d2fce;
                 }
                 .scrollable-table-container::-webkit-scrollbar {
                   height: 6px;
@@ -563,40 +561,39 @@ export default function CreditCalculator() {
                   background: #5a1fb8;
                 }
 
-                /* Mobile-specific grid fixes */
-                @media (max-width: 768px) {
-                  .scrollable-table-container table {
-                    border-collapse: separate !important;
-                    border-spacing: 0 !important;
-                  }
-
-                  .scrollable-table-container table td,
-                  .scrollable-table-container table th {
-                    border: 1px solid #6d2fce !important;
-                    box-shadow: inset 0 0 0 1px #6d2fce !important;
-                    -webkit-box-shadow: inset 0 0 0 1px #6d2fce !important;
-                  }
-
-                  .scrollable-table-container table thead th {
-                    border: 2px solid #1800ae !important;
-                    box-shadow: inset 0 0 0 2px #1800ae !important;
-                  }
-                }
-
-                /* Ensure borders are always visible */
+                /* Consistent border styling for all views */
                 table {
-                  border-collapse: collapse !important;
+                  border-collapse: collapse;
+                  width: 100%;
                 }
 
                 table td,
                 table th {
-                  border: 1px solid #6d2fce !important;
-                  position: relative;
+                  border: 1px solid #6d2fce;
+                  padding: 16px;
+                  text-align: center;
+                  vertical-align: middle;
                 }
 
                 table thead th {
-                  border: 2px solid #1800ae !important;
-                  border-collapse: collapse !important;
+                  border: 2px solid #1800ae;
+                  font-weight: bold;
+                }
+
+                /* Mobile optimization - keep same border thickness */
+                @media (max-width: 768px) {
+                  table {
+                    border-collapse: collapse;
+                  }
+
+                  table td,
+                  table th {
+                    border: 1px solid #6d2fce;
+                  }
+
+                  table thead th {
+                    border: 2px solid #1800ae;
+                  }
                 }
               `}</style>
 
