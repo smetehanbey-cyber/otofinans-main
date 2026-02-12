@@ -139,7 +139,7 @@ function FinansmanlarFAQSection() {
             Hemen iletişime geçin ve finansman başvurusu hangi bankadan daha uygun fiyata kullanabileceğinizin bilgisi sizlere verelim.
           </p>
           <a
-            href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+            href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-6 py-2 sm:px-8 sm:py-3 bg-blue-600 text-white font-semibold text-xs sm:text-sm rounded-full hover:bg-blue-700 transition-colors duration-200"
@@ -231,7 +231,7 @@ export default function Finansmanlar() {
                 </ul>
 
                 <a
-                  href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                  href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
@@ -246,7 +246,7 @@ export default function Finansmanlar() {
 
                 {/* Contact Info */}
                 <a
-                  href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                  href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors block"
@@ -255,7 +255,7 @@ export default function Finansmanlar() {
                     Bizimle İletişime Geç
                   </p>
                   <p className="text-lg sm:text-xl font-bold text-white">
-                    +90 532 409 8440
+                    +90 532 639 8440
                   </p>
                   <p className="text-blue-100 text-sm mt-2">
                     Limitini Etkilemeden Hemen Bilgi Al
@@ -365,7 +365,7 @@ export default function Finansmanlar() {
 
                 <div className="animate-fade-in-up-delay-2 pt-4">
                   <a
-                    href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                    href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
@@ -489,12 +489,12 @@ export default function Finansmanlar() {
               <ul className="space-y-2 text-sm">
                 <li>
                   <a
-                    href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                    href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-white transition-colors"
                   >
-                    WhatsApp: +90 532 409 8440
+                    WhatsApp: +90 532 639 8440
                   </a>
                 </li>
                 <li>

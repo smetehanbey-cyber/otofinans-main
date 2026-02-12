@@ -91,7 +91,7 @@ export default function Header() {
               {!isAdminPage && (
                 <div className="hidden md:flex items-center gap-2 flex-shrink-0">
                   <a
-                    href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                    href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-5 py-1.5 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white rounded text-xs font-semibold hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors"
@@ -99,7 +99,7 @@ export default function Header() {
                     Kredi Kullan
                   </a>
                   <a
-                    href="https://wa.me/905324098440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
+                    href="https://wa.me/905326398440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
@@ -159,7 +159,7 @@ export default function Header() {
             </Link>
             <div className="px-4 py-2 space-y-2 border-t border-gray-200">
               <a
-                href="https://wa.me/905324098440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
+                href="https://wa.me/905326398440?text=Arac%C4%B1m%C4%B1%20Satmak%20%C4%B0stiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full block px-4 py-1.5 border border-gray-400 rounded text-xs font-medium text-gray-700 hover:bg-gray-100 text-center transition-colors"
@@ -167,7 +167,7 @@ export default function Header() {
                 Aracını Hızlı Sat
               </a>
               <a
-                href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full block px-4 py-1.5 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white rounded text-xs text-center font-semibold hover:from-blue-950 hover:via-blue-900 hover:to-blue-800 transition-colors"

@@ -44,7 +44,7 @@ Sektördeki Deneyim: ${formData.experience}
 ${formData.message ? `Mesaj: ${formData.message}` : ''}`;
 
     // WhatsApp link'i oluştur ve aç
-    const whatsappUrl = `https://wa.me/905324098440?text=${encodeURIComponent(messageText)}`;
+    const whatsappUrl = `https://wa.me/905326398440?text=${encodeURIComponent(messageText)}`;
     window.open(whatsappUrl, '_blank');
 
     // Başarı mesajı göster ve formu temizle
@@ -348,7 +348,7 @@ export default function IsOrtakligi() {
                 </ul>
 
                 <a
-                  href="https://wa.me/905324098440?text=İş%20Ortaklığı%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                  href="https://wa.me/905326398440?text=İş%20Ortaklığı%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
@@ -363,7 +363,7 @@ export default function IsOrtakligi() {
 
                 {/* Contact Info */}
                 <a
-                  href="https://wa.me/905324098440?text=İş%20Ortaklığı%20hakkında%20bilgi%20almak%20istiyorum."
+                  href="https://wa.me/905326398440?text=İş%20Ortaklığı%20hakkında%20bilgi%20almak%20istiyorum."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors block"
@@ -372,7 +372,7 @@ export default function IsOrtakligi() {
                     Bizimle İletişime Geç
                   </p>
                   <p className="text-lg sm:text-xl font-bold text-white">
-                    +90 532 409 8440
+                    +90 532 639 8440
                   </p>
                   <p className="text-blue-100 text-sm mt-2">
                     Ortaklık Detaylarını Öğren
@@ -481,7 +481,7 @@ export default function IsOrtakligi() {
 
                 <div className="animate-fade-in-up-delay-2 pt-4">
                   <a
-                    href="https://wa.me/905324098440?text=İş%20Ortaklığı%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                    href="https://wa.me/905326398440?text=İş%20Ortaklığı%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
@@ -593,12 +593,12 @@ export default function IsOrtakligi() {
               <ul className="space-y-2 text-sm">
                 <li>
                   <a
-                    href="https://wa.me/905324098440?text=İş%20Ortaklığı%20hakkında%20bilgi%20almak%20istiyorum."
+                    href="https://wa.me/905326398440?text=İş%20Ortaklığı%20hakkında%20bilgi%20almak%20istiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-white transition-colors"
                   >
-                    WhatsApp: +90 532 409 8440
+                    WhatsApp: +90 532 639 8440
                   </a>
                 </li>
                 <li>
