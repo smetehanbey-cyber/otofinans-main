@@ -139,10 +139,11 @@ export default function CreditCalculator() {
       renderContainer.style.top = "0";
       renderContainer.style.backgroundColor = "#ffffff";
       renderContainer.style.zIndex = "99999";
-      renderContainer.style.width = "1400px"; // Fixed width to fit all columns
+      renderContainer.style.width = "1024px"; // Fixed width to prevent spreading
       renderContainer.style.overflow = "visible";
       renderContainer.style.padding = "0";
       renderContainer.style.margin = "0";
+      renderContainer.style.boxSizing = "border-box";
 
       // Find header div by looking for the one with flexbox and dark blue background
       const headerDiv = scrollContainer.querySelector("div[style*='display: flex']") as HTMLElement;
@@ -150,18 +151,21 @@ export default function CreditCalculator() {
       // Clone and add header
       if (headerDiv) {
         const headerClone = headerDiv.cloneNode(true) as HTMLElement;
-        headerClone.style.width = "100%";
+        headerClone.style.width = "1024px";
         headerClone.style.boxSizing = "border-box";
+        headerClone.style.minWidth = "1024px";
         renderContainer.appendChild(headerClone);
       }
 
       // Clone and add table
       const tableClone = table.cloneNode(true) as HTMLElement;
-      tableClone.style.width = "100%";
+      tableClone.style.width = "1024px";
+      tableClone.style.minWidth = "1024px";
       tableClone.style.borderCollapse = "collapse";
       tableClone.style.backgroundColor = "#ffffff";
       tableClone.style.margin = "0";
       tableClone.style.padding = "0";
+      tableClone.style.boxSizing = "border-box";
 
       // Fix all cells in cloned table
       const cells = tableClone.querySelectorAll("td, th");
