@@ -281,7 +281,7 @@ export default function Admin() {
                   PIN
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   inputMode="numeric"
                   placeholder="PIN giriniz"
                   value={pin}
@@ -295,7 +295,10 @@ export default function Admin() {
                     color: '#000000',
                     colorScheme: 'light',
                     WebkitAppearance: 'none',
-                    appearance: 'none'
+                    appearance: 'none',
+                    letterSpacing: '8px',
+                    fontFamily: '"Courier New", monospace',
+                    fontSize: '24px'
                   }}
                   maxLength="6"
                   autoFocus
