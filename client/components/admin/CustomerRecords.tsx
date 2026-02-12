@@ -37,7 +37,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [showAuthorizedPersonDropdown, setShowAuthorizedPersonDropdown] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [animatingIds, setAnimatingIds] = useState<Set<number>>(new Set());
-  const [realtimeConnected, setRealtimeConnected] = useState(false);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -58,15 +57,15 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     }
   };
 
-  // Fetch on component mount and when sort changes
-  useEffect(() => {
-    fetchCustomers();
-  }, [sortField, sortOrder]);
-
-  // Also fetch immediately on mount
+  // Initial fetch on mount
   useEffect(() => {
     fetchCustomers();
   }, []);
+
+  // Fetch when sort changes
+  useEffect(() => {
+    fetchCustomers();
+  }, [sortField, sortOrder]);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -78,83 +77,35 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Real-time subscription to customers table with fallback polling
+  // Real-time subscription to customers table
   useEffect(() => {
     let channel: any;
-    let pollInterval: NodeJS.Timeout;
-    let isSubscribed = true;
 
-    const setupRealtime = async () => {
+    const setupRealtime = () => {
       try {
         channel = supabase
-          .channel("customers-updates", {
-            config: {
-              broadcast: { self: true },
-              presence: { key: "customers" }
-            }
-          })
+          .channel("customers-updates")
           .on(
             "postgres_changes",
             { event: "*", schema: "public", table: "customers" },
-            async (payload) => {
-              if (!isSubscribed) return;
-
-              // Handle insert, update, or delete
-              if (payload.new && payload.new.status === "active") {
-                // Add animation effect to the updated row
-                const customerId = payload.new.id;
-                setAnimatingIds(prev => new Set(prev).add(customerId));
-
-                // Refresh data
-                fetchCustomers();
-
-                // Remove animation after 800ms
-                setTimeout(() => {
-                  setAnimatingIds(prev => {
-                    const newSet = new Set(prev);
-                    newSet.delete(customerId);
-                    return newSet;
-                  });
-                }, 800);
-              } else if (payload.old && payload.old.status === "active") {
-                // Handle deletion/archiving
+            (payload) => {
+              // Only refresh if the changed record is active
+              if (payload.new?.status === "active" || payload.old?.status === "active") {
                 fetchCustomers();
               }
             }
           )
-          .subscribe((status) => {
-            console.log("Realtime subscription status:", status);
-            if (status === "SUBSCRIBED") {
-              setRealtimeConnected(true);
-            } else if (status === "CLOSED" || status === "CHANNEL_ERROR") {
-              setRealtimeConnected(false);
-            }
-          });
-
-        console.log("Realtime subscription initialized");
+          .subscribe();
       } catch (error) {
         console.error("Error setting up realtime subscription:", error);
       }
     };
 
-    // Setup realtime connection
     setupRealtime();
 
-    // Fallback: Poll for changes every 3 seconds as backup
-    // This ensures data is updated even if realtime connection fails
-    pollInterval = setInterval(() => {
-      if (isSubscribed) {
-        fetchCustomers();
-      }
-    }, 3000);
-
     return () => {
-      isSubscribed = false;
       if (channel) {
         supabase.removeChannel(channel);
-      }
-      if (pollInterval) {
-        clearInterval(pollInterval);
       }
     };
   }, []);
@@ -341,37 +292,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
             background-color: transparent;
           }
         }
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.5;
-          }
-        }
         .row-animate {
           animation: rowUpdate 0.8s ease-out;
         }
       `}</style>
-
-      {/* Real-time Connection Indicator */}
-      <div className={`mb-4 flex items-center gap-2 ${isMobile ? "text-sm" : "text-base"}`}>
-        <h2 className="font-bold text-gray-800">Müşteri Kayıtları</h2>
-        <div className="flex items-center gap-1">
-          <div
-            style={{
-              width: "10px",
-              height: "10px",
-              borderRadius: "50%",
-              backgroundColor: realtimeConnected ? "#10b981" : "#ef4444",
-              animation: realtimeConnected ? "pulse 2s infinite" : "none"
-            }}
-          />
-          <span className={`text-xs font-medium ${realtimeConnected ? "text-green-600" : "text-red-600"}`}>
-            {realtimeConnected ? "Canlı" : "Yedek Moda"}
-          </span>
-        </div>
-      </div>
 
       {/* Add Customer Button and Search */}
       {!showForm && (
