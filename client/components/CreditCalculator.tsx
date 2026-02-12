@@ -567,7 +567,7 @@ export default function CreditCalculator() {
                         fontSize: "17px",
                         fontWeight: 900,
                         fontFamily: '"Arimo", sans-serif',
-                        letterSpacing: "1px",
+                        letterSpacing: "0",
                         height: "60px",
                         lineHeight: "1.2",
                       }}
@@ -588,7 +588,7 @@ export default function CreditCalculator() {
                         fontSize: "17px",
                         fontFamily: '"Arimo", sans-serif',
                         minWidth: "123px",
-                        letterSpacing: "1px",
+                        letterSpacing: "0",
                         height: "60px",
                         lineHeight: "1.2",
                       }}
@@ -610,7 +610,7 @@ export default function CreditCalculator() {
                           fontWeight: 900,
                           fontFamily: '"Arimo", sans-serif',
                           minWidth: "123px",
-                          letterSpacing: "1px",
+                          letterSpacing: "0",
                           height: "60px",
                           lineHeight: "1.2",
                         }}
