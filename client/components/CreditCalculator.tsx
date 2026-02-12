@@ -120,65 +120,105 @@ export default function CreditCalculator() {
       // Dynamically import html2canvas
       const html2canvas = (await import("html2canvas")).default;
 
-      // Save original styles
-      const originalStyle = {
-        opacity: tableRef.current.style.opacity,
-        maxHeight: tableRef.current.style.maxHeight,
-        overflow: tableRef.current.style.overflow,
-        position: tableRef.current.style.position,
-        width: tableRef.current.style.width,
-        height: tableRef.current.style.height,
-        zIndex: tableRef.current.style.zIndex,
-      };
-
-      // Save original styles of scrollable container
+      // Find all elements we need to modify
       const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
-      const scrollContainerOriginalStyle: any = {};
-      if (scrollContainer) {
-        scrollContainerOriginalStyle.overflow = scrollContainer.style.overflow;
-        scrollContainerOriginalStyle.overflowX = scrollContainer.style.overflowX;
-        scrollContainerOriginalStyle.overflowY = scrollContainer.style.overflowY;
+      const table = scrollContainer ? scrollContainer.querySelector("table") as HTMLElement : tableRef.current.querySelector("table") as HTMLElement;
+
+      if (!table) {
+        throw new Error("Table not found");
       }
 
-      // Ensure table is fully visible and has proper dimensions
-      tableRef.current.style.opacity = "1";
-      tableRef.current.style.maxHeight = "none";
-      tableRef.current.style.overflow = "visible";
-      tableRef.current.style.position = "fixed";
-      tableRef.current.style.left = "-9999px";
-      tableRef.current.style.top = "0";
-      tableRef.current.style.width = "auto";
-      tableRef.current.style.height = "auto";
-      tableRef.current.style.zIndex = "9999";
+      // Save original styles
+      const originalTableRefStyle: any = {};
+      const originalScrollContainerStyle: any = {};
+      const originalTableStyle: any = {};
 
-      // Fix scrollable container overflow for proper rendering
-      if (scrollContainer) {
-        scrollContainer.style.overflow = "visible";
-        scrollContainer.style.overflowX = "visible";
-        scrollContainer.style.overflowY = "visible";
+      // Save table ref styles
+      for (let i = 0; i < tableRef.current.style.length; i++) {
+        const prop = tableRef.current.style[i];
+        originalTableRefStyle[prop] = tableRef.current.style.getPropertyValue(prop);
       }
 
-      // Wait longer for all content to render
-      await new Promise(resolve => setTimeout(resolve, 600));
-
-      // Get the actual dimensions of the table including all content
-      let tableWidth = 1200;
-      let tableHeight = 800;
-
+      // Save scroll container styles
       if (scrollContainer) {
-        const table = scrollContainer.querySelector("table") as HTMLElement;
-        if (table) {
-          tableWidth = Math.max(table.scrollWidth, 1200);
-          tableHeight = Math.max(tableRef.current.scrollHeight, 800);
+        for (let i = 0; i < scrollContainer.style.length; i++) {
+          const prop = scrollContainer.style[i];
+          originalScrollContainerStyle[prop] = scrollContainer.style.getPropertyValue(prop);
         }
-      } else {
-        tableWidth = tableRef.current.scrollWidth || 1200;
-        tableHeight = tableRef.current.scrollHeight || 800;
       }
 
-      // Add padding to capture everything
-      tableWidth += 60;
-      tableHeight += 60;
+      // Save table styles
+      for (let i = 0; i < table.style.length; i++) {
+        const prop = table.style[i];
+        originalTableStyle[prop] = table.style.getPropertyValue(prop);
+      }
+
+      // Measure the actual table dimensions
+      const tableRect = table.getBoundingClientRect();
+      let actualTableWidth = table.scrollWidth || tableRect.width || 1200;
+      let actualTableHeight = table.scrollHeight || tableRect.height || 800;
+
+      // Set table ref styles for rendering
+      tableRef.current.style.cssText = `
+        opacity: 1 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        position: fixed !important;
+        left: -9999px !important;
+        top: 0 !important;
+        width: auto !important;
+        height: auto !important;
+        z-index: 9999 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      `;
+
+      // Set scroll container styles for rendering
+      if (scrollContainer) {
+        scrollContainer.style.cssText = `
+          overflow: visible !important;
+          overflow-x: visible !important;
+          overflow-y: visible !important;
+          width: auto !important;
+          height: auto !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        `;
+      }
+
+      // Set table styles for rendering
+      table.style.cssText = `
+        width: auto !important;
+        border-collapse: collapse !important;
+        font-family: "Paytone One", sans-serif !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #ffffff !important;
+      `;
+
+      // Ensure all cells have visible borders
+      const allCells = table.querySelectorAll("td, th");
+      const cellOriginalStyles: any[] = [];
+
+      allCells.forEach((cell, index) => {
+        const cellElement = cell as HTMLElement;
+        cellOriginalStyles[index] = cellElement.style.cssText;
+        cellElement.style.cssText = `
+          ${cellElement.style.cssText}
+          border: 1px solid #6d2fce !important;
+          border-collapse: collapse !important;
+          display: table-cell !important;
+        `;
+      });
+
+      // Wait for styles to apply and render
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      // Calculate final dimensions
+      const finalWidth = Math.ceil(actualTableWidth) + 40;
+      const finalHeight = Math.ceil(actualTableHeight) + 40;
+
+      console.log("Table dimensions:", { actualTableWidth, actualTableHeight, finalWidth, finalHeight });
 
       const canvas = await html2canvas(tableRef.current, {
         backgroundColor: "#ffffff",
@@ -186,73 +226,131 @@ export default function CreditCalculator() {
         useCORS: true,
         allowTaint: true,
         logging: false,
-        imageTimeout: 10000,
-        timeout: 10000,
-        windowHeight: tableHeight,
-        windowWidth: tableWidth,
-        width: tableWidth,
-        height: tableHeight,
-        foreignObjectRendering: true,
+        imageTimeout: 15000,
+        timeout: 15000,
+        windowHeight: finalHeight * 2,
+        windowWidth: finalWidth * 2,
+        width: finalWidth,
+        height: finalHeight,
+        foreignObjectRendering: false,
         onclone: (clonedDocument) => {
-          // Ensure cloned element is fully visible and has proper styles
-          const clonedElement = clonedDocument.querySelector("[data-ref='table']") as HTMLElement;
-          if (clonedElement) {
-            clonedElement.style.opacity = "1";
-            clonedElement.style.overflow = "visible";
-            clonedElement.style.maxHeight = "none";
-            clonedElement.style.position = "relative";
-            clonedElement.style.left = "0";
-            clonedElement.style.top = "0";
+          // Set body and html styles in cloned document
+          clonedDocument.documentElement.style.cssText = `
+            width: ${finalWidth}px !important;
+            height: ${finalHeight}px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: #ffffff !important;
+          `;
+          clonedDocument.body.style.cssText = `
+            width: ${finalWidth}px !important;
+            height: ${finalHeight}px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: #ffffff !important;
+          `;
+
+          // Fix cloned table ref
+          const clonedTableRef = clonedDocument.querySelector("[data-ref='table']") as HTMLElement;
+          if (clonedTableRef) {
+            clonedTableRef.style.cssText = `
+              opacity: 1 !important;
+              max-height: none !important;
+              overflow: visible !important;
+              position: relative !important;
+              left: 0 !important;
+              top: 0 !important;
+              width: 100% !important;
+              height: auto !important;
+              z-index: 1 !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              background-color: #ffffff !important;
+            `;
           }
 
-          // Fix scrollable container in cloned document
+          // Fix cloned scroll container
           const clonedScrollContainer = clonedDocument.querySelector(".scrollable-table-container") as HTMLElement;
           if (clonedScrollContainer) {
-            clonedScrollContainer.style.overflow = "visible";
-            clonedScrollContainer.style.overflowX = "visible";
-            clonedScrollContainer.style.overflowY = "visible";
-            clonedScrollContainer.style.width = "100%";
+            clonedScrollContainer.style.cssText = `
+              overflow: visible !important;
+              overflow-x: visible !important;
+              overflow-y: visible !important;
+              width: 100% !important;
+              height: auto !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            `;
           }
 
-          // Ensure all table borders are visible
-          const tables = clonedDocument.querySelectorAll("table");
-          tables.forEach((table) => {
-            table.style.borderCollapse = "collapse";
-            const cells = table.querySelectorAll("td, th");
-            cells.forEach((cell) => {
-              const styles = window.getComputedStyle(cell);
-              // Ensure borders are preserved
-              if (!cell.style.border) {
-                cell.style.border = styles.border || "1px solid #000";
-              }
+          // Fix cloned table and its cells
+          const clonedTable = clonedDocument.querySelector("table") as HTMLElement;
+          if (clonedTable) {
+            clonedTable.style.cssText = `
+              width: 100% !important;
+              border-collapse: collapse !important;
+              font-family: "Paytone One", sans-serif !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              background-color: #ffffff !important;
+              border: 1px solid #6d2fce !important;
+            `;
+
+            // Ensure all cells in cloned table have borders
+            const clonedCells = clonedTable.querySelectorAll("td, th");
+            clonedCells.forEach((cell) => {
+              const cellElement = cell as HTMLElement;
+              cellElement.style.cssText = `
+                ${cellElement.getAttribute('style') || ''}
+                border: 1px solid #6d2fce !important;
+                border-collapse: collapse !important;
+                display: table-cell !important;
+                padding: 16px !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+              `;
             });
-          });
+          }
         }
       });
 
-      // Restore original styles
-      Object.keys(originalStyle).forEach(key => {
-        tableRef.current!.style[key as any] = originalStyle[key as keyof typeof originalStyle];
+      // Restore all original styles
+      tableRef.current.style.cssText = '';
+      Object.keys(originalTableRefStyle).forEach(key => {
+        if (originalTableRefStyle[key]) {
+          tableRef.current!.style.setProperty(key, originalTableRefStyle[key]);
+        }
       });
 
-      // Restore scrollable container styles
       if (scrollContainer) {
-        Object.keys(scrollContainerOriginalStyle).forEach(key => {
-          scrollContainer.style[key] = scrollContainerOriginalStyle[key];
+        scrollContainer.style.cssText = '';
+        Object.keys(originalScrollContainerStyle).forEach(key => {
+          if (originalScrollContainerStyle[key]) {
+            scrollContainer!.style.setProperty(key, originalScrollContainerStyle[key]);
+          }
         });
       }
 
-      // Create downloadable link
+      table.style.cssText = '';
+      Object.keys(originalTableStyle).forEach(key => {
+        if (originalTableStyle[key]) {
+          table!.style.setProperty(key, originalTableStyle[key]);
+        }
+      });
+
+      allCells.forEach((cell, index) => {
+        const cellElement = cell as HTMLElement;
+        cellElement.style.cssText = cellOriginalStyles[index];
+      });
+
+      // Create and trigger download
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png", 1.0);
       link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
 
-      // Add to body, click, and remove
       document.body.appendChild(link);
-      setTimeout(() => {
-        link.click();
-        document.body.removeChild(link);
-      }, 100);
+      link.click();
+      document.body.removeChild(link);
 
       // Show success message
       toast.success("Ödeme planınız görüntü olarak kayıt edilmiştir", {
