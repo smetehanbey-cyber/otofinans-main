@@ -110,7 +110,7 @@ export default function ProductDropdown() {
               }}
             >
               {/* Dropdown Header */}
-              <div className="border-b border-gray-100 py-2 text-sm font-semibold text-gray-700 bg-white">
+              <div className="border-b border-gray-100 py-1 text-sm font-semibold text-gray-700 bg-white" style={{ marginTop: "-8px" }}>
                 <div className="max-w-6xl mx-auto px-4">
                   Kendim İçin Finansal Çözümler
                 </div>
