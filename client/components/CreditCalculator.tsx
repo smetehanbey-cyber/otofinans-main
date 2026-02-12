@@ -286,25 +286,25 @@ export default function CreditCalculator() {
   };
 
   return (
-    <section id="credit-calculator" className="py-4 sm:py-8 bg-white">
+    <section id="credit-calculator" className="py-6 sm:py-8 lg:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-left mb-2 sm:mb-3">
+        <div className="text-left mb-4 sm:mb-6">
           <h2
-            className="text-xl sm:text-2xl lg:text-3xl font-medium mb-0"
+            className="text-xl sm:text-2xl lg:text-3xl font-medium mb-1 sm:mb-2"
             style={{ color: "#0f367e" }}
           >
             Ön Onaylı Kredin Hazır.
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600">
             Taşıt Kredini Şimdi Kullanabilirsin!
           </p>
         </div>
 
         {/* Calculator Section */}
-        <div className="bg-white rounded-2xl p-8 sm:p-12 border border-gray-200">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 lg:p-12 border border-gray-200">
           {/* Input Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
             {/* Product Type */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">

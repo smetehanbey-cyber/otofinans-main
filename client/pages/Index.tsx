@@ -27,17 +27,17 @@ export default function Index() {
       <main>
         {/* Hero Section */}
         <section
-          className="text-white py-4 sm:py-6"
+          className="text-white py-6 sm:py-8 lg:py-10"
           style={{
             background:
               "linear-gradient(to bottom right, #0f367e, #1a4d9e, #2563eb)",
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
               {/* Left Content */}
               <div className="order-2 lg:order-1">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 leading-tight">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight">
                   <div className="text-4xl sm:text-5xl lg:text-6xl">
                     Hayaline
                   </div>
@@ -45,25 +45,25 @@ export default function Index() {
                     Geç Kalma
                   </div>
                 </h1>
-                <p className="text-base sm:text-lg text-blue-100 mb-3 sm:mb-4">
+                <p className="text-base sm:text-lg text-blue-100 mb-4 sm:mb-5">
                   Ön onaylı +800.000TL kredin hazır! Ticari ve Binek 20 Yaş'a
                   kadar tüm taşıtlarda geçerli <u>48 Ay Vade</u> seçeneği
                   OtoFinans'ta.
                 </p>
-                <ul className="space-y-2 sm:space-y-2.5 mb-4">
-                  <li className="flex items-center gap-3 text-sm sm:text-base">
+                <ul className="space-y-3 sm:space-y-3.5 mb-6 sm:mb-8">
+                  <li className="flex items-center gap-3 text-xs sm:text-sm md:text-base">
                     <CheckIcon />
                     <span>30 dakikada kredi taraması ve onayı</span>
                   </li>
-                  <li className="flex items-center gap-3 text-base sm:text-lg">
+                  <li className="flex items-center gap-3 text-xs sm:text-sm md:text-base">
                     <CheckIcon />
                     <span>En düşük faiz oranları</span>
                   </li>
-                  <li className="flex items-center gap-3 text-base sm:text-lg">
+                  <li className="flex items-center gap-3 text-xs sm:text-sm md:text-base">
                     <CheckIcon />
                     <span>Minimum evrak ile başvuru</span>
                   </li>
-                  <li className="flex items-center gap-3 text-base sm:text-lg">
+                  <li className="flex items-center gap-3 text-xs sm:text-sm md:text-base">
                     <CheckIcon />
                     <span>7/24 müşteri destek hizmeti</span>
                   </li>
@@ -109,10 +109,10 @@ export default function Index() {
         <BankLogosCarousel />
 
         {/* Support Tagline */}
-        <div className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 py-2.5 text-center">
+        <div className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 py-3 sm:py-4 text-center">
           <p
-            className="font-semibold text-white px-4"
-            style={{ fontSize: "calc(0.875rem - 0.5px)" }}
+            className="font-semibold text-white px-4 sm:px-6"
+            style={{ fontSize: "clamp(0.85rem, 2vw, 1rem)" }}
           >
             Destek OtoFinans'ta ⇋ Aracın 30 Dakika'da Kapında!
           </p>

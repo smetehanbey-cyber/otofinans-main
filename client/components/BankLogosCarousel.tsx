@@ -39,13 +39,19 @@ export default function BankLogosCarousel() {
           display: flex;
           align-items: center;
           overflow: hidden;
-          padding: 1px 16px 2px 16px;
+          padding: 12px 16px;
           gap: 0;
           width: 100%;
           position: relative;
           user-select: none;
           height: auto;
           background-color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+          .bank-carousel-wrapper {
+            padding: 16px 12px;
+          }
         }
 
         .bank-carousel-track {
