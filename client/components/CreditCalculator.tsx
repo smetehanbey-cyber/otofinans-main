@@ -144,59 +144,49 @@ export default function CreditCalculator() {
       renderContainer.style.padding = "0";
       renderContainer.style.margin = "0";
 
-      // Get all children of scrollContainer (header div is first child, then table)
-      const scrollContainerChildren = Array.from(scrollContainer.children) as HTMLElement[];
+      // Find header div by looking for the one with flexbox and dark blue background
+      const headerDiv = scrollContainer.querySelector("div[style*='display: flex']") as HTMLElement;
 
-      // Clone each child (header and table) to maintain structure
-      scrollContainerChildren.forEach((child) => {
-        const childClone = child.cloneNode(true) as HTMLElement;
+      // Clone and add header
+      if (headerDiv) {
+        const headerClone = headerDiv.cloneNode(true) as HTMLElement;
+        headerClone.style.width = "100%";
+        headerClone.style.boxSizing = "border-box";
+        renderContainer.appendChild(headerClone);
+      }
 
-        // If it's the header div (has background color)
-        if (childClone.style.backgroundColor && childClone.style.backgroundColor.includes("#1a2b7d")) {
-          childClone.style.width = "100%";
-          childClone.style.display = "flex";
-          childClone.style.backgroundColor = "#1a2b7d";
-          childClone.style.padding = "20px";
-          childClone.style.color = "#ffffff";
-          childClone.style.boxSizing = "border-box";
-          childClone.style.borderBottom = "5px solid #6d2fce";
-          childClone.style.minWidth = "1400px";
-          renderContainer.appendChild(childClone);
-        }
-        // If it's the table
-        else if (childClone.tagName === "TABLE") {
-          childClone.style.width = "100%";
-          childClone.style.borderCollapse = "collapse";
-          childClone.style.backgroundColor = "#ffffff";
-          childClone.style.margin = "0";
-          childClone.style.padding = "0";
+      // Clone and add table
+      const tableClone = table.cloneNode(true) as HTMLElement;
+      tableClone.style.width = "100%";
+      tableClone.style.borderCollapse = "collapse";
+      tableClone.style.backgroundColor = "#ffffff";
+      tableClone.style.margin = "0";
+      tableClone.style.padding = "0";
 
-          // Fix all cells in cloned table
-          const cells = childClone.querySelectorAll("td, th");
-          cells.forEach((cell) => {
-            const el = cell as HTMLElement;
-            el.style.border = "1px solid #6d2fce";
-            el.style.borderCollapse = "collapse";
-            el.style.boxSizing = "border-box";
-            el.style.padding = "16px";
-            el.style.textAlign = "center";
-            el.style.verticalAlign = "middle";
-          });
-
-          // Fix header cells
-          const headerCells = childClone.querySelectorAll("thead th");
-          headerCells.forEach((cell) => {
-            const el = cell as HTMLElement;
-            el.style.border = "2px solid #1800ae";
-            el.style.borderCollapse = "collapse";
-            el.style.backgroundColor = "#1800ae";
-            el.style.color = "#ffffff";
-            el.style.fontWeight = "bold";
-          });
-
-          renderContainer.appendChild(childClone);
-        }
+      // Fix all cells in cloned table
+      const cells = tableClone.querySelectorAll("td, th");
+      cells.forEach((cell) => {
+        const el = cell as HTMLElement;
+        el.style.border = "1px solid #6d2fce";
+        el.style.borderCollapse = "collapse";
+        el.style.boxSizing = "border-box";
+        el.style.padding = "16px";
+        el.style.textAlign = "center";
+        el.style.verticalAlign = "middle";
       });
+
+      // Fix header cells
+      const headerCells = tableClone.querySelectorAll("thead th");
+      headerCells.forEach((cell) => {
+        const el = cell as HTMLElement;
+        el.style.border = "2px solid #1800ae";
+        el.style.borderCollapse = "collapse";
+        el.style.backgroundColor = "#1800ae";
+        el.style.color = "#ffffff";
+        el.style.fontWeight = "bold";
+      });
+
+      renderContainer.appendChild(tableClone);
       document.body.appendChild(renderContainer);
 
       // Wait for content to be ready
