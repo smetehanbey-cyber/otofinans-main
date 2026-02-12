@@ -286,7 +286,7 @@ export default function CreditCalculator() {
   };
 
   return (
-    <section id="credit-calculator" className="pt-10 sm:pt-12 lg:pt-16 pb-6 sm:pb-8 lg:pb-10 bg-white">
+    <section id="credit-calculator" className="py-6 sm:py-8 lg:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-left mb-4 sm:mb-6">
