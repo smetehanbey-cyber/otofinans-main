@@ -355,24 +355,48 @@ export default function CreditCalculator() {
             {/* Column 4 - Oran alignment with Show/Hide checkbox */}
             <div>
               <div className="flex items-center gap-2 h-full">
-                <input
-                  type="checkbox"
-                  id="tableToggle"
-                  checked={tableVisible}
-                  onChange={(e) => setTableVisible(e.target.checked)}
+                <button
+                  type="button"
+                  onClick={() => setTableVisible(!tableVisible)}
                   style={{
-                    width: "14px",
-                    height: "14px",
+                    width: "20px",
+                    height: "20px",
+                    minWidth: "20px",
+                    minHeight: "20px",
+                    borderRadius: "50%",
+                    border: "2px solid #0f367e",
+                    backgroundColor: tableVisible ? "#0f367e" : "#ffffff",
                     cursor: "pointer",
-                    minWidth: "14px",
-                    minHeight: "14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     flexShrink: 0,
-                    marginTop: "1px",
+                    transition: "all 0.2s ease",
                   }}
-                />
+                  title={tableVisible ? "Tabloyu Gizle" : "Tabloyu Göster"}
+                >
+                  {tableVisible && (
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M1 6L5 10L11 2"
+                        stroke="#ffffff"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
                 <label
-                  htmlFor="tableToggle"
                   className="text-sm text-gray-700 cursor-pointer font-medium"
+                  onClick={() => setTableVisible(!tableVisible)}
+                  style={{ userSelect: "none" }}
                 >
                   {tableVisible ? "Tabloyu Gizle" : "Tabloyu Göster"}
                 </label>
