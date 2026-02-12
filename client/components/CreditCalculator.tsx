@@ -120,109 +120,119 @@ export default function CreditCalculator() {
       // Dynamically import html2canvas
       const html2canvas = (await import("html2canvas")).default;
 
-      // Get the scrollable container
+      // Get the scrollable container and table
       const scrollContainer = tableRef.current.querySelector(".scrollable-table-container") as HTMLElement;
 
       if (!scrollContainer) {
         throw new Error("Table container not found");
       }
 
-      // Create a clean copy for rendering
+      const table = scrollContainer.querySelector("table") as HTMLElement;
+      if (!table) {
+        throw new Error("Table element not found");
+      }
+
+      // Create a rendering container with proper constraints
       const renderContainer = document.createElement("div");
       renderContainer.style.position = "fixed";
       renderContainer.style.left = "-9999px";
       renderContainer.style.top = "0";
       renderContainer.style.backgroundColor = "#ffffff";
       renderContainer.style.zIndex = "99999";
-      renderContainer.style.width = "auto";
+      renderContainer.style.width = "1400px"; // Fixed width to fit all columns
+      renderContainer.style.overflow = "visible";
       renderContainer.style.padding = "0";
+      renderContainer.style.margin = "0";
 
-      // Copy the header and table HTML
+      // Get header if exists
       const headerDiv = scrollContainer.querySelector("div[style*='backgroundColor: rgb(26, 43, 125)']") as HTMLElement;
-      const table = scrollContainer.querySelector("table") as HTMLElement;
 
-      if (!table) {
-        throw new Error("Table element not found");
-      }
-
-      // Create a wrapper with both header and table
+      // Clone and add header
       if (headerDiv) {
-        renderContainer.appendChild(headerDiv.cloneNode(true));
+        const headerClone = headerDiv.cloneNode(true) as HTMLElement;
+        headerClone.style.width = "100%";
+        headerClone.style.display = "flex";
+        headerClone.style.backgroundColor = "#1a2b7d";
+        headerClone.style.padding = "20px";
+        headerClone.style.color = "#ffffff";
+        renderContainer.appendChild(headerClone);
       }
-      renderContainer.appendChild(table.cloneNode(true));
 
-      document.body.appendChild(renderContainer);
+      // Clone and add table
+      const tableClone = table.cloneNode(true) as HTMLElement;
+      tableClone.style.width = "100%";
+      tableClone.style.borderCollapse = "collapse";
+      tableClone.style.backgroundColor = "#ffffff";
+      tableClone.style.margin = "0";
+      tableClone.style.padding = "0";
 
-      // Ensure all cells have visible borders
-      const allCells = renderContainer.querySelectorAll("td, th");
-      allCells.forEach((cell) => {
+      // Fix all cells in cloned table
+      const cells = tableClone.querySelectorAll("td, th");
+      cells.forEach((cell) => {
         const el = cell as HTMLElement;
         el.style.border = "1px solid #6d2fce";
         el.style.borderCollapse = "collapse";
+        el.style.boxSizing = "border-box";
+        el.style.padding = "16px";
+        el.style.textAlign = "center";
+        el.style.verticalAlign = "middle";
       });
 
-      // Set table properties
-      const tableElement = renderContainer.querySelector("table") as HTMLElement;
-      if (tableElement) {
-        tableElement.style.borderCollapse = "collapse";
-        tableElement.style.backgroundColor = "#ffffff";
-        tableElement.style.width = "100%";
-      }
+      // Fix header cells
+      const headerCells = tableClone.querySelectorAll("thead th");
+      headerCells.forEach((cell) => {
+        const el = cell as HTMLElement;
+        el.style.border = "2px solid #1800ae";
+        el.style.borderCollapse = "collapse";
+        el.style.backgroundColor = "#1800ae";
+        el.style.color = "#ffffff";
+        el.style.fontWeight = "bold";
+      });
 
-      // Set header properties if exists
-      const headerElement = renderContainer.querySelector("div") as HTMLElement;
-      if (headerElement) {
-        headerElement.style.backgroundColor = "#1a2b7d";
-        headerElement.style.color = "#ffffff";
-        headerElement.style.padding = "20px";
-        headerElement.style.display = "flex";
-        headerElement.style.justifyContent = "space-between";
-        headerElement.style.alignItems = "center";
-      }
+      renderContainer.appendChild(tableClone);
+      document.body.appendChild(renderContainer);
 
-      // Wait a moment for rendering
-      await new Promise(resolve => setTimeout(resolve, 300));
+      // Wait for content to be ready
+      await new Promise(resolve => setTimeout(resolve, 200));
 
-      // Get dimensions
-      const width = renderContainer.scrollWidth || 1200;
-      const height = renderContainer.scrollHeight || 900;
+      // Get the actual content dimensions
+      const contentWidth = renderContainer.scrollWidth;
+      const contentHeight = renderContainer.scrollHeight;
 
-      // Render to canvas
+      // Render to canvas with exact dimensions
       const canvas = await html2canvas(renderContainer, {
         backgroundColor: "#ffffff",
-        scale: 2,
+        scale: 1.5, // Lower scale for faster rendering on mobile
         useCORS: true,
         allowTaint: true,
         logging: false,
-        width: width,
-        height: height,
-        windowWidth: width,
-        windowHeight: height,
-        imageTimeout: 30000,
-        timeout: 30000,
+        width: contentWidth,
+        height: contentHeight,
+        windowWidth: contentWidth,
+        windowHeight: contentHeight,
+        imageTimeout: 25000,
+        timeout: 25000,
       });
 
       // Clean up
       document.body.removeChild(renderContainer);
 
-      // Download immediately
-      const dataUrl = canvas.toDataURL("image/png");
+      // Create and trigger download
       const link = document.createElement("a");
-      link.href = dataUrl;
+      link.href = canvas.toDataURL("image/png", 0.95);
       link.download = `Odeme-Plani-${amount.toLocaleString("tr-TR")}TL.png`;
 
-      // Trigger download
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
 
-      // Free memory
-      canvas.remove();
-
-      toast.success("Ödeme planınız indirilmiştir", {
-        duration: 3000,
-        position: "top-center",
-      });
+      // Small delay before removing
+      setTimeout(() => {
+        document.body.removeChild(link);
+        toast.success("Ödeme planınız indirilmiştir", {
+          duration: 2000,
+          position: "top-center",
+        });
+      }, 100);
     } catch (error) {
       console.error("Error generating PNG:", error);
       toast.error("Ödeme planı indirme başarısız. Lütfen tekrar deneyin.", {
