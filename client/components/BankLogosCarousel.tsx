@@ -39,7 +39,7 @@ export default function BankLogosCarousel() {
           display: flex;
           align-items: center;
           overflow: hidden;
-          padding: 4px 16px;
+          padding: 2px 16px;
           gap: 0;
           width: 100%;
           position: relative;
@@ -50,7 +50,7 @@ export default function BankLogosCarousel() {
 
         @media (max-width: 768px) {
           .bank-carousel-wrapper {
-            padding: 5px 12px;
+            padding: 3px 12px;
           }
         }
 
@@ -72,7 +72,7 @@ export default function BankLogosCarousel() {
           font-weight: 500;
           white-space: nowrap;
           opacity: 1;
-          padding: 4px 16px;
+          padding: 2px 16px;
         }
 
         .bank-logo {
