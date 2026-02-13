@@ -54,6 +54,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [showAuthorizedPersonDropdown, setShowAuthorizedPersonDropdown] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [animatingIds, setAnimatingIds] = useState<Set<number>>(new Set());
+  const [newNoteText, setNewNoteText] = useState("");
+  const [expandedNotesId, setExpandedNotesId] = useState<number | null>(null);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -189,6 +191,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         message: editingData.message || "",
         process: editingData.process || "Beklemede"
       };
+
+      // Handle notes updates
+      if (editingData.notes !== undefined) {
+        updateData.notes = editingData.notes;
+      }
 
       // Only allow admins to update added_by field
       if (loggedInUser?.is_admin) {

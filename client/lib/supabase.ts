@@ -10,6 +10,13 @@ supabase.auth.signInAnonymously().catch((err) => {
   console.log("Anonymous sign-in (may already be signed in):", err.message);
 });
 
+export interface CustomerNote {
+  id?: string;
+  text: string;
+  timestamp: string;
+  author: string;
+}
+
 export interface Customer {
   id: number;
   name: string;
@@ -21,4 +28,5 @@ export interface Customer {
   status: "active" | "archived";
   process: "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade";
   added_by?: string;
+  notes?: CustomerNote[];
 }
