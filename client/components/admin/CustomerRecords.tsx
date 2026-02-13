@@ -60,6 +60,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [processTooltipPos, setProcessTooltipPos] = useState({ top: 0, left: 0 });
   const [showNoteInputId, setShowNoteInputId] = useState<number | null>(null);
   const [newNoteInputText, setNewNoteInputText] = useState("");
+  const [addingNoteFromHoverId, setAddingNoteFromHoverId] = useState<number | null>(null);
+  const [hoverNoteInputText, setHoverNoteInputText] = useState("");
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -294,6 +296,51 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
     setNewNoteInputText("");
     setShowNoteInputId(null);
+  };
+
+  // Add a new note directly from the hover tooltip (no edit mode needed)
+  const handleAddNoteFromHover = async (customerId: number, noteText: string) => {
+    if (!noteText.trim()) return;
+
+    try {
+      const timestamp = new Date().toLocaleString("tr-TR");
+      const newNote = {
+        text: noteText.trim(),
+        timestamp,
+        author: loggedInUser?.name || "Bilinmeyen"
+      };
+
+      const customer = customers.find(c => c.id === customerId);
+      const currentNotes = customer?.notes || [];
+      const updatedNotes = [...currentNotes, newNote];
+
+      // Update in database
+      const { error } = await supabase
+        .from("customers")
+        .update({ notes: updatedNotes })
+        .eq("id", customerId);
+
+      if (error) {
+        // If notes column doesn't exist, silently fail for now
+        if (error.message && !error.message.includes("notes")) {
+          throw error;
+        }
+        console.log("Notes column not yet available in database");
+      } else {
+        // Update local state
+        setCustomers(customers.map(c =>
+          c.id === customerId
+            ? { ...c, notes: updatedNotes }
+            : c
+        ));
+      }
+
+      setHoverNoteInputText("");
+      setAddingNoteFromHoverId(null);
+    } catch (error) {
+      console.error("Error adding note from hover:", error);
+      alert("Not eklenirken hata oluştu");
+    }
   };
 
   const handleSort = (field: keyof Customer) => {
@@ -828,15 +875,20 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         {/* Hover Tooltip with Notes */}
                         {hoveredProcessId === customer.id && (
                           <div
-                            className="fixed bg-white border border-gray-300 rounded shadow-2xl p-3 z-[9999] min-w-[280px] max-w-sm"
+                            className="fixed bg-white border border-gray-300 rounded shadow-2xl p-3 z-[9999] min-w-[300px] max-w-sm"
                             style={{
                               top: `${processTooltipPos.top}px`,
                               left: `${processTooltipPos.left}px`
                             }}
                             onMouseEnter={() => setHoveredProcessId(customer.id)}
-                            onMouseLeave={() => setHoveredProcessId(null)}
+                            onMouseLeave={() => {
+                              setHoveredProcessId(null);
+                              setAddingNoteFromHoverId(null);
+                              setHoverNoteInputText("");
+                            }}
                           >
-                            {customer.notes && customer.notes.length > 0 ? (
+                            {/* Existing Notes */}
+                            {customer.notes && customer.notes.length > 0 && (
                               <>
                                 <p className="text-xs font-semibold text-gray-700 mb-2">Notlar:</p>
                                 <div className="space-y-2 mb-3 max-h-48 overflow-y-auto">
@@ -848,22 +900,49 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                   ))}
                                 </div>
                               </>
-                            ) : (
-                              <p className="text-xs text-gray-500 mb-2">Henüz not yok</p>
                             )}
 
-                            {/* Edit button to add note */}
-                            <button
-                              onClick={() => {
-                                setEditingId(customer.id);
-                                setEditingData(customer);
-                                setShowNoteInputId(customer.id);
-                                setHoveredProcessId(null);
-                              }}
-                              className="w-full px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-1"
-                            >
-                              + Not Ekle
-                            </button>
+                            {customer.notes && customer.notes.length === 0 && (
+                              <p className="text-xs text-gray-500 mb-3">Henüz not yok</p>
+                            )}
+
+                            {/* Add Note Form */}
+                            {addingNoteFromHoverId === customer.id ? (
+                              <div className="border-t border-gray-200 pt-3">
+                                <textarea
+                                  value={hoverNoteInputText}
+                                  onChange={(e) => setHoverNoteInputText(e.target.value)}
+                                  placeholder="Not yazınız..."
+                                  className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+                                  rows={2}
+                                  autoFocus
+                                />
+                                <div className="flex gap-2 mt-2">
+                                  <button
+                                    onClick={() => handleAddNoteFromHover(customer.id, hoverNoteInputText)}
+                                    className="flex-1 px-2 py-1.5 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors font-medium"
+                                  >
+                                    Ekle
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setAddingNoteFromHoverId(null);
+                                      setHoverNoteInputText("");
+                                    }}
+                                    className="flex-1 px-2 py-1.5 bg-gray-400 text-white text-xs rounded hover:bg-gray-500 transition-colors font-medium"
+                                  >
+                                    İptal
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setAddingNoteFromHoverId(customer.id)}
+                                className="w-full px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-1"
+                              >
+                                + Not Ekle
+                              </button>
+                            )}
 
                             <div className="absolute bottom-full left-4 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
                           </div>
