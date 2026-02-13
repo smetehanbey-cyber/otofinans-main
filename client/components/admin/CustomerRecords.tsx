@@ -56,6 +56,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [animatingIds, setAnimatingIds] = useState<Set<number>>(new Set());
   const [newNoteText, setNewNoteText] = useState("");
   const [expandedNotesId, setExpandedNotesId] = useState<number | null>(null);
+  const [hoveredProcessId, setHoveredProcessId] = useState<number | null>(null);
+  const [processTooltipPos, setProcessTooltipPos] = useState({ top: 0, left: 0 });
+  const [showNoteInputId, setShowNoteInputId] = useState<number | null>(null);
+  const [newNoteInputText, setNewNoteInputText] = useState("");
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -252,6 +256,27 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       console.error("Error updating process:", error);
       alert("Hata: Durum güncellenemedi");
     }
+  };
+
+  // Add a new note to a customer
+  const handleAddNote = (customerId: number, noteText: string) => {
+    if (!noteText.trim()) return;
+
+    const timestamp = new Date().toLocaleString("tr-TR");
+    const newNote = {
+      text: noteText.trim(),
+      timestamp,
+      author: loggedInUser?.name || "Bilinmeyen"
+    };
+
+    const currentNotes = editingData.notes || [];
+    setEditingData({
+      ...editingData,
+      notes: [...currentNotes, newNote]
+    });
+
+    setNewNoteInputText("");
+    setShowNoteInputId(null);
   };
 
   const handleSort = (field: keyof Customer) => {
@@ -683,43 +708,150 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                       )}
                     </td>
                   )}
-                  <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '14px'}}>
+                  <td className="px-2 py-2 relative" style={{fontSize: isMobile ? '12px' : '14px'}}>
                     {editingId === customer.id ? (
-                      <select
-                        value={editingData.process || "Beklemede"}
-                        onChange={(e) =>
-                          setEditingData({
-                            ...editingData,
-                            process: e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade"
-                          })
-                        }
-                        className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        style={{fontSize: isMobile ? '12px' : '14px'}}
-                      >
-                        <option value="Beklemede">Beklemede</option>
-                        <option value="Aracını Buluyor">Aracını Buluyor</option>
-                        <option value="Onaylandı">Onaylandı</option>
-                        <option value="Kredi Onayda">Kredi Onayda</option>
-                        <option value="Kullandırıldı">Kullandırıldı</option>
-                        <option value="Red/İade">Red/İade</option>
-                      </select>
+                      <div className="space-y-2">
+                        <select
+                          value={editingData.process || "Beklemede"}
+                          onChange={(e) =>
+                            setEditingData({
+                              ...editingData,
+                              process: e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade"
+                            })
+                          }
+                          className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
+                          style={{fontSize: isMobile ? '12px' : '14px'}}
+                        >
+                          <option value="Beklemede">Beklemede</option>
+                          <option value="Aracını Buluyor">Aracını Buluyor</option>
+                          <option value="Onaylandı">Onaylandı</option>
+                          <option value="Kredi Onayda">Kredi Onayda</option>
+                          <option value="Kullandırıldı">Kullandırıldı</option>
+                          <option value="Red/İade">Red/İade</option>
+                        </select>
+
+                        {/* Notes Section in Edit Mode */}
+                        {editingData.notes && editingData.notes.length > 0 && (
+                          <div className="mt-3 p-2 bg-gray-50 border border-gray-200 rounded max-h-40 overflow-y-auto">
+                            <p className="text-xs font-semibold text-gray-700 mb-2">Notlar:</p>
+                            {editingData.notes.map((note, idx) => (
+                              <div key={idx} className="text-xs bg-white p-1.5 rounded mb-1 border border-gray-100">
+                                <p className="text-gray-900">{note.text}</p>
+                                <p className="text-gray-500 text-xs mt-0.5">{note.author} • {note.timestamp}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Add Note Input */}
+                        {showNoteInputId === customer.id ? (
+                          <div className="border border-blue-300 rounded p-2 bg-blue-50">
+                            <textarea
+                              value={newNoteInputText}
+                              onChange={(e) => setNewNoteInputText(e.target.value)}
+                              placeholder="Not yazınız..."
+                              className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+                              rows={2}
+                            />
+                            <div className="flex gap-1 mt-1">
+                              <button
+                                onClick={() => handleAddNote(customer.id, newNoteInputText)}
+                                className="flex-1 px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors"
+                              >
+                                Ekle
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setShowNoteInputId(null);
+                                  setNewNoteInputText("");
+                                }}
+                                className="flex-1 px-2 py-1 bg-gray-400 text-white text-xs rounded hover:bg-gray-500 transition-colors"
+                              >
+                                İptal
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setShowNoteInputId(customer.id)}
+                            className="w-full px-2 py-1 border border-blue-300 bg-blue-50 text-blue-700 text-xs rounded hover:bg-blue-100 transition-colors font-medium"
+                          >
+                            + Not Ekle
+                          </button>
+                        )}
+                      </div>
                     ) : (
-                      <span
-                        className={`inline-block px-2 py-0.5 rounded-full font-semibold whitespace-nowrap ${
-                          customer.process === "Beklemede" || customer.process === "Aracını Buluyor"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : customer.process === "Kredi Onayda"
-                            ? "bg-blue-100 text-blue-800"
-                            : customer.process === "Onaylandı"
-                            ? "bg-green-100 text-green-800"
-                            : customer.process === "Kullandırıldı"
-                            ? "bg-green-800 text-white"
-                            : "bg-pink-100 text-pink-800"
-                        }`}
-                        style={{fontSize: isMobile ? '11px' : '13px'}}
-                      >
-                        {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : "R") : customer.process}
-                      </span>
+                      <div className="relative">
+                        <span
+                          className={`inline-block px-2 py-0.5 rounded-full font-semibold whitespace-nowrap cursor-pointer ${
+                            customer.process === "Beklemede" || customer.process === "Aracını Buluyor"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : customer.process === "Kredi Onayda"
+                              ? "bg-blue-100 text-blue-800"
+                              : customer.process === "Onaylandı"
+                              ? "bg-green-100 text-green-800"
+                              : customer.process === "Kullandırıldı"
+                              ? "bg-green-800 text-white"
+                              : "bg-pink-100 text-pink-800"
+                          }`}
+                          style={{fontSize: isMobile ? '11px' : '13px'}}
+                          onMouseEnter={(e) => {
+                            setHoveredProcessId(customer.id);
+                            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                            setProcessTooltipPos({
+                              top: rect.bottom + 5,
+                              left: rect.left
+                            });
+                          }}
+                          onMouseLeave={() => setHoveredProcessId(null)}
+                        >
+                          {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : "R") : customer.process}
+                        </span>
+
+                        {/* Hover Tooltip with Notes */}
+                        {hoveredProcessId === customer.id && (
+                          <div
+                            className="fixed bg-white border border-gray-300 rounded shadow-2xl p-3 z-[9999] min-w-[280px] max-w-sm"
+                            style={{
+                              top: `${processTooltipPos.top}px`,
+                              left: `${processTooltipPos.left}px`
+                            }}
+                            onMouseEnter={() => setHoveredProcessId(customer.id)}
+                            onMouseLeave={() => setHoveredProcessId(null)}
+                          >
+                            {customer.notes && customer.notes.length > 0 ? (
+                              <>
+                                <p className="text-xs font-semibold text-gray-700 mb-2">Notlar:</p>
+                                <div className="space-y-2 mb-3 max-h-48 overflow-y-auto">
+                                  {customer.notes.map((note, idx) => (
+                                    <div key={idx} className="text-xs bg-gray-50 p-2 rounded border border-gray-200">
+                                      <p className="text-gray-900 break-words">{note.text}</p>
+                                      <p className="text-gray-500 text-xs mt-1">{note.author} • {note.timestamp}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </>
+                            ) : (
+                              <p className="text-xs text-gray-500 mb-2">Henüz not yok</p>
+                            )}
+
+                            {/* Edit button to add note */}
+                            <button
+                              onClick={() => {
+                                setEditingId(customer.id);
+                                setEditingData(customer);
+                                setShowNoteInputId(customer.id);
+                                setHoveredProcessId(null);
+                              }}
+                              className="w-full px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-1"
+                            >
+                              + Not Ekle
+                            </button>
+
+                            <div className="absolute bottom-full left-4 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </td>
                   {!isMobile && (
