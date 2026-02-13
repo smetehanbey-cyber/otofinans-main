@@ -196,8 +196,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         process: editingData.process || "Beklemede"
       };
 
-      // Handle notes updates
-      if (editingData.notes !== undefined) {
+      // Handle notes updates - only include if notes exist
+      if (editingData.notes !== undefined && editingData.notes.length > 0) {
         updateData.notes = editingData.notes;
       }
 
@@ -211,7 +211,24 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         .update(updateData)
         .eq("id", id);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error details:", error);
+
+        // If error is about notes column not existing, try again without notes
+        if (error.message && error.message.includes("notes")) {
+          console.log("Notes column not found, updating without notes...");
+          delete updateData.notes;
+
+          const { error: retryError } = await supabase
+            .from("customers")
+            .update(updateData)
+            .eq("id", id);
+
+          if (retryError) throw retryError;
+        } else {
+          throw error;
+        }
+      }
 
       setEditingId(null);
       setEditingData({});
