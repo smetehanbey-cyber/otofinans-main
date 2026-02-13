@@ -955,14 +955,14 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               {customer.notes && customer.notes.length > 0 && (
                                 <div className="space-y-2 mb-3">
                                   {customer.notes.map((note, idx) => (
-                                    <div key={idx} className="bg-gray-900 p-2 rounded border border-gray-700 flex justify-between items-start gap-2 group">
+                                    <div key={idx} className="bg-blue-900 p-2 rounded border border-blue-700 flex justify-between items-start gap-2 group">
                                       <div className="flex-1">
                                         <p className="text-white break-words font-medium text-sm">{note.text}</p>
-                                        <p className="text-gray-400 text-xs mt-1">{note.author} • {note.timestamp}</p>
+                                        <p className="text-blue-200 text-xs mt-1">{note.author} • {note.timestamp}</p>
                                       </div>
                                       <button
                                         onClick={() => handleDeleteNote(customer.id, idx)}
-                                        className="flex-shrink-0 text-red-400 hover:text-red-300 hover:bg-red-900 p-1 rounded transition-colors opacity-0 group-hover:opacity-100"
+                                        className="flex-shrink-0 text-red-300 hover:text-red-100 hover:bg-red-900 p-1 rounded transition-colors opacity-0 group-hover:opacity-100"
                                         title="Sil"
                                       >
                                         ✕
