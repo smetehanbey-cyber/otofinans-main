@@ -955,9 +955,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               {customer.notes && customer.notes.length > 0 && (
                                 <div className="space-y-2 mb-3">
                                   {customer.notes.map((note, idx) => (
-                                    <div key={idx} className="text-xs bg-gray-50 p-2 rounded border border-gray-200 flex justify-between items-start gap-2 group">
+                                    <div key={idx} className="bg-gray-50 p-2 rounded border border-gray-200 flex justify-between items-start gap-2 group">
                                       <div className="flex-1">
-                                        <p className="text-gray-900 break-words font-medium">{note.text}</p>
+                                        <p className="text-gray-900 break-words font-medium text-sm">{note.text}</p>
                                         <p className="text-gray-500 text-xs mt-1">{note.author} • {note.timestamp}</p>
                                       </div>
                                       <button
