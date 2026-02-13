@@ -39,6 +39,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [archiveConfirmId, setArchiveConfirmId] = useState<number | null>(null);
   const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(null);
   const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
+  const [closeMessageTooltipTimeout, setCloseMessageTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
   const [selectedCustomerForDocs, setSelectedCustomerForDocs] = useState<number | null>(null);
   const [newCustomer, setNewCustomer] = useState({
     name: "",
@@ -408,6 +409,37 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     if (closeTooltipTimeout) {
       clearTimeout(closeTooltipTimeout);
       setCloseTooltipTimeout(null);
+    }
+  };
+
+  // Handle message cell mouse enter
+  const handleMessageMouseEnter = (customerId: number, e: React.MouseEvent) => {
+    if (closeMessageTooltipTimeout) {
+      clearTimeout(closeMessageTooltipTimeout);
+      setCloseMessageTooltipTimeout(null);
+    }
+
+    setHoveredMessageId(customerId);
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setTooltipPos({
+      top: rect.bottom + 5,
+      left: rect.left
+    });
+  };
+
+  // Handle message cell and tooltip mouse leave with delay
+  const handleMessageMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setHoveredMessageId(null);
+    }, 300); // 300ms delay before closing
+    setCloseMessageTooltipTimeout(timeout);
+  };
+
+  // Handle message tooltip mouse enter to prevent closing
+  const handleMessageTooltipMouseEnter = () => {
+    if (closeMessageTooltipTimeout) {
+      clearTimeout(closeMessageTooltipTimeout);
+      setCloseMessageTooltipTimeout(null);
     }
   };
 
@@ -810,30 +842,25 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               MozUserSelect: 'none',
                               userSelect: 'none'
                             }}
-                            title=""
-                            onMouseEnter={(e) => {
-                              setHoveredMessageId(customer.id);
-                              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                              setTooltipPos({
-                                top: rect.bottom + 5,
-                                left: rect.left
-                              });
-                            }}
-                            onMouseLeave={() => setHoveredMessageId(null)}
+                            onMouseEnter={(e) => handleMessageMouseEnter(customer.id, e)}
+                            onMouseLeave={() => handleMessageMouseLeave()}
                           >
                             {customer.message || "-"}
                           </span>
                           {hoveredMessageId === customer.id && customer.message && (
                             <div
-                              className="fixed bg-gray-900 text-white p-2 rounded shadow-2xl max-w-sm break-words z-[9999] border border-gray-700"
-                              style={{fontSize: '13px'}}
+                              className="fixed bg-gray-900 text-white rounded shadow-2xl z-[9999] border border-gray-700 min-w-[280px] max-w-sm"
                               style={{
                                 top: `${tooltipPos.top}px`,
-                                left: `${tooltipPos.left}px`
+                                left: `${tooltipPos.left}px`,
+                                fontSize: '13px',
+                                padding: '12px'
                               }}
+                              onMouseEnter={() => handleMessageTooltipMouseEnter()}
+                              onMouseLeave={() => handleMessageMouseLeave()}
                             >
                               {customer.message}
-                              <div className="absolute bottom-full left-2 w-2 h-2 bg-gray-900 border-t border-l border-gray-700"></div>
+                              <div className="absolute bottom-full left-4 w-2 h-2 bg-gray-900 border-t border-l border-gray-700" style={{transform: 'rotate(45deg)'}}></div>
                             </div>
                           )}
                         </div>
