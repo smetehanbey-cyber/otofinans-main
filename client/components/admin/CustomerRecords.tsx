@@ -508,6 +508,21 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         .row-animate {
           animation: rowUpdate 0.8s ease-out;
         }
+
+        @keyframes slideInAndFade {
+          0% {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.95);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .tooltip-animate {
+          animation: slideInAndFade 0.3s ease-out;
+        }
       `}</style>
 
       {/* Add Customer Button and Search */}
@@ -849,7 +864,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           </span>
                           {hoveredMessageId === customer.id && customer.message && (
                             <div
-                              className="fixed bg-gray-900 text-white rounded shadow-2xl z-[9999] border border-gray-700 min-w-[280px] max-w-sm"
+                              className="fixed bg-gray-900 text-white rounded shadow-2xl z-[9999] border border-gray-700 min-w-[280px] max-w-sm tooltip-animate"
                               style={{
                                 top: `${tooltipPos.top}px`,
                                 left: `${tooltipPos.left}px`,
@@ -911,7 +926,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         {/* Hover Tooltip with Notes - Stay open and interactive */}
                         {hoveredProcessId === customer.id && (
                           <div
-                            className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col"
+                            className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
                             style={{
                               top: `${processTooltipPos.top}px`,
                               left: `${processTooltipPos.left}px`,
