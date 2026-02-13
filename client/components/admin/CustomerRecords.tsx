@@ -973,13 +973,12 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               : "bg-pink-100 text-pink-800"
                           }`}
                           style={{fontSize: isMobile ? '11px' : '13px'}}
-                          onMouseEnter={(e) => handleProcessMouseEnter(customer.id, e)}
-                          onMouseLeave={() => handleProcessMouseLeave()}
+                          onClick={(e) => handleProcessMouseEnter(customer.id, e)}
                         >
                           {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : "R") : customer.process}
                         </span>
 
-                        {/* Hover Tooltip for Process Edit */}
+                        {/* Click Dropdown for Process Edit */}
                         {hoveredProcessId === customer.id && (
                           <div
                             className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[280px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
@@ -990,8 +989,19 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                             onMouseEnter={() => handleProcessTooltipMouseEnter()}
                             onMouseLeave={() => handleProcessMouseLeave()}
                           >
+                            <div className="flex justify-between items-center bg-gray-50 px-3 py-2 border-b border-gray-200">
+                              <p className="text-xs font-semibold text-gray-700">Süreci Değiştir:</p>
+                              <button
+                                onClick={() => {
+                                  setHoveredProcessId(null);
+                                  setTempProcessValue(null);
+                                }}
+                                className="text-gray-500 hover:text-gray-700 text-lg leading-none"
+                              >
+                                ✕
+                              </button>
+                            </div>
                             <div className="p-3 space-y-2">
-                              <p className="text-xs font-semibold text-gray-700 mb-2">Süreci Değiştir:</p>
                               <select
                                 value={tempProcessValue || customer.process}
                                 onChange={(e) => setTempProcessValue(e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade")}
