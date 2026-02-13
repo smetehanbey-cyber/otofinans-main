@@ -62,6 +62,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [newNoteInputText, setNewNoteInputText] = useState("");
   const [addingNoteFromHoverId, setAddingNoteFromHoverId] = useState<number | null>(null);
   const [hoverNoteInputText, setHoverNoteInputText] = useState("");
+  const [closeTooltipTimeout, setCloseTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -374,6 +375,39 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     } catch (error) {
       console.error("Error deleting note:", error);
       alert("Not silinirken hata oluştu");
+    }
+  };
+
+  // Handle process cell mouse enter with tooltip delay
+  const handleProcessMouseEnter = (customerId: number, e: React.MouseEvent) => {
+    // Clear any pending timeout
+    if (closeTooltipTimeout) {
+      clearTimeout(closeTooltipTimeout);
+      setCloseTooltipTimeout(null);
+    }
+
+    setHoveredProcessId(customerId);
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setProcessTooltipPos({
+      top: rect.bottom + 5,
+      left: rect.left
+    });
+  };
+
+  // Handle process cell and tooltip mouse leave with delay
+  const handleProcessMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setHoveredProcessId(null);
+      setHoverNoteInputText("");
+    }, 300); // 300ms delay before closing
+    setCloseTooltipTimeout(timeout);
+  };
+
+  // Handle tooltip mouse enter to prevent closing
+  const handleTooltipMouseEnter = () => {
+    if (closeTooltipTimeout) {
+      clearTimeout(closeTooltipTimeout);
+      setCloseTooltipTimeout(null);
     }
   };
 
@@ -841,15 +875,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               : "bg-pink-100 text-pink-800"
                           }`}
                           style={{fontSize: isMobile ? '11px' : '13px'}}
-                          onMouseEnter={(e) => {
-                            setHoveredProcessId(customer.id);
-                            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                            setProcessTooltipPos({
-                              top: rect.bottom + 5,
-                              left: rect.left
-                            });
-                          }}
-                          onMouseLeave={() => setHoveredProcessId(null)}
+                          onMouseEnter={(e) => handleProcessMouseEnter(customer.id, e)}
+                          onMouseLeave={() => handleProcessMouseLeave()}
                         >
                           {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : "R") : customer.process}
                         </span>
@@ -863,6 +890,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               left: `${processTooltipPos.left}px`,
                               maxHeight: '500px'
                             }}
+                            onMouseEnter={() => handleTooltipMouseEnter()}
+                            onMouseLeave={() => handleProcessMouseLeave()}
                           >
                             {/* Header with close button */}
                             <div className="flex justify-between items-center bg-gray-50 px-3 py-2 border-b border-gray-200">
