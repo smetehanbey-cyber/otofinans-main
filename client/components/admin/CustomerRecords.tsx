@@ -554,7 +554,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
             <div className="relative flex items-center">
-              <span className="absolute left-3 font-semibold text-gray-700 pointer-events-none" style={{fontSize: '15px'}}>+90</span>
+              <span className="absolute left-3 font-semibold text-gray-700 pointer-events-none" style={{fontSize: '15px'}}>0</span>
               <input
                 type="tel"
                 inputMode="numeric"
@@ -774,7 +774,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
                       <div className="relative flex items-center">
-                        <span className="absolute left-1 font-semibold text-gray-700 pointer-events-none" style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
+                        <span className="absolute left-1 font-semibold text-gray-700 pointer-events-none" style={{fontSize: isMobile ? '10px' : '13px'}}>0</span>
                         <input
                           type="tel"
                           inputMode="numeric"
@@ -811,7 +811,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           e.clipboardData?.setData('text/plain', phoneClean);
                         }}
                       >
-                        <span style={{fontSize: isMobile ? '10px' : '13px'}}>+90</span>
+                        <span style={{fontSize: isMobile ? '10px' : '13px'}}>0</span>
                         <span> </span>
                         {customer.phone.slice(3, 6)} {customer.phone.slice(6, 9)} {customer.phone.slice(9, 11)} {customer.phone.slice(11, 13)}
                       </a>
