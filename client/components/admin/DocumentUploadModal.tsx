@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Upload, X, FileText, Download, Trash2 } from "lucide-react";
+import { Upload, X, FileText, Download, Trash2, Edit2 } from "lucide-react";
 
 interface Document {
   id: number;
@@ -28,6 +28,8 @@ export default function DocumentUploadModal({
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [renamingDocId, setRenamingDocId] = useState<number | null>(null);
+  const [newFileName, setNewFileName] = useState<string>("");
 
   // Fetch documents for this customer
   const fetchDocuments = async () => {
@@ -180,6 +182,31 @@ export default function DocumentUploadModal({
     }
   };
 
+  // Rename document
+  const handleRenameDocument = async (docId: number) => {
+    if (!newFileName.trim()) return;
+
+    try {
+      // Update file name in database
+      const { error: updateError } = await supabase
+        .from("documents")
+        .update({ file_name: newFileName.trim() })
+        .eq("id", docId);
+
+      if (updateError) throw updateError;
+
+      // Refresh documents list
+      await fetchDocuments();
+      setRenamingDocId(null);
+      setNewFileName("");
+      setSuccess("Dosya başarıyla yeniden adlandırıldı!");
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      console.error("Error renaming document:", err);
+      setError("Dosya yeniden adlandırılamadı");
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -298,6 +325,16 @@ export default function DocumentUploadModal({
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
+                      <button
+                        onClick={() => {
+                          setRenamingDocId(doc.id);
+                          setNewFileName(doc.file_name);
+                        }}
+                        className="p-2 text-purple-600 hover:bg-purple-50 rounded transition-colors"
+                        title="Yeniden Adlandır"
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </button>
                       <a
                         href={doc.file_url}
                         target="_blank"
@@ -321,6 +358,55 @@ export default function DocumentUploadModal({
             )}
           </div>
         </div>
+
+        {/* Rename Modal */}
+        {renamingDocId !== null && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+              <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-4 rounded-t-lg">
+                <h3 className="text-lg font-bold">Dosyayı Yeniden Adlandır</h3>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Yeni Dosya Adı
+                  </label>
+                  <input
+                    type="text"
+                    value={newFileName}
+                    onChange={(e) => setNewFileName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    placeholder="Dosya adı yazınız"
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleRenameDocument(renamingDocId);
+                      }
+                    }}
+                  />
+                </div>
+
+                <div className="flex gap-3 justify-end">
+                  <button
+                    onClick={() => {
+                      setRenamingDocId(null);
+                      setNewFileName("");
+                    }}
+                    className="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                  >
+                    İptal
+                  </button>
+                  <button
+                    onClick={() => handleRenameDocument(renamingDocId)}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                  >
+                    Kaydet
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Modal Footer */}
         <div className="border-t border-gray-200 px-6 py-4 flex justify-end rounded-b-lg">
