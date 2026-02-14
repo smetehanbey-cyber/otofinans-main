@@ -37,7 +37,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [editingData, setEditingData] = useState<Customer | Partial<Customer>>({});
   const [showForm, setShowForm] = useState(false);
   const [archiveConfirmId, setArchiveConfirmId] = useState<number | null>(null);
-  const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(null);
+  const [openedNoteCardId, setOpenedNoteCardId] = useState<number | null>(null);
   const [tooltipPos, setTooltipPos] = useState({ top: 0, bottom: 0, left: 0, showBelow: true });
   const [closeMessageTooltipTimeout, setCloseMessageTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
   const [selectedCustomerForDocs, setSelectedCustomerForDocs] = useState<number | null>(null);
@@ -385,14 +385,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     }
   };
 
-  // Handle message cell mouse enter
-  const handleMessageMouseEnter = (customerId: number, e: React.MouseEvent) => {
-    if (closeMessageTooltipTimeout) {
-      clearTimeout(closeMessageTooltipTimeout);
-      setCloseMessageTooltipTimeout(null);
-    }
-
-    setHoveredMessageId(customerId);
+  // Handle message cell click to open notes card
+  const handleMessageClick = (customerId: number, e: React.MouseEvent) => {
+    setOpenedNoteCardId(customerId);
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
 
     // Check if tooltip will overflow below screen
@@ -408,19 +403,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     });
   };
 
-  // Handle message cell and tooltip mouse leave with delay
-  const handleMessageMouseLeave = () => {
-    const timeout = setTimeout(() => {
-      setHoveredMessageId(null);
-    }, 300); // 300ms delay before closing
-    setCloseMessageTooltipTimeout(timeout);
-  };
-
-  // Handle message tooltip mouse enter to prevent closing
-  const handleMessageTooltipMouseEnter = () => {
-    if (closeMessageTooltipTimeout) {
-      clearTimeout(closeMessageTooltipTimeout);
-      setCloseMessageTooltipTimeout(null);
+  // Handle note textarea Enter key (Ctrl+Enter or Cmd+Enter)
+  const handleNoteKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>, customerId: number) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      handleAddNoteFromHover(customerId, hoverNoteInputText);
     }
   };
 
