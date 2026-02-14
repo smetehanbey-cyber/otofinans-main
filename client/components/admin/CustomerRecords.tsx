@@ -66,6 +66,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [processTooltipPos, setProcessTooltipPos] = useState({ top: 0, left: 0 });
   const [editingProcessId, setEditingProcessId] = useState<number | null>(null);
   const [closeProcessTooltipTimeout, setCloseProcessTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [showDateFilter, setShowDateFilter] = useState(false);
+  const [dateFilterStart, setDateFilterStart] = useState("");
+  const [dateFilterEnd, setDateFilterEnd] = useState("");
+  const [dateFilterTooltipPos, setDateFilterTooltipPos] = useState({ top: 0, left: 0 });
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -493,6 +497,17 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       return false;
     }
 
+    // Filter by date range
+    if (dateFilterStart || dateFilterEnd) {
+      const customerDate = new Date(customer.created_at).toISOString().split('T')[0];
+      if (dateFilterStart && customerDate < dateFilterStart) {
+        return false;
+      }
+      if (dateFilterEnd && customerDate > dateFilterEnd) {
+        return false;
+      }
+    }
+
     const query = searchQuery.toLowerCase().trim();
 
     // If search query is empty, show all (after authorized person filter)
@@ -713,13 +728,88 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   </button>
                 </th>
                 {!isMobile && (
-                  <th className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap" style={{fontSize: '15px'}}>
+                  <th className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap relative" style={{fontSize: '15px'}}>
                     <button
                       onClick={() => handleSort("created_at")}
                       className="flex items-center gap-2 hover:text-blue-600"
                     >
                       Tarih <SortIcon field="created_at" />
                     </button>
+                    <button
+                      onClick={(e) => {
+                        const rect = (e.currentTarget.parentElement as HTMLElement).getBoundingClientRect();
+                        setDateFilterTooltipPos({
+                          top: rect.bottom + window.scrollY + 4,
+                          left: rect.left + window.scrollX
+                        });
+                        setShowDateFilter(!showDateFilter);
+                      }}
+                      className="ml-2 inline-block text-gray-500 hover:text-blue-600 transition-colors"
+                      title="Tarih Filtrele"
+                    >
+                      ⏱️
+                    </button>
+
+                    {/* Date Filter Dropdown */}
+                    {showDateFilter && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-40"
+                          onClick={() => setShowDateFilter(false)}
+                        />
+                        <div
+                          className="fixed bg-white border border-gray-300 rounded-lg shadow-2xl z-50 p-4"
+                          style={{
+                            top: `${dateFilterTooltipPos.top}px`,
+                            left: `${dateFilterTooltipPos.left}px`,
+                            minWidth: '300px'
+                          }}
+                        >
+                          <div className="space-y-3">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Başlangıç Tarihi
+                              </label>
+                              <input
+                                type="date"
+                                value={dateFilterStart}
+                                onChange={(e) => setDateFilterStart(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Bitiş Tarihi
+                              </label>
+                              <input
+                                type="date"
+                                value={dateFilterEnd}
+                                onChange={(e) => setDateFilterEnd(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
+                              />
+                            </div>
+                            <div className="flex gap-2 pt-2">
+                              <button
+                                onClick={() => {
+                                  setDateFilterStart("");
+                                  setDateFilterEnd("");
+                                  setShowDateFilter(false);
+                                }}
+                                className="flex-1 px-3 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors text-sm font-medium"
+                              >
+                                Temizle
+                              </button>
+                              <button
+                                onClick={() => setShowDateFilter(false)}
+                                className="flex-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium"
+                              >
+                                Kapat
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </th>
                 )}
                 <th className={`px-2 py-2 text-left font-semibold text-gray-700 relative whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px'}}>
