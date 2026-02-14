@@ -453,16 +453,36 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const handleMessageClick = (customerId: number, e: React.MouseEvent) => {
     setOpenedNoteCardId(customerId);
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const tableContainer = (e.currentTarget as HTMLElement).closest('div[class*="overflow"]') as HTMLElement;
 
-    // Check if tooltip will overflow below screen
-    const tooltipHeight = 500; // max-height of tooltip
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const showBelow = spaceBelow > tooltipHeight + 20; // 20px for padding
+    // Calculate position relative to the table container
+    let topPos = 0;
+    let leftPos = 0;
+    let showBelow = true;
+
+    if (tableContainer) {
+      const containerRect = tableContainer.getBoundingClientRect();
+      topPos = rect.bottom - containerRect.top + 5; // Position below the cell
+      leftPos = rect.left - containerRect.left;
+
+      // Check if tooltip will overflow below the visible container
+      const tooltipHeight = 500;
+      const spaceBelow = containerRect.bottom - rect.bottom;
+      showBelow = spaceBelow > tooltipHeight + 20;
+
+      if (!showBelow) {
+        topPos = rect.top - containerRect.top - tooltipHeight - 5;
+      }
+    } else {
+      // Fallback to old behavior
+      topPos = rect.bottom + 5;
+      leftPos = rect.left;
+    }
 
     setTooltipPos({
-      top: showBelow ? rect.bottom + 5 : 0,
-      bottom: !showBelow ? window.innerHeight - rect.top + 5 : 0,
-      left: rect.left,
+      top: topPos,
+      bottom: 0,
+      left: leftPos,
       showBelow: showBelow
     });
   };
@@ -764,7 +784,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           </button>
         </div>
       ) : (
-        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} min-h-[600px]`}>
+        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} min-h-[600px] relative`}>
           <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
@@ -1079,12 +1099,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           </span>
                           {openedNoteCardId === customer.id && (
                             <div
-                              className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
+                              className="absolute bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
                               style={{
-                                ...(tooltipPos.showBelow
-                                  ? { top: `${tooltipPos.top}px` }
-                                  : { bottom: `${tooltipPos.bottom}px` }
-                                ),
+                                top: `${tooltipPos.top}px`,
                                 left: `${tooltipPos.left}px`,
                                 maxHeight: '500px'
                               }}
