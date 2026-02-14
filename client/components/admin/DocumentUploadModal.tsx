@@ -341,13 +341,6 @@ export default function DocumentUploadModal({
                               {baseName}
                             </p>
                             <button
-                              onClick={() => setPreviewingDocId(doc.id)}
-                              className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors flex-shrink-0"
-                              title="Ön İzleme"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </button>
-                            <button
                               onClick={() => {
                                 setRenamingDocId(doc.id);
                                 setNewFileName(baseName);
@@ -369,6 +362,13 @@ export default function DocumentUploadModal({
                         </div>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
+                        <button
+                          onClick={() => setPreviewingDocId(doc.id)}
+                          className="p-2 text-green-600 hover:bg-green-50 rounded transition-colors"
+                          title="Ön İzleme"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </button>
                         <a
                           href={doc.file_url}
                           target="_blank"
@@ -404,7 +404,7 @@ export default function DocumentUploadModal({
 
           return (
             <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto flex flex-col">
+              <div className="bg-white rounded-lg shadow-2xl w-full max-h-[90vh] overflow-auto flex flex-col" style={{ width: "min(90%, 60vw)" }}>
                 <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-4 flex items-center justify-between flex-shrink-0">
                   <h3 className="text-lg font-bold truncate">{previewDoc.file_name}</h3>
                   <button
@@ -415,12 +415,13 @@ export default function DocumentUploadModal({
                   </button>
                 </div>
 
-                <div className="flex-1 overflow-auto p-6 bg-gray-50 flex items-center justify-center">
+                <div className="flex-1 overflow-auto p-6 bg-gray-50 flex items-center justify-center min-h-[400px]">
                   {isPDF ? (
                     <iframe
                       src={`${previewDoc.file_url}#toolbar=0`}
                       className="w-full h-full border-0 rounded"
                       title={previewDoc.file_name}
+                      style={{ minHeight: "500px" }}
                     />
                   ) : isImage ? (
                     <img
