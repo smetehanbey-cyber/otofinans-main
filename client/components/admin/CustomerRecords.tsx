@@ -694,7 +694,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           </button>
         </div>
       ) : (
-        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"}`}>
+        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} min-h-[600px]`}>
           <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
