@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase, Customer } from "@/lib/supabase";
 import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText, Smartphone } from "lucide-react";
 import DocumentUploadModal from "./DocumentUploadModal";
@@ -31,6 +31,7 @@ const toTurkishUpperCase = (str: string): string => {
 };
 
 export default function CustomerRecords({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
+  const dateHeaderRef = useRef<HTMLTableCellElement>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -99,6 +100,26 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   useEffect(() => {
     fetchCustomers();
   }, [sortField, sortOrder]);
+
+  // Update date filter position when it opens and on scroll
+  useEffect(() => {
+    const updateDateFilterPosition = () => {
+      if (showDateFilter && dateHeaderRef.current) {
+        const rect = dateHeaderRef.current.getBoundingClientRect();
+        setDateFilterTooltipPos({
+          top: rect.bottom + window.scrollY + 4,
+          left: rect.left + window.scrollX
+        });
+      }
+    };
+
+    updateDateFilterPosition();
+
+    if (showDateFilter) {
+      window.addEventListener("scroll", updateDateFilterPosition);
+      return () => window.removeEventListener("scroll", updateDateFilterPosition);
+    }
+  }, [showDateFilter]);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -741,16 +762,13 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   </button>
                 </th>
                 {!isMobile && (
-                  <th className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap relative" style={{fontSize: '15px'}}>
+                  <th
+                    className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap relative"
+                    style={{fontSize: '15px'}}
+                    ref={dateHeaderRef}
+                  >
                     <button
-                      onClick={(e) => {
-                        const rect = (e.currentTarget.parentElement as HTMLElement).getBoundingClientRect();
-                        setDateFilterTooltipPos({
-                          top: rect.bottom + window.scrollY + 4,
-                          left: rect.left + window.scrollX
-                        });
-                        setShowDateFilter(!showDateFilter);
-                      }}
+                      onClick={() => setShowDateFilter(!showDateFilter)}
                       className="flex items-center gap-2 hover:text-blue-600 cursor-pointer"
                     >
                       Tarih <SortIcon field="created_at" />
