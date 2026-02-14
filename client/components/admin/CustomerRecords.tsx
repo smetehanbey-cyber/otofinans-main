@@ -453,21 +453,21 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const handleMessageClick = (customerId: number, e: React.MouseEvent) => {
     setOpenedNoteCardId(customerId);
 
-    // Get the row element
-    const rowElement = (e.currentTarget as HTMLElement).closest(`tr[id="customer-row-${customerId}"]`) as HTMLElement;
+    // Get the message cell (the <td> containing the message)
+    const messageCell = (e.currentTarget as HTMLElement).closest('td') as HTMLElement;
     const tableContainer = (e.currentTarget as HTMLElement).closest('div[class*="overflow"]') as HTMLElement;
 
     let topPos = 0;
     let leftPos = 0;
 
-    if (rowElement && tableContainer) {
-      const rowRect = rowElement.getBoundingClientRect();
+    if (messageCell && tableContainer) {
+      const cellRect = messageCell.getBoundingClientRect();
       const containerRect = tableContainer.getBoundingClientRect();
 
-      // Position card directly below the row
-      topPos = rowRect.bottom - containerRect.top + 5;
-      // Align card to the left edge of the table
-      leftPos = 10; // Small padding from left
+      // Position card directly below the message cell
+      topPos = cellRect.bottom - containerRect.top + 5;
+      // Position card to align with the message cell
+      leftPos = cellRect.left - containerRect.left;
     } else {
       // Fallback positioning
       const cellRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
