@@ -83,6 +83,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [messageWindows, setMessageWindows] = useState<{[key: string]: {minimized: boolean; unread: number}} | undefined>(undefined);
   const [unreadByUser, setUnreadByUser] = useState<{[key: string]: number}>({});
   const [authorizedPersons, setAuthorizedPersons] = useState<string[]>([]);
+  const [windowPositions, setWindowPositions] = useState<{[key: string]: {x: number; y: number}}>({});
+  const [draggedWindow, setDraggedWindow] = useState<{person: string; offsetX: number; offsetY: number} | null>(null);
+  const [showPersonList, setShowPersonList] = useState(false);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -276,6 +279,34 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       }
     };
   }, [loggedInUser?.name]);
+
+  // Handle window dragging
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (draggedWindow && messageWindows && messageWindows[draggedWindow.person]) {
+        const newX = e.clientX - draggedWindow.offsetX;
+        const newY = window.innerHeight - e.clientY - draggedWindow.offsetY;
+        setWindowPositions(prev => ({
+          ...prev,
+          [draggedWindow.person]: { x: Math.max(0, newX), y: Math.max(0, newY) }
+        }));
+      }
+    };
+
+    const handleMouseUp = () => {
+      setDraggedWindow(null);
+    };
+
+    if (draggedWindow) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [draggedWindow, messageWindows]);
 
   // Play notification sound
   const playMessageSound = () => {
@@ -1641,7 +1672,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       {/* Message Send Button - Bottom Left */}
       <div className="fixed bottom-4 left-4 z-[9997]">
         {/* User Selection Popup */}
-        {messageWindows && Object.keys(messageWindows).length > 0 ? (
+        {showPersonList && messageWindows ? (
           <div className="bg-white rounded-lg shadow-2xl p-4 mb-4 border-t-4 border-green-600 max-w-xs animate-slideInAndFade">
             <p className="text-xs text-gray-600 mb-3 font-semibold">Mesaj Gönderilecek Kişi Seçin:</p>
             <div className="space-y-2">
@@ -1662,6 +1693,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           [person]: { ...prev![person], minimized: false }
                         }));
                       }
+                      setShowPersonList(false);
                     }}
                     className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-green-100 rounded transition-colors text-sm font-medium animate-slideInAndFade"
                     style={{
@@ -1687,8 +1719,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     return acc;
                   }, {} as typeof messageWindows)
               );
+              setShowPersonList(true);
             } else {
-              setMessageWindows(undefined);
+              setShowPersonList(!showPersonList);
             }
           }}
           className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors font-medium"
@@ -1698,30 +1731,69 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       </div>
 
       {/* Message Windows - Minimizable Cards */}
-      <div className="fixed bottom-20 left-4 z-[9996] space-y-3 max-w-md">
-        {messageWindows && Object.entries(messageWindows).map(([personName, windowState]) => (
+      {messageWindows && Object.entries(messageWindows).map(([personName, windowState], idx) => {
+        const pos = windowPositions[personName] || { x: 16, y: 80 + idx * 320 };
+        return (
           <div
             key={personName}
-            className={`bg-white rounded-lg shadow-2xl flex flex-col animate-slideInAndFade ${
-              windowState.minimized ? 'h-14' : 'h-96'
+            className={`fixed z-[9996] bg-white rounded-lg shadow-2xl flex flex-col animate-slideInAndFade transition-all ${
+              windowState.minimized ? 'h-14 cursor-move' : 'h-96'
             }`}
-            style={{width: '300px'}}
+            style={{
+              width: '300px',
+              left: `${pos.x}px`,
+              bottom: `${pos.y}px`,
+              userSelect: 'none'
+            }}
+            onMouseMove={(e) => {
+              if (draggedWindow && draggedWindow.person === personName && windowState.minimized) {
+                const newX = e.clientX - draggedWindow.offsetX;
+                const newY = window.innerHeight - e.clientY - draggedWindow.offsetY;
+                setWindowPositions(prev => ({
+                  ...prev,
+                  [personName]: { x: Math.max(0, newX), y: Math.max(0, newY) }
+                }));
+              }
+            }}
+            onMouseUp={() => {
+              if (draggedWindow?.person === personName) {
+                setDraggedWindow(null);
+              }
+            }}
+            onMouseLeave={() => {
+              if (draggedWindow?.person === personName) {
+                setDraggedWindow(null);
+              }
+            }}
           >
             {/* Header */}
-            <div className={`bg-green-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} cursor-pointer`}
+            <div
+              className={`bg-green-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} ${
+                windowState.minimized ? '' : 'cursor-pointer'
+              }`}
               onClick={() => {
-                setMessageWindows(prev => ({
-                  ...prev,
-                  [personName]: {
-                    ...prev![personName],
-                    minimized: !prev![personName].minimized,
-                    unread: 0
-                  }
-                }));
-                setUnreadByUser(prev => ({
-                  ...prev,
-                  [personName]: 0
-                }));
+                if (!windowState.minimized) {
+                  setMessageWindows(prev => ({
+                    ...prev,
+                    [personName]: {
+                      ...prev![personName],
+                      minimized: !prev![personName].minimized,
+                      unread: 0
+                    }
+                  }));
+                  setUnreadByUser(prev => ({
+                    ...prev,
+                    [personName]: 0
+                  }));
+                }
+              }}
+              onMouseDown={(e) => {
+                if (windowState.minimized) {
+                  const rect = e.currentTarget.parentElement!.getBoundingClientRect();
+                  const offsetX = e.clientX - rect.left;
+                  const offsetY = e.clientY - rect.top;
+                  setDraggedWindow({ person: personName, offsetX, offsetY });
+                }
               }}
             >
               <h4 className={`font-semibold ${windowState.minimized && (unreadByUser[personName] || 0) > 0 ? 'animate-pulse' : ''}`}>
@@ -1805,8 +1877,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               </>
             )}
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }
