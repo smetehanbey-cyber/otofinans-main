@@ -69,6 +69,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [showDateFilter, setShowDateFilter] = useState(false);
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
+  const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string}>>([]);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -113,6 +114,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   // Real-time subscription to customers table
   useEffect(() => {
     let channel: any;
+    let notificationChannel: any;
 
     const setupRealtime = () => {
       try {
@@ -129,6 +131,32 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
             }
           )
           .subscribe();
+
+        // Listen for note broadcast notifications
+        notificationChannel = supabase
+          .channel('note_notifications')
+          .on('broadcast', { event: 'note_added' }, (message) => {
+            // Only show notification if current user is not the one who added the note
+            if (message.payload.author !== loggedInUser?.name) {
+              const notifId = `${Date.now()}-${Math.random()}`;
+              const newNotification = {
+                id: notifId,
+                customerId: message.payload.customerId,
+                customerName: message.payload.customerName,
+                author: message.payload.author,
+                noteText: message.payload.noteText,
+                timestamp: message.payload.timestamp
+              };
+
+              setNotifications(prev => [...prev, newNotification]);
+
+              // Auto-remove notification after 8 seconds
+              setTimeout(() => {
+                setNotifications(prev => prev.filter(n => n.id !== notifId));
+              }, 8000);
+            }
+          })
+          .subscribe();
       } catch (error) {
         console.error("Error setting up realtime subscription:", error);
       }
@@ -140,8 +168,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       if (channel) {
         supabase.removeChannel(channel);
       }
+      if (notificationChannel) {
+        supabase.removeChannel(notificationChannel);
+      }
     };
-  }, []);
+  }, [loggedInUser?.name]);
 
   // Add new customer
   const handleAddCustomer = async () => {
@@ -347,6 +378,31 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           throw error;
         }
       }
+
+      // Trigger broadcast notification to other users
+      const broadcastMessage = {
+        type: 'note_added',
+        customerId: customerId,
+        customerName: customer?.name || "Bilinmeyen",
+        author: loggedInUser?.name || "Bilinmeyen",
+        noteText: noteText.trim(),
+        timestamp: timestamp
+      };
+
+      // Broadcast via Supabase Realtime
+      await supabase
+        .channel('note_notifications')
+        .send({
+          type: 'broadcast',
+          event: 'note_added',
+          payload: broadcastMessage
+        })
+        .then(() => {
+          // Successfully sent, no need to do anything
+        })
+        .catch(err => {
+          console.log("Note broadcast sent (may fail if channel not ready):", err);
+        });
     } catch (error) {
       console.error("Error adding note from hover:", error);
       alert("Not eklenirken hata oluştu: " + (error instanceof Error ? error.message : "Bilinmeyen hata"));
@@ -403,9 +459,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     });
   };
 
-  // Handle note textarea Enter key (Ctrl+Enter or Cmd+Enter)
+  // Handle note textarea Enter key - submit on Enter
   const handleNoteKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>, customerId: number) => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    if (e.key === 'Enter') {
       e.preventDefault();
       handleAddNoteFromHover(customerId, hoverNoteInputText);
     }
@@ -478,6 +534,17 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     ) : (
       <ChevronDown className="h-4 w-4 text-blue-600" />
     );
+  };
+
+  // Scroll to customer row when clicking view note
+  const scrollToCustomer = (customerId: number) => {
+    const customerElement = document.getElementById(`customer-row-${customerId}`);
+    if (customerElement) {
+      customerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Highlight the row briefly
+      customerElement.classList.add('row-animate');
+      setTimeout(() => customerElement.classList.remove('row-animate'), 800);
+    }
   };
 
   // Get unique authorized persons
@@ -884,6 +951,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               {filteredCustomers.map((customer) => (
                 <tr
                   key={customer.id}
+                  id={`customer-row-${customer.id}`}
                   className={`border-b border-gray-200 transition-colors ${
                     customer.process === "Kullandırıldı"
                       ? "bg-green-100 hover:bg-green-200"
@@ -1074,7 +1142,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                   value={hoverNoteInputText}
                                   onChange={(e) => setHoverNoteInputText(e.target.value)}
                                   onKeyDown={(e) => handleNoteKeyPress(e, customer.id)}
-                                  placeholder="Not yazınız... (Ctrl+Enter ile ekleyin)"
+                                  placeholder="Not yazınız... (Enter ile ekleyin)"
                                   className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
                                   rows={2}
                                 />
@@ -1323,6 +1391,47 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           </div>
         </div>
       )}
+
+      {/* Notification Toast - Bottom Left */}
+      <div className="fixed bottom-4 left-4 z-[9998] space-y-2 max-w-sm">
+        {notifications.map((notification) => (
+          <div
+            key={notification.id}
+            className="bg-blue-600 text-white rounded-lg shadow-lg p-4 animate-slideInAndFade"
+          >
+            <div className="flex justify-between items-start gap-2 mb-2">
+              <div className="flex-1">
+                <p className="text-sm font-semibold">
+                  <span className="font-bold">{notification.author}</span> not ekledi
+                </p>
+                <p className="text-xs text-blue-100 mt-0.5">
+                  {notification.customerName}
+                </p>
+              </div>
+              <button
+                onClick={() => setNotifications(prev => prev.filter(n => n.id !== notification.id))}
+                className="text-blue-200 hover:text-white text-lg leading-none flex-shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="bg-blue-700 rounded p-2 mb-3 text-xs max-h-12 overflow-y-auto">
+              <p className="text-blue-100">{notification.noteText}</p>
+            </div>
+
+            <button
+              onClick={() => {
+                scrollToCustomer(notification.customerId);
+                setNotifications(prev => prev.filter(n => n.id !== notification.id));
+              }}
+              className="w-full px-3 py-1.5 bg-blue-500 hover:bg-blue-400 text-white text-xs font-medium rounded transition-colors"
+            >
+              Notu Görüntüle
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
