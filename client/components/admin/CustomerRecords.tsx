@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { supabase, Customer } from "@/lib/supabase";
 import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText, Smartphone } from "lucide-react";
 import DocumentUploadModal from "./DocumentUploadModal";
@@ -31,7 +31,6 @@ const toTurkishUpperCase = (str: string): string => {
 };
 
 export default function CustomerRecords({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
-  const dateHeaderRef = useRef<HTMLTableCellElement>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -70,7 +69,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [showDateFilter, setShowDateFilter] = useState(false);
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
-  const [dateFilterTooltipPos, setDateFilterTooltipPos] = useState({ top: 0, left: 0 });
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -101,30 +99,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     fetchCustomers();
   }, [sortField, sortOrder]);
 
-  // Update date filter position when it opens and on resize/scroll
-  useEffect(() => {
-    const updateDateFilterPosition = () => {
-      if (showDateFilter && dateHeaderRef.current) {
-        const rect = dateHeaderRef.current.getBoundingClientRect();
-        // Use rect values directly (fixed positioning, not accounting for scroll)
-        setDateFilterTooltipPos({
-          top: rect.bottom + 4,
-          left: rect.left
-        });
-      }
-    };
-
-    updateDateFilterPosition();
-
-    if (showDateFilter) {
-      window.addEventListener("scroll", updateDateFilterPosition);
-      window.addEventListener("resize", updateDateFilterPosition);
-      return () => {
-        window.removeEventListener("scroll", updateDateFilterPosition);
-        window.removeEventListener("resize", updateDateFilterPosition);
-      };
-    }
-  }, [showDateFilter]);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -770,7 +744,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   <th
                     className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap relative"
                     style={{fontSize: '15px'}}
-                    ref={dateHeaderRef}
                   >
                     <button
                       onClick={() => setShowDateFilter(!showDateFilter)}
@@ -787,10 +760,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           onClick={() => setShowDateFilter(false)}
                         />
                         <div
-                          className="fixed bg-white border border-gray-300 rounded-lg shadow-2xl z-50 p-4"
+                          className="absolute bg-white border border-gray-300 rounded-lg shadow-2xl z-50 p-4"
                           style={{
-                            top: `${dateFilterTooltipPos.top}px`,
-                            left: `${dateFilterTooltipPos.left}px`,
+                            top: '100%',
+                            left: '0',
+                            marginTop: '4px',
                             minWidth: '320px'
                           }}
                         >
