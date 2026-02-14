@@ -839,7 +839,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                 onClick={() => setShowDateFilter(false)}
                                 className="flex-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium"
                               >
-                                Kapat
+                                Getir
                               </button>
                             </div>
                           </div>
