@@ -766,9 +766,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               {filteredCustomers.map((customer) => (
                 <tr
                   key={customer.id}
-                  className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                    animatingIds.has(customer.id) ? "row-animate" : ""
-                  }`}
+                  className={`border-b border-gray-200 transition-colors ${
+                    customer.process === "Kullandırıldı"
+                      ? "bg-green-100 hover:bg-green-200"
+                      : "hover:bg-gray-50"
+                  } ${animatingIds.has(customer.id) ? "row-animate" : ""}`}
                 >
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '15px'}}>
                     {editingId === customer.id ? (
