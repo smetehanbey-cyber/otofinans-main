@@ -280,58 +280,40 @@ export default function DocumentUploadModal({
                 Henüz dosya yüklenedi
               </p>
             ) : (
-              <div className="grid grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+              <div className="space-y-2 max-h-96 overflow-y-auto">
                 {documents.map((doc) => (
                   <div
                     key={doc.id}
-                    className="bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow group"
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    {/* File Preview */}
-                    <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                      {doc.file_type.toLowerCase() === "pdf" ? (
-                        <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-red-50 to-red-100 p-4">
-                          <FileText className="h-16 w-16 text-red-400 mb-2" />
-                          <p className="text-xs text-red-600 font-medium text-center">PDF</p>
-                        </div>
-                      ) : ["png", "jpg", "jpeg"].includes(doc.file_type.toLowerCase()) ? (
-                        <img
-                          src={doc.file_url}
-                          alt={doc.file_name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <FileText className="h-16 w-16 text-gray-400" />
-                      )}
-
-                      {/* Action Buttons Overlay */}
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
-                        <a
-                          href={doc.file_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 bg-white text-blue-600 rounded-full hover:bg-blue-50 transition-colors"
-                          title="Aç"
-                        >
-                          <Download className="h-5 w-5" />
-                        </a>
-                        <button
-                          onClick={() => handleDeleteDocument(doc.id, doc.file_url)}
-                          className="p-2 bg-white text-red-600 rounded-full hover:bg-red-50 transition-colors"
-                          title="Sil"
-                        >
-                          <Trash2 className="h-5 w-5" />
-                        </button>
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <FileText className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-gray-800 truncate">
+                          {doc.file_name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(doc.created_at).toLocaleDateString("tr-TR")}
+                        </p>
                       </div>
                     </div>
-
-                    {/* File Info */}
-                    <div className="p-3">
-                      <p className="text-xs font-medium text-gray-800 truncate" title={doc.file_name}>
-                        {doc.file_name}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {new Date(doc.created_at).toLocaleDateString("tr-TR")}
-                      </p>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <a
+                        href={doc.file_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        title="İndir"
+                      >
+                        <Download className="h-4 w-4" />
+                      </a>
+                      <button
+                        onClick={() => handleDeleteDocument(doc.id, doc.file_url)}
+                        className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                        title="Sil"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
                 ))}
