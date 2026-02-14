@@ -730,12 +730,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                 {!isMobile && (
                   <th className="px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap relative" style={{fontSize: '15px'}}>
                     <button
-                      onClick={() => handleSort("created_at")}
-                      className="flex items-center gap-2 hover:text-blue-600"
-                    >
-                      Tarih <SortIcon field="created_at" />
-                    </button>
-                    <button
                       onClick={(e) => {
                         const rect = (e.currentTarget.parentElement as HTMLElement).getBoundingClientRect();
                         setDateFilterTooltipPos({
@@ -744,10 +738,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         });
                         setShowDateFilter(!showDateFilter);
                       }}
-                      className="ml-2 inline-block text-gray-500 hover:text-blue-600 transition-colors"
-                      title="Tarih Filtrele"
+                      className="flex items-center gap-2 hover:text-blue-600 cursor-pointer"
                     >
-                      ⏱️
+                      Tarih <SortIcon field="created_at" />
                     </button>
 
                     {/* Date Filter Dropdown */}
@@ -762,10 +755,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           style={{
                             top: `${dateFilterTooltipPos.top}px`,
                             left: `${dateFilterTooltipPos.left}px`,
-                            minWidth: '300px'
+                            minWidth: '320px'
                           }}
                         >
-                          <div className="space-y-3">
+                          <div className="space-y-4">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Başlangıç Tarihi
@@ -788,6 +781,36 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
                               />
                             </div>
+
+                            {/* Sort Order Selection */}
+                            <div className="border-t border-gray-200 pt-3">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Sıralama
+                              </label>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => setSortOrder("desc")}
+                                  className={`flex-1 px-3 py-2 rounded text-sm font-medium transition-colors ${
+                                    sortOrder === "desc"
+                                      ? "bg-blue-600 text-white"
+                                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                  }`}
+                                >
+                                  Yeniden Eskilere
+                                </button>
+                                <button
+                                  onClick={() => setSortOrder("asc")}
+                                  className={`flex-1 px-3 py-2 rounded text-sm font-medium transition-colors ${
+                                    sortOrder === "asc"
+                                      ? "bg-blue-600 text-white"
+                                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                  }`}
+                                >
+                                  Eskiden Yeniye
+                                </button>
+                              </div>
+                            </div>
+
                             <div className="flex gap-2 pt-2">
                               <button
                                 onClick={() => {
