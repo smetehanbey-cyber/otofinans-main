@@ -453,34 +453,25 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const handleMessageClick = (customerId: number, e: React.MouseEvent) => {
     setOpenedNoteCardId(customerId);
 
-    // Get the message cell (the <td> containing the message)
-    const messageCell = (e.currentTarget as HTMLElement).closest('td') as HTMLElement;
-    const tableContainer = (e.currentTarget as HTMLElement).closest('div[class*="overflow"]') as HTMLElement;
+    // Get the parent relative div (the container of the span and tooltip)
+    const relativeDiv = (e.currentTarget as HTMLElement).closest('div.relative') as HTMLElement;
 
-    let topPos = 0;
-    let leftPos = 0;
+    if (relativeDiv) {
+      const span = e.currentTarget as HTMLElement;
+      const spanRect = span.getBoundingClientRect();
+      const relativeDivRect = relativeDiv.getBoundingClientRect();
 
-    if (messageCell && tableContainer) {
-      const cellRect = messageCell.getBoundingClientRect();
-      const containerRect = tableContainer.getBoundingClientRect();
+      // Calculate position relative to the parent relative div
+      const topPos = spanRect.bottom - relativeDivRect.top + 5;
+      const leftPos = spanRect.left - relativeDivRect.left;
 
-      // Position card directly below the message cell
-      topPos = cellRect.bottom - containerRect.top + 5;
-      // Position card to align with the message cell
-      leftPos = cellRect.left - containerRect.left;
-    } else {
-      // Fallback positioning
-      const cellRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      topPos = cellRect.bottom + 5;
-      leftPos = cellRect.left;
+      setTooltipPos({
+        top: topPos,
+        bottom: 0,
+        left: leftPos,
+        showBelow: true
+      });
     }
-
-    setTooltipPos({
-      top: topPos,
-      bottom: 0,
-      left: leftPos,
-      showBelow: true
-    });
   };
 
   // Handle note textarea Enter key - submit on Enter
