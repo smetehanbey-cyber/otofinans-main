@@ -1111,15 +1111,16 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                     <div className="space-y-2 mb-3">
                                       {customer.notes.slice().reverse().map((note, displayIdx) => {
                                         const actualIdx = customer.notes.length - 1 - displayIdx;
+                                        const isLatest = displayIdx === 0;
                                         return (
-                                          <div key={actualIdx} className="bg-blue-900 p-2 rounded border border-blue-700 flex justify-between items-start gap-2 group">
+                                          <div key={actualIdx} className={`p-2 rounded flex justify-between items-start gap-2 group ${isLatest ? 'bg-blue-900 border border-blue-700' : 'bg-gray-600 border border-gray-500'}`}>
                                             <div className="flex-1">
-                                              <p className="text-white break-words font-medium text-sm">{note.text}</p>
-                                              <p className="text-blue-200 text-xs mt-1">{note.author} • {note.timestamp}</p>
+                                              <p className={`text-white break-words font-medium`} style={{fontSize: '13px'}}>{note.text}</p>
+                                              <p className={`${isLatest ? 'text-blue-200' : 'text-gray-200'} text-xs mt-1`}>{note.author} • {note.timestamp}</p>
                                             </div>
                                             <button
                                               onClick={() => handleDeleteNote(customer.id, actualIdx)}
-                                              className="flex-shrink-0 text-red-300 hover:text-red-100 hover:bg-red-900 p-1 rounded transition-colors opacity-0 group-hover:opacity-100"
+                                              className={`flex-shrink-0 p-1 rounded transition-colors opacity-0 group-hover:opacity-100 ${isLatest ? 'text-red-300 hover:text-red-100 hover:bg-red-900' : 'text-red-200 hover:text-red-100 hover:bg-red-700'}`}
                                               title="Sil"
                                             >
                                               ✕
