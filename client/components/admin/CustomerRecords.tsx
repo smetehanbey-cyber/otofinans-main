@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase, Customer } from "@/lib/supabase";
-import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText, Smartphone } from "lucide-react";
+import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText, Smartphone, MessageSquare, X, Send } from "lucide-react";
 import DocumentUploadModal from "./DocumentUploadModal";
 
 interface LoggedInUser {
@@ -8,6 +8,15 @@ interface LoggedInUser {
   name: string;
   pin: string;
   is_admin: boolean;
+}
+
+interface ChatMessage {
+  id: string;
+  sender_name: string;
+  receiver_name: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
 }
 
 // Authorized persons list
@@ -70,6 +79,12 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
   const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string; isProcessChange?: boolean}>>([]);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatInput, setChatInput] = useState("");
+  const [selectedChatUser, setSelectedChatUser] = useState<string | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [authorizedPersons, setAuthorizedPersons] = useState<string[]>([]);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -195,6 +210,107 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       }
     };
   }, [loggedInUser?.name]);
+
+  // Request notification permission and setup chat
+  useEffect(() => {
+    // Request notification permission
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+
+    // Set authorized persons list
+    setAuthorizedPersons(AUTHORIZED_PERSONS);
+
+    // Setup chat message listener
+    let chatChannel: any;
+    const setupChat = () => {
+      try {
+        chatChannel = supabase
+          .channel('chat_messages')
+          .on('broadcast', { event: 'new_message' }, (message) => {
+            const msg = message.payload;
+
+            // Only add message if it's for current user (receiver) or from current user (sender)
+            if (msg.receiver_name === loggedInUser?.name || msg.sender_name === loggedInUser?.name) {
+              const newMsg: ChatMessage = {
+                id: msg.id,
+                sender_name: msg.sender_name,
+                receiver_name: msg.receiver_name,
+                message: msg.message,
+                timestamp: msg.timestamp,
+                read: msg.sender_name === loggedInUser?.name
+              };
+
+              setChatMessages(prev => [...prev, newMsg]);
+
+              // Play notification sound if received message
+              if (msg.receiver_name === loggedInUser?.name && msg.sender_name !== loggedInUser?.name) {
+                playMessageSound();
+                setUnreadCount(prev => prev + 1);
+              }
+            }
+          })
+          .subscribe();
+      } catch (error) {
+        console.error("Error setting up chat:", error);
+      }
+    };
+
+    setupChat();
+
+    return () => {
+      if (chatChannel) {
+        supabase.removeChannel(chatChannel);
+      }
+    };
+  }, [loggedInUser?.name]);
+
+  // Play notification sound
+  const playMessageSound = () => {
+    // Create a simple beep sound using Web Audio API
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  };
+
+  // Send chat message
+  const handleSendMessage = async () => {
+    if (!chatInput.trim() || !selectedChatUser) return;
+
+    const messageData = {
+      id: `${Date.now()}-${Math.random()}`,
+      sender_name: loggedInUser?.name || "Bilinmeyen",
+      receiver_name: selectedChatUser,
+      message: chatInput,
+      timestamp: new Date().toLocaleString("tr-TR"),
+      read: true
+    };
+
+    setChatMessages(prev => [...prev, messageData]);
+    setChatInput("");
+
+    // Broadcast message to other users
+    await supabase
+      .channel('chat_messages')
+      .send({
+        type: 'broadcast',
+        event: 'new_message',
+        payload: messageData
+      })
+      .catch(err => console.log("Message sent:", err));
+  };
 
   // Add new customer
   const handleAddCustomer = async () => {
@@ -1493,6 +1609,124 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           </div>
         ))}
       </div>
+
+      {/* Chat Button - Bottom Right */}
+      {!chatOpen && (
+        <button
+          onClick={() => {
+            setChatOpen(true);
+            setUnreadCount(0);
+          }}
+          className="fixed bottom-4 right-4 z-[9997] bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-lg transition-colors flex items-center gap-2"
+        >
+          <MessageSquare className="h-6 w-6" />
+          {unreadCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+      )}
+
+      {/* Chat Box */}
+      {chatOpen && (
+        <div className="fixed bottom-4 right-4 z-[9997] bg-white rounded-lg shadow-2xl flex flex-col" style={{width: '400px', height: '600px'}}>
+          {/* Chat Header */}
+          <div className="bg-green-600 text-white p-4 flex justify-between items-center rounded-t-lg">
+            <h3 className="font-semibold">Sohbet</h3>
+            <button
+              onClick={() => {
+                setChatOpen(false);
+                setSelectedChatUser(null);
+              }}
+              className="hover:bg-green-700 p-1 rounded transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Chat Content */}
+          {!selectedChatUser ? (
+            <div className="flex-1 overflow-y-auto p-4">
+              <p className="text-sm text-gray-600 mb-4">Sohbet etmek istediğiniz kişiyi seçin:</p>
+              <div className="space-y-2">
+                {authorizedPersons
+                  .filter(person => person !== loggedInUser?.name)
+                  .map(person => (
+                    <button
+                      key={person}
+                      onClick={() => setSelectedChatUser(person)}
+                      className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-green-100 rounded transition-colors text-sm font-medium"
+                    >
+                      {person}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Messages Area */}
+              <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+                {chatMessages
+                  .filter(msg =>
+                    (msg.sender_name === loggedInUser?.name && msg.receiver_name === selectedChatUser) ||
+                    (msg.receiver_name === loggedInUser?.name && msg.sender_name === selectedChatUser)
+                  )
+                  .map(msg => (
+                    <div
+                      key={msg.id}
+                      className={`mb-3 flex ${msg.sender_name === loggedInUser?.name ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div
+                        className={`max-w-xs px-3 py-2 rounded-lg ${
+                          msg.sender_name === loggedInUser?.name
+                            ? 'bg-green-600 text-white'
+                            : 'bg-gray-300 text-gray-800'
+                        }`}
+                      >
+                        <p className="text-sm break-words">{msg.message}</p>
+                        <p className="text-xs mt-1 opacity-70">{msg.timestamp.split(',')[1]?.trim()}</p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Message Input */}
+              <div className="border-t p-4 flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSendMessage();
+                    }
+                  }}
+                  placeholder="Mesaj yazınız..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+                />
+                <button
+                  onClick={handleSendMessage}
+                  className="bg-green-600 hover:bg-green-700 text-white p-2 rounded transition-colors"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+
+              {/* Back Button */}
+              <button
+                onClick={() => {
+                  setSelectedChatUser(null);
+                  setChatInput("");
+                }}
+                className="w-full px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-b-lg transition-colors"
+              >
+                ← Geri
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
