@@ -79,11 +79,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
   const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string; isProcessChange?: boolean}>>([]);
-  const [chatOpen, setChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [chatInput, setChatInput] = useState("");
-  const [selectedChatUser, setSelectedChatUser] = useState<string | null>(null);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [messageWindows, setMessageWindows] = useState<{[key: string]: {minimized: boolean; unread: number}} | undefined>(undefined);
+  const [unreadByUser, setUnreadByUser] = useState<{[key: string]: number}>({});
   const [authorizedPersons, setAuthorizedPersons] = useState<string[]>([]);
 
   // Fetch active customers only
@@ -246,7 +244,21 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
               // Play notification sound if received message
               if (msg.receiver_name === loggedInUser?.name && msg.sender_name !== loggedInUser?.name) {
                 playMessageSound();
-                setUnreadCount(prev => prev + 1);
+                const senderName = msg.sender_name;
+
+                // Create or open message window
+                setMessageWindows(prev => ({
+                  ...prev,
+                  [senderName]: {
+                    minimized: true,
+                    unread: (prev?.[senderName]?.unread || 0) + 1
+                  }
+                }));
+
+                setUnreadByUser(prev => ({
+                  ...prev,
+                  [senderName]: (prev[senderName] || 0) + 1
+                }));
               }
             }
           })
@@ -286,20 +298,19 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   };
 
   // Send chat message
-  const handleSendMessage = async () => {
-    if (!chatInput.trim() || !selectedChatUser) return;
+  const handleSendMessage = async (receiverName: string, message: string) => {
+    if (!message.trim()) return;
 
     const messageData = {
       id: `${Date.now()}-${Math.random()}`,
       sender_name: loggedInUser?.name || "Bilinmeyen",
-      receiver_name: selectedChatUser,
-      message: chatInput,
+      receiver_name: receiverName,
+      message: message,
       timestamp: new Date().toLocaleString("tr-TR"),
       read: true
     };
 
     setChatMessages(prev => [...prev, messageData]);
-    setChatInput("");
 
     // Broadcast message to other users
     await supabase
@@ -796,6 +807,23 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
         .tooltip-animate {
           animation: slideInAndFade 0.3s ease-out;
+        }
+
+        .animate-slideInAndFade {
+          animation: slideInAndFade 0.4s ease-out forwards;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+
+        .animate-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
       `}</style>
 
@@ -1610,123 +1638,175 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         ))}
       </div>
 
-      {/* Chat Button - Bottom Right */}
-      {!chatOpen && (
+      {/* Message Send Button - Bottom Left */}
+      <div className="fixed bottom-4 left-4 z-[9997]">
+        {/* User Selection Popup */}
+        {messageWindows && Object.keys(messageWindows).length > 0 ? (
+          <div className="bg-white rounded-lg shadow-2xl p-4 mb-4 border-t-4 border-green-600 max-w-xs animate-slideInAndFade">
+            <p className="text-xs text-gray-600 mb-3 font-semibold">Mesaj Gönderilecek Kişi Seçin:</p>
+            <div className="space-y-2">
+              {authorizedPersons
+                .filter(person => person !== loggedInUser?.name)
+                .map((person, idx) => (
+                  <button
+                    key={person}
+                    onClick={() => {
+                      if (!messageWindows || !messageWindows[person]) {
+                        setMessageWindows(prev => ({
+                          ...(prev || {}),
+                          [person]: { minimized: false, unread: 0 }
+                        }));
+                      } else {
+                        setMessageWindows(prev => ({
+                          ...prev,
+                          [person]: { ...prev![person], minimized: false }
+                        }));
+                      }
+                    }}
+                    className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-green-100 rounded transition-colors text-sm font-medium animate-slideInAndFade"
+                    style={{
+                      animationDelay: `${idx * 50}ms`
+                    }}
+                  >
+                    {person}
+                  </button>
+                ))}
+            </div>
+          </div>
+        ) : null}
+
+        {/* Message Send Button */}
         <button
           onClick={() => {
-            setChatOpen(true);
-            setUnreadCount(0);
+            if (!messageWindows || Object.keys(messageWindows).length === 0) {
+              setMessageWindows(
+                authorizedPersons
+                  .filter(p => p !== loggedInUser?.name)
+                  .reduce((acc, person) => {
+                    acc[person] = { minimized: true, unread: 0 };
+                    return acc;
+                  }, {} as typeof messageWindows)
+              );
+            } else {
+              setMessageWindows(undefined);
+            }
           }}
-          className="fixed bottom-4 right-4 z-[9997] bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-lg transition-colors flex items-center gap-2"
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors font-medium"
         >
-          <MessageSquare className="h-6 w-6" />
-          {unreadCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
-              {unreadCount}
-            </span>
-          )}
+          Mesaj Gönder
         </button>
-      )}
+      </div>
 
-      {/* Chat Box */}
-      {chatOpen && (
-        <div className="fixed bottom-4 right-4 z-[9997] bg-white rounded-lg shadow-2xl flex flex-col" style={{width: '400px', height: '600px'}}>
-          {/* Chat Header */}
-          <div className="bg-green-600 text-white p-4 flex justify-between items-center rounded-t-lg">
-            <h3 className="font-semibold">Sohbet</h3>
-            <button
+      {/* Message Windows - Minimizable Cards */}
+      <div className="fixed bottom-20 left-4 z-[9996] space-y-3 max-w-md">
+        {messageWindows && Object.entries(messageWindows).map(([personName, windowState]) => (
+          <div
+            key={personName}
+            className={`bg-white rounded-lg shadow-2xl flex flex-col animate-slideInAndFade ${
+              windowState.minimized ? 'h-14' : 'h-96'
+            }`}
+            style={{width: '300px'}}
+          >
+            {/* Header */}
+            <div className={`bg-green-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} cursor-pointer`}
               onClick={() => {
-                setChatOpen(false);
-                setSelectedChatUser(null);
+                setMessageWindows(prev => ({
+                  ...prev,
+                  [personName]: {
+                    ...prev![personName],
+                    minimized: !prev![personName].minimized,
+                    unread: 0
+                  }
+                }));
+                setUnreadByUser(prev => ({
+                  ...prev,
+                  [personName]: 0
+                }));
               }}
-              className="hover:bg-green-700 p-1 rounded transition-colors"
             >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-
-          {/* Chat Content */}
-          {!selectedChatUser ? (
-            <div className="flex-1 overflow-y-auto p-4">
-              <p className="text-sm text-gray-600 mb-4">Sohbet etmek istediğiniz kişiyi seçin:</p>
-              <div className="space-y-2">
-                {authorizedPersons
-                  .filter(person => person !== loggedInUser?.name)
-                  .map(person => (
-                    <button
-                      key={person}
-                      onClick={() => setSelectedChatUser(person)}
-                      className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-green-100 rounded transition-colors text-sm font-medium"
-                    >
-                      {person}
-                    </button>
-                  ))}
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* Messages Area */}
-              <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-                {chatMessages
-                  .filter(msg =>
-                    (msg.sender_name === loggedInUser?.name && msg.receiver_name === selectedChatUser) ||
-                    (msg.receiver_name === loggedInUser?.name && msg.sender_name === selectedChatUser)
-                  )
-                  .map(msg => (
-                    <div
-                      key={msg.id}
-                      className={`mb-3 flex ${msg.sender_name === loggedInUser?.name ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-xs px-3 py-2 rounded-lg ${
-                          msg.sender_name === loggedInUser?.name
-                            ? 'bg-green-600 text-white'
-                            : 'bg-gray-300 text-gray-800'
-                        }`}
-                      >
-                        <p className="text-sm break-words">{msg.message}</p>
-                        <p className="text-xs mt-1 opacity-70">{msg.timestamp.split(',')[1]?.trim()}</p>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-
-              {/* Message Input */}
-              <div className="border-t p-4 flex gap-2">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSendMessage();
-                    }
-                  }}
-                  placeholder="Mesaj yazınız..."
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-                <button
-                  onClick={handleSendMessage}
-                  className="bg-green-600 hover:bg-green-700 text-white p-2 rounded transition-colors"
-                >
-                  <Send className="h-4 w-4" />
-                </button>
-              </div>
-
-              {/* Back Button */}
+              <h4 className={`font-semibold ${windowState.minimized && (unreadByUser[personName] || 0) > 0 ? 'animate-pulse' : ''}`}>
+                {personName}
+                {windowState.minimized && (unreadByUser[personName] || 0) > 0 && (
+                  <span className="ml-2 text-xs bg-red-500 px-2 py-0.5 rounded-full inline-block">
+                    {unreadByUser[personName]}
+                  </span>
+                )}
+              </h4>
               <button
-                onClick={() => {
-                  setSelectedChatUser(null);
-                  setChatInput("");
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMessageWindows(prev => {
+                    if (!prev) return undefined;
+                    const newWindows = { ...prev };
+                    delete newWindows[personName];
+                    return Object.keys(newWindows).length === 0 ? undefined : newWindows;
+                  });
                 }}
-                className="w-full px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-b-lg transition-colors"
+                className="hover:bg-green-700 p-1 rounded transition-colors"
               >
-                ← Geri
+                <X className="h-4 w-4" />
               </button>
-            </>
-          )}
-        </div>
-      )}
+            </div>
+
+            {/* Messages Area */}
+            {!windowState.minimized && (
+              <>
+                <div className="flex-1 overflow-y-auto p-3 bg-gray-50">
+                  {chatMessages
+                    .filter(msg =>
+                      (msg.sender_name === loggedInUser?.name && msg.receiver_name === personName) ||
+                      (msg.receiver_name === loggedInUser?.name && msg.sender_name === personName)
+                    )
+                    .map(msg => (
+                      <div
+                        key={msg.id}
+                        className={`mb-2 flex ${msg.sender_name === loggedInUser?.name ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`max-w-xs px-2 py-1 rounded text-sm ${
+                            msg.sender_name === loggedInUser?.name
+                              ? 'bg-green-600 text-white'
+                              : 'bg-gray-300 text-gray-800'
+                          }`}
+                        >
+                          <p className="break-words">{msg.message}</p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+
+                {/* Message Input */}
+                <div className="border-t p-2 flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Mesaj..."
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        const input = e.currentTarget as HTMLInputElement;
+                        handleSendMessage(personName, input.value);
+                        input.value = '';
+                      }
+                    }}
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-green-600"
+                  />
+                  <button
+                    onClick={() => {
+                      const input = document.querySelector(`input[placeholder="Mesaj..."]`) as HTMLInputElement;
+                      if (input) {
+                        handleSendMessage(personName, input.value);
+                        input.value = '';
+                      }
+                    }}
+                    className="bg-green-600 hover:bg-green-700 text-white p-1 rounded transition-colors"
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
