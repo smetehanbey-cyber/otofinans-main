@@ -69,7 +69,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [showDateFilter, setShowDateFilter] = useState(false);
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
-  const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string}>>([]);
+  const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string; isProcessChange?: boolean}>>([]);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -132,7 +132,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           )
           .subscribe();
 
-        // Listen for note broadcast notifications
+        // Listen for note and process change broadcast notifications
         notificationChannel = supabase
           .channel('note_notifications')
           .on('broadcast', { event: 'note_added' }, (message) => {
@@ -150,10 +150,32 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
               setNotifications(prev => [...prev, newNotification]);
 
-              // Auto-remove notification after 8 seconds
+              // Auto-remove notification after 12 seconds
               setTimeout(() => {
                 setNotifications(prev => prev.filter(n => n.id !== notifId));
-              }, 8000);
+              }, 12000);
+            }
+          })
+          .on('broadcast', { event: 'process_changed' }, (message) => {
+            // Only show notification if current user is not the one who changed the process
+            if (message.payload.author !== loggedInUser?.name) {
+              const notifId = `${Date.now()}-${Math.random()}`;
+              const newNotification = {
+                id: notifId,
+                customerId: message.payload.customerId,
+                customerName: message.payload.customerName,
+                author: message.payload.author,
+                noteText: `Süreci değiştirdi: ${message.payload.newProcess}`,
+                timestamp: message.payload.timestamp,
+                isProcessChange: true
+              };
+
+              setNotifications(prev => [...prev, newNotification]);
+
+              // Auto-remove notification after 12 seconds
+              setTimeout(() => {
+                setNotifications(prev => prev.filter(n => n.id !== notifId));
+              }, 12000);
             }
           })
           .subscribe();
@@ -517,6 +539,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   // Save process change
   const handleSaveProcessChange = async (customerId: number, newProcess: string) => {
     try {
+      const customer = customers.find(c => c.id === customerId);
+
       const { error } = await supabase
         .from("customers")
         .update({ process: newProcess })
@@ -527,6 +551,27 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       setEditingProcessId(null);
       setHoveredProcessId(null);
       fetchCustomers();
+
+      // Broadcast process change notification to other users
+      const broadcastMessage = {
+        type: 'process_changed',
+        customerId: customerId,
+        customerName: customer?.name || "Bilinmeyen",
+        author: loggedInUser?.name || "Bilinmeyen",
+        newProcess: newProcess,
+        timestamp: new Date().toLocaleString("tr-TR")
+      };
+
+      await supabase
+        .channel('process_notifications')
+        .send({
+          type: 'broadcast',
+          event: 'process_changed',
+          payload: broadcastMessage
+        })
+        .catch(err => {
+          console.log("Process change broadcast sent:", err);
+        });
     } catch (error) {
       console.error("Error updating process:", error);
       alert("Süreci güncellerken hata oluştu");
@@ -1413,27 +1458,27 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className="bg-blue-600 text-white rounded-lg shadow-lg p-4 animate-slideInAndFade"
+            className={`text-white rounded-lg shadow-lg p-4 animate-slideInAndFade ${notification.isProcessChange ? 'bg-purple-600' : 'bg-blue-600'}`}
           >
             <div className="flex justify-between items-start gap-2 mb-2">
               <div className="flex-1">
                 <p className="text-sm font-semibold">
-                  <span className="font-bold">{notification.author}</span> not ekledi
+                  <span className="font-bold">{notification.author}</span> {notification.isProcessChange ? 'süreci güncelledi' : 'not ekledi'}
                 </p>
-                <p className="text-xs text-blue-100 mt-0.5">
+                <p className={`text-xs mt-0.5 ${notification.isProcessChange ? 'text-purple-100' : 'text-blue-100'}`}>
                   {notification.customerName}
                 </p>
               </div>
               <button
                 onClick={() => setNotifications(prev => prev.filter(n => n.id !== notification.id))}
-                className="text-blue-200 hover:text-white text-lg leading-none flex-shrink-0"
+                className={`text-lg leading-none flex-shrink-0 hover:text-white ${notification.isProcessChange ? 'text-purple-200' : 'text-blue-200'}`}
               >
                 ✕
               </button>
             </div>
 
-            <div className="bg-blue-700 rounded p-2 mb-3 text-xs max-h-12 overflow-y-auto">
-              <p className="text-blue-100">{notification.noteText}</p>
+            <div className={`rounded p-2 mb-3 text-xs max-h-12 overflow-y-auto ${notification.isProcessChange ? 'bg-purple-700' : 'bg-blue-700'}`}>
+              <p className={notification.isProcessChange ? 'text-purple-100' : 'text-blue-100'}>{notification.noteText}</p>
             </div>
 
             <button
@@ -1441,9 +1486,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                 scrollToCustomer(notification.customerId);
                 setNotifications(prev => prev.filter(n => n.id !== notification.id));
               }}
-              className="w-full px-3 py-1.5 bg-blue-500 hover:bg-blue-400 text-white text-xs font-medium rounded transition-colors"
+              className={`w-full px-3 py-1.5 text-white text-xs font-medium rounded transition-colors ${notification.isProcessChange ? 'bg-purple-500 hover:bg-purple-400' : 'bg-blue-500 hover:bg-blue-400'}`}
             >
-              Notu Görüntüle
+              {notification.isProcessChange ? 'Kaydı Görüntüle' : 'Notu Görüntüle'}
             </button>
           </div>
         ))}
