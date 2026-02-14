@@ -452,38 +452,34 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   // Handle message cell click to open notes card
   const handleMessageClick = (customerId: number, e: React.MouseEvent) => {
     setOpenedNoteCardId(customerId);
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+
+    // Get the row element
+    const rowElement = (e.currentTarget as HTMLElement).closest(`tr[id="customer-row-${customerId}"]`) as HTMLElement;
     const tableContainer = (e.currentTarget as HTMLElement).closest('div[class*="overflow"]') as HTMLElement;
 
-    // Calculate position relative to the table container
     let topPos = 0;
     let leftPos = 0;
-    let showBelow = true;
 
-    if (tableContainer) {
+    if (rowElement && tableContainer) {
+      const rowRect = rowElement.getBoundingClientRect();
       const containerRect = tableContainer.getBoundingClientRect();
-      topPos = rect.bottom - containerRect.top + 5; // Position below the cell
-      leftPos = rect.left - containerRect.left;
 
-      // Check if tooltip will overflow below the visible container
-      const tooltipHeight = 500;
-      const spaceBelow = containerRect.bottom - rect.bottom;
-      showBelow = spaceBelow > tooltipHeight + 20;
-
-      if (!showBelow) {
-        topPos = rect.top - containerRect.top - tooltipHeight - 5;
-      }
+      // Position card directly below the row
+      topPos = rowRect.bottom - containerRect.top + 5;
+      // Align card to the left edge of the table
+      leftPos = 10; // Small padding from left
     } else {
-      // Fallback to old behavior
-      topPos = rect.bottom + 5;
-      leftPos = rect.left;
+      // Fallback positioning
+      const cellRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      topPos = cellRect.bottom + 5;
+      leftPos = cellRect.left;
     }
 
     setTooltipPos({
       top: topPos,
       bottom: 0,
       left: leftPos,
-      showBelow: showBelow
+      showBelow: true
     });
   };
 
