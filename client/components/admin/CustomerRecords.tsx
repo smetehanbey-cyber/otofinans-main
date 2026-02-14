@@ -38,7 +38,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [showForm, setShowForm] = useState(false);
   const [archiveConfirmId, setArchiveConfirmId] = useState<number | null>(null);
   const [hoveredMessageId, setHoveredMessageId] = useState<number | null>(null);
-  const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, bottom: 0, left: 0, showBelow: true });
   const [closeMessageTooltipTimeout, setCloseMessageTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
   const [selectedCustomerForDocs, setSelectedCustomerForDocs] = useState<number | null>(null);
   const [newCustomer, setNewCustomer] = useState({
@@ -394,9 +394,17 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
     setHoveredMessageId(customerId);
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+
+    // Check if tooltip will overflow below screen
+    const tooltipHeight = 500; // max-height of tooltip
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const showBelow = spaceBelow > tooltipHeight + 20; // 20px for padding
+
     setTooltipPos({
-      top: rect.bottom + 5,
-      left: rect.left
+      top: showBelow ? rect.bottom + 5 : 0,
+      bottom: !showBelow ? window.innerHeight - rect.top + 5 : 0,
+      left: rect.left,
+      showBelow: showBelow
     });
   };
 
@@ -1011,7 +1019,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                             <div
                               className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
                               style={{
-                                top: `${tooltipPos.top}px`,
+                                ...(tooltipPos.showBelow
+                                  ? { top: `${tooltipPos.top}px` }
+                                  : { bottom: `${tooltipPos.bottom}px` }
+                                ),
                                 left: `${tooltipPos.left}px`,
                                 maxHeight: '500px'
                               }}
