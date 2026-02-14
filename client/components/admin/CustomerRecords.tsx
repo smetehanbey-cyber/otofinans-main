@@ -101,14 +101,15 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     fetchCustomers();
   }, [sortField, sortOrder]);
 
-  // Update date filter position when it opens and on scroll
+  // Update date filter position when it opens and on resize/scroll
   useEffect(() => {
     const updateDateFilterPosition = () => {
       if (showDateFilter && dateHeaderRef.current) {
         const rect = dateHeaderRef.current.getBoundingClientRect();
+        // Use rect values directly (fixed positioning, not accounting for scroll)
         setDateFilterTooltipPos({
-          top: rect.bottom + window.scrollY + 4,
-          left: rect.left + window.scrollX
+          top: rect.bottom + 4,
+          left: rect.left
         });
       }
     };
@@ -117,7 +118,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
     if (showDateFilter) {
       window.addEventListener("scroll", updateDateFilterPosition);
-      return () => window.removeEventListener("scroll", updateDateFilterPosition);
+      window.addEventListener("resize", updateDateFilterPosition);
+      return () => {
+        window.removeEventListener("scroll", updateDateFilterPosition);
+        window.removeEventListener("resize", updateDateFilterPosition);
+      };
     }
   }, [showDateFilter]);
 
