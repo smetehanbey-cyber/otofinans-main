@@ -997,12 +997,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               MozUserSelect: 'none',
                               userSelect: 'none'
                             }}
-                            onMouseEnter={(e) => handleMessageMouseEnter(customer.id, e)}
-                            onMouseLeave={() => handleMessageMouseLeave()}
+                            onClick={(e) => handleMessageClick(customer.id, e)}
                           >
                             {customer.message || "-"}
                           </span>
-                          {hoveredMessageId === customer.id && (
+                          {openedNoteCardId === customer.id && (
                             <div
                               className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
                               style={{
@@ -1013,15 +1012,13 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                 left: `${tooltipPos.left}px`,
                                 maxHeight: '500px'
                               }}
-                              onMouseEnter={() => handleMessageTooltipMouseEnter()}
-                              onMouseLeave={() => handleMessageMouseLeave()}
                             >
                               {/* Header with close button */}
                               <div className="flex justify-between items-center bg-gray-50 px-3 py-2 border-b border-gray-200">
                                 <p className="text-xs font-semibold text-gray-700">Mesaj & Notlar</p>
                                 <button
                                   onClick={() => {
-                                    setHoveredMessageId(null);
+                                    setOpenedNoteCardId(null);
                                     setHoverNoteInputText("");
                                   }}
                                   className="text-gray-500 hover:text-gray-700 text-lg leading-none"
@@ -1072,20 +1069,15 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               </div>
 
                               {/* Add Note Form - Fixed at bottom */}
-                              <div className="border-t border-gray-200 bg-gray-50 p-3 space-y-2">
+                              <div className="border-t border-gray-200 bg-gray-50 p-3">
                                 <textarea
                                   value={hoverNoteInputText}
                                   onChange={(e) => setHoverNoteInputText(e.target.value)}
-                                  placeholder="Not yazınız..."
+                                  onKeyDown={(e) => handleNoteKeyPress(e, customer.id)}
+                                  placeholder="Not yazınız... (Ctrl+Enter ile ekleyin)"
                                   className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
                                   rows={2}
                                 />
-                                <button
-                                  onClick={() => handleAddNoteFromHover(customer.id, hoverNoteInputText)}
-                                  className="w-full px-3 py-1.5 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors font-medium"
-                                >
-                                  + Not Ekle
-                                </button>
                               </div>
 
                               <div className="absolute bottom-full left-6 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
