@@ -499,7 +499,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
     // Filter by date range
     if (dateFilterStart || dateFilterEnd) {
-      const customerDate = new Date(customer.created_at).toISOString().split('T')[0];
+      // Extract date part without timezone conversion
+      const customerDate = customer.created_at.split('T')[0];
       if (dateFilterStart && customerDate < dateFilterStart) {
         return false;
       }
@@ -677,8 +678,20 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           <p className="text-gray-600">Aktif müşteri kaydı bulunamadı</p>
         </div>
       ) : filteredCustomers.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-gray-600">Arama kriterlerine uygun müşteri bulunamadı</p>
+        <div className="text-center py-12">
+          <p className="text-gray-600 mb-6">Arama kriterlerine uygun müşteri bulunamadı</p>
+          <button
+            onClick={() => {
+              setSearchQuery("");
+              setDateFilterStart("");
+              setDateFilterEnd("");
+              setSelectedAuthorizedPerson(null);
+              setShowDateFilter(false);
+            }}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            ← Geri (Filtreleri Temizle)
+          </button>
         </div>
       ) : (
         <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"}`}>
