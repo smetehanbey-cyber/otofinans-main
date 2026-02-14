@@ -414,6 +414,14 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     try {
       const customer = customers.find(c => c.id === customerId);
       const currentNotes = customer?.notes || [];
+      const noteToDelete = currentNotes[noteIndex];
+
+      // Check permissions: only admin or note author can delete
+      if (!loggedInUser?.is_admin && loggedInUser?.name !== noteToDelete?.author) {
+        alert("Bu notu silme yetkiniz yok. Sadece kendi yorumlarınızı veya admin olarak tüm yorumları silebilirsiniz.");
+        return;
+      }
+
       const updatedNotes = currentNotes.filter((_, idx) => idx !== noteIndex);
 
       // Update in database
@@ -1112,19 +1120,22 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                       {customer.notes.slice().reverse().map((note, displayIdx) => {
                                         const actualIdx = customer.notes.length - 1 - displayIdx;
                                         const isLatest = displayIdx === 0;
+                                        const canDelete = loggedInUser?.is_admin || loggedInUser?.name === note.author;
                                         return (
                                           <div key={actualIdx} className={`p-2 rounded flex justify-between items-start gap-2 group ${isLatest ? 'bg-blue-900 border border-blue-700' : 'bg-gray-600 border border-gray-500'}`}>
                                             <div className="flex-1">
                                               <p className={`text-white break-words font-medium`} style={{fontSize: '13px'}}>{note.text}</p>
                                               <p className={`${isLatest ? 'text-blue-200' : 'text-gray-200'} text-xs mt-1`}>{note.author} • {note.timestamp}</p>
                                             </div>
-                                            <button
-                                              onClick={() => handleDeleteNote(customer.id, actualIdx)}
-                                              className={`flex-shrink-0 p-1 rounded transition-colors opacity-0 group-hover:opacity-100 ${isLatest ? 'text-red-300 hover:text-red-100 hover:bg-red-900' : 'text-red-200 hover:text-red-100 hover:bg-red-700'}`}
-                                              title="Sil"
-                                            >
-                                              ✕
-                                            </button>
+                                            {canDelete && (
+                                              <button
+                                                onClick={() => handleDeleteNote(customer.id, actualIdx)}
+                                                className={`flex-shrink-0 p-1 rounded transition-colors opacity-0 group-hover:opacity-100 ${isLatest ? 'text-red-300 hover:text-red-100 hover:bg-red-900' : 'text-red-200 hover:text-red-100 hover:bg-red-700'}`}
+                                                title="Sil"
+                                              >
+                                                ✕
+                                              </button>
+                                            )}
                                           </div>
                                         );
                                       })}
