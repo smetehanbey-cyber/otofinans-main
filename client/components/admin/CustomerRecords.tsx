@@ -101,6 +101,13 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       setCustomers(data || []);
     } catch (error) {
       console.error("Error fetching customers:", error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      console.error("Network/Database Error Details:", errorMsg);
+
+      // Show user-friendly message
+      if (errorMsg.includes("Failed to fetch")) {
+        console.error("Unable to connect to Supabase. Check your internet connection or Supabase service status.");
+      }
     } finally {
       setLoading(false);
     }
