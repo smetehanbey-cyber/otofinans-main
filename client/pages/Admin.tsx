@@ -215,7 +215,7 @@ export default function Admin() {
   // Login Screen
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#ffffff', colorScheme: 'light', color: '#000000' }}>
+      <div className="fixed inset-0 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', colorScheme: 'light', color: '#000000' }}>
         <style>{`
           * {
             background-color: #ffffff !important;
@@ -237,6 +237,7 @@ export default function Admin() {
           /* Force white backgrounds on Android */
           .login-card {
             background-color: #ffffff !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
           }
           .login-card input,
           .login-card label,
@@ -262,7 +263,7 @@ export default function Admin() {
         )}
 
         <div className={`w-full max-w-md ${shakeError ? 'shake-animation' : ''}`}>
-          <div className="login-card rounded-lg shadow-2xl p-8" style={{ backgroundColor: '#ffffff' }}>
+          <div className="login-card rounded-lg p-8" style={{ backgroundColor: '#ffffff' }}>
             {/* Logo and Title */}
             <div className="text-center mb-8">
               <img
