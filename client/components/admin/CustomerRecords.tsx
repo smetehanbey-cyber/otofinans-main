@@ -921,21 +921,24 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                   <>
                                     <p className="text-xs font-semibold text-gray-700 mb-2">Notlar:</p>
                                     <div className="space-y-2 mb-3">
-                                      {customer.notes.map((note, idx) => (
-                                        <div key={idx} className="bg-blue-900 p-2 rounded border border-blue-700 flex justify-between items-start gap-2 group">
-                                          <div className="flex-1">
-                                            <p className="text-white break-words font-medium text-sm">{note.text}</p>
-                                            <p className="text-blue-200 text-xs mt-1">{note.author} • {note.timestamp}</p>
+                                      {customer.notes.slice().reverse().map((note, displayIdx) => {
+                                        const actualIdx = customer.notes.length - 1 - displayIdx;
+                                        return (
+                                          <div key={actualIdx} className="bg-blue-900 p-2 rounded border border-blue-700 flex justify-between items-start gap-2 group">
+                                            <div className="flex-1">
+                                              <p className="text-white break-words font-medium text-sm">{note.text}</p>
+                                              <p className="text-blue-200 text-xs mt-1">{note.author} • {note.timestamp}</p>
+                                            </div>
+                                            <button
+                                              onClick={() => handleDeleteNote(customer.id, actualIdx)}
+                                              className="flex-shrink-0 text-red-300 hover:text-red-100 hover:bg-red-900 p-1 rounded transition-colors opacity-0 group-hover:opacity-100"
+                                              title="Sil"
+                                            >
+                                              ✕
+                                            </button>
                                           </div>
-                                          <button
-                                            onClick={() => handleDeleteNote(customer.id, idx)}
-                                            className="flex-shrink-0 text-red-300 hover:text-red-100 hover:bg-red-900 p-1 rounded transition-colors opacity-0 group-hover:opacity-100"
-                                            title="Sil"
-                                          >
-                                            ✕
-                                          </button>
-                                        </div>
-                                      ))}
+                                        );
+                                      })}
                                     </div>
                                   </>
                                 )}
