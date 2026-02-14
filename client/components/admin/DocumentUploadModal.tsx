@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Upload, X, FileText, Download, Trash2, Edit2 } from "lucide-react";
+import { Upload, X, FileText, Download, Trash2, Edit2, Eye } from "lucide-react";
 
 interface Document {
   id: number;
@@ -30,6 +30,7 @@ export default function DocumentUploadModal({
   const [success, setSuccess] = useState<string | null>(null);
   const [renamingDocId, setRenamingDocId] = useState<number | null>(null);
   const [newFileName, setNewFileName] = useState<string>("");
+  const [previewingDocId, setPreviewingDocId] = useState<number | null>(null);
 
   // Fetch documents for this customer
   const fetchDocuments = async () => {
@@ -340,6 +341,13 @@ export default function DocumentUploadModal({
                               {baseName}
                             </p>
                             <button
+                              onClick={() => setPreviewingDocId(doc.id)}
+                              className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors flex-shrink-0"
+                              title="Ön İzleme"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </button>
+                            <button
                               onClick={() => {
                                 setRenamingDocId(doc.id);
                                 setNewFileName(baseName);
@@ -385,6 +393,59 @@ export default function DocumentUploadModal({
             )}
           </div>
         </div>
+
+        {/* Preview Modal */}
+        {previewingDocId !== null && (() => {
+          const previewDoc = documents.find(d => d.id === previewingDocId);
+          if (!previewDoc) return null;
+
+          const isPDF = previewDoc.file_type.toLowerCase() === "pdf";
+          const isImage = ["png", "jpg", "jpeg"].includes(previewDoc.file_type.toLowerCase());
+
+          return (
+            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto flex flex-col">
+                <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-4 flex items-center justify-between flex-shrink-0">
+                  <h3 className="text-lg font-bold truncate">{previewDoc.file_name}</h3>
+                  <button
+                    onClick={() => setPreviewingDocId(null)}
+                    className="p-1 hover:bg-white hover:bg-opacity-20 rounded transition-colors flex-shrink-0"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-auto p-6 bg-gray-50 flex items-center justify-center">
+                  {isPDF ? (
+                    <iframe
+                      src={`${previewDoc.file_url}#toolbar=0`}
+                      className="w-full h-full border-0 rounded"
+                      title={previewDoc.file_name}
+                    />
+                  ) : isImage ? (
+                    <img
+                      src={previewDoc.file_url}
+                      alt={previewDoc.file_name}
+                      className="max-w-full max-h-full object-contain rounded"
+                    />
+                  ) : (
+                    <div className="text-center text-gray-600">
+                      <p className="text-lg font-medium mb-2">Ön İzleme Desteklenmiyor</p>
+                      <p className="text-sm">Bu dosya türü için tarayıcıda ön izleme yapılamıyor.</p>
+                      <a
+                        href={previewDoc.file_url}
+                        download
+                        className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        İndir
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Rename Modal */}
         {renamingDocId !== null && (() => {
