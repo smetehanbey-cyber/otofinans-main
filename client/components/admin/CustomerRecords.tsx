@@ -1672,7 +1672,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       {/* Message Send Button - Bottom Left */}
       <div className="fixed bottom-4 left-4 z-[9997]">
         {/* User Selection Popup */}
-        {showPersonList && messageWindows ? (
+        {showPersonList ? (
           <div className="bg-white rounded-lg shadow-2xl p-4 mb-4 border-t-4 border-green-600 max-w-xs animate-slideInAndFade">
             <p className="text-xs text-gray-600 mb-3 font-semibold">Mesaj Gönderilecek Kişi Seçin:</p>
             <div className="space-y-2">
@@ -1710,19 +1710,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         {/* Message Send Button */}
         <button
           onClick={() => {
-            if (!messageWindows || Object.keys(messageWindows).length === 0) {
-              setMessageWindows(
-                authorizedPersons
-                  .filter(p => p !== loggedInUser?.name)
-                  .reduce((acc, person) => {
-                    acc[person] = { minimized: true, unread: 0 };
-                    return acc;
-                  }, {} as typeof messageWindows)
-              );
-              setShowPersonList(true);
-            } else {
-              setShowPersonList(!showPersonList);
-            }
+            setShowPersonList(!showPersonList);
           }}
           className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors font-medium"
         >
