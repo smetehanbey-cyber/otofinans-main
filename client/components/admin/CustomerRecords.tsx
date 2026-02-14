@@ -57,8 +57,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [animatingIds, setAnimatingIds] = useState<Set<number>>(new Set());
   const [newNoteText, setNewNoteText] = useState("");
   const [expandedNotesId, setExpandedNotesId] = useState<number | null>(null);
-  const [hoveredDateId, setHoveredDateId] = useState<number | null>(null);
-  const [dateTooltipPos, setDateTooltipPos] = useState({ top: 0, left: 0 });
   const [showNoteInputId, setShowNoteInputId] = useState<number | null>(null);
   const [newNoteInputText, setNewNoteInputText] = useState("");
   const [addingNoteFromHoverId, setAddingNoteFromHoverId] = useState<number | null>(null);
@@ -412,37 +410,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     if (closeMessageTooltipTimeout) {
       clearTimeout(closeMessageTooltipTimeout);
       setCloseMessageTooltipTimeout(null);
-    }
-  };
-
-  // Handle date cell mouse enter - for notes dropdown
-  const handleDateMouseEnter = (customerId: number, e: React.MouseEvent) => {
-    if (closeTooltipTimeout) {
-      clearTimeout(closeTooltipTimeout);
-    }
-
-    setHoveredDateId(customerId);
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    setDateTooltipPos({
-      top: rect.bottom + 5,
-      left: rect.left
-    });
-  };
-
-  // Handle date cell mouse leave
-  const handleDateMouseLeave = () => {
-    const timeout = setTimeout(() => {
-      setHoveredDateId(null);
-      setHoverNoteInputText("");
-    }, 300);
-    setCloseTooltipTimeout(timeout);
-  };
-
-  // Handle date tooltip mouse enter
-  const handleDateTooltipMouseEnter = () => {
-    if (closeTooltipTimeout) {
-      clearTimeout(closeTooltipTimeout);
-      setCloseTooltipTimeout(null);
     }
   };
 
@@ -918,20 +885,87 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                           >
                             {customer.message || "-"}
                           </span>
-                          {hoveredMessageId === customer.id && customer.message && (
+                          {hoveredMessageId === customer.id && (
                             <div
-                              className="fixed bg-gray-900 text-white rounded shadow-2xl z-[9999] border border-gray-700 min-w-[280px] max-w-sm tooltip-animate"
+                              className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
                               style={{
                                 top: `${tooltipPos.top}px`,
                                 left: `${tooltipPos.left}px`,
-                                fontSize: '13px',
-                                padding: '12px'
+                                maxHeight: '500px'
                               }}
                               onMouseEnter={() => handleMessageTooltipMouseEnter()}
                               onMouseLeave={() => handleMessageMouseLeave()}
                             >
-                              {customer.message}
-                              <div className="absolute bottom-full left-4 w-2 h-2 bg-gray-900 border-t border-l border-gray-700" style={{transform: 'rotate(45deg)'}}></div>
+                              {/* Header with close button */}
+                              <div className="flex justify-between items-center bg-gray-50 px-3 py-2 border-b border-gray-200">
+                                <p className="text-xs font-semibold text-gray-700">Mesaj & Notlar</p>
+                                <button
+                                  onClick={() => {
+                                    setHoveredMessageId(null);
+                                    setHoverNoteInputText("");
+                                  }}
+                                  className="text-gray-500 hover:text-gray-700 text-lg leading-none"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+
+                              {/* Message Display */}
+                              {customer.message && (
+                                <div className="bg-gray-900 text-white p-3 border-b border-gray-200">
+                                  <p className="text-sm break-words">{customer.message}</p>
+                                </div>
+                              )}
+
+                              {/* Content Area - Notes */}
+                              <div className="flex-1 overflow-y-auto p-3">
+                                {/* Existing Notes */}
+                                {customer.notes && customer.notes.length > 0 && (
+                                  <>
+                                    <p className="text-xs font-semibold text-gray-700 mb-2">Notlar:</p>
+                                    <div className="space-y-2 mb-3">
+                                      {customer.notes.map((note, idx) => (
+                                        <div key={idx} className="bg-blue-900 p-2 rounded border border-blue-700 flex justify-between items-start gap-2 group">
+                                          <div className="flex-1">
+                                            <p className="text-white break-words font-medium text-sm">{note.text}</p>
+                                            <p className="text-blue-200 text-xs mt-1">{note.author} • {note.timestamp}</p>
+                                          </div>
+                                          <button
+                                            onClick={() => handleDeleteNote(customer.id, idx)}
+                                            className="flex-shrink-0 text-red-300 hover:text-red-100 hover:bg-red-900 p-1 rounded transition-colors opacity-0 group-hover:opacity-100"
+                                            title="Sil"
+                                          >
+                                            ✕
+                                          </button>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </>
+                                )}
+
+                                {customer.notes && customer.notes.length === 0 && (
+                                  <p className="text-xs text-gray-500 italic">Henüz not yok</p>
+                                )}
+                              </div>
+
+                              {/* Add Note Form - Fixed at bottom */}
+                              <div className="border-t border-gray-200 bg-gray-50 p-3 space-y-2">
+                                <textarea
+                                  value={hoverNoteInputText}
+                                  onChange={(e) => setHoverNoteInputText(e.target.value)}
+                                  placeholder="Not yazınız..."
+                                  className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+                                  rows={2}
+                                />
+                                <button
+                                  onClick={() => handleAddNoteFromHover(customer.id, hoverNoteInputText)}
+                                  className="w-full px-3 py-1.5 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors font-medium"
+                                >
+                                  + Not Ekle
+                                </button>
+                              </div>
+
+                              <div className="absolute bottom-full left-6 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
                             </div>
                           )}
                         </div>
@@ -1028,89 +1062,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     )}
                   </td>
                   {!isMobile && (
-                    <td className="px-2 py-2 text-gray-600 relative" style={{fontSize: '14px'}}>
-                      <span
-                        className="cursor-pointer hover:text-blue-600 transition-colors"
-                        onMouseEnter={(e) => handleDateMouseEnter(customer.id, e)}
-                        onMouseLeave={() => handleDateMouseLeave()}
-                      >
-                        {new Date(customer.created_at).toLocaleDateString("tr-TR")}
-                      </span>
-
-                      {/* Hover Tooltip with Notes - on Date column */}
-                      {hoveredDateId === customer.id && (
-                        <div
-                          className="fixed bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
-                          style={{
-                            top: `${dateTooltipPos.top}px`,
-                            left: `${dateTooltipPos.left}px`,
-                            maxHeight: '500px'
-                          }}
-                          onMouseEnter={() => handleDateTooltipMouseEnter()}
-                          onMouseLeave={() => handleDateMouseLeave()}
-                        >
-                          {/* Header with close button */}
-                          <div className="flex justify-between items-center bg-gray-50 px-3 py-2 border-b border-gray-200">
-                            <p className="text-xs font-semibold text-gray-700">Notlar</p>
-                            <button
-                              onClick={() => {
-                                setHoveredDateId(null);
-                                setHoverNoteInputText("");
-                              }}
-                              className="text-gray-500 hover:text-gray-700 text-lg leading-none"
-                            >
-                              ✕
-                            </button>
-                          </div>
-
-                          {/* Content Area */}
-                          <div className="flex-1 overflow-y-auto p-3">
-                            {/* Existing Notes */}
-                            {customer.notes && customer.notes.length > 0 && (
-                              <div className="space-y-2 mb-3">
-                                {customer.notes.map((note, idx) => (
-                                  <div key={idx} className="bg-blue-900 p-2 rounded border border-blue-700 flex justify-between items-start gap-2 group">
-                                    <div className="flex-1">
-                                      <p className="text-white break-words font-medium text-sm">{note.text}</p>
-                                      <p className="text-blue-200 text-xs mt-1">{note.author} • {note.timestamp}</p>
-                                    </div>
-                                    <button
-                                      onClick={() => handleDeleteNote(customer.id, idx)}
-                                      className="flex-shrink-0 text-red-300 hover:text-red-100 hover:bg-red-900 p-1 rounded transition-colors opacity-0 group-hover:opacity-100"
-                                      title="Sil"
-                                    >
-                                      ✕
-                                    </button>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {customer.notes && customer.notes.length === 0 && (
-                              <p className="text-xs text-gray-500 mb-3 italic">Henüz not yok</p>
-                            )}
-                          </div>
-
-                          {/* Add Note Form - Fixed at bottom */}
-                          <div className="border-t border-gray-200 bg-gray-50 p-3 space-y-2">
-                            <textarea
-                              value={hoverNoteInputText}
-                              onChange={(e) => setHoverNoteInputText(e.target.value)}
-                              placeholder="Not yazınız..."
-                              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
-                              rows={2}
-                            />
-                            <button
-                              onClick={() => handleAddNoteFromHover(customer.id, hoverNoteInputText)}
-                              className="w-full px-3 py-1.5 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors font-medium"
-                            >
-                              + Not Ekle
-                            </button>
-                          </div>
-
-                          <div className="absolute bottom-full left-6 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
-                        </div>
-                      )}
+                    <td className="px-2 py-2 text-gray-600" style={{fontSize: '14px'}}>
+                      {new Date(customer.created_at).toLocaleDateString("tr-TR")}
                     </td>
                   )}
                   <td className="px-2 py-2" style={{fontSize: isMobile ? '12px' : '14px'}}>
