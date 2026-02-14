@@ -150,10 +150,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
               setNotifications(prev => [...prev, newNotification]);
 
-              // Auto-remove notification after 12 seconds
+              // Auto-remove notification after 16 seconds
               setTimeout(() => {
                 setNotifications(prev => prev.filter(n => n.id !== notifId));
-              }, 12000);
+              }, 16000);
             }
           })
           .on('broadcast', { event: 'process_changed' }, (message) => {
@@ -172,10 +172,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
 
               setNotifications(prev => [...prev, newNotification]);
 
-              // Auto-remove notification after 12 seconds
+              // Auto-remove notification after 16 seconds
               setTimeout(() => {
                 setNotifications(prev => prev.filter(n => n.id !== notifId));
-              }, 12000);
+              }, 16000);
             }
           })
           .subscribe();
@@ -563,7 +563,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       };
 
       await supabase
-        .channel('process_notifications')
+        .channel('note_notifications')
         .send({
           type: 'broadcast',
           event: 'process_changed',
