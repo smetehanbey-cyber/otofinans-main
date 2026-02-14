@@ -187,10 +187,23 @@ export default function DocumentUploadModal({
     if (!newFileName.trim()) return;
 
     try {
+      // Find the original document to get the extension
+      const originalDoc = documents.find(d => d.id === docId);
+      if (!originalDoc) return;
+
+      // Extract extension from original filename
+      const originalParts = originalDoc.file_name.split(".");
+      const extension = originalParts.length > 1 ? originalParts[originalParts.length - 1] : "";
+
+      // Construct final filename with extension preserved
+      const finalFileName = extension
+        ? `${newFileName.trim()}.${extension}`
+        : newFileName.trim();
+
       // Update file name in database
       const { error: updateError } = await supabase
         .from("documents")
-        .update({ file_name: newFileName.trim() })
+        .update({ file_name: finalFileName })
         .eq("id", docId);
 
       if (updateError) throw updateError;
@@ -308,105 +321,135 @@ export default function DocumentUploadModal({
               </p>
             ) : (
               <div className="space-y-2 max-h-96 overflow-y-auto">
-                {documents.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <FileText className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-800 truncate">
-                          {doc.file_name}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(doc.created_at).toLocaleDateString("tr-TR")}
-                        </p>
+                {documents.map((doc) => {
+                  // Extract base name without extension
+                  const nameParts = doc.file_name.split(".");
+                  const baseName = nameParts.slice(0, -1).join(".");
+                  const extension = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
+
+                  return (
+                    <div
+                      key={doc.id}
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <FileText className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1 mb-1">
+                            <p className="text-sm font-medium text-gray-800 truncate">
+                              {baseName}
+                            </p>
+                            <button
+                              onClick={() => {
+                                setRenamingDocId(doc.id);
+                                setNewFileName(baseName);
+                              }}
+                              className="p-1 text-purple-600 hover:bg-purple-50 rounded transition-colors flex-shrink-0"
+                              title="Yeniden Adlandır"
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </button>
+                            {extension && (
+                              <p className="text-xs text-gray-600 flex-shrink-0">
+                                .{extension}
+                              </p>
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-500">
+                            {new Date(doc.created_at).toLocaleDateString("tr-TR")}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <a
+                          href={doc.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                          title="İndir"
+                        >
+                          <Download className="h-4 w-4" />
+                        </a>
+                        <button
+                          onClick={() => handleDeleteDocument(doc.id, doc.file_url)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                          title="Sil"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <button
-                        onClick={() => {
-                          setRenamingDocId(doc.id);
-                          setNewFileName(doc.file_name);
-                        }}
-                        className="p-2 text-purple-600 hover:bg-purple-50 rounded transition-colors"
-                        title="Yeniden Adlandır"
-                      >
-                        <Edit2 className="h-4 w-4" />
-                      </button>
-                      <a
-                        href={doc.file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                        title="İndir"
-                      >
-                        <Download className="h-4 w-4" />
-                      </a>
-                      <button
-                        onClick={() => handleDeleteDocument(doc.id, doc.file_url)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
-                        title="Sil"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
         </div>
 
         {/* Rename Modal */}
-        {renamingDocId !== null && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
-              <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-4 rounded-t-lg">
-                <h3 className="text-lg font-bold">Dosyayı Yeniden Adlandır</h3>
-              </div>
+        {renamingDocId !== null && (() => {
+          const originalDoc = documents.find(d => d.id === renamingDocId);
+          const nameParts = originalDoc?.file_name.split(".") || [];
+          const extension = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
 
-              <div className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Yeni Dosya Adı
-                  </label>
-                  <input
-                    type="text"
-                    value={newFileName}
-                    onChange={(e) => setNewFileName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                    placeholder="Dosya adı yazınız"
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        handleRenameDocument(renamingDocId);
-                      }
-                    }}
-                  />
+          return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+                <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-4 rounded-t-lg">
+                  <h3 className="text-lg font-bold">Dosyayı Yeniden Adlandır</h3>
                 </div>
 
-                <div className="flex gap-3 justify-end">
-                  <button
-                    onClick={() => {
-                      setRenamingDocId(null);
-                      setNewFileName("");
-                    }}
-                    className="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                  >
-                    İptal
-                  </button>
-                  <button
-                    onClick={() => handleRenameDocument(renamingDocId)}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
-                  >
-                    Kaydet
-                  </button>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Dosya Adı (Uzantı değiştirilemez)
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={newFileName}
+                        onChange={(e) => setNewFileName(e.target.value)}
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                        placeholder="Dosya adı yazınız"
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            handleRenameDocument(renamingDocId);
+                          }
+                        }}
+                      />
+                      {extension && (
+                        <span className="px-2 py-2 bg-gray-100 rounded-lg text-gray-700 font-medium text-sm border border-gray-300">
+                          .{extension}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Sadece dosya adını değiştirebilirsiniz. Uzantı otomatik olarak korunur.
+                    </p>
+                  </div>
+
+                  <div className="flex gap-3 justify-end">
+                    <button
+                      onClick={() => {
+                        setRenamingDocId(null);
+                        setNewFileName("");
+                      }}
+                      className="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                    >
+                      İptal
+                    </button>
+                    <button
+                      onClick={() => handleRenameDocument(renamingDocId)}
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                    >
+                      Kaydet
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Modal Footer */}
         <div className="border-t border-gray-200 px-6 py-4 flex justify-end rounded-b-lg">
