@@ -65,7 +65,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [hoveredProcessId, setHoveredProcessId] = useState<number | null>(null);
   const [processTooltipPos, setProcessTooltipPos] = useState({ top: 0, left: 0 });
   const [editingProcessId, setEditingProcessId] = useState<number | null>(null);
-  const [tempProcessValue, setTempProcessValue] = useState<"Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade" | null>(null);
   const [closeProcessTooltipTimeout, setCloseProcessTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Fetch active customers only
@@ -433,7 +432,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     const timeout = setTimeout(() => {
       setHoveredProcessId(null);
       setEditingProcessId(null);
-      setTempProcessValue(null);
     }, 300);
     setCloseProcessTooltipTimeout(timeout);
   };
@@ -457,7 +455,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       if (error) throw error;
 
       setEditingProcessId(null);
-      setTempProcessValue(null);
       setHoveredProcessId(null);
       fetchCustomers();
     } catch (error) {
@@ -1028,17 +1025,20 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               <button
                                 onClick={() => {
                                   setHoveredProcessId(null);
-                                  setTempProcessValue(null);
                                 }}
                                 className="text-gray-500 hover:text-gray-700 text-lg leading-none"
                               >
                                 ✕
                               </button>
                             </div>
-                            <div className="p-3 space-y-2">
+                            <div className="p-3">
                               <select
-                                value={tempProcessValue || customer.process}
-                                onChange={(e) => setTempProcessValue(e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade")}
+                                value={customer.process}
+                                onChange={(e) => {
+                                  const newProcess = e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade";
+                                  handleSaveProcessChange(customer.id, newProcess);
+                                  setHoveredProcessId(null);
+                                }}
                                 className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
                               >
                                 <option value="Beklemede">Beklemede</option>
@@ -1048,12 +1048,6 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                 <option value="Kullandırıldı">Kullandırıldı</option>
                                 <option value="Red/İade">Red/İade</option>
                               </select>
-                              <button
-                                onClick={() => handleSaveProcessChange(customer.id, tempProcessValue || customer.process)}
-                                className="w-full px-3 py-1.5 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors font-medium"
-                              >
-                                Kaydet
-                              </button>
                             </div>
                             <div className="absolute bottom-full left-6 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
                           </div>
