@@ -1755,7 +1755,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           onClick={() => {
             setShowPersonList(!showPersonList);
           }}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors font-medium"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors font-medium"
         >
           Mesaj Gönder
         </button>
@@ -1779,7 +1779,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           >
             {/* Header */}
             <div
-              className={`bg-green-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} cursor-pointer`}
+              className={`bg-blue-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} cursor-pointer`}
               onClick={() => {
                 setMessageWindows(prev => ({
                   ...prev,
@@ -1823,7 +1823,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                     return Object.keys(newWindows).length === 0 ? undefined : newWindows;
                   });
                 }}
-                className="hover:bg-green-700 p-1 rounded transition-colors"
+                className="hover:bg-blue-700 p-1 rounded transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -1846,7 +1846,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         <div
                           className={`max-w-xs px-2 py-1 rounded text-sm ${
                             msg.sender_name === loggedInUser?.name
-                              ? 'bg-green-600 text-white'
+                              ? 'bg-blue-600 text-white'
                               : 'bg-gray-300 text-gray-800'
                           }`}
                         >
@@ -1868,7 +1868,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         input.value = '';
                       }
                     }}
-                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-green-600"
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
                   />
                   <button
                     onClick={() => {
@@ -1878,7 +1878,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         input.value = '';
                       }
                     }}
-                    className="bg-green-600 hover:bg-green-700 text-white p-1 rounded transition-colors"
+                    className="bg-blue-600 hover:bg-blue-700 text-white p-1 rounded transition-colors"
                   >
                     <Send className="h-4 w-4" />
                   </button>
