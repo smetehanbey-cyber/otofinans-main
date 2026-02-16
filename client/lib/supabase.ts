@@ -26,7 +26,7 @@ export interface Customer {
   created_at: string;
   updated_at: string;
   status: "active" | "archived";
-  process: "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade";
+  process: "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade" | "Yeni Müşteri";
   added_by?: string;
   notes?: CustomerNote[];
 }

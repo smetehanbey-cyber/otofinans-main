@@ -1312,14 +1312,22 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                             {customer.message || "-"}
                           </span>
                           {openedNoteCardId === customer.id && (
-                            <div
-                              className="absolute bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
-                              style={{
-                                top: `${tooltipPos.top}px`,
-                                left: `${tooltipPos.left}px`,
-                                maxHeight: '500px'
-                              }}
-                            >
+                            <>
+                              <div
+                                className="fixed inset-0 z-40"
+                                onClick={() => {
+                                  setOpenedNoteCardId(null);
+                                  setHoverNoteInputText("");
+                                }}
+                              />
+                              <div
+                                className="absolute bg-white border border-gray-300 rounded shadow-2xl z-[9999] min-w-[340px] max-w-sm overflow-hidden flex flex-col tooltip-animate"
+                                style={{
+                                  top: `${tooltipPos.top}px`,
+                                  left: `${tooltipPos.left}px`,
+                                  maxHeight: '500px'
+                                }}
+                              >
                               {/* Header with close button */}
                               <div className="flex justify-between items-center bg-gray-50 px-3 py-2 border-b border-gray-200">
                                 <p className="text-xs font-semibold text-gray-700">Mesaj & Notlar</p>
@@ -1392,7 +1400,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               </div>
 
                               <div className="absolute bottom-full left-6 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
-                            </div>
+                              </div>
+                            </>
                           )}
                         </div>
                       )}
@@ -1405,7 +1414,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         onChange={(e) =>
                           setEditingData({
                             ...editingData,
-                            process: e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade"
+                            process: e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade" | "Yeni Müşteri"
                           })
                         }
                         className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
@@ -1417,6 +1426,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         <option value="Kredi Onayda">Kredi Onayda</option>
                         <option value="Kullandırıldı">Kullandırıldı</option>
                         <option value="Red/İade">Red/İade</option>
+                        <option value="Yeni Müşteri">Yeni Müşteri</option>
                       </select>
                     ) : (
                       <div className="relative">
@@ -1432,15 +1442,14 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               ? "bg-green-100 text-green-800"
                               : customer.process === "Kullandırıldı"
                               ? "bg-green-800 text-white"
+                              : customer.process === "Yeni Müşteri"
+                              ? "bg-gray-200 text-gray-700"
                               : "bg-pink-100 text-pink-800"
                           }`}
                           style={{fontSize: isMobile ? '11px' : '13px'}}
                           onClick={(e) => handleProcessMouseEnter(customer.id, e)}
                         >
-                          {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : "R") : customer.process}
-                        </span>
-                        <span className="inline-block px-2 py-0.5 rounded-full font-semibold whitespace-nowrap bg-gray-200 text-gray-700" style={{fontSize: isMobile ? '10px' : '12px'}}>
-                          Yeni Müşteri
+                          {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : customer.process === "Yeni Müşteri" ? "Y" : "R") : customer.process}
                         </span>
 
                         {/* Click Dropdown for Process Edit */}
@@ -1469,7 +1478,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               <select
                                 value={customer.process}
                                 onChange={(e) => {
-                                  const newProcess = e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade";
+                                  const newProcess = e.target.value as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade" | "Yeni Müşteri";
                                   handleSaveProcessChange(customer.id, newProcess);
                                   setHoveredProcessId(null);
                                 }}
@@ -1481,6 +1490,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                                 <option value="Kredi Onayda">Kredi Onayda</option>
                                 <option value="Kullandırıldı">Kullandırıldı</option>
                                 <option value="Red/İade">Red/İade</option>
+                                <option value="Yeni Müşteri">Yeni Müşteri</option>
                               </select>
                             </div>
                             <div className="absolute bottom-full left-6 w-2 h-2 bg-white border-t border-l border-gray-300" style={{transform: 'rotate(45deg)'}}></div>
