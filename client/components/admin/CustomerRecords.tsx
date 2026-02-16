@@ -158,9 +158,28 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
             "postgres_changes",
             { event: "*", schema: "public", table: "customers" },
             (payload) => {
-              // Only refresh if the changed record is active
+              // Only update if the changed record is active
               if (payload.new?.status === "active" || payload.old?.status === "active") {
-                fetchCustomers();
+                // Update only the changed customer row instead of fetching all
+                if (payload.new) {
+                  setCustomers(prevCustomers => {
+                    const existingIndex = prevCustomers.findIndex(c => c.id === payload.new.id);
+                    if (existingIndex >= 0) {
+                      // Update existing customer
+                      const updated = [...prevCustomers];
+                      updated[existingIndex] = payload.new;
+                      return updated;
+                    } else {
+                      // Add new customer if not in list
+                      return [...prevCustomers, payload.new];
+                    }
+                  });
+                } else if (payload.old?.id) {
+                  // Remove deleted customer
+                  setCustomers(prevCustomers =>
+                    prevCustomers.filter(c => c.id !== payload.old.id)
+                  );
+                }
               }
             }
           )
@@ -170,6 +189,19 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         notificationChannel = supabase
           .channel('note_notifications')
           .on('broadcast', { event: 'note_added' }, (message) => {
+            // Update the customer row with new note data
+            if (message.payload.customerData) {
+              setCustomers(prevCustomers => {
+                const existingIndex = prevCustomers.findIndex(c => c.id === message.payload.customerId);
+                if (existingIndex >= 0) {
+                  const updated = [...prevCustomers];
+                  updated[existingIndex] = message.payload.customerData;
+                  return updated;
+                }
+                return prevCustomers;
+              });
+            }
+
             // Only show notification if current user is not the one who added the note
             if (message.payload.author !== loggedInUser?.name) {
               const notifId = `${Date.now()}-${Math.random()}`;
@@ -191,6 +223,19 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
             }
           })
           .on('broadcast', { event: 'process_changed' }, (message) => {
+            // Update the customer row with new process and message data
+            if (message.payload.customerData) {
+              setCustomers(prevCustomers => {
+                const existingIndex = prevCustomers.findIndex(c => c.id === message.payload.customerId);
+                if (existingIndex >= 0) {
+                  const updated = [...prevCustomers];
+                  updated[existingIndex] = message.payload.customerData;
+                  return updated;
+                }
+                return prevCustomers;
+              });
+            }
+
             // Only show notification if current user is not the one who changed the process
             if (message.payload.author !== loggedInUser?.name) {
               const notifId = `${Date.now()}-${Math.random()}`;
@@ -405,23 +450,30 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         }
       }
 
-      const { error } = await supabase.from("customers").insert([
-        {
-          name: newCustomer.name,
-          tc: newCustomer.tc,
-          phone: newCustomer.phone || "",
-          message: newCustomer.message || "",
-          process: newCustomer.process,
-          status: "active",
-          added_by: loggedInUser?.name || "Bilinmeyen"
-        }
-      ]);
+      const { data: newCustomerData, error } = await supabase
+        .from("customers")
+        .insert([
+          {
+            name: newCustomer.name,
+            tc: newCustomer.tc,
+            phone: newCustomer.phone || "",
+            message: newCustomer.message || "",
+            process: newCustomer.process,
+            status: "active",
+            added_by: loggedInUser?.name || "Bilinmeyen"
+          }
+        ])
+        .select();
 
       if (error) throw error;
 
+      // Add the new customer to state instead of fetching all
+      if (newCustomerData && newCustomerData.length > 0) {
+        setCustomers(prevCustomers => [newCustomerData[0], ...prevCustomers]);
+      }
+
       setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
       setShowForm(false);
-      fetchCustomers();
     } catch (error) {
       console.error("Error adding customer:", error);
       alert("Hata: Müşteri eklenemedi. Lütfen formu kontrol edin.");
@@ -455,10 +507,12 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         updateData.added_by = editingData.added_by || "";
       }
 
-      const { error } = await supabase
+      const { data: updatedCustomer, error } = await supabase
         .from("customers")
-        .update(updateData)
-        .eq("id", id);
+        .update({ ...updateData, updated_at: new Date().toISOString() })
+        .eq("id", id)
+        .select()
+        .single();
 
       if (error) {
         console.error("Supabase error details:", error);
@@ -468,20 +522,33 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           console.log("Notes column not found, updating without notes...");
           delete updateData.notes;
 
-          const { error: retryError } = await supabase
+          const { data: retryData, error: retryError } = await supabase
             .from("customers")
-            .update(updateData)
-            .eq("id", id);
+            .update({ ...updateData, updated_at: new Date().toISOString() })
+            .eq("id", id)
+            .select()
+            .single();
 
           if (retryError) throw retryError;
+
+          // Update state with returned data
+          if (retryData) {
+            setCustomers(prevCustomers =>
+              prevCustomers.map(c => c.id === id ? retryData : c)
+            );
+          }
         } else {
           throw error;
         }
+      } else if (updatedCustomer) {
+        // Update only this customer in state
+        setCustomers(prevCustomers =>
+          prevCustomers.map(c => c.id === id ? updatedCustomer : c)
+        );
       }
 
       setEditingId(null);
       setEditingData({});
-      fetchCustomers();
     } catch (error) {
       console.error("Error updating customer:", error);
       alert("Hata: Müşteri güncellenemedi. Lütfen formu kontrol edin.");
@@ -571,11 +638,13 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       // Clear input
       setHoverNoteInputText("");
 
-      // Update in database (async, in background)
-      const { error } = await supabase
+      // Update in database (async, in background) and fetch updated customer
+      const { data: updatedCustomer, error } = await supabase
         .from("customers")
-        .update({ notes: updatedNotes })
-        .eq("id", customerId);
+        .update({ notes: updatedNotes, updated_at: new Date().toISOString() })
+        .eq("id", customerId)
+        .select()
+        .single();
 
       if (error) {
         console.error("Error saving note to database:", error);
@@ -594,7 +663,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         customerName: customer?.name || "Bilinmeyen",
         author: loggedInUser?.name || "Bilinmeyen",
         noteText: noteText.trim(),
-        timestamp: timestamp
+        timestamp: timestamp,
+        customerData: updatedCustomer // Send updated customer data for real-time sync
       };
 
       // Broadcast via Supabase Realtime
@@ -727,25 +797,35 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     try {
       const customer = customers.find(c => c.id === customerId);
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("customers")
-        .update({ process: newProcess })
-        .eq("id", customerId);
+        .update({ process: newProcess, updated_at: new Date().toISOString() })
+        .eq("id", customerId)
+        .select()
+        .single();
 
       if (error) throw error;
 
+      // Update only this customer in state (no full fetch needed)
+      setCustomers(prevCustomers => {
+        const updated = prevCustomers.map(c =>
+          c.id === customerId ? { ...c, process: newProcess, updated_at: data.updated_at } : c
+        );
+        return updated;
+      });
+
       setEditingProcessId(null);
       setHoveredProcessId(null);
-      fetchCustomers();
 
-      // Broadcast process change notification to other users
+      // Broadcast process change with full customer data for real-time sync
       const broadcastMessage = {
         type: 'process_changed',
         customerId: customerId,
         customerName: customer?.name || "Bilinmeyen",
         author: loggedInUser?.name || "Bilinmeyen",
         newProcess: newProcess,
-        timestamp: new Date().toLocaleString("tr-TR")
+        timestamp: new Date().toLocaleString("tr-TR"),
+        customerData: data // Send updated customer data for other users
       };
 
       await supabase
