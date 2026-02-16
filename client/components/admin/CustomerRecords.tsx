@@ -55,7 +55,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     tc: "",
     phone: "",
     message: "",
-    process: "Beklemede" as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade"
+    process: "Yeni Müşteri" as "Beklemede" | "Aracını Buluyor" | "Onaylandı" | "Kredi Onayda" | "Kullandırıldı" | "Red/İade" | "Yeni Müşteri"
   });
   const [sortField, setSortField] = useState<keyof Customer>("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
@@ -472,7 +472,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         setCustomers(prevCustomers => [newCustomerData[0], ...prevCustomers]);
       }
 
-      setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
+      setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Yeni Müşteri" });
       setShowForm(false);
     } catch (error) {
       console.error("Error adding customer:", error);
@@ -1063,7 +1063,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
             <button
               onClick={() => {
                 setShowForm(false);
-                setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Beklemede" });
+                setNewCustomer({ name: "", tc: "", phone: "", message: "", process: "Yeni Müşteri" });
               }}
               className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors"
             >
