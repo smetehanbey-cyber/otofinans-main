@@ -170,8 +170,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                       updated[existingIndex] = payload.new;
                       return updated;
                     } else {
-                      // Add new customer if not in list
-                      return [...prevCustomers, payload.new];
+                      // Add new customer at the top of the list (most recent first)
+                      return [payload.new, ...prevCustomers];
                     }
                   });
                 } else if (payload.old?.id) {
