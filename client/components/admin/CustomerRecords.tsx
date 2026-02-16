@@ -123,6 +123,17 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     fetchCustomers();
   }, [sortField, sortOrder]);
 
+  // Load chat messages from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedMessages = localStorage.getItem('chatMessages');
+      if (savedMessages) {
+        setChatMessages(JSON.parse(savedMessages));
+      }
+    } catch (error) {
+      console.error("Error loading chat messages from localStorage:", error);
+    }
+  }, []);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -249,7 +260,12 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                 read: msg.sender_name === loggedInUser?.name
               };
 
-              setChatMessages(prev => [...prev, newMsg]);
+              setChatMessages(prev => {
+                const updated = [...prev, newMsg];
+                // Save to localStorage
+                localStorage.setItem('chatMessages', JSON.stringify(updated));
+                return updated;
+              });
 
               // Play notification sound if received message
               if (msg.receiver_name === loggedInUser?.name && msg.sender_name !== loggedInUser?.name) {
@@ -348,7 +364,12 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       read: true
     };
 
-    setChatMessages(prev => [...prev, messageData]);
+    setChatMessages(prev => {
+      const updated = [...prev, messageData];
+      // Save to localStorage
+      localStorage.setItem('chatMessages', JSON.stringify(updated));
+      return updated;
+    });
 
     // Broadcast message to other users
     await supabase
@@ -1778,19 +1799,17 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           >
             {/* Header */}
             <div
-              className={`bg-green-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} ${
-                windowState.minimized ? '' : 'cursor-pointer'
-              }`}
+              className={`bg-green-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} cursor-pointer`}
               onClick={() => {
-                if (!windowState.minimized) {
-                  setMessageWindows(prev => ({
-                    ...prev,
-                    [personName]: {
-                      ...prev![personName],
-                      minimized: !prev![personName].minimized,
-                      unread: 0
-                    }
-                  }));
+                setMessageWindows(prev => ({
+                  ...prev,
+                  [personName]: {
+                    ...prev![personName],
+                    minimized: !prev![personName].minimized,
+                    unread: windowState.minimized ? 0 : prev![personName].unread
+                  }
+                }));
+                if (windowState.minimized) {
                   setUnreadByUser(prev => ({
                     ...prev,
                     [personName]: 0
