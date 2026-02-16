@@ -1767,34 +1767,14 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
         return (
           <div
             key={personName}
-            className={`fixed z-[9996] bg-white rounded-lg shadow-2xl flex flex-col animate-slideInAndFade transition-all ${
+            className={`fixed z-[9996] bg-white rounded-lg shadow-2xl flex flex-col animate-slideInAndFade ${
               windowState.minimized ? 'h-14 cursor-move' : 'h-96'
-            }`}
+            } ${draggedWindow?.person !== personName ? 'transition-all' : ''}`}
             style={{
               width: '300px',
               left: `${pos.x}px`,
               bottom: `${pos.y}px`,
               userSelect: 'none'
-            }}
-            onMouseMove={(e) => {
-              if (draggedWindow && draggedWindow.person === personName && windowState.minimized) {
-                const newX = e.clientX - draggedWindow.offsetX;
-                const newY = window.innerHeight - e.clientY - draggedWindow.offsetY;
-                setWindowPositions(prev => ({
-                  ...prev,
-                  [personName]: { x: Math.max(0, newX), y: Math.max(0, newY) }
-                }));
-              }
-            }}
-            onMouseUp={() => {
-              if (draggedWindow?.person === personName) {
-                setDraggedWindow(null);
-              }
-            }}
-            onMouseLeave={() => {
-              if (draggedWindow?.person === personName) {
-                setDraggedWindow(null);
-              }
             }}
           >
             {/* Header */}
