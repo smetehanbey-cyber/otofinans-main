@@ -1439,6 +1439,9 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         >
                           {isMobile ? (customer.process === "Beklemede" ? "B" : customer.process === "Onaylandı" ? "O" : customer.process === "Kredi Onayda" ? "K" : customer.process === "Kullandırıldı" ? "U" : "R") : customer.process}
                         </span>
+                        <span className="inline-block px-2 py-0.5 rounded-full font-semibold whitespace-nowrap bg-gray-200 text-gray-700" style={{fontSize: isMobile ? '10px' : '12px'}}>
+                          Yeni Müşteri
+                        </span>
 
                         {/* Click Dropdown for Process Edit */}
                         {hoveredProcessId === customer.id && (
