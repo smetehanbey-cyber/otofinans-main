@@ -5,20 +5,7 @@ import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
 import { supabase } from "@/lib/supabase";
 
-// Messages Component
-function Messages() {
-  return (
-    <div className="p-6 space-y-6">
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h2 className="text-lg font-semibold text-blue-900 mb-2">Mesajlar</h2>
-        <p className="text-blue-700">Tüm müşteri mesajlarını burada görebilirsiniz</p>
-      </div>
-      <div className="text-gray-500 text-center py-12">
-        <p>Mesaj sistemi kısa zamanda aktif olacaktır</p>
-      </div>
-    </div>
-  );
-}
+const AUTHORIZED_PERSONS = ["Beyza", "Duygu", "Erkut", "Gökhan"];
 
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,6 +16,7 @@ export default function Admin() {
   const [activeMenu, setActiveMenu] = useState("customer-records");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isLandscape, setIsLandscape] = useState(window.innerHeight < window.innerWidth);
+  const [messageWindowToOpen, setMessageWindowToOpen] = useState<string | null>(null);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -130,11 +118,9 @@ export default function Admin() {
   const activeMenuItem = allMenuItems.find(item => item.id === activeMenu);
   let ActiveComponent = activeMenuItem?.component || CustomerRecords;
 
-  // Wrap CustomerRecords to pass loggedInUser
-  if (activeMenu === "messages") {
-    ActiveComponent = Messages;
-  } else if (activeMenuItem?.id === "customer-records") {
-    ActiveComponent = () => <CustomerRecords loggedInUser={loggedInUser} />;
+  // Wrap CustomerRecords to pass loggedInUser and message window to open
+  if (activeMenuItem?.id === "customer-records") {
+    ActiveComponent = () => <CustomerRecords loggedInUser={loggedInUser} messageWindowToOpen={messageWindowToOpen} setMessageWindowToOpen={setMessageWindowToOpen} />;
   } else if (activeMenuItem?.id === "archived-records") {
     ActiveComponent = () => <ArchivedRecords />;
   }
@@ -276,10 +262,10 @@ export default function Admin() {
           {/* Page Header */}
           <div className="mb-4 sm:mb-6">
             <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
-              {activeMenu === "messages" ? "Mesajlar" : activeMenuItem?.label}
+              {activeMenuItem?.label}
             </h1>
             <p className="text-gray-600 mt-1 text-sm">
-              {activeMenu === "messages" ? "Tüm müşteri mesajlarını yönetin" : "Müşteri talep ve kayıtlarını yönetin"}
+              Müşteri talep ve kayıtlarını yönetin
             </p>
           </div>
 
@@ -299,19 +285,26 @@ export default function Admin() {
           <div className="flex items-center gap-2 flex-1">
             {/* Message Button */}
             <button
-              onClick={() => setActiveMenu('messages')}
-              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all flex-1 sm:flex-none"
-              style={{
-                backgroundColor: activeMenu === 'messages' ? '#eff6ff' : '#ffffff',
-                color: activeMenu === 'messages' ? '#2563eb' : '#374151',
-                borderBottom: activeMenu === 'messages' ? '3px solid #2563eb' : 'none',
+              onClick={() => {
+                setActiveMenu('customer-records');
+                setMessageWindowToOpen(AUTHORIZED_PERSONS[0]);
               }}
-              title="Mesajlar"
+              className="flex items-center justify-center p-2 rounded-lg transition-all"
+              style={{
+                backgroundColor: '#ffffff',
+                color: '#374151',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#eff6ff';
+                e.currentTarget.style.color = '#2563eb';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#ffffff';
+                e.currentTarget.style.color = '#374151';
+              }}
+              title="Mesaj Gönder"
             >
               <MessageCircle className="h-5 w-5" />
-              <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
-                Mesajlar
-              </span>
             </button>
 
             {/* Menu Items */}

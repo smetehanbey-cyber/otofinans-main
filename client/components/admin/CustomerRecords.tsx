@@ -39,7 +39,15 @@ const toTurkishUpperCase = (str: string): string => {
     .join('');
 };
 
-export default function CustomerRecords({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
+export default function CustomerRecords({
+  loggedInUser,
+  messageWindowToOpen,
+  setMessageWindowToOpen
+}: {
+  loggedInUser: LoggedInUser | null;
+  messageWindowToOpen?: string | null;
+  setMessageWindowToOpen?: (value: string | null) => void;
+}) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -134,6 +142,17 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       console.error("Error loading chat messages from localStorage:", error);
     }
   }, []);
+
+  // Open message window from parent (Admin.tsx)
+  useEffect(() => {
+    if (messageWindowToOpen && setMessageWindowToOpen) {
+      setMessageWindows(prev => ({
+        ...prev,
+        [messageWindowToOpen]: { minimized: false, unread: 0 }
+      }));
+      setMessageWindowToOpen(null);
+    }
+  }, [messageWindowToOpen, setMessageWindowToOpen]);
 
   // Handle responsive behavior
   useEffect(() => {
