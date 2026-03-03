@@ -348,62 +348,99 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           </button>
         </div>
       ) : (
-        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} ${isMobile ? "min-h-[400px]" : "min-h-[600px]"} relative`}>
-          <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
-            <thead>
-              <tr className="bg-gray-100 border-b-2 border-gray-300">
-                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '60%'}}>
-                  Rapor
-                </th>
-                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '18%'}}>
-                  Tarih - Saat
-                </th>
-                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '12%'}}>
-                  Yetkili Kişi
-                </th>
-                <th className={`px-2 py-2 text-center font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '10%'}}>
-                  İşlem
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOperations.map((operation, idx) => (
-                <tr
+        <div className={`${isMobile ? "min-h-[400px]" : "min-h-[600px]"} relative`}>
+          {isMobile ? (
+            // Mobile Card View
+            <div className="grid grid-cols-1 gap-3">
+              {filteredOperations.map((operation) => (
+                <div
                   key={operation.id}
-                  className={`border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer ${
-                    idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  }`}
+                  onClick={() => handleEditOperation(operation)}
+                  className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow"
                 >
-                  <td
-                    className="px-2 py-2 text-sm text-gray-800 truncate cursor-pointer hover:text-blue-600"
-                    title={operation.task_description}
-                    onClick={() => handleEditOperation(operation)}
-                  >
-                    {operation.task_description}
-                  </td>
-                  <td className="px-2 py-2 text-sm text-gray-800">
-                    <div>{operation.date}</div>
-                    <div className="text-gray-600 text-xs">{operation.timestamp}</div>
-                  </td>
-                  <td className="px-2 py-2 text-sm text-gray-800 font-medium truncate" title={operation.author_name}>
-                    {operation.author_name}
-                  </td>
-                  <td className="px-2 py-2 text-center">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEditOperation(operation);
-                      }}
-                      className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                      title="Düzenle"
-                    >
-                      <Edit2 className="h-4 w-4" />
-                    </button>
-                  </td>
-                </tr>
+                  <div className="space-y-2">
+                    {/* Report Title */}
+                    <h3 className="font-semibold text-gray-800 text-sm line-clamp-2 break-words">
+                      {operation.task_description}
+                    </h3>
+
+                    {/* Date and Time */}
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="text-gray-600">
+                        <span className="font-medium">{operation.date}</span>
+                        <br />
+                        <span className="text-gray-500">{operation.timestamp}</span>
+                      </div>
+
+                      {/* Author */}
+                      <div className="text-right">
+                        <p className="text-gray-700 font-medium">{operation.author_name}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          ) : (
+            // Desktop Table View
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-gray-100 border-b-2 border-gray-300">
+                    <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: '15px', width: '60%'}}>
+                      Rapor
+                    </th>
+                    <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: '15px', width: '18%'}}>
+                      Tarih - Saat
+                    </th>
+                    <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: '15px', width: '12%'}}>
+                      Yetkili Kişi
+                    </th>
+                    <th className={`px-2 py-2 text-center font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: '15px', width: '10%'}}>
+                      İşlem
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredOperations.map((operation, idx) => (
+                    <tr
+                      key={operation.id}
+                      className={`border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer ${
+                        idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td
+                        className="px-2 py-2 text-sm text-gray-800 truncate cursor-pointer hover:text-blue-600"
+                        title={operation.task_description}
+                        onClick={() => handleEditOperation(operation)}
+                      >
+                        {operation.task_description}
+                      </td>
+                      <td className="px-2 py-2 text-sm text-gray-800">
+                        <div>{operation.date}</div>
+                        <div className="text-gray-600 text-xs">{operation.timestamp}</div>
+                      </td>
+                      <td className="px-2 py-2 text-sm text-gray-800 font-medium truncate" title={operation.author_name}>
+                        {operation.author_name}
+                      </td>
+                      <td className="px-2 py-2 text-center">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditOperation(operation);
+                          }}
+                          className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                          title="Düzenle"
+                        >
+                          <Edit2 className="h-4 w-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
