@@ -266,13 +266,13 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
             <table className="w-full border-collapse" style={{ tableLayout: "fixed" }}>
               <thead>
                 <tr style={{ backgroundColor: "#0f367e", color: "#ffffff" }}>
-                  <th className="border border-gray-200 px-2 py-3 text-left font-semibold" style={{ width: "25%" }}>
+                  <th className="border border-gray-200 px-2 py-3 text-left font-semibold" style={{ width: "42%" }}>
                     Rapor
                   </th>
-                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold" style={{ width: "40%" }}>
+                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold" style={{ width: "20%" }}>
                     Tarih - Saat
                   </th>
-                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold" style={{ width: "22%" }}>
+                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold" style={{ width: "25%" }}>
                     Yetkili Kişi
                   </th>
                   <th className="border border-gray-200 px-1 py-3 text-center font-semibold" style={{ width: "13%" }}>
