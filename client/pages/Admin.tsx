@@ -6,51 +6,6 @@ import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
 import { supabase } from "@/lib/supabase";
 
-// Yetkili Bayiler (Authorized Dealers) Component
-function AuthorizedDealers() {
-  return (
-    <div className="p-6 space-y-6">
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h2 className="text-lg font-semibold text-blue-900 mb-2">Yetkili Bayiler Yönetimi</h2>
-        <p className="text-blue-700">Yetkili bayi kaydı ve yönetim sistemi</p>
-      </div>
-      <div className="text-gray-500 text-center py-12">
-        <p>Yetkili bayiler bölümü yakında aktif olacaktır</p>
-      </div>
-    </div>
-  );
-}
-
-// Kredi Sorgula (Credit Query) Component
-function CreditQuery() {
-  return (
-    <div className="p-6 space-y-6">
-      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-        <h2 className="text-lg font-semibold text-purple-900 mb-2">Kredi Sorgula</h2>
-        <p className="text-purple-700">Müşteri kredi sorgulama ve kontrol sistemi</p>
-      </div>
-      <div className="text-gray-500 text-center py-12">
-        <p>Kredi sorgula sistemi yakında aktif olacaktır</p>
-      </div>
-    </div>
-  );
-}
-
-// Taşıt Stok (Vehicle Stock) Component
-function VehicleStock() {
-  return (
-    <div className="p-6 space-y-6">
-      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-        <h2 className="text-lg font-semibold text-green-900 mb-2">Taşıt Stok</h2>
-        <p className="text-green-700">Araç envanteri ve stok yönetim sistemi</p>
-      </div>
-      <div className="text-gray-500 text-center py-12">
-        <p>Taşıt stok yönetim sistemi yakında aktif olacaktır</p>
-      </div>
-    </div>
-  );
-}
-
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<{ id: number; name: string; pin: string; is_admin: boolean } | null>(null);
@@ -159,42 +114,6 @@ export default function Admin() {
           label: "Arşive Bak",
           icon: "🗂️",
           component: ArchivedRecords
-        }
-      ]
-    },
-    {
-      id: "yetkili-bayiler",
-      label: "Yetkili Bayiler",
-      icon: "🏢",
-      items: [
-        {
-          id: "dealers",
-          label: "Yetkili Bayiler",
-          component: AuthorizedDealers
-        }
-      ]
-    },
-    {
-      id: "kredi-sorgula",
-      label: "Kredi Sorgula",
-      icon: "🔍",
-      items: [
-        {
-          id: "credit-query",
-          label: "Kredi Sorgula",
-          component: CreditQuery
-        }
-      ]
-    },
-    {
-      id: "tasit-stok",
-      label: "Taşıt Stok",
-      icon: "🚗",
-      items: [
-        {
-          id: "vehicle-stock",
-          label: "Taşıt Stok",
-          component: VehicleStock
         }
       ]
     }
@@ -373,8 +292,11 @@ export default function Admin() {
             </button>
           </div>
 
-          {/* Menu Items */}
-          <nav className="flex-1 p-4 space-y-2">
+          {/* Spacer - takes remaining space */}
+          <div className="flex-1"></div>
+
+          {/* Menu Items - Fixed to Bottom */}
+          <nav className="p-4 space-y-2 border-t border-gray-200">
             {menuGroups.map((group) => {
               const isExpanded = expandedGroup === group.id;
               const hasActiveItem = group.items.some(item => item.id === activeMenu);
@@ -434,7 +356,7 @@ export default function Admin() {
             })}
           </nav>
 
-          {/* Sidebar Footer */}
+          {/* Sidebar Footer - User Info and Logout */}
           <div className="p-4 border-t border-gray-200">
             <div className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 mb-3">
               {sidebarOpen && (
