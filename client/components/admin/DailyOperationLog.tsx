@@ -266,16 +266,16 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
             <table className="w-full border-collapse" style={{ tableLayout: "fixed" }}>
               <thead>
                 <tr style={{ backgroundColor: "#0f367e", color: "#ffffff" }}>
-                  <th className="border border-gray-200 px-3 py-3 text-left font-semibold" style={{ width: "60%" }}>
+                  <th className="border border-gray-200 px-3 py-3 text-left font-semibold" style={{ width: "35%" }}>
                     Rapor
                   </th>
-                  <th className="border border-gray-200 px-2 py-3 text-left font-semibold" style={{ width: "20%" }}>
+                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold text-xs" style={{ width: "28%" }}>
                     Tarih - Saat
                   </th>
-                  <th className="border border-gray-200 px-2 py-3 text-left font-semibold" style={{ width: "15%" }}>
+                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold" style={{ width: "28%" }}>
                     Yetkili Kişi
                   </th>
-                  <th className="border border-gray-200 px-2 py-3 text-center font-semibold" style={{ width: "5%" }}>
+                  <th className="border border-gray-200 px-1 py-3 text-center font-semibold" style={{ width: "9%" }}>
                     İşlem
                   </th>
                 </tr>
@@ -291,20 +291,20 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                     <td className="border border-gray-200 px-3 py-3 text-sm text-gray-800 truncate" title={operation.task_description}>
                       {operation.task_description}
                     </td>
-                    <td className="border border-gray-200 px-2 py-3 text-xs text-gray-800 whitespace-nowrap">
+                    <td className="border border-gray-200 px-1 py-3 text-xs text-gray-800" style={{ whiteSpace: "normal" }}>
                       <div>{operation.date}</div>
                       <div className="text-gray-600">{operation.timestamp}</div>
                     </td>
-                    <td className="border border-gray-200 px-2 py-3 text-sm text-gray-800 font-medium whitespace-nowrap">
+                    <td className="border border-gray-200 px-1 py-3 text-sm text-gray-800 font-medium overflow-hidden text-ellipsis" style={{ whiteSpace: "normal" }}>
                       {operation.author_name}
                     </td>
-                    <td className="border border-gray-200 px-2 py-3 text-center">
+                    <td className="border border-gray-200 px-1 py-3 text-center flex items-center justify-center h-full">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleEditOperation(operation);
                         }}
-                        className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        className="inline-flex items-center justify-center p-1 text-blue-600 hover:bg-blue-50 rounded transition-colors"
                         title="Düzenle"
                       >
                         <Edit2 className="h-4 w-4" />
