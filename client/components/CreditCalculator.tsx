@@ -7,7 +7,7 @@ export default function CreditCalculator() {
   const [productType, setProductType] = useState("Taşıt Kredisi");
   const [amount, setAmount] = useState(100000);
   const [duration, setDuration] = useState(48);
-  const [rate, setRate] = useState(0.99);
+  const [rate, setRate] = useState(4.5);
   const [tableVisible, setTableVisible] = useState(false); // Table hidden by default
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -22,10 +22,10 @@ export default function CreditCalculator() {
 
   // Rate options for different customer types (monthly percentages)
   const rateOptions = [
-    { label: "", value: 0.99 },
+    { label: "", value: 4.5 },
     { label: "", value: 3.7 },
     { label: "", value: 3.8 },
-    { label: "", value: 4.5 },
+    { label: "", value: 0.99 },
   ];
 
   // Calculate monthly payment using compound interest formula
@@ -886,7 +886,7 @@ export default function CreditCalculator() {
             <ul className="text-xs text-gray-600 space-y-2">
               <li>
                 • Şahıs vergi levhalı müşterilerimize geçerli ayrı avantajlar
-                için %0,99 seçerek hesaplama ekranından ödeme planını
+                için %4,50 seçerek hesaplama ekranından ödeme planını
                 indirebilirsiniz.
               </li>
               <li>• Minimum Taşıt Kredisi 50.000 TL olarka geçerlidir.</li>
