@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Trash2, ChevronDown } from "lucide-react";
+import { Edit2, ChevronDown, X } from "lucide-react";
 
 interface LoggedInUser {
   id: number;
@@ -27,6 +27,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
   const [filterEndDate, setFilterEndDate] = useState("");
   const [filterAuthor, setFilterAuthor] = useState("");
   const [allAuthors, setAllAuthors] = useState<string[]>([]);
+  const [selectedOperation, setSelectedOperation] = useState<DailyOperation | null>(null);
 
   // Get today's date in Turkish format
   const getTodayFormatted = () => {
@@ -105,25 +106,32 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
     setShowInputForm(false);
   };
 
-  // Delete operation
-  const handleDeleteOperation = (id: string | undefined, operation: DailyOperation) => {
-    if (id) {
-      const filtered = operations.filter(op => op.id !== id);
-      setOperations(filtered);
+  // Edit operation
+  const handleEditOperation = (operation: DailyOperation) => {
+    setSelectedOperation(operation);
+  };
 
-      // Update localStorage
-      const key = `operations_${operation.author_name}_${operation.date}`;
-      const existing = localStorage.getItem(key);
-      if (existing) {
-        const parsed = JSON.parse(existing);
-        const updated = parsed.filter((op: DailyOperation) => op.id !== id);
-        if (updated.length > 0) {
-          localStorage.setItem(key, JSON.stringify(updated));
-        } else {
-          localStorage.removeItem(key);
-        }
+  // Delete operation from detail view
+  const handleDeleteOperation = () => {
+    if (!selectedOperation || !selectedOperation.id) return;
+
+    const filtered = operations.filter(op => op.id !== selectedOperation.id);
+    setOperations(filtered);
+
+    // Update localStorage
+    const key = `operations_${selectedOperation.author_name}_${selectedOperation.date}`;
+    const existing = localStorage.getItem(key);
+    if (existing) {
+      const parsed = JSON.parse(existing);
+      const updated = parsed.filter((op: DailyOperation) => op.id !== selectedOperation.id);
+      if (updated.length > 0) {
+        localStorage.setItem(key, JSON.stringify(updated));
+      } else {
+        localStorage.removeItem(key);
       }
     }
+
+    setSelectedOperation(null);
   };
 
   // Filter operations based on date range and author
@@ -255,19 +263,19 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse" style={{ tableLayout: "fixed" }}>
               <thead>
                 <tr style={{ backgroundColor: "#0f367e", color: "#ffffff" }}>
-                  <th className="border border-gray-200 px-4 py-3 text-left font-semibold min-w-[120px]">
-                    Tarih - Saat
-                  </th>
-                  <th className="border border-gray-200 px-4 py-3 text-left font-semibold">
+                  <th className="border border-gray-200 px-3 py-3 text-left font-semibold" style={{ width: "60%" }}>
                     Rapor
                   </th>
-                  <th className="border border-gray-200 px-4 py-3 text-left font-semibold min-w-[120px]">
+                  <th className="border border-gray-200 px-2 py-3 text-left font-semibold" style={{ width: "20%" }}>
+                    Tarih - Saat
+                  </th>
+                  <th className="border border-gray-200 px-2 py-3 text-left font-semibold" style={{ width: "15%" }}>
                     Yetkili Kişi
                   </th>
-                  <th className="border border-gray-200 px-4 py-3 text-center font-semibold min-w-[60px]">
+                  <th className="border border-gray-200 px-2 py-3 text-center font-semibold" style={{ width: "5%" }}>
                     İşlem
                   </th>
                 </tr>
@@ -276,27 +284,30 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                 {filteredOperations.map((operation, idx) => (
                   <tr
                     key={operation.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer ${
                       idx % 2 === 0 ? "bg-white" : "bg-gray-50"
                     }`}
                   >
-                    <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800 font-medium">
-                      <div>{operation.date}</div>
-                      <div className="text-xs text-gray-600">{operation.timestamp}</div>
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800">
+                    <td className="border border-gray-200 px-3 py-3 text-sm text-gray-800 truncate" title={operation.task_description}>
                       {operation.task_description}
                     </td>
-                    <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800 font-medium">
+                    <td className="border border-gray-200 px-2 py-3 text-xs text-gray-800 whitespace-nowrap">
+                      <div>{operation.date}</div>
+                      <div className="text-gray-600">{operation.timestamp}</div>
+                    </td>
+                    <td className="border border-gray-200 px-2 py-3 text-sm text-gray-800 font-medium whitespace-nowrap">
                       {operation.author_name}
                     </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center">
+                    <td className="border border-gray-200 px-2 py-3 text-center">
                       <button
-                        onClick={() => handleDeleteOperation(operation.id, operation)}
-                        className="inline-flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
-                        title="Sil"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditOperation(operation);
+                        }}
+                        className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        title="Düzenle"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Edit2 className="h-4 w-4" />
                       </button>
                     </td>
                   </tr>
@@ -306,6 +317,73 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           </div>
         )}
       </div>
+
+      {/* Detail Modal */}
+      {selectedOperation && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedOperation(null)}
+        >
+          <div
+            className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-blue-600 text-white p-6 flex items-center justify-between border-b border-blue-700">
+              <h2 className="text-2xl font-bold">Rapor Detayı</h2>
+              <button
+                onClick={() => setSelectedOperation(null)}
+                className="p-1 hover:bg-blue-700 rounded transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-6">
+              {/* Rapor */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-2">Rapor Açıklaması</h3>
+                <p className="text-base text-gray-800 p-4 bg-gray-50 rounded-lg break-words">
+                  {selectedOperation.task_description}
+                </p>
+              </div>
+
+              {/* Bilgiler */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Tarih</h3>
+                  <p className="text-base text-gray-800">{selectedOperation.date}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Saat</h3>
+                  <p className="text-base text-gray-800">{selectedOperation.timestamp}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Yetkili Kişi</h3>
+                  <p className="text-base text-gray-800">{selectedOperation.author_name}</p>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => setSelectedOperation(null)}
+                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2.5 px-4 rounded-lg transition-colors"
+                >
+                  Kapat
+                </button>
+                <button
+                  onClick={handleDeleteOperation}
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+                >
+                  Sil
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer Note */}
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
