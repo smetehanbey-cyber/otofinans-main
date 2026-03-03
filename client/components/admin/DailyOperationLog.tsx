@@ -28,6 +28,8 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
   const [allAuthors, setAllAuthors] = useState<string[]>([]);
   const [selectedOperation, setSelectedOperation] = useState<DailyOperation | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingText, setEditingText] = useState("");
 
   // Handle window resize
   useEffect(() => {
@@ -101,14 +103,67 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
     setShowInputForm(false);
   };
 
-  // Edit operation - just show card
+  // Open operation detail card
   const handleEditOperation = (operation: DailyOperation) => {
     setSelectedOperation(operation);
+    setEditingText(operation.task_description);
+    setIsEditMode(false);
+  };
+
+  // Enter edit mode
+  const handleStartEdit = () => {
+    setIsEditMode(true);
+  };
+
+  // Save edited report
+  const handleSaveEdit = () => {
+    if (!selectedOperation || !editingText.trim()) {
+      alert("Rapor açıklaması boş olamaz");
+      return;
+    }
+
+    // Check if user is the owner
+    if (loggedInUser?.name !== selectedOperation.author_name) {
+      alert("Sadece raporun sahibi tarafından düzenlenebilir");
+      return;
+    }
+
+    // Update in memory
+    const updatedOperation = { ...selectedOperation, task_description: editingText.trim() };
+    setSelectedOperation(updatedOperation);
+    setOperations(prev =>
+      prev.map(op => op.id === selectedOperation.id ? updatedOperation : op)
+    );
+
+    // Update in localStorage
+    const key = `operations_${selectedOperation.author_name}_${selectedOperation.date}`;
+    const existing = localStorage.getItem(key);
+    if (existing) {
+      const parsed = JSON.parse(existing);
+      const updated = parsed.map((op: DailyOperation) =>
+        op.id === selectedOperation.id ? updatedOperation : op
+      );
+      localStorage.setItem(key, JSON.stringify(updated));
+    }
+
+    setIsEditMode(false);
+  };
+
+  // Cancel edit
+  const handleCancelEdit = () => {
+    setIsEditMode(false);
+    setEditingText(selectedOperation?.task_description || "");
   };
 
   // Delete operation from detail view
   const handleDeleteOperation = () => {
     if (!selectedOperation || !selectedOperation.id) return;
+
+    // Check if user is the owner
+    if (loggedInUser?.name !== selectedOperation.author_name) {
+      alert("Sadece raporun sahibi tarafından silinebilir");
+      return;
+    }
 
     const filtered = operations.filter(op => op.id !== selectedOperation.id);
     setOperations(filtered);
@@ -381,10 +436,36 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
             <div className="p-6 space-y-5">
               {/* Rapor Açıklaması */}
               <div className="border-l-4 border-blue-500 pl-4">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Rapor Açıklaması</p>
-                <p className="text-lg font-semibold text-gray-800 break-words">
-                  {selectedOperation.task_description}
-                </p>
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Rapor Açıklaması</p>
+                  {loggedInUser?.name === selectedOperation.author_name && !isEditMode && (
+                    <button
+                      onClick={handleStartEdit}
+                      className="text-xs px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                      title="Düzenle"
+                    >
+                      Düzenle
+                    </button>
+                  )}
+                </div>
+                {isEditMode ? (
+                  <textarea
+                    value={editingText}
+                    onChange={(e) => setEditingText(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-base"
+                    rows={4}
+                    autoFocus
+                  />
+                ) : (
+                  <p className="text-lg font-semibold text-gray-800 break-words">
+                    {selectedOperation.task_description}
+                  </p>
+                )}
+                {loggedInUser?.name !== selectedOperation.author_name && !isEditMode && (
+                  <p className="text-xs text-gray-500 mt-2 italic">
+                    🔒 Sadece raporun sahibi tarafından düzenlenebilir
+                  </p>
+                )}
               </div>
 
               {/* Divider */}
@@ -409,22 +490,46 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3 pt-6 border-t border-gray-200">
-                <button
-                  onClick={handleShareCard}
-                  className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-                  title="WhatsApp'ta Paylaş"
-                >
-                  Paylaş
-                </button>
-                <button
-                  onClick={handleDeleteOperation}
-                  className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-                  title="Sil"
-                >
-                  Sil
-                </button>
-              </div>
+              {isEditMode ? (
+                <div className="flex gap-3 pt-6 border-t border-gray-200">
+                  <button
+                    onClick={handleSaveEdit}
+                    className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                    title="Kaydet"
+                  >
+                    Kaydet
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    className="flex-1 px-4 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors font-medium"
+                    title="İptal"
+                  >
+                    İptal
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-3 pt-6 border-t border-gray-200">
+                  <button
+                    onClick={handleShareCard}
+                    className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                    title="WhatsApp'ta Paylaş"
+                  >
+                    Paylaş
+                  </button>
+                  <button
+                    onClick={handleDeleteOperation}
+                    disabled={loggedInUser?.name !== selectedOperation.author_name}
+                    className={`flex-1 px-4 py-3 rounded-lg transition-colors font-medium ${
+                      loggedInUser?.name === selectedOperation.author_name
+                        ? "bg-red-600 text-white hover:bg-red-700"
+                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    }`}
+                    title={loggedInUser?.name === selectedOperation.author_name ? "Sil" : "Sadece raporun sahibi silebilir"}
+                  >
+                    Sil
+                  </button>
+                </div>
+              )}
 
               {/* Close Button */}
               <button
