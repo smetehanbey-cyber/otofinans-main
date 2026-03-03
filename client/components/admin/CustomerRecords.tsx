@@ -90,10 +90,8 @@ export default function CustomerRecords({
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [messageWindows, setMessageWindows] = useState<{[key: string]: {minimized: boolean; unread: number}} | undefined>(undefined);
   const [unreadByUser, setUnreadByUser] = useState<{[key: string]: number}>({});
-  const [authorizedPersons, setAuthorizedPersons] = useState<string[]>([]);
   const [windowPositions, setWindowPositions] = useState<{[key: string]: {x: number; y: number}}>({});
   const [draggedWindow, setDraggedWindow] = useState<{person: string; offsetX: number; offsetY: number} | null>(null);
-  const [showPersonList, setShowPersonList] = useState(false);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -300,9 +298,6 @@ export default function CustomerRecords({
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
-
-    // Set authorized persons list
-    setAuthorizedPersons(AUTHORIZED_PERSONS);
 
     // Setup chat message listener
     let chatChannel: any;
@@ -1811,54 +1806,6 @@ export default function CustomerRecords({
         ))}
       </div>
 
-      {/* Message Send Button - Bottom Left */}
-      <div className="fixed bottom-4 left-4 z-[9997]">
-        {/* User Selection Popup */}
-        {showPersonList ? (
-          <div className="bg-white rounded-lg shadow-2xl p-4 mb-4 border-t-4 border-green-600 max-w-xs animate-slideInAndFade">
-            <p className="text-xs text-gray-600 mb-3 font-semibold">Mesaj Gönderilecek Kişi Seçin:</p>
-            <div className="space-y-2">
-              {authorizedPersons
-                .filter(person => person !== loggedInUser?.name)
-                .map((person, idx) => (
-                  <button
-                    key={person}
-                    onClick={() => {
-                      if (!messageWindows || !messageWindows[person]) {
-                        setMessageWindows(prev => ({
-                          ...(prev || {}),
-                          [person]: { minimized: false, unread: 0 }
-                        }));
-                      } else {
-                        setMessageWindows(prev => ({
-                          ...prev,
-                          [person]: { ...prev![person], minimized: false }
-                        }));
-                      }
-                      setShowPersonList(false);
-                    }}
-                    className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-green-100 rounded transition-colors text-sm font-medium animate-slideInAndFade"
-                    style={{
-                      animationDelay: `${idx * 50}ms`
-                    }}
-                  >
-                    {person}
-                  </button>
-                ))}
-            </div>
-          </div>
-        ) : null}
-
-        {/* Message Send Button */}
-        <button
-          onClick={() => {
-            setShowPersonList(!showPersonList);
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors font-medium"
-        >
-          Mesaj Gönder
-        </button>
-      </div>
 
       {/* Message Windows - Minimizable Cards */}
       {messageWindows && Object.entries(messageWindows).map(([personName, windowState], idx) => {
