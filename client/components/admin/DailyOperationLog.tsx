@@ -28,7 +28,6 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
   const [allAuthors, setAllAuthors] = useState<string[]>([]);
   const [selectedOperation, setSelectedOperation] = useState<DailyOperation | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [hoverCloseTimer, setHoverCloseTimer] = useState<NodeJS.Timeout | null>(null);
 
   // Handle window resize
   useEffect(() => {
@@ -36,13 +35,6 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
-      if (hoverCloseTimer) clearTimeout(hoverCloseTimer);
-    };
-  }, [hoverCloseTimer]);
 
   // Load all operations from localStorage
   useEffect(() => {
@@ -328,18 +320,9 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                   }`}
                 >
                   <td
-                    className="px-2 py-2 text-sm text-gray-800 truncate cursor-pointer hover:text-blue-600 hover:underline"
+                    className="px-2 py-2 text-sm text-gray-800 truncate cursor-pointer hover:text-blue-600"
                     title={operation.task_description}
-                    onMouseEnter={() => {
-                      if (hoverCloseTimer) clearTimeout(hoverCloseTimer);
-                      handleEditOperation(operation);
-                    }}
-                    onMouseLeave={() => {
-                      const timer = setTimeout(() => {
-                        setSelectedOperation(null);
-                      }, 300);
-                      setHoverCloseTimer(timer);
-                    }}
+                    onClick={() => handleEditOperation(operation)}
                   >
                     {operation.task_description}
                   </td>
@@ -378,15 +361,6 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           <div
             className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
             onClick={(e) => e.stopPropagation()}
-            onMouseEnter={() => {
-              if (hoverCloseTimer) clearTimeout(hoverCloseTimer);
-            }}
-            onMouseLeave={() => {
-              const timer = setTimeout(() => {
-                setSelectedOperation(null);
-              }, 300);
-              setHoverCloseTimer(timer);
-            }}
           >
             {/* Card Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
@@ -438,10 +412,9 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
               <div className="flex gap-3 pt-6 border-t border-gray-200">
                 <button
                   onClick={handleShareCard}
-                  className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
                   title="WhatsApp'ta Paylaş"
                 >
-                  <span>📱</span>
                   Paylaş
                 </button>
                 <button
