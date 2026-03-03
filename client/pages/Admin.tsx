@@ -106,17 +106,11 @@ export default function Admin() {
           label: "Arşive Bak",
           icon: "🗂️",
           component: ArchivedRecords
-        }
-      ]
-    },
-    {
-      id: "operasyon",
-      label: "Operasyon",
-      icon: "📊",
-      items: [
+        },
         {
           id: "operasyon-rapor",
-          label: "Operasyon Raporu",
+          label: "Operasyon",
+          icon: "📊",
           component: () => <DailyOperationLog loggedInUser={loggedInUser} />
         }
       ]
