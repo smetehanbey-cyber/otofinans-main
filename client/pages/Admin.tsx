@@ -109,7 +109,7 @@ export default function Admin() {
         },
         {
           id: "operasyon-rapor",
-          label: "Operasyon",
+          label: "Rapor",
           icon: "📊",
           component: () => <DailyOperationLog loggedInUser={loggedInUser} />
         }
