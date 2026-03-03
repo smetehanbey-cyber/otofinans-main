@@ -28,6 +28,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
   const [allAuthors, setAllAuthors] = useState<string[]>([]);
   const [selectedOperation, setSelectedOperation] = useState<DailyOperation | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [hoverCloseTimer, setHoverCloseTimer] = useState<NodeJS.Timeout | null>(null);
 
   // Handle window resize
   useEffect(() => {
@@ -35,6 +36,13 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverCloseTimer) clearTimeout(hoverCloseTimer);
+    };
+  }, [hoverCloseTimer]);
 
   // Load all operations from localStorage
   useEffect(() => {
@@ -297,16 +305,16 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
-                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '55%'}}>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '60%'}}>
                   Rapor
                 </th>
-                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '15%'}}>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '18%'}}>
                   Tarih - Saat
                 </th>
-                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '18%'}}>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '12%'}}>
                   Yetkili Kişi
                 </th>
-                <th className={`px-2 py-2 text-center font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '12%'}}>
+                <th className={`px-2 py-2 text-center font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '10%'}}>
                   İşlem
                 </th>
               </tr>
@@ -319,7 +327,20 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                     idx % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
-                  <td className="px-2 py-2 text-sm text-gray-800 truncate" title={operation.task_description}>
+                  <td
+                    className="px-2 py-2 text-sm text-gray-800 truncate cursor-pointer hover:text-blue-600 hover:underline"
+                    title={operation.task_description}
+                    onMouseEnter={() => {
+                      if (hoverCloseTimer) clearTimeout(hoverCloseTimer);
+                      handleEditOperation(operation);
+                    }}
+                    onMouseLeave={() => {
+                      const timer = setTimeout(() => {
+                        setSelectedOperation(null);
+                      }, 300);
+                      setHoverCloseTimer(timer);
+                    }}
+                  >
                     {operation.task_description}
                   </td>
                   <td className="px-2 py-2 text-sm text-gray-800">
@@ -357,6 +378,15 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           <div
             className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
             onClick={(e) => e.stopPropagation()}
+            onMouseEnter={() => {
+              if (hoverCloseTimer) clearTimeout(hoverCloseTimer);
+            }}
+            onMouseLeave={() => {
+              const timer = setTimeout(() => {
+                setSelectedOperation(null);
+              }, 300);
+              setHoverCloseTimer(timer);
+            }}
           >
             {/* Card Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
