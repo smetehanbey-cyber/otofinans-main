@@ -101,7 +101,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
     setShowInputForm(false);
   };
 
-  // Edit operation
+  // Edit operation - just show card
   const handleEditOperation = (operation: DailyOperation) => {
     setSelectedOperation(operation);
   };
@@ -127,6 +127,28 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
     }
 
     setSelectedOperation(null);
+  };
+
+  // Share card
+  const handleShareCard = async () => {
+    if (!selectedOperation) return;
+
+    const text = `Rapor Detayı:\n\nAçıklama: ${selectedOperation.task_description}\nTarih: ${selectedOperation.date}\nSaat: ${selectedOperation.timestamp}\nYetkili Kişi: ${selectedOperation.author_name}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Rapor Detayı",
+          text: text
+        });
+      } catch (error) {
+        console.log("Share cancelled or failed");
+      }
+    } else {
+      // Fallback for browsers that don't support share API
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(whatsappUrl, "_blank");
+    }
   };
 
   // Filter operations based on date range and author
@@ -326,68 +348,88 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
         </div>
       )}
 
-      {/* Detail Modal */}
+      {/* Detail Card - Full Screen Card View */}
       {selectedOperation && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedOperation(null)}
         >
           <div
-            className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
-            <div className="sticky top-0 bg-blue-600 text-white p-6 flex items-center justify-between border-b border-blue-700">
-              <h2 className="text-2xl font-bold">Rapor Detayı</h2>
-              <button
-                onClick={() => setSelectedOperation(null)}
-                className="p-1 hover:bg-blue-700 rounded transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
+            {/* Card Header */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold">Rapor</h2>
+                <button
+                  onClick={() => setSelectedOperation(null)}
+                  className="p-1 hover:bg-blue-700 rounded-lg transition-colors"
+                  title="Kapat"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              <p className="text-blue-100 text-sm">Detaylı Rapor Bilgisi</p>
             </div>
 
-            {/* Modal Content */}
-            <div className="p-6 space-y-6">
-              {/* Rapor */}
-              <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Rapor Açıklaması</h3>
-                <p className="text-base text-gray-800 p-4 bg-gray-50 rounded-lg break-words">
+            {/* Card Content */}
+            <div className="p-6 space-y-5">
+              {/* Rapor Açıklaması */}
+              <div className="border-l-4 border-blue-500 pl-4">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Rapor Açıklaması</p>
+                <p className="text-lg font-semibold text-gray-800 break-words">
                   {selectedOperation.task_description}
                 </p>
               </div>
 
-              {/* Bilgiler */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Tarih</h3>
-                  <p className="text-base text-gray-800">{selectedOperation.date}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Saat</h3>
-                  <p className="text-base text-gray-800">{selectedOperation.timestamp}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Yetkili Kişi</h3>
-                  <p className="text-base text-gray-800">{selectedOperation.author_name}</p>
-                </div>
+              {/* Divider */}
+              <div className="h-px bg-gray-200"></div>
+
+              {/* Tarih */}
+              <div>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Tarih</p>
+                <p className="text-base text-gray-800 font-medium">{selectedOperation.date}</p>
+              </div>
+
+              {/* Saat */}
+              <div>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Saat</p>
+                <p className="text-base text-gray-800 font-medium">{selectedOperation.timestamp}</p>
+              </div>
+
+              {/* Yetkili Kişi */}
+              <div>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Yetkili Kişi</p>
+                <p className="text-base text-gray-800 font-medium">{selectedOperation.author_name}</p>
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3 pt-4 border-t border-gray-200">
+              <div className="flex gap-3 pt-6 border-t border-gray-200">
                 <button
-                  onClick={() => setSelectedOperation(null)}
-                  className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors font-medium"
+                  onClick={handleShareCard}
+                  className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center justify-center gap-2"
+                  title="WhatsApp'ta Paylaş"
                 >
-                  Kapat
+                  <span>📱</span>
+                  Paylaş
                 </button>
                 <button
                   onClick={handleDeleteOperation}
-                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                  className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                  title="Sil"
                 >
                   Sil
                 </button>
               </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedOperation(null)}
+                className="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+              >
+                Kapat
+              </button>
             </div>
           </div>
         </div>

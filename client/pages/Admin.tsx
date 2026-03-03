@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LogOut, Smartphone } from "lucide-react";
+import { LogOut, Smartphone, Users, FileText } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
@@ -94,11 +94,11 @@ export default function Admin() {
     {
       id: "musteri-takip",
       label: "Müşteri Takip",
-      icon: "📋",
       items: [
         {
           id: "customer-records",
           label: "Müşteri Takip",
+          icon: Users,
           component: CustomerRecords
         },
         {
@@ -110,7 +110,7 @@ export default function Admin() {
         {
           id: "operasyon-rapor",
           label: "Rapor",
-          icon: "📊",
+          icon: FileText,
           component: () => <DailyOperationLog loggedInUser={loggedInUser} />
         }
       ]
@@ -291,24 +291,31 @@ export default function Admin() {
         <div className="flex items-center justify-between h-20 px-4 max-w-7xl mx-auto w-full">
           {/* Menu Items */}
           <div className="flex items-center gap-2 flex-1">
-            {menuGroups[0]?.items.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveMenu(item.id)}
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all flex-1 sm:flex-none"
-                style={{
-                  backgroundColor: activeMenu === item.id ? '#eff6ff' : '#ffffff',
-                  color: activeMenu === item.id ? '#2563eb' : '#374151',
-                  borderBottom: activeMenu === item.id ? '3px solid #2563eb' : 'none',
-                }}
-                title={item.label}
-              >
-                <span className="text-xl">{item.icon}</span>
-                <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
-                  {item.label}
-                </span>
-              </button>
-            ))}
+            {menuGroups[0]?.items.map((item) => {
+              const IconComponent = typeof item.icon === 'function' ? item.icon : null;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveMenu(item.id)}
+                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all flex-1 sm:flex-none"
+                  style={{
+                    backgroundColor: activeMenu === item.id ? '#eff6ff' : '#ffffff',
+                    color: activeMenu === item.id ? '#2563eb' : '#374151',
+                    borderBottom: activeMenu === item.id ? '3px solid #2563eb' : 'none',
+                  }}
+                  title={item.label}
+                >
+                  {IconComponent ? (
+                    <IconComponent className="h-5 w-5" />
+                  ) : (
+                    <span className="text-xl">{item.icon}</span>
+                  )}
+                  <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* User Info and Logout */}
