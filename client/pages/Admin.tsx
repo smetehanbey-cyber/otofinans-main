@@ -326,7 +326,6 @@ export default function Admin() {
                           onClick={() => {
                             setActiveMenu('customer-records');
                             setMessageWindowToOpen(person);
-                            setShowPersonList(false);
                           }}
                           className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-blue-100 rounded transition-colors text-sm font-medium"
                         >
