@@ -215,7 +215,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
   });
 
   return (
-    <div className={`${isMobile ? "p-3" : "p-6"}`}>
+    <div className={`${isMobile ? "p-2" : "p-6"}`}>
       <style>{`
         @keyframes slideInAndFade {
           0% {
@@ -235,7 +235,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
 
       {/* Add Rapor Button and Filters */}
       {!showInputForm && (
-        <div className={`mb-6 flex flex-col gap-2 ${isMobile ? "" : "sm:flex-row sm:gap-3"}`}>
+        <div className={`${isMobile ? "mb-4" : "mb-6"} flex flex-col gap-2 ${isMobile ? "" : "sm:flex-row sm:gap-3"}`}>
           <button
             onClick={() => setShowInputForm(true)}
             className={`flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${isMobile ? "w-full sm:w-auto" : ""}`}
@@ -287,9 +287,9 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
 
       {/* Add Rapor Form */}
       {showInputForm && (
-        <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-          <h3 className="font-bold text-gray-800 mb-4">Rapor Ekle</h3>
-          <div className="space-y-4">
+        <div className={`${isMobile ? "mb-4" : "mb-6"} ${isMobile ? "p-3" : "p-4"} bg-gray-50 border border-gray-200 rounded-lg`}>
+          <h3 className={`font-bold text-gray-800 ${isMobile ? "mb-3 text-sm" : "mb-4"}`}>Rapor Ekle</h3>
+          <div className={isMobile ? "space-y-2" : "space-y-4"}>
             <input
               type="text"
               placeholder="Rapor açıklaması yazınız..."
@@ -303,10 +303,10 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
               autoFocus
             />
-            <div className="flex gap-2">
+            <div className={`flex ${isMobile ? "gap-2" : "gap-3"}`}>
               <button
                 onClick={handleAddOperation}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                className={`flex-1 ${isMobile ? "px-3 py-2 text-sm" : "px-4 py-2"} bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium`}
               >
                 + Rapor
               </button>
@@ -315,7 +315,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                   setShowInputForm(false);
                   setTaskDescription("");
                 }}
-                className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors font-medium"
+                className={`flex-1 ${isMobile ? "px-3 py-2 text-sm" : "px-4 py-2"} bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors font-medium`}
               >
                 İptal
               </button>
@@ -348,7 +348,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           </button>
         </div>
       ) : (
-        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} min-h-[600px] relative`}>
+        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} ${isMobile ? "min-h-[400px]" : "min-h-[600px]"} relative`}>
           <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
@@ -418,9 +418,9 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
             onClick={(e) => e.stopPropagation()}
           >
             {/* Card Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold">Rapor</h2>
+            <div className={`bg-gradient-to-r from-blue-600 to-blue-700 text-white ${isMobile ? "p-4" : "p-6"}`}>
+              <div className={`flex items-center justify-between ${isMobile ? "mb-2" : "mb-4"}`}>
+                <h2 className={`font-bold ${isMobile ? "text-xl" : "text-2xl"}`}>Rapor</h2>
                 <button
                   onClick={() => setSelectedOperation(null)}
                   className="p-1 hover:bg-blue-700 rounded-lg transition-colors"
@@ -433,7 +433,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
             </div>
 
             {/* Card Content */}
-            <div className="p-6 space-y-5">
+            <div className={`${isMobile ? "p-4 space-y-3" : "p-6 space-y-5"}`}>
               {/* Rapor Açıklaması */}
               <div className="border-l-4 border-blue-500 pl-4">
                 <div className="flex items-center justify-between mb-1">

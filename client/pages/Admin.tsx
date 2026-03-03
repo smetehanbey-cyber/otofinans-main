@@ -254,17 +254,9 @@ export default function Admin() {
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}>
       <Header />
 
-      {/* Mobile Landscape Warning */}
-      {isMobile && !isLandscape && (
-        <div className="bg-yellow-400 text-yellow-900 p-3 text-center text-sm font-semibold flex items-center justify-center gap-2">
-          <Smartphone className="h-5 w-5" />
-          Cihazı yatay çevirerek daha iyi görüntü elde edebilirsiniz
-        </div>
-      )}
-
       {/* Main Content - with padding for bottom nav */}
-      <div className="flex-1 overflow-auto flex flex-col pb-20">
-        <div className={`${isMobile ? "p-3 sm:p-4" : "p-6"} flex-1 flex flex-col mx-auto w-full max-w-7xl`}>
+      <div className={`flex-1 overflow-auto flex flex-col ${isMobile ? "pb-24" : "pb-20"}`}>
+        <div className={`${isMobile ? "p-2 sm:p-4" : "p-6"} flex-1 flex flex-col mx-auto w-full max-w-7xl`}>
           {/* Page Header - Only show for non-operation pages */}
           {activeMenu !== "operasyon-rapor" && (
             <div className="mb-4 sm:mb-6">
@@ -288,16 +280,18 @@ export default function Admin() {
 
       {/* Bottom Navigation Bar - Fixed */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg" style={{ backgroundColor: '#ffffff' }}>
-        <div className="flex items-center justify-between h-20 px-4 max-w-7xl mx-auto w-full">
+        <div className={`flex ${isMobile ? 'flex-col gap-2' : 'items-center justify-between'} ${isMobile ? 'p-2' : 'px-4'} max-w-7xl mx-auto w-full`}>
           {/* Menu Items */}
-          <div className="flex items-center gap-2 flex-1">
+          <div className={`flex ${isMobile ? 'justify-around' : 'items-center gap-2'} flex-1 w-full`}>
             {menuGroups[0]?.items.map((item) => {
               const Icon = item.icon as any;
               return (
                 <button
                   key={item.id}
                   onClick={() => setActiveMenu(item.id)}
-                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all flex-1 sm:flex-none"
+                  className={`flex items-center justify-center gap-1 rounded-lg transition-all ${
+                    isMobile ? 'flex-1 py-2 px-2' : 'px-4 py-2 flex-1 sm:flex-none'
+                  }`}
                   style={{
                     backgroundColor: activeMenu === item.id ? '#eff6ff' : '#ffffff',
                     color: activeMenu === item.id ? '#2563eb' : '#374151',
@@ -305,8 +299,8 @@ export default function Admin() {
                   }}
                   title={item.label}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
+                  <Icon className={isMobile ? "h-4 w-4" : "h-5 w-5"} />
+                  <span className={`font-medium ${isMobile ? 'hidden' : 'text-sm'}`}>
                     {item.label}
                   </span>
                 </button>
@@ -315,16 +309,16 @@ export default function Admin() {
           </div>
 
           {/* User Info and Logout */}
-          <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
-            <div className={`flex flex-col items-end ${isMobile ? 'hidden sm:flex' : 'flex'}`}>
-              <p className="text-sm font-medium text-gray-800">{loggedInUser?.name}</p>
-              <p className={`text-xs font-semibold ${loggedInUser?.is_admin ? 'text-green-700' : 'text-blue-700'}`}>
+          <div className={`flex items-center ${isMobile ? 'gap-2 w-full' : 'gap-3 border-l border-gray-200 pl-4'}`}>
+            <div className={`flex flex-col ${isMobile ? 'flex-1 items-start' : 'items-end'}`}>
+              <p className={`font-medium text-gray-800 ${isMobile ? 'text-xs' : 'text-sm'}`}>{loggedInUser?.name}</p>
+              <p className={`font-semibold ${loggedInUser?.is_admin ? 'text-green-700' : 'text-blue-700'} ${isMobile ? 'text-xs' : 'text-xs'}`}>
                 {loggedInUser?.is_admin ? '👑 Admin' : '👤 Yetkili'}
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 rounded-lg transition-all"
+              className={`rounded-lg transition-all ${isMobile ? 'p-1' : 'p-2'}`}
               style={{ color: '#374151', backgroundColor: '#ffffff' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#fef2f2';
@@ -336,7 +330,7 @@ export default function Admin() {
               }}
               title="Çıkış"
             >
-              <LogOut className="h-5 w-5" />
+              <LogOut className={isMobile ? "h-4 w-4" : "h-5 w-5"} />
             </button>
           </div>
         </div>
