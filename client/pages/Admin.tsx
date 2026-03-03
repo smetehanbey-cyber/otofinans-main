@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LogOut, Smartphone, Users, FileText } from "lucide-react";
+import { LogOut, Smartphone, Users, FileText, Archive } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
@@ -104,7 +104,7 @@ export default function Admin() {
         {
           id: "archived-records",
           label: "Arşive Bak",
-          icon: "🗂️",
+          icon: Archive,
           component: ArchivedRecords
         },
         {
@@ -292,7 +292,7 @@ export default function Admin() {
           {/* Menu Items */}
           <div className="flex items-center gap-2 flex-1">
             {menuGroups[0]?.items.map((item) => {
-              const IconComponent = typeof item.icon === 'function' ? item.icon : null;
+              const Icon = item.icon as any;
               return (
                 <button
                   key={item.id}
@@ -305,11 +305,7 @@ export default function Admin() {
                   }}
                   title={item.label}
                 >
-                  {IconComponent ? (
-                    <IconComponent className="h-5 w-5" />
-                  ) : (
-                    <span className="text-xl">{item.icon}</span>
-                  )}
+                  <Icon className="h-5 w-5" />
                   <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
                     {item.label}
                   </span>
