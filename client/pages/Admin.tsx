@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { LogOut, Smartphone, MessageCircle } from "lucide-react";
+import { LogOut, Smartphone } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
 import { supabase } from "@/lib/supabase";
-
-const AUTHORIZED_PERSONS = ["Beyza", "Duygu", "Erkut", "Gökhan"];
 
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,8 +14,6 @@ export default function Admin() {
   const [activeMenu, setActiveMenu] = useState("customer-records");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isLandscape, setIsLandscape] = useState(window.innerHeight < window.innerWidth);
-  const [messageWindowToOpen, setMessageWindowToOpen] = useState<string | null>(null);
-  const [showPersonList, setShowPersonList] = useState(false);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -119,9 +115,9 @@ export default function Admin() {
   const activeMenuItem = allMenuItems.find(item => item.id === activeMenu);
   let ActiveComponent = activeMenuItem?.component || CustomerRecords;
 
-  // Wrap CustomerRecords to pass loggedInUser and message window to open
+  // Wrap CustomerRecords to pass loggedInUser
   if (activeMenuItem?.id === "customer-records") {
-    ActiveComponent = () => <CustomerRecords loggedInUser={loggedInUser} messageWindowToOpen={messageWindowToOpen} setMessageWindowToOpen={setMessageWindowToOpen} />;
+    ActiveComponent = () => <CustomerRecords loggedInUser={loggedInUser} />;
   } else if (activeMenuItem?.id === "archived-records") {
     ActiveComponent = () => <ArchivedRecords />;
   }
@@ -283,61 +279,7 @@ export default function Admin() {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg" style={{ backgroundColor: '#ffffff' }}>
         <div className="flex items-center justify-between h-20 px-4 max-w-7xl mx-auto w-full">
           {/* Menu Items */}
-          <div className="flex items-center gap-2 flex-1 relative">
-            {/* Message Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setShowPersonList(!showPersonList)}
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all"
-                style={{
-                  backgroundColor: showPersonList ? '#eff6ff' : '#ffffff',
-                  color: showPersonList ? '#2563eb' : '#374151',
-                }}
-                onMouseEnter={(e) => {
-                  if (!showPersonList) {
-                    e.currentTarget.style.backgroundColor = '#eff6ff';
-                    e.currentTarget.style.color = '#2563eb';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!showPersonList) {
-                    e.currentTarget.style.backgroundColor = '#ffffff';
-                    e.currentTarget.style.color = '#374151';
-                  }
-                }}
-                title="Mesaj Gönder"
-              >
-                <MessageCircle className="h-5 w-5" />
-                <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
-                  Mesaj Gönder
-                </span>
-              </button>
-
-              {/* Dropdown Menu - Opens Upward */}
-              {showPersonList && (
-                <div className="absolute bottom-full mb-2 left-0 bg-white rounded-lg shadow-2xl p-3 z-50 min-w-max border border-gray-200">
-                  <p className="text-xs text-gray-600 mb-2 font-semibold px-2">Kişi Seçin:</p>
-                  <div className="space-y-1">
-                    {AUTHORIZED_PERSONS
-                      .filter(person => person !== loggedInUser?.name)
-                      .map((person) => (
-                        <button
-                          key={person}
-                          onClick={() => {
-                            setActiveMenu('customer-records');
-                            setMessageWindowToOpen(person);
-                          }}
-                          className="w-full text-left px-3 py-2 bg-gray-100 hover:bg-blue-100 rounded transition-colors text-sm font-medium"
-                        >
-                          {person}
-                        </button>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Menu Items */}
+          <div className="flex items-center gap-2 flex-1">
             {menuGroups[0]?.items.map((item) => (
               <button
                 key={item.id}

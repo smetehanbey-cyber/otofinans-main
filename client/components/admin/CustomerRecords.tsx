@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase, Customer } from "@/lib/supabase";
-import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText, Smartphone, MessageSquare, X, Send } from "lucide-react";
+import { Archive, Edit2, Plus, ChevronUp, ChevronDown, FileText, Smartphone } from "lucide-react";
 import DocumentUploadModal from "./DocumentUploadModal";
 
 interface LoggedInUser {
@@ -9,18 +9,6 @@ interface LoggedInUser {
   pin: string;
   is_admin: boolean;
 }
-
-interface ChatMessage {
-  id: string;
-  sender_name: string;
-  receiver_name: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
-}
-
-// Authorized persons list
-const AUTHORIZED_PERSONS = ["Beyza", "Duygu", "Erkut", "Gökhan", "Mete"];
 
 // Turkish-aware uppercase function
 const toTurkishUpperCase = (str: string): string => {
@@ -39,15 +27,7 @@ const toTurkishUpperCase = (str: string): string => {
     .join('');
 };
 
-export default function CustomerRecords({
-  loggedInUser,
-  messageWindowToOpen,
-  setMessageWindowToOpen
-}: {
-  loggedInUser: LoggedInUser | null;
-  messageWindowToOpen?: string | null;
-  setMessageWindowToOpen?: (value: string | null) => void;
-}) {
+export default function CustomerRecords({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -87,11 +67,6 @@ export default function CustomerRecords({
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
   const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string; isProcessChange?: boolean}>>([]);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [messageWindows, setMessageWindows] = useState<{[key: string]: {minimized: boolean; unread: number}} | undefined>(undefined);
-  const [unreadByUser, setUnreadByUser] = useState<{[key: string]: number}>({});
-  const [windowPositions, setWindowPositions] = useState<{[key: string]: {x: number; y: number}}>({});
-  const [draggedWindow, setDraggedWindow] = useState<{person: string; offsetX: number; offsetY: number} | null>(null);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -128,29 +103,6 @@ export default function CustomerRecords({
   useEffect(() => {
     fetchCustomers();
   }, [sortField, sortOrder]);
-
-  // Load chat messages from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedMessages = localStorage.getItem('chatMessages');
-      if (savedMessages) {
-        setChatMessages(JSON.parse(savedMessages));
-      }
-    } catch (error) {
-      console.error("Error loading chat messages from localStorage:", error);
-    }
-  }, []);
-
-  // Open message window from parent (Admin.tsx)
-  useEffect(() => {
-    if (messageWindowToOpen && setMessageWindowToOpen) {
-      setMessageWindows(prev => ({
-        ...prev,
-        [messageWindowToOpen]: { minimized: false, unread: 0 }
-      }));
-      setMessageWindowToOpen(null);
-    }
-  }, [messageWindowToOpen, setMessageWindowToOpen]);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -299,148 +251,9 @@ export default function CustomerRecords({
       Notification.requestPermission();
     }
 
-    // Setup chat message listener
-    let chatChannel: any;
-    const setupChat = () => {
-      try {
-        chatChannel = supabase
-          .channel('chat_messages')
-          .on('broadcast', { event: 'new_message' }, (message) => {
-            const msg = message.payload;
-
-            // Only add message if it's for current user (receiver) or from current user (sender)
-            if (msg.receiver_name === loggedInUser?.name || msg.sender_name === loggedInUser?.name) {
-              const newMsg: ChatMessage = {
-                id: msg.id,
-                sender_name: msg.sender_name,
-                receiver_name: msg.receiver_name,
-                message: msg.message,
-                timestamp: msg.timestamp,
-                read: msg.sender_name === loggedInUser?.name
-              };
-
-              setChatMessages(prev => {
-                const updated = [...prev, newMsg];
-                // Save to localStorage
-                localStorage.setItem('chatMessages', JSON.stringify(updated));
-                return updated;
-              });
-
-              // Play notification sound if received message
-              if (msg.receiver_name === loggedInUser?.name && msg.sender_name !== loggedInUser?.name) {
-                playMessageSound();
-                const senderName = msg.sender_name;
-
-                // Create or open message window
-                setMessageWindows(prev => ({
-                  ...prev,
-                  [senderName]: {
-                    minimized: true,
-                    unread: (prev?.[senderName]?.unread || 0) + 1
-                  }
-                }));
-
-                setUnreadByUser(prev => ({
-                  ...prev,
-                  [senderName]: (prev[senderName] || 0) + 1
-                }));
-              }
-            }
-          })
-          .subscribe();
-      } catch (error) {
-        console.error("Error setting up chat:", error);
-      }
-    };
-
-    setupChat();
-
-    return () => {
-      if (chatChannel) {
-        supabase.removeChannel(chatChannel);
-      }
-    };
   }, [loggedInUser?.name]);
 
-  // Handle window dragging
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (draggedWindow && messageWindows && messageWindows[draggedWindow.person]) {
-        const newX = e.clientX - draggedWindow.offsetX;
-        const newY = window.innerHeight - e.clientY - draggedWindow.offsetY;
-        setWindowPositions(prev => ({
-          ...prev,
-          [draggedWindow.person]: { x: Math.max(0, newX), y: Math.max(0, newY) }
-        }));
-      }
-    };
-
-    const handleMouseUp = () => {
-      setDraggedWindow(null);
-    };
-
-    if (draggedWindow) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [draggedWindow, messageWindows]);
-
   // Play notification sound
-  const playMessageSound = () => {
-    // Create a simple beep sound using Web Audio API
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    oscillator.frequency.value = 800;
-    oscillator.type = 'sine';
-
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
-  };
-
-  // Send chat message
-  const handleSendMessage = async (receiverName: string, message: string) => {
-    if (!message.trim()) return;
-
-    const messageData = {
-      id: `${Date.now()}-${Math.random()}`,
-      sender_name: loggedInUser?.name || "Bilinmeyen",
-      receiver_name: receiverName,
-      message: message,
-      timestamp: new Date().toLocaleString("tr-TR"),
-      read: true
-    };
-
-    setChatMessages(prev => {
-      const updated = [...prev, messageData];
-      // Save to localStorage
-      localStorage.setItem('chatMessages', JSON.stringify(updated));
-      return updated;
-    });
-
-    // Broadcast message to other users
-    await supabase
-      .channel('chat_messages')
-      .send({
-        type: 'broadcast',
-        event: 'new_message',
-        payload: messageData
-      })
-      .catch(err => console.log("Message sent:", err));
-  };
-
   // Add new customer
   const handleAddCustomer = async () => {
     if (!newCustomer.name || !newCustomer.tc) {
@@ -1807,133 +1620,6 @@ export default function CustomerRecords({
       </div>
 
 
-      {/* Message Windows - Minimizable Cards */}
-      {messageWindows && Object.entries(messageWindows).map(([personName, windowState], idx) => {
-        const pos = windowPositions[personName] || { x: 16, y: 80 + idx * 320 };
-        return (
-          <div
-            key={personName}
-            className={`fixed z-[9996] bg-white rounded-lg shadow-2xl flex flex-col animate-slideInAndFade ${
-              windowState.minimized ? 'h-14 cursor-move' : 'h-96'
-            } ${draggedWindow?.person !== personName ? 'transition-all' : ''}`}
-            style={{
-              width: '300px',
-              left: `${pos.x}px`,
-              bottom: `${pos.y}px`,
-              userSelect: 'none'
-            }}
-          >
-            {/* Header */}
-            <div
-              className={`bg-blue-600 text-white p-3 flex justify-between items-center ${windowState.minimized ? 'rounded-lg' : 'rounded-t-lg'} cursor-pointer`}
-              onClick={() => {
-                setMessageWindows(prev => ({
-                  ...prev,
-                  [personName]: {
-                    ...prev![personName],
-                    minimized: !prev![personName].minimized,
-                    unread: windowState.minimized ? 0 : prev![personName].unread
-                  }
-                }));
-                if (windowState.minimized) {
-                  setUnreadByUser(prev => ({
-                    ...prev,
-                    [personName]: 0
-                  }));
-                }
-              }}
-              onMouseDown={(e) => {
-                if (windowState.minimized) {
-                  const rect = e.currentTarget.parentElement!.getBoundingClientRect();
-                  const offsetX = e.clientX - rect.left;
-                  const offsetY = e.clientY - rect.top;
-                  setDraggedWindow({ person: personName, offsetX, offsetY });
-                }
-              }}
-            >
-              <h4 className={`font-semibold ${windowState.minimized && (unreadByUser[personName] || 0) > 0 ? 'animate-pulse' : ''}`}>
-                {personName}
-                {windowState.minimized && (unreadByUser[personName] || 0) > 0 && (
-                  <span className="ml-2 text-xs bg-red-500 px-2 py-0.5 rounded-full inline-block">
-                    {unreadByUser[personName]}
-                  </span>
-                )}
-              </h4>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setMessageWindows(prev => {
-                    if (!prev) return undefined;
-                    const newWindows = { ...prev };
-                    delete newWindows[personName];
-                    return Object.keys(newWindows).length === 0 ? undefined : newWindows;
-                  });
-                }}
-                className="hover:bg-blue-700 p-1 rounded transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            {/* Messages Area */}
-            {!windowState.minimized && (
-              <>
-                <div className="flex-1 overflow-y-auto p-3 bg-gray-50">
-                  {chatMessages
-                    .filter(msg =>
-                      (msg.sender_name === loggedInUser?.name && msg.receiver_name === personName) ||
-                      (msg.receiver_name === loggedInUser?.name && msg.sender_name === personName)
-                    )
-                    .map(msg => (
-                      <div
-                        key={msg.id}
-                        className={`mb-2 flex ${msg.sender_name === loggedInUser?.name ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div
-                          className={`max-w-xs px-2 py-1 rounded text-sm ${
-                            msg.sender_name === loggedInUser?.name
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-gray-300 text-gray-800'
-                          }`}
-                        >
-                          <p className="break-words">{msg.message}</p>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-
-                {/* Message Input */}
-                <div className="border-t p-2 flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Mesaj..."
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        const input = e.currentTarget as HTMLInputElement;
-                        handleSendMessage(personName, input.value);
-                        input.value = '';
-                      }
-                    }}
-                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  />
-                  <button
-                    onClick={() => {
-                      const input = document.querySelector(`input[placeholder="Mesaj..."]`) as HTMLInputElement;
-                      if (input) {
-                        handleSendMessage(personName, input.value);
-                        input.value = '';
-                      }
-                    }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white p-1 rounded transition-colors"
-                  >
-                    <Send className="h-4 w-4" />
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        );
-      })}
     </div>
   );
 }
