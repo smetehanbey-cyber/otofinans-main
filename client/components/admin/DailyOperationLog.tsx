@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Edit2, ChevronDown, X } from "lucide-react";
+import { Edit2, X } from "lucide-react";
 
 interface LoggedInUser {
   id: number;
@@ -20,7 +20,6 @@ interface DailyOperation {
 export default function DailyOperationLog({ loggedInUser }: { loggedInUser: LoggedInUser | null }) {
   const [operations, setOperations] = useState<DailyOperation[]>([]);
   const [taskDescription, setTaskDescription] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
   const [showInputForm, setShowInputForm] = useState(false);
   const [filterStartDate, setFilterStartDate] = useState("");
@@ -28,17 +27,14 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
   const [filterAuthor, setFilterAuthor] = useState("");
   const [allAuthors, setAllAuthors] = useState<string[]>([]);
   const [selectedOperation, setSelectedOperation] = useState<DailyOperation | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  // Get today's date in Turkish format
-  const getTodayFormatted = () => {
-    const date = new Date();
-    return date.toLocaleDateString("tr-TR", { 
-      weekday: "long", 
-      year: "numeric", 
-      month: "long", 
-      day: "numeric" 
-    });
-  };
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Load all operations from localStorage
   useEffect(() => {
@@ -69,7 +65,6 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
 
     loadAllOperations();
   }, []);
-
 
   // Add new operation
   const handleAddOperation = () => {
@@ -142,50 +137,64 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
     return true;
   });
 
-
   return (
-    <div className="p-6 space-y-6">
-      {/* Add Rapor Button and Filters - Grid Layout */}
+    <div className={`${isMobile ? "p-3" : "p-6"}`}>
+      <style>{`
+        @keyframes slideInAndFade {
+          0% {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.95);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .tooltip-animate {
+          animation: slideInAndFade 0.3s ease-out;
+        }
+      `}</style>
+
+      {/* Add Rapor Button and Filters */}
       {!showInputForm && (
-        <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
+        <div className={`mb-6 flex flex-col gap-2 ${isMobile ? "" : "sm:flex-row sm:gap-3"}`}>
           <button
             onClick={() => setShowInputForm(true)}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className={`flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${isMobile ? "w-full sm:w-auto" : ""}`}
           >
             <span>+</span>
-            Rapor Ekle
+            {isMobile ? "Rapor" : "Rapor Ekle"}
           </button>
 
-          {/* Filter Controls in Row */}
-          <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 flex-1">
+          {/* Filter Controls */}
+          <div className={`flex flex-col gap-2 ${isMobile ? "" : "sm:flex-row sm:gap-3 flex-1"}`}>
             {/* Start Date Filter */}
-            <div className="flex-1">
+            <div className={isMobile ? "" : "flex-1"}>
               <input
                 type="date"
                 value={filterStartDate}
                 onChange={(e) => setFilterStartDate(e.target.value)}
-                placeholder="Başlangıç Tarihi"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 ${isMobile ? "" : ""}`}
               />
             </div>
 
             {/* End Date Filter */}
-            <div className="flex-1">
+            <div className={isMobile ? "" : "flex-1"}>
               <input
                 type="date"
                 value={filterEndDate}
                 onChange={(e) => setFilterEndDate(e.target.value)}
-                placeholder="Bitiş Tarihi"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 ${isMobile ? "" : ""}`}
               />
             </div>
 
             {/* Author Filter */}
-            <div className="flex-1">
+            <div className={isMobile ? "" : "flex-1"}>
               <select
                 value={filterAuthor}
                 onChange={(e) => setFilterAuthor(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className={`w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 ${isMobile ? "" : ""}`}
               >
                 <option value="">Hepsi</option>
                 {allAuthors.map((author) => (
@@ -199,14 +208,14 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
         </div>
       )}
 
-      {/* Input Section - Collapsible Form */}
+      {/* Add Rapor Form */}
       {showInputForm && (
-        <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+        <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
           <h3 className="font-bold text-gray-800 mb-4">Rapor Ekle</h3>
           <div className="space-y-4">
-            {/* Task Description */}
             <input
               type="text"
+              placeholder="Rapor açıklaması yazınız..."
               value={taskDescription}
               onChange={(e) => setTaskDescription(e.target.value)}
               onKeyPress={(e) => {
@@ -214,16 +223,13 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                   handleAddOperation();
                 }
               }}
-              placeholder="Rapor açıklaması yazınız..."
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
               autoFocus
             />
-
-            {/* Button Row */}
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <button
                 onClick={handleAddOperation}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
               >
                 + Rapor
               </button>
@@ -232,7 +238,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                   setShowInputForm(false);
                   setTaskDescription("");
                 }}
-                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2.5 px-4 rounded-lg transition-colors"
+                className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors font-medium"
               >
                 İptal
               </button>
@@ -241,73 +247,84 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
         </div>
       )}
 
-      {/* Operations Table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        {filteredOperations.length === 0 ? (
-          <div className="p-8 text-center">
-            <p className="text-gray-500 text-lg">Rapor bulunamadı</p>
-            <p className="text-gray-400 text-sm mt-2">
-              {operations.length === 0
-                ? "Yukarıdan rapor ekleyerek başlayın"
-                : "Seçtiğiniz filtrelere uygun rapor yoktur"}
-            </p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse" style={{ tableLayout: "fixed" }}>
-              <thead>
-                <tr style={{ backgroundColor: "#0f367e", color: "#ffffff" }}>
-                  <th className="border border-gray-200 px-1 py-2 text-left font-semibold" style={{ width: "55%", fontSize: "15px" }}>
-                    Rapor
-                  </th>
-                  <th className="border border-gray-200 px-0 py-2 text-left font-semibold" style={{ width: "15%", fontSize: "15px" }}>
-                    Tarih - Saat
-                  </th>
-                  <th className="border border-gray-200 px-0 py-2 text-left font-semibold" style={{ width: "18%", fontSize: "15px" }}>
-                    Yetkili Kişi
-                  </th>
-                  <th className="border border-gray-200 px-0 py-2 text-center font-semibold" style={{ width: "12%", fontSize: "15px" }}>
-                    İşlem
-                  </th>
+      {/* Table */}
+      {loading ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600">Yükleniyor...</p>
+        </div>
+      ) : operations.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600">Rapor kaydı bulunamadı</p>
+        </div>
+      ) : filteredOperations.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-600 mb-6">Arama kriterlerine uygun rapor bulunamadı</p>
+          <button
+            onClick={() => {
+              setFilterStartDate("");
+              setFilterEndDate("");
+              setFilterAuthor("");
+            }}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            ← Geri (Filtreleri Temizle)
+          </button>
+        </div>
+      ) : (
+        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} min-h-[600px] relative`}>
+          <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
+            <thead>
+              <tr className="bg-gray-100 border-b-2 border-gray-300">
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '55%'}}>
+                  Rapor
+                </th>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '15%'}}>
+                  Tarih - Saat
+                </th>
+                <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '18%'}}>
+                  Yetkili Kişi
+                </th>
+                <th className={`px-2 py-2 text-center font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px', width: '12%'}}>
+                  İşlem
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredOperations.map((operation, idx) => (
+                <tr
+                  key={operation.id}
+                  className={`border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer ${
+                    idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  }`}
+                >
+                  <td className="px-2 py-2 text-sm text-gray-800 truncate" title={operation.task_description}>
+                    {operation.task_description}
+                  </td>
+                  <td className="px-2 py-2 text-sm text-gray-800">
+                    <div>{operation.date}</div>
+                    <div className="text-gray-600 text-xs">{operation.timestamp}</div>
+                  </td>
+                  <td className="px-2 py-2 text-sm text-gray-800 font-medium truncate" title={operation.author_name}>
+                    {operation.author_name}
+                  </td>
+                  <td className="px-2 py-2 text-center">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditOperation(operation);
+                      }}
+                      className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                      title="Düzenle"
+                    >
+                      <Edit2 className="h-4 w-4" />
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {filteredOperations.map((operation, idx) => (
-                  <tr
-                    key={operation.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer ${
-                      idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    }`}
-                  >
-                    <td className="border border-gray-200 px-1 py-1 text-sm text-gray-800 truncate" title={operation.task_description}>
-                      {operation.task_description}
-                    </td>
-                    <td className="border border-gray-200 px-0 py-1 text-xs text-gray-800" style={{ whiteSpace: "normal" }}>
-                      <div>{operation.date}</div>
-                      <div className="text-gray-600 text-xs">{operation.timestamp}</div>
-                    </td>
-                    <td className="border border-gray-200 px-0 py-1 text-xs text-gray-800 font-medium overflow-hidden text-ellipsis" style={{ whiteSpace: "normal" }}>
-                      {operation.author_name}
-                    </td>
-                    <td className="border border-gray-200 px-0 py-1 text-center flex items-center justify-center h-full">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditOperation(operation);
-                        }}
-                        className="inline-flex items-center justify-center p-0 text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                        title="Düzenle"
-                      >
-                        <Edit2 className="h-3 w-3" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Detail Modal */}
       {selectedOperation && (
@@ -360,13 +377,13 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
               <div className="flex gap-3 pt-4 border-t border-gray-200">
                 <button
                   onClick={() => setSelectedOperation(null)}
-                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2.5 px-4 rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors font-medium"
                 >
                   Kapat
                 </button>
                 <button
                   onClick={handleDeleteOperation}
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                 >
                   Sil
                 </button>
@@ -375,14 +392,6 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
           </div>
         </div>
       )}
-
-      {/* Footer Note */}
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
-        <p className="text-sm text-yellow-800">
-          💡 <strong>Not:</strong> Tüm raporlar bu cihazda kaydedilir.
-          Farklı cihazdan giriş yaptığınızda farklı raporları görebilirsiniz.
-        </p>
-      </div>
     </div>
   );
 }
