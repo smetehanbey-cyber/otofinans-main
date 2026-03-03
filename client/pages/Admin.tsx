@@ -1,9 +1,24 @@
 import { useState, useEffect } from "react";
-import { LogOut, Smartphone } from "lucide-react";
+import { LogOut, Smartphone, MessageCircle } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
 import { supabase } from "@/lib/supabase";
+
+// Messages Component
+function Messages() {
+  return (
+    <div className="p-6 space-y-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h2 className="text-lg font-semibold text-blue-900 mb-2">Mesajlar</h2>
+        <p className="text-blue-700">Tüm müşteri mesajlarını burada görebilirsiniz</p>
+      </div>
+      <div className="text-gray-500 text-center py-12">
+        <p>Mesaj sistemi kısa zamanda aktif olacaktır</p>
+      </div>
+    </div>
+  );
+}
 
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -116,7 +131,9 @@ export default function Admin() {
   let ActiveComponent = activeMenuItem?.component || CustomerRecords;
 
   // Wrap CustomerRecords to pass loggedInUser
-  if (activeMenuItem?.id === "customer-records") {
+  if (activeMenu === "messages") {
+    ActiveComponent = Messages;
+  } else if (activeMenuItem?.id === "customer-records") {
     ActiveComponent = () => <CustomerRecords loggedInUser={loggedInUser} />;
   } else if (activeMenuItem?.id === "archived-records") {
     ActiveComponent = () => <ArchivedRecords />;
@@ -259,10 +276,10 @@ export default function Admin() {
           {/* Page Header */}
           <div className="mb-4 sm:mb-6">
             <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
-              {activeMenuItem?.label}
+              {activeMenu === "messages" ? "Mesajlar" : activeMenuItem?.label}
             </h1>
             <p className="text-gray-600 mt-1 text-sm">
-              Müşteri talep ve kayıtlarını yönetin
+              {activeMenu === "messages" ? "Tüm müşteri mesajlarını yönetin" : "Müşteri talep ve kayıtlarını yönetin"}
             </p>
           </div>
 
@@ -280,6 +297,24 @@ export default function Admin() {
         <div className="flex items-center justify-between h-20 px-4 max-w-7xl mx-auto w-full">
           {/* Menu Items */}
           <div className="flex items-center gap-2 flex-1">
+            {/* Message Button */}
+            <button
+              onClick={() => setActiveMenu('messages')}
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all flex-1 sm:flex-none"
+              style={{
+                backgroundColor: activeMenu === 'messages' ? '#eff6ff' : '#ffffff',
+                color: activeMenu === 'messages' ? '#2563eb' : '#374151',
+                borderBottom: activeMenu === 'messages' ? '3px solid #2563eb' : 'none',
+              }}
+              title="Mesajlar"
+            >
+              <MessageCircle className="h-5 w-5" />
+              <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
+                Mesajlar
+              </span>
+            </button>
+
+            {/* Menu Items */}
             {menuGroups[0]?.items.map((item) => (
               <button
                 key={item.id}
