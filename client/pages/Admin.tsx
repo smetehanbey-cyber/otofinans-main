@@ -265,15 +265,17 @@ export default function Admin() {
       {/* Main Content - with padding for bottom nav */}
       <div className="flex-1 overflow-auto flex flex-col pb-20">
         <div className={`${isMobile ? "p-3 sm:p-4" : "p-6"} flex-1 flex flex-col mx-auto w-full max-w-7xl`}>
-          {/* Page Header */}
-          <div className="mb-4 sm:mb-6">
-            <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
-              {activeMenuItem?.label}
-            </h1>
-            <p className="text-gray-600 mt-1 text-sm">
-              Müşteri talep ve kayıtlarını yönetin
-            </p>
-          </div>
+          {/* Page Header - Only show for non-operation pages */}
+          {activeMenu !== "operasyon-rapor" && (
+            <div className="mb-4 sm:mb-6">
+              <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
+                {activeMenuItem?.label}
+              </h1>
+              <p className="text-gray-600 mt-1 text-sm">
+                Müşteri talep ve kayıtlarını yönetin
+              </p>
+            </div>
+          )}
 
           {/* Content */}
           <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
