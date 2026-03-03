@@ -266,16 +266,16 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
             <table className="w-full border-collapse" style={{ tableLayout: "fixed" }}>
               <thead>
                 <tr style={{ backgroundColor: "#0f367e", color: "#ffffff" }}>
-                  <th className="border border-gray-200 px-3 py-3 text-left font-semibold" style={{ width: "35%" }}>
+                  <th className="border border-gray-200 px-3 py-3 text-left font-semibold" style={{ width: "25%" }}>
                     Rapor
                   </th>
-                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold text-xs" style={{ width: "28%" }}>
+                  <th className="border border-gray-200 px-2 py-3 text-left font-semibold" style={{ width: "40%" }}>
                     Tarih - Saat
                   </th>
-                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold" style={{ width: "28%" }}>
+                  <th className="border border-gray-200 px-1 py-3 text-left font-semibold" style={{ width: "22%" }}>
                     Yetkili Kişi
                   </th>
-                  <th className="border border-gray-200 px-1 py-3 text-center font-semibold" style={{ width: "9%" }}>
+                  <th className="border border-gray-200 px-1 py-3 text-center font-semibold" style={{ width: "13%" }}>
                     İşlem
                   </th>
                 </tr>
@@ -291,7 +291,7 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                     <td className="border border-gray-200 px-3 py-3 text-sm text-gray-800 truncate" title={operation.task_description}>
                       {operation.task_description}
                     </td>
-                    <td className="border border-gray-200 px-1 py-3 text-xs text-gray-800" style={{ whiteSpace: "normal" }}>
+                    <td className="border border-gray-200 px-2 py-3 text-sm text-gray-800" style={{ whiteSpace: "normal" }}>
                       <div>{operation.date}</div>
                       <div className="text-gray-600">{operation.timestamp}</div>
                     </td>
