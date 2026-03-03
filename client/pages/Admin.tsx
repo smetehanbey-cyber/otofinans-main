@@ -3,6 +3,7 @@ import { LogOut, Smartphone } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
+import DailyOperationLog from "@/components/admin/DailyOperationLog";
 import { supabase } from "@/lib/supabase";
 
 export default function Admin() {
@@ -11,7 +12,7 @@ export default function Admin() {
   const [pin, setPin] = useState("");
   const [loginError, setLoginError] = useState("");
   const [shakeError, setShakeError] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("customer-records");
+  const [activeMenu, setActiveMenu] = useState("customer-records"); // Default to customer records within Müşteri Takip group
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isLandscape, setIsLandscape] = useState(window.innerHeight < window.innerWidth);
 
@@ -91,13 +92,13 @@ export default function Admin() {
 
   const menuGroups = [
     {
-      id: "gelen-talep",
-      label: "Gelen Talep",
+      id: "musteri-takip",
+      label: "Müşteri Takip",
       icon: "📋",
       items: [
         {
           id: "customer-records",
-          label: "Gelen Talep",
+          label: "Müşteri Takip",
           component: CustomerRecords
         },
         {
@@ -105,6 +106,18 @@ export default function Admin() {
           label: "Arşive Bak",
           icon: "🗂️",
           component: ArchivedRecords
+        }
+      ]
+    },
+    {
+      id: "operasyon",
+      label: "Operasyon",
+      icon: "📊",
+      items: [
+        {
+          id: "operasyon-rapor",
+          label: "Operasyon Raporu",
+          component: () => <DailyOperationLog loggedInUser={loggedInUser} />
         }
       ]
     }
@@ -115,11 +128,13 @@ export default function Admin() {
   const activeMenuItem = allMenuItems.find(item => item.id === activeMenu);
   let ActiveComponent = activeMenuItem?.component || CustomerRecords;
 
-  // Wrap CustomerRecords to pass loggedInUser
+  // Wrap components to pass loggedInUser where needed
   if (activeMenuItem?.id === "customer-records") {
     ActiveComponent = () => <CustomerRecords loggedInUser={loggedInUser} />;
   } else if (activeMenuItem?.id === "archived-records") {
     ActiveComponent = () => <ArchivedRecords />;
+  } else if (activeMenuItem?.id === "operasyon-rapor") {
+    ActiveComponent = () => <DailyOperationLog loggedInUser={loggedInUser} />;
   }
 
   // Login Screen
