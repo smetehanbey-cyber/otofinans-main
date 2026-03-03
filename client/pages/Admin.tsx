@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X, LogOut, ChevronRight, ChevronDown, Smartphone } from "lucide-react";
+import { LogOut, Smartphone } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
@@ -12,9 +11,7 @@ export default function Admin() {
   const [pin, setPin] = useState("");
   const [loginError, setLoginError] = useState("");
   const [shakeError, setShakeError] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("customer-records");
-  const [expandedGroup, setExpandedGroup] = useState("gelen-talep");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isLandscape, setIsLandscape] = useState(window.innerHeight < window.innerWidth);
 
@@ -29,12 +26,6 @@ export default function Admin() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Auto-collapse sidebar on mobile
-  useEffect(() => {
-    if (isMobile) {
-      setSidebarOpen(false);
-    }
-  }, [isMobile]);
 
   // Handle Login
   const handleLogin = async (e: React.FormEvent) => {
@@ -262,115 +253,64 @@ export default function Admin() {
         </div>
       )}
 
-      <div className={`flex flex-1 overflow-hidden ${isMobile ? "h-auto" : "h-[calc(100vh-200px)]"}`}>
-        {/* Sidebar */}
-        <div
-          className={`bg-white shadow-lg transition-all duration-300 ${
-            sidebarOpen ? (isMobile ? "w-full fixed inset-0 top-[var(--header-height)]" : "w-64") : (isMobile ? "w-0" : "w-20")
-          } flex flex-col border-r border-gray-200 ${isMobile && sidebarOpen ? "z-40" : ""}`}
-          style={{ backgroundColor: '#ffffff', colorScheme: 'light' }}
-        >
-          {/* Sidebar Header */}
-          <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-            {sidebarOpen && (
-              <h3 className="text-lg font-bold text-gray-800">Admin Panel</h3>
-            )}
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-1 rounded-lg transition-colors"
-              style={{
-                backgroundColor: 'transparent',
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-            >
-              {sidebarOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
+      {/* Main Content - with padding for bottom nav */}
+      <div className="flex-1 overflow-auto flex flex-col pb-20">
+        <div className={`${isMobile ? "p-3 sm:p-4" : "p-6"} flex-1 flex flex-col mx-auto w-full max-w-7xl`}>
+          {/* Page Header */}
+          <div className="mb-4 sm:mb-6">
+            <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
+              {activeMenuItem?.label}
+            </h1>
+            <p className="text-gray-600 mt-1 text-sm">
+              Müşteri talep ve kayıtlarını yönetin
+            </p>
           </div>
 
-          {/* Spacer - takes remaining space */}
-          <div className="flex-1"></div>
+          {/* Content */}
+          <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+            <div className="flex-1 overflow-auto">
+              <ActiveComponent />
+            </div>
+          </div>
+        </div>
+      </div>
 
-          {/* Menu Items - Fixed to Bottom */}
-          <nav className="p-4 space-y-2 border-t border-gray-200">
-            {menuGroups.map((group) => {
-              const isExpanded = expandedGroup === group.id;
-              const hasActiveItem = group.items.some(item => item.id === activeMenu);
+      {/* Bottom Navigation Bar - Fixed */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg" style={{ backgroundColor: '#ffffff' }}>
+        <div className="flex items-center justify-between h-20 px-4 max-w-7xl mx-auto w-full">
+          {/* Menu Items */}
+          <div className="flex items-center gap-2 flex-1">
+            {menuGroups[0]?.items.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveMenu(item.id)}
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all flex-1 sm:flex-none"
+                style={{
+                  backgroundColor: activeMenu === item.id ? '#eff6ff' : '#ffffff',
+                  color: activeMenu === item.id ? '#2563eb' : '#374151',
+                  borderBottom: activeMenu === item.id ? '3px solid #2563eb' : 'none',
+                }}
+                title={item.label}
+              >
+                <span className="text-xl">{item.icon}</span>
+                <span className={`font-medium text-sm ${isMobile ? 'hidden sm:inline' : 'inline'}`}>
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </div>
 
-              return (
-                <div key={group.id}>
-                  {/* Group Header */}
-                  <button
-                    onClick={() => setExpandedGroup(isExpanded ? "" : group.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative`}
-                    style={{
-                      backgroundColor: hasActiveItem ? '#eff6ff' : '#ffffff',
-                      color: hasActiveItem ? '#2563eb' : '#374151',
-                      borderLeft: hasActiveItem ? '4px solid #2563eb' : 'none',
-                    }}
-                  >
-                    <span className="text-xl">{group.icon}</span>
-                    {sidebarOpen && (
-                      <>
-                        <span className="flex-1 text-left font-medium">
-                          {group.label}
-                        </span>
-                        {isExpanded ? (
-                          <ChevronDown className="h-4 w-4" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4" />
-                        )}
-                      </>
-                    )}
-                  </button>
-
-                  {/* Sub Items */}
-                  {isExpanded && sidebarOpen && (
-                    <div className="ml-6 mt-1 space-y-1 border-l-2 border-gray-200 pl-4">
-                      {group.items.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            setActiveMenu(item.id);
-                            if (isMobile) setSidebarOpen(false);
-                          }}
-                          className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-all`}
-                          style={{
-                            backgroundColor: activeMenu === item.id ? '#dbeafe' : '#ffffff',
-                            color: activeMenu === item.id ? '#1d4ed8' : '#4b5563',
-                            fontWeight: activeMenu === item.id ? '500' : '400',
-                          }}
-                        >
-                          {item.icon && <span>{item.icon}</span>}
-                          <span className="text-left">{item.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </nav>
-
-          {/* Sidebar Footer - User Info and Logout */}
-          <div className="p-4 border-t border-gray-200">
-            <div className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 mb-3">
-              {sidebarOpen && (
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-800">{loggedInUser?.name}</p>
-                  <p className={`text-xs font-semibold mt-1 ${loggedInUser?.is_admin ? 'text-green-700' : 'text-blue-700'}`}>
-                    {loggedInUser?.is_admin ? '👑 Admin' : '👤 Yetkili'}
-                  </p>
-                </div>
-              )}
+          {/* User Info and Logout */}
+          <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
+            <div className={`flex flex-col items-end ${isMobile ? 'hidden sm:flex' : 'flex'}`}>
+              <p className="text-sm font-medium text-gray-800">{loggedInUser?.name}</p>
+              <p className={`text-xs font-semibold ${loggedInUser?.is_admin ? 'text-green-700' : 'text-blue-700'}`}>
+                {loggedInUser?.is_admin ? '👑 Admin' : '👤 Yetkili'}
+              </p>
             </div>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all"
+              className="p-2 rounded-lg transition-all"
               style={{ color: '#374151', backgroundColor: '#ffffff' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#fef2f2';
@@ -380,32 +320,10 @@ export default function Admin() {
                 e.currentTarget.style.backgroundColor = '#ffffff';
                 e.currentTarget.style.color = '#374151';
               }}
+              title="Çıkış"
             >
               <LogOut className="h-5 w-5" />
-              {sidebarOpen && <span className="font-medium">Çıkış</span>}
             </button>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className={`flex-1 overflow-auto flex flex-col ${isMobile && sidebarOpen ? "hidden" : ""}`}>
-          <div className={`${isMobile ? "p-3 sm:p-4" : "p-6"} flex-1 flex flex-col mx-auto w-full max-w-7xl`}>
-            {/* Page Header */}
-            <div className="mb-4 sm:mb-6">
-              <h1 className={`font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
-                {activeMenuItem?.label}
-              </h1>
-              <p className="text-gray-600 mt-1 text-sm">
-                Müşteri talep ve kayıtlarını yönetin
-              </p>
-            </div>
-
-            {/* Content */}
-            <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
-              <div className="flex-1 overflow-auto">
-                <ActiveComponent />
-              </div>
-            </div>
           </div>
         </div>
       </div>
