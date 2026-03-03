@@ -947,8 +947,121 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
           </button>
         </div>
       ) : (
-        <div className={`${isMobile ? "overflow-x-auto" : "overflow-x-auto"} min-h-[600px] relative`}>
-          <table className={`w-full border-collapse ${isMobile ? "text-xs" : ""}`}>
+        <div className={`min-h-[600px] relative`}>
+          {isMobile ? (
+            // Mobile Card View
+            <div className="grid grid-cols-1 gap-3">
+              {filteredCustomers.map((customer) => (
+                <div
+                  key={customer.id}
+                  onClick={() => {
+                    setSelectedCustomerIds(prev =>
+                      prev.includes(customer.id)
+                        ? prev.filter(id => id !== customer.id)
+                        : [...prev, customer.id]
+                    );
+                  }}
+                  className={`border border-gray-200 rounded-lg p-4 cursor-pointer transition-all ${
+                    selectedCustomerIds.includes(customer.id)
+                      ? "bg-yellow-100 border-yellow-300 shadow-md"
+                      : customer.process === "Kullandırıldı"
+                      ? "bg-green-100 border-green-300 hover:shadow-md"
+                      : "bg-white hover:shadow-md"
+                  }`}
+                >
+                  {/* Card Header - Name */}
+                  <div className="mb-3">
+                    <h3 className="font-semibold text-sm text-gray-800">
+                      {toTurkishUpperCase(customer.name)}
+                    </h3>
+                  </div>
+
+                  {/* Card Body - Info Grid */}
+                  <div className="space-y-2 mb-4">
+                    {/* TC */}
+                    <div className="flex justify-between items-start text-xs">
+                      <span className="text-gray-600 font-medium">TC:</span>
+                      <span className="text-gray-800 font-mono">{customer.tc.slice(-9)}</span>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="flex justify-between items-start text-xs">
+                      <span className="text-gray-600 font-medium">Telefon:</span>
+                      <a
+                        href={`https://wa.me/${customer.phone.replace(/[^0-9]/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-800 font-mono hover:text-blue-600"
+                      >
+                        <span>0</span> {customer.phone.slice(3, 6)} {customer.phone.slice(6, 9)} {customer.phone.slice(9, 11)}
+                      </a>
+                    </div>
+
+                    {/* Process Status */}
+                    <div className="flex justify-between items-start text-xs">
+                      <span className="text-gray-600 font-medium">Süreci:</span>
+                      <span className={`px-2 py-1 rounded text-white text-xs font-medium ${
+                        customer.process === "Beklemede" ? "bg-blue-500" :
+                        customer.process === "Aracını Buluyor" ? "bg-orange-500" :
+                        customer.process === "Onaylandı" ? "bg-green-500" :
+                        customer.process === "Kredi Onayda" ? "bg-purple-500" :
+                        customer.process === "Kullandırıldı" ? "bg-green-600" :
+                        customer.process === "Red/İade" ? "bg-red-500" :
+                        "bg-gray-500"
+                      }`}>
+                        {customer.process}
+                      </span>
+                    </div>
+
+                    {/* Date */}
+                    <div className="flex justify-between items-start text-xs">
+                      <span className="text-gray-600 font-medium">Tarih:</span>
+                      <span className="text-gray-700">{customer.created_at.split('T')[0]}</span>
+                    </div>
+
+                    {/* Authorized Person */}
+                    <div className="flex justify-between items-start text-xs">
+                      <span className="text-gray-600 font-medium">Yetkili:</span>
+                      <span className="text-gray-800">{customer.added_by || "-"}</span>
+                    </div>
+                  </div>
+
+                  {/* Card Actions */}
+                  <div className="flex gap-2 border-t border-gray-200 pt-3">
+                    <button
+                      onClick={() => {
+                        setEditingId(customer.id);
+                        setEditingData(customer);
+                      }}
+                      className="flex-1 flex items-center justify-center gap-1 p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors text-xs font-medium"
+                      title="Düzenle"
+                    >
+                      <Edit2 className="h-3 w-3" />
+                      Düzenle
+                    </button>
+                    <button
+                      onClick={() => setSelectedCustomerForDocs(customer.id)}
+                      className="flex-1 flex items-center justify-center gap-1 p-2 text-purple-600 hover:bg-purple-50 rounded transition-colors text-xs font-medium"
+                      title="Dosyalar"
+                    >
+                      <FileText className="h-3 w-3" />
+                      Dosya
+                    </button>
+                    <button
+                      onClick={() => setArchiveConfirmId(customer.id)}
+                      className="flex-1 flex items-center justify-center gap-1 p-2 text-orange-600 hover:bg-orange-50 rounded transition-colors text-xs font-medium"
+                      title="Arşive Taşı"
+                    >
+                      <Archive className="h-3 w-3" />
+                      Arşiv
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            // Desktop Table View
+            <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 border-b-2 border-gray-300">
                 <th className={`px-2 py-2 text-left font-semibold text-gray-700 whitespace-nowrap`} style={{fontSize: isMobile ? '12px' : '15px'}}>
@@ -1541,7 +1654,8 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          )}
         </div>
       )}
 
