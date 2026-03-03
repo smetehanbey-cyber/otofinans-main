@@ -67,6 +67,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
   const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string; isProcessChange?: boolean}>>([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -98,6 +99,22 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   useEffect(() => {
     fetchCustomers();
   }, []);
+
+  // Load and save selected customer from localStorage
+  useEffect(() => {
+    const savedSelectedId = localStorage.getItem('selectedCustomerId');
+    if (savedSelectedId) {
+      setSelectedCustomerId(parseInt(savedSelectedId, 10));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedCustomerId !== null) {
+      localStorage.setItem('selectedCustomerId', selectedCustomerId.toString());
+    } else {
+      localStorage.removeItem('selectedCustomerId');
+    }
+  }, [selectedCustomerId]);
 
   // Fetch when sort changes
   useEffect(() => {
@@ -1122,8 +1139,11 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                 <tr
                   key={customer.id}
                   id={`customer-row-${customer.id}`}
-                  className={`border-b border-gray-200 transition-colors ${
-                    customer.process === "Kullandırıldı"
+                  onClick={() => setSelectedCustomerId(selectedCustomerId === customer.id ? null : customer.id)}
+                  className={`border-b border-gray-200 transition-colors cursor-pointer ${
+                    selectedCustomerId === customer.id
+                      ? "bg-yellow-100 hover:bg-yellow-200"
+                      : customer.process === "Kullandırıldı"
                       ? "bg-green-100 hover:bg-green-200"
                       : "hover:bg-gray-50"
                   } ${animatingIds.has(customer.id) ? "row-animate" : ""}`}
