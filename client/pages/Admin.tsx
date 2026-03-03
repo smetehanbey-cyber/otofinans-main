@@ -313,9 +313,9 @@ export default function Admin() {
                 </span>
               </button>
 
-              {/* Dropdown Menu */}
+              {/* Dropdown Menu - Opens Upward */}
               {showPersonList && (
-                <div className="absolute top-full mt-2 left-0 bg-white rounded-lg shadow-2xl p-3 z-50 min-w-max border border-gray-200">
+                <div className="absolute bottom-full mb-2 left-0 bg-white rounded-lg shadow-2xl p-3 z-50 min-w-max border border-gray-200">
                   <p className="text-xs text-gray-600 mb-2 font-semibold px-2">Kişi Seçin:</p>
                   <div className="space-y-1">
                     {AUTHORIZED_PERSONS
