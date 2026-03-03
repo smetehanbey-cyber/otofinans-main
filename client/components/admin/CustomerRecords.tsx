@@ -67,7 +67,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [dateFilterStart, setDateFilterStart] = useState("");
   const [dateFilterEnd, setDateFilterEnd] = useState("");
   const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string; isProcessChange?: boolean}>>([]);
-  const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState<number[]>([]);
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -100,21 +100,25 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
     fetchCustomers();
   }, []);
 
-  // Load and save selected customer from localStorage
+  // Load and save selected customers from localStorage
   useEffect(() => {
-    const savedSelectedId = localStorage.getItem('selectedCustomerId');
-    if (savedSelectedId) {
-      setSelectedCustomerId(parseInt(savedSelectedId, 10));
+    const savedSelectedIds = localStorage.getItem('selectedCustomerIds');
+    if (savedSelectedIds) {
+      try {
+        setSelectedCustomerIds(JSON.parse(savedSelectedIds));
+      } catch (error) {
+        setSelectedCustomerIds([]);
+      }
     }
   }, []);
 
   useEffect(() => {
-    if (selectedCustomerId !== null) {
-      localStorage.setItem('selectedCustomerId', selectedCustomerId.toString());
+    if (selectedCustomerIds.length > 0) {
+      localStorage.setItem('selectedCustomerIds', JSON.stringify(selectedCustomerIds));
     } else {
-      localStorage.removeItem('selectedCustomerId');
+      localStorage.removeItem('selectedCustomerIds');
     }
-  }, [selectedCustomerId]);
+  }, [selectedCustomerIds]);
 
   // Fetch when sort changes
   useEffect(() => {
@@ -1139,9 +1143,15 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                 <tr
                   key={customer.id}
                   id={`customer-row-${customer.id}`}
-                  onClick={() => setSelectedCustomerId(selectedCustomerId === customer.id ? null : customer.id)}
+                  onClick={() => {
+                    setSelectedCustomerIds(prev =>
+                      prev.includes(customer.id)
+                        ? prev.filter(id => id !== customer.id)
+                        : [...prev, customer.id]
+                    );
+                  }}
                   className={`border-b border-gray-200 transition-colors cursor-pointer ${
-                    selectedCustomerId === customer.id
+                    selectedCustomerIds.includes(customer.id)
                       ? "bg-yellow-100 hover:bg-yellow-200"
                       : customer.process === "Kullandırıldı"
                       ? "bg-green-100 hover:bg-green-200"
