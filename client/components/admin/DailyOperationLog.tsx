@@ -145,35 +145,66 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="text-2xl font-bold text-gray-800">Rapor</h2>
+      {/* Add Rapor Button and Filters - Grid Layout */}
+      {!showInputForm && (
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
           <button
-            onClick={() => setShowInputForm(!showInputForm)}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
-            title="Rapor Ekle"
+            onClick={() => setShowInputForm(true)}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <span>+</span>
-            <ChevronDown
-              className="h-5 w-5 transition-transform"
-              style={{ transform: showInputForm ? 'rotate(180deg)' : 'rotate(0deg)' }}
-            />
+            Rapor Ekle
           </button>
-        </div>
-        <p className="text-gray-600 mt-2">
-          Toplam Rapor: <span className="font-bold text-blue-600">{filteredOperations.length}</span>
-        </p>
-      </div>
 
-      {/* Input Section - Collapsible */}
+          {/* Filter Controls in Row */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 flex-1">
+            {/* Start Date Filter */}
+            <div className="flex-1">
+              <input
+                type="date"
+                value={filterStartDate}
+                onChange={(e) => setFilterStartDate(e.target.value)}
+                placeholder="Başlangıç Tarihi"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              />
+            </div>
+
+            {/* End Date Filter */}
+            <div className="flex-1">
+              <input
+                type="date"
+                value={filterEndDate}
+                onChange={(e) => setFilterEndDate(e.target.value)}
+                placeholder="Bitiş Tarihi"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              />
+            </div>
+
+            {/* Author Filter */}
+            <div className="flex-1">
+              <select
+                value={filterAuthor}
+                onChange={(e) => setFilterAuthor(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              >
+                <option value="">Hepsi</option>
+                {allAuthors.map((author) => (
+                  <option key={author} value={author}>
+                    {author}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Input Section - Collapsible Form */}
       {showInputForm && (
-        <div className="bg-white rounded-lg p-6 border border-gray-200 space-y-4 mb-6">
-          {/* Task Description */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Rapor Açıklaması
-            </label>
+        <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <h3 className="font-bold text-gray-800 mb-4">Rapor Ekle</h3>
+          <div className="space-y-4">
+            {/* Task Description */}
             <input
               type="text"
               value={taskDescription}
@@ -183,72 +214,32 @@ export default function DailyOperationLog({ loggedInUser }: { loggedInUser: Logg
                   handleAddOperation();
                 }
               }}
-              placeholder="Bugün yaptığınız işi yazınız..."
+              placeholder="Rapor açıklaması yazınız..."
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none"
               autoFocus
             />
-          </div>
 
-          {/* Add Button */}
-          <button
-            onClick={handleAddOperation}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
-          >
-            Rapor Ekle
-          </button>
+            {/* Button Row */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleAddOperation}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+              >
+                + Rapor
+              </button>
+              <button
+                onClick={() => {
+                  setShowInputForm(false);
+                  setTaskDescription("");
+                }}
+                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2.5 px-4 rounded-lg transition-colors"
+              >
+                İptal
+              </button>
+            </div>
+          </div>
         </div>
       )}
-
-      {/* Filter Section */}
-      <div className="bg-white rounded-lg p-4 border border-gray-200 space-y-3 mb-6">
-        <h3 className="font-semibold text-gray-800 text-sm">Filtreleme</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {/* Start Date Filter */}
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Başlangıç Tarihi
-            </label>
-            <input
-              type="date"
-              value={filterStartDate}
-              onChange={(e) => setFilterStartDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
-            />
-          </div>
-
-          {/* End Date Filter */}
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Bitiş Tarihi
-            </label>
-            <input
-              type="date"
-              value={filterEndDate}
-              onChange={(e) => setFilterEndDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
-            />
-          </div>
-
-          {/* Author Filter */}
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Yetkili Kişi
-            </label>
-            <select
-              value={filterAuthor}
-              onChange={(e) => setFilterAuthor(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
-            >
-              <option value="">Hepsi</option>
-              {allAuthors.map((author) => (
-                <option key={author} value={author}>
-                  {author}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
 
       {/* Operations Table */}
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
