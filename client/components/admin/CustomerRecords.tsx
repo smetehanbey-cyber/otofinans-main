@@ -1589,7 +1589,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         style={{fontSize: isMobile ? '12px' : '14px'}}
                       >
                         <option value="">Seçiniz...</option>
-                        {AUTHORIZED_PERSONS.map((person) => (
+                        {uniqueAuthorizedPersons.map((person) => (
                           <option key={person} value={person}>{person}</option>
                         ))}
                       </select>
