@@ -396,12 +396,10 @@
   @media (max-width: 768px) {
     section {
       margin: 0;
-      padding: 1rem;
     }
 
     article {
       margin: 0;
-      padding: 1rem;
     }
 
     main {

@@ -33,11 +33,11 @@ export default function Header() {
                   <Link to="/" className="text-gray-700 hover:text-primary font-medium">
                     Ana Sayfa
                   </Link>
-                  <Link to="/hakkimizda" className="text-gray-700 hover:text-primary font-medium">
-                    Hakkımızda
-                  </Link>
                   <Link to="/finansmanlar" className="text-gray-700 hover:text-primary font-medium">
                     Finansmanlar
+                  </Link>
+                  <Link to="/hakkimizda" className="text-gray-700 hover:text-primary font-medium">
+                    Hakkımızda
                   </Link>
                   <Link to="/kampanyalar" className="text-gray-700 hover:text-primary font-medium">
                     Kampanyalar
@@ -130,11 +130,11 @@ export default function Header() {
             <Link to="/" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               Ana Sayfa
             </Link>
-            <Link to="/hakkimizda" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
-              Hakkımızda
-            </Link>
             <Link to="/finansmanlar" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               Finansmanlar
+            </Link>
+            <Link to="/hakkimizda" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
+              Hakkımızda
             </Link>
             <Link to="/kampanyalar" className="block px-4 py-2 text-sm text-foreground hover:bg-gray-100 font-medium" onClick={() => setIsOpen(false)}>
               Kampanyalar

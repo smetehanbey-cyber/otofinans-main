@@ -10,6 +10,7 @@ import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 
 export default function Index() {
   const navigate = useNavigate();
+  const [isSitemapOpen, setIsSitemapOpen] = useState(false);
   const handleCreditCalculatorClick = () => {
     navigate("/");
     setTimeout(() => {
@@ -27,7 +28,7 @@ export default function Index() {
       <main>
         {/* Hero Section */}
         <section
-          className="text-white py-6 sm:py-8 lg:py-10"
+          className="text-white pt-6 pb-12 sm:pt-8 sm:pb-16 lg:py-10"
           style={{
             background:
               "linear-gradient(to bottom right, #0f367e, #1a4d9e, #2563eb)",
@@ -70,10 +71,10 @@ export default function Index() {
                 </ul>
 
                 <a
-                  href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                  href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base -mt-2 sm:-mt-3"
+                  className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base mb-6 sm:mb-0"
                 >
                   OtoFinanslı Ol →
                 </a>
@@ -85,7 +86,7 @@ export default function Index() {
 
                 {/* Contact Info */}
                 <a
-                  href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                  href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors block"
@@ -94,7 +95,7 @@ export default function Index() {
                     Bizimle İletişime Geç
                   </p>
                   <p className="text-lg sm:text-xl font-bold text-white">
-                    +90 532 639 8440
+                    +90 532 409 8440
                   </p>
                   <p className="text-blue-100 text-sm mt-2">
                     Limitini Etkilemeden Hemen Bilgi Al
@@ -235,17 +236,48 @@ export default function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-gray-400 py-12">
+      <footer className="bg-slate-900 text-gray-400 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          {/* Mobile Footer Header (Logo Left, Toggle Right) */}
+          <div className="flex sm:hidden justify-between items-center mb-6">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
+              alt="Oto Finans Global Logo"
+              className="w-auto h-10"
+            />
+            <button
+              onClick={() => setIsSitemapOpen(!isSitemapOpen)}
+              className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-white text-sm font-semibold active:bg-white/10 transition-colors"
+            >
+              Site Haritası
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`transition-transform duration-300 ${isSitemapOpen ? 'rotate-180' : ''}`}
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          {/* Sitemap Content - Hidden on mobile if not toggled */}
+          <div className={`${isSitemapOpen ? 'block' : 'hidden'} sm:grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 mt-4 sm:mt-0`}>
             {/* Yetkili Bayi and Admin Links */}
             <div>
-              <h3 className="text-white font-semibold mb-4">Erişim</h3>
-              <ul className="space-y-2 text-sm">
+              <h3 className="text-white font-semibold mb-4">
+                Erişim
+              </h3>
+              <ul className="space-y-3 sm:space-y-2 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="hover:text-white transition-colors text-blue-300 font-semibold"
+                    className="hover:text-white transition-colors text-blue-300 font-semibold py-1 block"
                   >
                     Yetkili Bayi Girişi
                   </a>
@@ -253,7 +285,7 @@ export default function Index() {
                 <li>
                   <button
                     onClick={() => navigate("/admin")}
-                    className="hover:text-white transition-colors text-blue-300 font-semibold bg-none border-none p-0 cursor-pointer text-left"
+                    className="hover:text-white transition-colors text-blue-300 font-semibold bg-none border-none p-0 cursor-pointer text-left py-1 block"
                   >
                     Admin
                   </button>
@@ -264,11 +296,11 @@ export default function Index() {
             {/* Quick Links */}
             <div>
               <h3 className="text-white font-semibold mb-4">Hızlı Linkler</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-3 sm:space-y-2 text-sm">
                 <li>
                   <button
                     onClick={() => navigate("/")}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left py-1 block"
                   >
                     Ana Sayfa
                   </button>
@@ -276,7 +308,7 @@ export default function Index() {
                 <li>
                   <button
                     onClick={handleCreditCalculatorClick}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left py-1 block"
                   >
                     Kredi Hesapla
                   </button>
@@ -284,7 +316,7 @@ export default function Index() {
                 <li>
                   <button
                     onClick={() => navigate("/isortakligi")}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left py-1 block"
                   >
                     İş Ortaklığı
                   </button>
@@ -292,7 +324,7 @@ export default function Index() {
                 <li>
                   <button
                     onClick={() => navigate("/finansmanlar")}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
+                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left py-1 block"
                   >
                     Finansmanlar
                   </button>
@@ -303,19 +335,19 @@ export default function Index() {
             {/* Information */}
             <div>
               <h3 className="text-white font-semibold mb-4">Hakkımızda</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-3 sm:space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-white transition-colors py-1 block">
                     Gizlilik Politikası
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-white transition-colors py-1 block">
                     Kullanım Şartları
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-white transition-colors py-1 block">
                     SSS
                   </a>
                 </li>
@@ -325,32 +357,32 @@ export default function Index() {
             {/* Contact */}
             <div>
               <h3 className="text-white font-semibold mb-4">İletişim</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-3 sm:space-y-2 text-sm">
                 <li>
                   <a
-                    href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                    href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-white transition-colors py-1 block"
                   >
-                    WhatsApp: +90 532 639 8440
+                    WhatsApp: +90 532 409 8440
                   </a>
                 </li>
                 <li>
                   <a
                     href="mailto:bilgi@otofinansglobal.com"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-white transition-colors py-1 block"
                   >
                     Email: bilgi@otofinansglobal.com
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-white transition-colors py-1 block">
                     Instagram
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-white transition-colors py-1 block">
                     Facebook
                   </a>
                 </li>
@@ -359,15 +391,14 @@ export default function Index() {
           </div>
 
           <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-                            <img
+            <div className="flex items-center gap-4 hidden sm:flex">
+              <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
                 alt="Oto Finans Global Logo"
-                className="w-auto"
-                style={{ height: '54px' }}
+                className="w-auto h-[54px]"
               />
             </div>
-            <p className="text-sm hidden sm:block">
+            <p className="text-sm w-full sm:w-auto text-center sm:text-left">
               &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
             </p>
           </div>

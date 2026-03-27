@@ -95,15 +95,15 @@ export default function BannerSlider() {
       </button>
 
       {/* Dot indicators */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-1.5 sm:gap-2">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`h-2 rounded-full transition-all ${
+            className={`h-1.5 sm:h-2 rounded-full transition-all min-h-0 min-w-0 p-0 border-none ${
               index === currentSlide
-                ? "bg-white w-8"
-                : "bg-white/50 w-2 hover:bg-white/75"
+                ? "bg-white w-6 sm:w-8"
+                : "bg-white/50 w-1.5 sm:w-2 hover:bg-white/75"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

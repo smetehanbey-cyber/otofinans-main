@@ -97,10 +97,10 @@ export default function PiyasaVerileri() {
   }, [currentIndex, marketData]);
 
   return (
-    <section className="py-6 sm:py-8" style={{ backgroundColor: "#1f3a93" }}>
+    <section className="pt-8 pb-12 sm:py-12" style={{ backgroundColor: "#1f3a93" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12" style={{ paddingTop: "5px" }}>
+        <div className="text-center mb-8 sm:mb-12" style={{ paddingTop: "32px" }}>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
             Piyasa Verileri
           </h2>

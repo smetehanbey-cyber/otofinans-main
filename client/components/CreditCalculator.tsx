@@ -32,7 +32,7 @@ export default function CreditCalculator() {
   // Formula: installment = principal * (r * pow) / (pow - 1)
   // where pow = Math.pow(1 + r, n) and r = ratePercent / 100
   const monthlyPayment = useMemo(() => {
-    if (amount <= 0 || duration <= 0) return 0;
+    if (amount <= 0 || duration <= 0) return "0.00";
 
     // Convert percentage to decimal (e.g., 0.99% → 0.0099, 3.70% → 0.037)
     const r = rate / 100;
@@ -223,7 +223,6 @@ export default function CreditCalculator() {
         windowWidth: contentWidth,
         windowHeight: contentHeight,
         imageTimeout: 25000,
-        timeout: 25000,
         removeContainer: true,
       });
 
@@ -295,7 +294,7 @@ export default function CreditCalculator() {
   };
 
   return (
-    <section id="credit-calculator" className="py-6 sm:py-8 lg:py-10 bg-white">
+    <section id="credit-calculator" className="!pt-12 pb-8 sm:py-12 bg-white" style={{ paddingTop: '32px' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-left mb-4 sm:mb-6">
