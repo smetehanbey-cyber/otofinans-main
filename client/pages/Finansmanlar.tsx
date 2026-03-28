@@ -275,7 +275,7 @@ export default function Finansmanlar() {
               {/* Left Content */}
               <div className="text-white flex flex-col justify-start lg:justify-center py-8 lg:py-12 space-y-6 relative z-10">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
-                  Hayalindeki Araca Aavantajlı Finansmanla Kavuş.
+                  Hayalindeki Araca Finansmanla Hemen Kavuş.
 
                 </h2>
 
