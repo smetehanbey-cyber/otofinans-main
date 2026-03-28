@@ -6,9 +6,15 @@ import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
+import ProcessFlow from "@/components/ProcessFlow";
+import Footer from "@/components/Footer";
+
+import { motion, AnimatePresence } from "framer-motion";
+import carFinanceImg from "@/assets/images/car-finance.png";
 
 function FinansmanlarFAQSection() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [isMainExpanded, setIsMainExpanded] = useState(false);
 
   const banks = [
     { name: "Akbank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F40cf2a6e226b47bd9314e9bbaede9785?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
@@ -25,128 +31,121 @@ function FinansmanlarFAQSection() {
     { name: "TürkiyeFinans", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fa6758614b57645c5906135614a3e72b4?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
     { name: "VakıfKatılım", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fcbdde0484d924ae4aaa1710328f43c05?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
     { name: "alBaraka", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F83b94514be2f42f4be86a42ffa88acc7?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
-    { name: "arabamtaksit", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Ffc2df4b1455e4508b4cf6129d52069cc?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi" },
     { name: "Burgan Bank", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F505da3d1d93a41f59e62e18381b84283?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi, Motorsiklet Kredisi" },
     { name: "OtoSOR", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4169ff414504baebf1f91ef4ffaad7e?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi" },
-    { name: "otovadeli.com", logo: "https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4b1136e327a45d9a4585303fb14f28c?format=webp&width=800&height=1200", financingTypes: "Taşıt Kredisi, Ticari Araç Kredisi, Teminatlı Taşıt Kredisi" },
   ];
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  const visibleBanks = isMainExpanded ? banks : banks.slice(0, 4);
+
   return (
-    <section className="py-8 sm:py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h2
-            className="text-lg sm:text-xl lg:text-2xl font-bold mb-3"
-            style={{ color: "#0f367e" }}
-          >
-            Finansmanlar
-          </h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Tüm bankalar ve finansman kuruluşlarının sunduğu ürün ve hizmetler. Her banka için mevcut finansman seçeneklerini keşfedin.
-          </p>
-        </div>
+    <section className="py-6 sm:py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Headlines moved to main */}
 
-        {/* Banks Accordion */}
-        <div className="max-w-3xl mx-auto space-y-4">
-          {banks.map((bank, idx) => (
-            <div
-              key={idx}
-              className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
-            >
-              {/* Header */}
-              <button
-                onClick={() => toggleExpand(bank.name)}
-                className="w-full px-6 py-4 sm:py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
-                style={{
-                  backgroundColor: "#ffffff",
-                }}
+        {/* Banks Accordion - Compact Stacked Cards */}
+        <motion.div
+          layout
+          className="space-y-2 relative"
+        >
+          <AnimatePresence initial={false}>
+            {visibleBanks.map((bank, idx) => (
+              <motion.div
+                key={bank.name}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 350, damping: 30, delay: idx * 0.03 }}
+                className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow group"
               >
-                <div className="flex items-center gap-3">
-                  {bank.logo && (
-                    <img
-                      src={bank.logo}
-                      alt={bank.name}
-                      className="w-10 h-10 object-contain flex-shrink-0"
-                    />
-                  )}
-                  <h3
-                    className="text-left text-sm sm:text-base font-semibold"
-                    style={{ color: "#0f367e" }}
-                  >
-                    {bank.name}
-                  </h3>
-                </div>
-                <div
-                  className="flex-shrink-0 ml-4 text-2xl font-bold transition-transform duration-300"
-                  style={{
-                    color: "#0f367e",
-                    transform:
-                      expandedId === bank.name ? "rotate(45deg)" : "rotate(0deg)",
-                  }}
+                {/* Header Bar */}
+                <button
+                  onClick={() => toggleExpand(bank.name)}
+                  className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-gray-50/50 transition-colors"
                 >
-                  +
-                </div>
-              </button>
+                  <div className="flex items-center gap-4">
+                    {bank.logo && (
+                      <div className="w-10 h-10 p-1 flex items-center justify-center bg-white border border-gray-100 rounded-lg">
+                        <img
+                          src={bank.logo}
+                          alt={bank.name}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
+                    <h3 className="text-sm sm:text-base font-bold text-gray-800">
+                      {bank.name}
+                    </h3>
+                  </div>
+                  <div
+                    className="flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300"
+                    style={{
+                      backgroundColor: expandedId === bank.name ? "#0f367e" : "transparent",
+                      color: expandedId === bank.name ? "#fff" : "#0f367e"
+                    }}
+                  >
+                    <motion.span
+                      animate={{ rotate: expandedId === bank.name ? 90 : 0 }}
+                    >
+                      {expandedId === bank.name ? "−" : "+"}
+                    </motion.span>
+                  </div>
+                </button>
 
-              {/* Content */}
-              {expandedId === bank.name && (
-                <div className="px-6 py-4 sm:py-5 border-t border-gray-200 bg-white">
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="font-semibold text-sm text-gray-900 mb-3">
-                        Sunulan Finansman Seçenekleri:
-                      </h4>
-                      <div className="flex items-center gap-3 overflow-x-auto pb-2 flex-wrap">
-                        {bank.financingTypes.split(", ").map((type, typeIdx) => (
-                          <div
-                            key={typeIdx}
-                            className="flex items-center justify-center px-5 py-2 border-2 flex-shrink-0 transition-all rounded-full whitespace-nowrap"
-                            style={{
-                              borderColor: "rgba(255, 255, 255, 0.6)",
-                              background: "linear-gradient(to right, #0f367e, #1a4d9e)",
-                            }}
-                          >
-                            <span
-                              className="text-center text-xs sm:text-sm font-semibold"
-                              style={{ color: "#ffffff" }}
+                {/* Collapsible Content */}
+                <AnimatePresence>
+                  {expandedId === bank.name && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                    >
+                      <div className="px-5 py-5 border-t border-gray-100 bg-gray-50/30">
+                        <div className="flex flex-wrap gap-2">
+                          {bank.financingTypes.split(", ").map((type, typeIdx) => (
+                            <div
+                              key={typeIdx}
+                              className="px-4 py-1.5 bg-white border border-blue-100 text-[#0f367e] text-xs font-bold rounded-full shadow-sm"
                             >
                               {type}
-                            </span>
-                          </div>
-                        ))}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                    <div className="pt-3 border-t border-gray-200">
-                      <p className="text-xs text-gray-600">
-                        {bank.name} ile finansman almak için hemen iletişime geçin ve en uygun koşulları öğrenin.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          {/* Fade Overlay for collapsed state */}
+          {!isMainExpanded && banks.length > 4 && (
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-50/90 to-transparent pointer-events-none rounded-b-xl" />
+          )}
+        </motion.div>
+
+        {/* Expand/Collapse Button */}
+        <div className="mt-6 flex justify-center">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsMainExpanded(!isMainExpanded)}
+            className="px-8 py-2.5 bg-white border-2 border-[#0f367e] text-[#0f367e] font-bold text-sm rounded-full shadow-md hover:bg-gray-50 transition-all flex items-center gap-2"
+          >
+            {isMainExpanded ? (
+              <>Daha Az Gör <motion.span animate={{ rotate: 180 }}>↓</motion.span></>
+            ) : (
+              <>Tüm Finansmanları Gör <span>↓</span></>
+            )}
+          </motion.button>
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-8 sm:mt-10 text-center px-4">
-          <p className="text-gray-600 mb-6 text-xs sm:text-sm max-w-2xl mx-auto">
-            Hemen iletişime geçin ve finansman başvurusu hangi bankadan daha uygun fiyata kullanabileceğinizin bilgisi sizlere verelim.
-          </p>
-          <a
-            href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-6 py-2 sm:px-8 sm:py-3 bg-blue-600 text-white font-semibold text-xs sm:text-sm rounded-full hover:bg-blue-700 transition-colors duration-200"
-          >
-            İletişime Geç
-          </a>
-        </div>
       </div>
     </section>
   );
@@ -186,107 +185,43 @@ export default function Finansmanlar() {
       <Header />
 
       <main>
-        {/* Hero Section */}
-        <section
-          className="text-white py-4 sm:py-6"
-          style={{
-            background:
-              "linear-gradient(to bottom right, #0f367e, #1a4d9e, #2563eb)",
-          }}
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-center">
-              {/* Left Content */}
-              <div className="order-2 lg:order-1">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 leading-tight">
-                  <div className="text-4xl sm:text-5xl lg:text-6xl">
-                    Hayaline
-                  </div>
-                  <div className="font-black text-4xl sm:text-5xl lg:text-6xl">
-                    Geç Kalma
-                  </div>
-                </h1>
-                <p className="text-base sm:text-lg text-blue-100 mb-3 sm:mb-4">
-                  Ön onaylı +800.000TL kredin hazır! Ticari ve Binek 20 Yaş'a
-                  kadar tüm taşıtlarda geçerli <u>48 Ay Vade</u> seçeneği
-                  OtoFinans'ta.
-                </p>
-                <ul className="space-y-2 sm:space-y-2.5 mb-4">
-                  <li className="flex items-center gap-3 text-sm sm:text-base">
-                    <CheckIcon />
-                    <span>30 dakikada kredi taraması ve onayı</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-base sm:text-lg">
-                    <CheckIcon />
-                    <span>En düşük faiz oranları</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-base sm:text-lg">
-                    <CheckIcon />
-                    <span>Minimum evrak ile başvuru</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-base sm:text-lg">
-                    <CheckIcon />
-                    <span>7/24 müşteri destek hizmeti</span>
-                  </li>
-                </ul>
+        {/* Adjusted spacing from header (10px) */}
+        <div className="h-[10px] w-full bg-white" aria-hidden="true" />
 
-                <a
-                  href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 sm:px-7 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
-                >
-                  OtoFinanslı Ol →
-                </a>
-              </div>
-
-              {/* Right Content - Banner Slider */}
-              <div className="order-1 lg:order-2">
-                <BannerSlider />
-
-                {/* Contact Info */}
-                <a
-                  href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors block"
-                >
-                  <p className="text-xs text-blue-100 mb-1">
-                    Bizimle İletişime Geç
-                  </p>
-                  <p className="text-lg sm:text-xl font-bold text-white">
-                    +90 532 639 8440
-                  </p>
-                  <p className="text-blue-100 text-sm mt-2">
-                    Limitini Etkilemeden Hemen Bilgi Al
-                  </p>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Bank Logos Carousel */}
-        <BankLogosCarousel />
-
-        {/* Support Tagline */}
-        <div className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 py-2.5 text-center">
-          <p
-            className="font-semibold text-white px-4"
-            style={{ fontSize: "calc(0.875rem - 0.5px)" }}
-          >
-            Destek OtoFinans'ta ⇋ Aracın 30 Dakika'da Kapında!
+        {/* Headlines Section - Moved to top as per user request */}
+        <div className="text-center py-4 bg-white">
+          <h2 className="text-xl sm:text-2xl font-black italic tracking-tighter" style={{ color: "#0f367e" }}>
+            FİNANSMAN SEÇENEKLERİ
+          </h2>
+          <p className="mt-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+            Türkiye'nin Lider Finans Kuruluşlarından Size Özel En Avantajlı Teklifler
           </p>
         </div>
 
-        {/* Finansmanlar Section */}
-        <FinansmanlarFAQSection />
+        {/* Process Icons Section - "Ayrı bir bölme" */}
+        <section className="bg-slate-50 border-y border-gray-100 py-8">
+          <ProcessFlow bgTransparent />
+        </section>
 
-        {/* Market Data Section */}
-        <PiyasaVerileri />
+        {/* 10px spacing below "Aracına kavuş" (ProcessFlow section end) */}
+        <div className="h-[10px] w-full bg-white" aria-hidden="true" />
 
-        {/* Services Section */}
-        <ServicesSection />
+        {/* Finansmanlar Section - Separated with padding and background group */}
+        <div className="pt-2 sm:pt-4 border-t border-gray-100 bg-gray-50/30">
+          <FinansmanlarFAQSection />
+        </div>
+
+
+        {/* 10px Spacer before Services */}
+        <div className="h-[10px] w-full bg-white" aria-hidden="true" />
+
+        {/* Services Section - Separate Container */}
+        <section className="bg-slate-50/50 border-y border-gray-100">
+          <ServicesSection />
+        </section>
+
+        {/* 10px Spacer after Services */}
+        <div className="h-[10px] w-full bg-white" aria-hidden="true" />
 
         {/* Banner Section with Animations */}
         <section
@@ -340,50 +275,36 @@ export default function Finansmanlar() {
               {/* Left Content */}
               <div className="text-white flex flex-col justify-start lg:justify-center py-8 lg:py-12 space-y-6 relative z-10">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight animate-fade-in-up">
-                  Aracını bizimle hızlı sat paran cebine gelsin
-                  <svg
-                    className="inline w-9 h-8 sm:w-11 sm:h-10 text-white ml-2 align-middle"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="9" cy="9" r="1.5" fill="currentColor" />
-                    <circle cx="15" cy="9" r="1.5" fill="currentColor" />
-                    <path d="M8 14c0 2 1.5 3 4 3s4-1 4-3" />
-                  </svg>
+                  Hayalindeki Araca Aavantajlı Finansmanla Kavuş.
+
                 </h2>
 
                 <p className="text-sm sm:text-base lg:text-lg text-blue-100 leading-relaxed animate-fade-in-up-delay-1">
-                  Oto Finans ile özgürce günlük rutinlerinden geri kalmadan
-                  aracına en iyi teklifi biz verelim ve en hızlı kredi
-                  sistemleri ile biz satalım. Tüm Türkiye'deki alıcılarımız sizi
-                  bekliyor.
+                  OtoFinans'ın geniş banka ağı ve size özel faiz oranlarıyla bütçenizi yormadan
+                  hayalinizdeki araca sahip olun. Uzman danışmanlarımızla en uygun ödeme
+                  planını birlikte oluşturalım.
                 </p>
 
                 <div className="animate-fade-in-up-delay-2 pt-4">
                   <a
-                    href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                    href="https://wa.me/905324098440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border-2 border-blue-400 text-white font-bold rounded-full hover:border-blue-300 hover:text-blue-300 transition-colors duration-200 text-sm sm:text-base"
                     title="OtoFinanslı Ol"
                   >
-                    OtoFinanslı Ol
+                    Kredini Şimdi Hesapla
                   </a>
                 </div>
               </div>
 
               {/* Right Content - Woman Image */}
-              <div className="hidden lg:flex items-end justify-end h-[420px] overflow-hidden relative">
-                <div className="animate-slide-in-right lg:z-10 flex items-center justify-center">
+              <div className="hidden lg:block h-full relative overflow-hidden min-h-[420px]">
+                <div className="animate-slide-in-right absolute inset-0 w-full h-[110%] -top-[5%]">
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2F2be5232ddd104e73a951c651243e7999?format=webp&width=800&height=1200"
-                    alt="Oto Finans Müşteri"
-                    className="h-[400px] w-auto object-contain"
-                    style={{ marginBottom: "-4px" }}
+                    src={carFinanceImg}
+                    alt="Araba Anahtarı Teslimatı"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>
@@ -395,145 +316,7 @@ export default function Finansmanlar() {
         <CarBrandsShowcase />
       </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-gray-400 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Yetkili Bayi and Admin Links */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">Erişim</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors text-blue-300 font-semibold"
-                  >
-                    Yetkili Bayi Girişi
-                  </a>
-                </li>
-                <li>
-                  <button
-                    onClick={() => navigate("/admin")}
-                    className="hover:text-white transition-colors text-blue-300 font-semibold bg-none border-none p-0 cursor-pointer text-left"
-                  >
-                    Admin
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">Hızlı Linkler</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <button
-                    onClick={() => navigate("/")}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
-                  >
-                    Ana Sayfa
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={handleCreditCalculatorClick}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
-                  >
-                    Kredi Hesapla
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => navigate("/isortakligi")}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
-                  >
-                    İş Ortaklığı
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => navigate("/finansmanlar")}
-                    className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left"
-                  >
-                    Finansmanlar
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            {/* Information */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">Hakkımızda</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Gizlilik Politikası
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Kullanım Şartları
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    SSS
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">İletişim</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-white transition-colors"
-                  >
-                    WhatsApp: +90 532 639 8440
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="mailto:bilgi@otofinansglobal.com"
-                    className="hover:text-white transition-colors"
-                  >
-                    Email: bilgi@otofinansglobal.com
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Facebook
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
-                alt="Oto Finans Global Logo"
-                className="w-auto"
-                style={{ height: '54px' }}
-              />
-            </div>
-            <p className="text-sm hidden sm:block">
-              &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
+import Footer from "@/components/Footer";
 
 function KampanyalarCardsSection() {
   // Add CSS styles for the progress bar animation
@@ -465,133 +466,7 @@ export default function Kampanyalar() {
         <CarBrandsShowcase />
       </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-gray-400 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Yetkili Bayi and Admin Links */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">Erişim</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors text-blue-300 font-semibold"
-                  >
-                    Yetkili Bayi Girişi
-                  </a>
-                </li>
-                <li>
-                  <button
-                    onClick={() => navigate("/admin")}
-                    className="hover:text-white transition-colors text-blue-300 font-semibold bg-none border-none p-0 cursor-pointer text-left"
-                  >
-                    Admin
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">Hızlı Linkler</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <button onClick={() => navigate("/")} className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left">
-                    Ana Sayfa
-                  </button>
-                </li>
-                <li>
-                  <button onClick={handleCreditCalculatorClick} className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left">
-                    Kredi Hesapla
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => navigate("/isortakligi")} className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left">
-                    İş Ortaklığı
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => navigate("/finansmanlar")} className="hover:text-white transition-colors bg-none border-none p-0 cursor-pointer text-left">
-                    Finansmanlar
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            {/* Information */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">Hakkımızda</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Gizlilik Politikası
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Kullanım Şartları
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    SSS
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h3 className="text-white font-semibold mb-4">İletişim</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-white transition-colors"
-                  >
-                    WhatsApp: +90 532 639 8440
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="mailto:bilgi@otofinansglobal.com"
-                    className="hover:text-white transition-colors"
-                  >
-                    Email: bilgi@otofinansglobal.com
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Facebook
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 pt-8 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F50071fe254ed4ab8872c9a1fa95b9670%2Fe4ff196a7e434a4a9b9ad3a4f4a42668?format=webp&width=800&height=1200"
-                alt="Oto Finans Global Logo"
-                className="w-auto"
-                style={{ height: '54px' }}
-              />
-            </div>
-            <p className="text-sm hidden sm:block">
-              &copy; 2027 Oto Finans Global. Tüm hakları saklıdır.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
