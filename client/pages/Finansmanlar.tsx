@@ -193,8 +193,8 @@ export default function Finansmanlar() {
           <h2 className="text-xl sm:text-2xl font-black italic tracking-tighter" style={{ color: "#0f367e" }}>
             FİNANSMAN SEÇENEKLERİ
           </h2>
-          <p className="mt-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
-            Türkiye'nin Lider Finans Kuruluşlarından Size Özel En Avantajlı Teklifler
+          <p className="mt-2 text-xs font-semibold text-gray-400 uppercase tracking-widest leading-relaxed">
+            ÖN ONAYLI KREDİNİZİ HEMEN KULLANABİLİRSİNİZ.
           </p>
         </div>
 
