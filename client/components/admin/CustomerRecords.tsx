@@ -68,6 +68,23 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   const [dateFilterEnd, setDateFilterEnd] = useState("");
   const [notifications, setNotifications] = useState<Array<{id: string; customerId: number; customerName: string; author: string; noteText: string; timestamp: string; isProcessChange?: boolean}>>([]);
   const [selectedCustomerIds, setSelectedCustomerIds] = useState<number[]>([]);
+  const [allAuthorizedPersons, setAllAuthorizedPersons] = useState<string[]>([]);
+
+  const fetchAllAuthorizedPersons = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("authorized_persons")
+        .select("name")
+        .order("name", { ascending: true });
+      if (error) throw error;
+      if (data) {
+        const names = Array.from(new Set(data.map((p) => p.name).filter(Boolean)));
+        setAllAuthorizedPersons(names);
+      }
+    } catch (err) {
+      console.error("Error fetching authorized persons list:", err);
+    }
+  };
 
   // Fetch active customers only
   const fetchCustomers = async () => {
@@ -98,6 +115,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   // Initial fetch on mount
   useEffect(() => {
     fetchCustomers();
+    fetchAllAuthorizedPersons();
   }, []);
 
   // Load and save selected customers from localStorage
@@ -148,26 +166,28 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
             "postgres_changes",
             { event: "*", schema: "public", table: "customers" },
             (payload) => {
+              const newRecord = payload.new as Customer | null;
+              const oldRecord = payload.old as Partial<Customer> | null;
               // Only update if the changed record is active
-              if (payload.new?.status === "active" || payload.old?.status === "active") {
+              if (newRecord?.status === "active" || oldRecord?.status === "active") {
                 // Update only the changed customer row instead of fetching all
-                if (payload.new) {
+                if (newRecord) {
                   setCustomers(prevCustomers => {
-                    const existingIndex = prevCustomers.findIndex(c => c.id === payload.new.id);
+                    const existingIndex = prevCustomers.findIndex(c => c.id === newRecord.id);
                     if (existingIndex >= 0) {
                       // Update existing customer
                       const updated = [...prevCustomers];
-                      updated[existingIndex] = payload.new;
+                      updated[existingIndex] = newRecord;
                       return updated;
                     } else {
                       // Add new customer at the top of the list (most recent first)
-                      return [payload.new, ...prevCustomers];
+                      return [newRecord, ...prevCustomers];
                     }
                   });
-                } else if (payload.old?.id) {
+                } else if (oldRecord?.id) {
                   // Remove deleted customer
                   setCustomers(prevCustomers =>
-                    prevCustomers.filter(c => c.id !== payload.old.id)
+                    prevCustomers.filter(c => c.id !== oldRecord.id)
                   );
                 }
               }
@@ -657,7 +677,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
       // Update only this customer in state (no full fetch needed)
       setCustomers(prevCustomers => {
         const updated = prevCustomers.map(c =>
-          c.id === customerId ? { ...c, process: newProcess, updated_at: data.updated_at } : c
+          c.id === customerId ? { ...c, process: newProcess as any, updated_at: data.updated_at } : c
         );
         return updated;
       });
@@ -724,6 +744,10 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
   // Get unique authorized persons
   const uniqueAuthorizedPersons = Array.from(
     new Set(customers.map((c) => c.added_by).filter((name) => name))
+  ).sort();
+
+  const dropdownPersons = Array.from(
+    new Set([...allAuthorizedPersons, ...uniqueAuthorizedPersons])
   ).sort();
 
   // Filter customers based on search query and selected authorized person
@@ -869,7 +893,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                   const formattedPhone = digits ? `+90${digits.slice(0, 10)}` : "";
                   setNewCustomer({ ...newCustomer, phone: formattedPhone })
                 }}
-                maxLength="10"
+                maxLength={10}
                 className="pl-12 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
                 style={{letterSpacing: '0.5px'}}
               />
@@ -1229,7 +1253,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                       >
                         Tüm Yetkili Kişiler
                       </button>
-                      {uniqueAuthorizedPersons.map((person) => (
+                      {dropdownPersons.map((person) => (
                         <button
                           key={person}
                           onClick={() => {
@@ -1324,7 +1348,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                               phone: formattedPhone
                             })
                           }}
-                          maxLength="10"
+                          maxLength={10}
                           className="pl-7 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 w-full"
                           style={{fontSize: isMobile ? '12px' : '15px', letterSpacing: '0.5px'}}
                         />
@@ -1589,7 +1613,7 @@ export default function CustomerRecords({ loggedInUser }: { loggedInUser: Logged
                         style={{fontSize: isMobile ? '12px' : '14px'}}
                       >
                         <option value="">Seçiniz...</option>
-                        {uniqueAuthorizedPersons.map((person) => (
+                        {dropdownPersons.map((person) => (
                           <option key={person} value={person}>{person}</option>
                         ))}
                       </select>

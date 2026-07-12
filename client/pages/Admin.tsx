@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { LogOut, Smartphone, Users, FileText, Archive } from "lucide-react";
+import { LogOut, Smartphone, Users, FileText, Archive, Shield } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
 import ArchivedRecords from "@/components/admin/ArchivedRecords";
 import DailyOperationLog from "@/components/admin/DailyOperationLog";
+import AuthorizedPersonsManager from "@/components/admin/AuthorizedPersonsManager";
 import { supabase } from "@/lib/supabase";
 
 export default function Admin() {
@@ -48,7 +49,7 @@ export default function Admin() {
 
       const { data, error } = await supabase
         .from("authorized_persons")
-        .select("id, name, pin, is_admin")
+        .select("id, name, pin, is_admin, role")
         .eq("pin", pin)
         .single();
 
@@ -65,6 +66,14 @@ export default function Admin() {
 
       if (!data) {
         setLoginError("Parolayı yanlış girdiniz!");
+        setShakeError(true);
+        setPin("");
+        setTimeout(() => setShakeError(false), 600);
+        return;
+      }
+
+      if (data.role && data.role.startsWith("disabled")) {
+        setLoginError("Giriş yetkiniz askıya alınmıştır!");
         setShakeError(true);
         setPin("");
         setTimeout(() => setShakeError(false), 600);
@@ -90,37 +99,48 @@ export default function Admin() {
     setLoginError("");
   };
 
+  const menuItems = [
+    {
+      id: "customer-records",
+      label: "Müşteri Takip",
+      icon: Users,
+      component: CustomerRecords
+    },
+    {
+      id: "archived-records",
+      label: "Arşive Bak",
+      icon: Archive,
+      component: ArchivedRecords
+    },
+    {
+      id: "operasyon-rapor",
+      label: "Rapor",
+      icon: FileText,
+      component: () => <DailyOperationLog loggedInUser={loggedInUser} />
+    }
+  ];
+
+  if (loggedInUser?.is_admin) {
+    menuItems.push({
+      id: "yetki-yonetimi",
+      label: "Yetki Yönetimi",
+      icon: Shield,
+      component: AuthorizedPersonsManager
+    });
+  }
+
   const menuGroups = [
     {
       id: "musteri-takip",
       label: "Müşteri Takip",
-      items: [
-        {
-          id: "customer-records",
-          label: "Müşteri Takip",
-          icon: Users,
-          component: CustomerRecords
-        },
-        {
-          id: "archived-records",
-          label: "Arşive Bak",
-          icon: Archive,
-          component: ArchivedRecords
-        },
-        {
-          id: "operasyon-rapor",
-          label: "Rapor",
-          icon: FileText,
-          component: () => <DailyOperationLog loggedInUser={loggedInUser} />
-        }
-      ]
+      items: menuItems
     }
   ];
 
   // Flatten menu items to find active component
   const allMenuItems = menuGroups.flatMap(group => group.items);
   const activeMenuItem = allMenuItems.find(item => item.id === activeMenu);
-  let ActiveComponent = activeMenuItem?.component || CustomerRecords;
+  let ActiveComponent: any = activeMenuItem?.component || CustomerRecords;
 
   // Wrap components to pass loggedInUser where needed
   if (activeMenuItem?.id === "customer-records") {
@@ -129,6 +149,8 @@ export default function Admin() {
     ActiveComponent = () => <ArchivedRecords />;
   } else if (activeMenuItem?.id === "operasyon-rapor") {
     ActiveComponent = () => <DailyOperationLog loggedInUser={loggedInUser} />;
+  } else if (activeMenuItem?.id === "yetki-yonetimi") {
+    ActiveComponent = () => <AuthorizedPersonsManager />;
   }
 
   // Login Screen
@@ -222,7 +244,7 @@ export default function Admin() {
                     textAlign: 'center',
                     fontWeight: 'bold'
                   }}
-                  maxLength="6"
+                  maxLength={6}
                   autoFocus
                   autoComplete="off"
                 />
