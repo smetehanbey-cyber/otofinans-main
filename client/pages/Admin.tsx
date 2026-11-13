@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { LogOut, Smartphone, Users, FileText, Archive, Shield } from "lucide-react";
 import Header from "@/components/Header";
 import CustomerRecords from "@/components/admin/CustomerRecords";
@@ -6,10 +7,11 @@ import ArchivedRecords from "@/components/admin/ArchivedRecords";
 import DailyOperationLog from "@/components/admin/DailyOperationLog";
 import AuthorizedPersonsManager from "@/components/admin/AuthorizedPersonsManager";
 import { supabase } from "@/lib/supabase";
+import { getShowcaseAdmin, setShowcaseAdmin } from "@/lib/showcase-admin";
 
 export default function Admin() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState<{ id: number; name: string; pin: string; is_admin: boolean } | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(getShowcaseAdmin()));
+  const [loggedInUser, setLoggedInUser] = useState(getShowcaseAdmin);
   const [pin, setPin] = useState("");
   const [loginError, setLoginError] = useState("");
   const [shakeError, setShakeError] = useState(false);
@@ -45,15 +47,11 @@ export default function Admin() {
     }
 
     try {
-      console.log("Logging in with PIN:", pin);
-
       const { data, error } = await supabase
         .from("authorized_persons")
-        .select("id, name, pin, is_admin, role")
+        .select("id, name, is_admin, role")
         .eq("pin", pin)
         .single();
-
-      console.log("Query result - Data:", data, "Error:", error);
 
       if (error) {
         console.error("Supabase error:", error);
@@ -80,8 +78,9 @@ export default function Admin() {
         return;
       }
 
-      console.log("Login successful:", data);
-      setLoggedInUser(data as any);
+      const user = { id: data.id, name: data.name, pin, is_admin: data.is_admin };
+      setShowcaseAdmin(user.is_admin ? user : null);
+      setLoggedInUser(user);
       setIsLoggedIn(true);
       setPin("");
     } catch (error) {
@@ -93,6 +92,7 @@ export default function Admin() {
 
   // Handle Logout
   const handleLogout = () => {
+    setShowcaseAdmin(null);
     setIsLoggedIn(false);
     setLoggedInUser(null);
     setPin("");
@@ -332,6 +332,11 @@ export default function Admin() {
 
           {/* User Info and Logout */}
           <div className={`flex items-center ${isMobile ? 'gap-2 w-full' : 'gap-3 border-l border-gray-200 pl-4'}`}>
+            {loggedInUser?.is_admin && (
+              <Link to="/" className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-primary hover:bg-slate-50">
+                Ana sayfa
+              </Link>
+            )}
             <div className={`flex flex-col ${isMobile ? 'flex-1 items-start' : 'items-end'}`}>
               <p className={`font-medium text-gray-800 ${isMobile ? 'text-xs' : 'text-sm'}`}>{loggedInUser?.name}</p>
               <p className={`font-semibold ${loggedInUser?.is_admin ? 'text-green-700' : 'text-blue-700'} ${isMobile ? 'text-xs' : 'text-xs'}`}>

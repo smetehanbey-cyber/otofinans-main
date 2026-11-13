@@ -1,13 +1,20 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import * as XLSX from "xlsx";
 import { toast } from "sonner";
+import { ArrowUpRight, ChevronDown, Download } from "lucide-react";
+
+const focusClass =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
+const fieldClass = `min-h-11 w-full appearance-none rounded-xl border border-slate-300 bg-white px-3 py-2 text-base font-medium text-slate-900 ${focusClass}`;
+const labelClass = "mb-1.5 block text-sm font-semibold text-slate-700";
+const durationOptions = [12, 24, 36, 48];
 
 export default function CreditCalculator() {
   const tableRef = useRef<HTMLDivElement>(null);
   const [productType, setProductType] = useState("Taşıt Kredisi");
   const [amount, setAmount] = useState(100000);
   const [duration, setDuration] = useState(48);
-  const [rate, setRate] = useState(4.5);
+  const [rate, setRate] = useState(3.7);
   const [tableVisible, setTableVisible] = useState(false); // Table hidden by default
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -294,191 +301,195 @@ export default function CreditCalculator() {
   };
 
   return (
-    <section id="credit-calculator" className="!pt-12 pb-8 sm:py-12 bg-white" style={{ paddingTop: '32px' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-left mb-4 sm:mb-6">
+    <section
+      id="credit-calculator"
+      aria-labelledby="credit-calculator-title"
+      className="bg-white"
+    >
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
+        <div className="mb-5 flex flex-col gap-2 sm:mb-7">
           <h2
-            className="text-xl sm:text-2xl lg:text-3xl font-medium mb-1 sm:mb-2"
-            style={{ color: "#0f367e" }}
+            id="credit-calculator-title"
+            className="text-2xl font-bold tracking-tight text-primary sm:text-3xl"
           >
             Ön Onaylı Kredin Hazır.
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600">
+          <p className="text-sm leading-6 text-slate-600 sm:text-base">
             Taşıt Kredini Şimdi Kullanabilirsin!
           </p>
         </div>
 
-        {/* Calculator Section */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 lg:p-12 border border-gray-200">
-          {/* Input Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
-            {/* Product Type */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                Ürün
-              </label>
-              <select
-                value={productType}
-                onChange={(e) => setProductType(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-              >
-                <option>Taşıt Kredisi</option>
-                <option>Ticari Araç Kredisi</option>
-                <option>Motorsiklet Kredisi</option>
-              </select>
-            </div>
-
-            {/* Amount */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                Tutar
-              </label>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  value={amount.toLocaleString("tr-TR")}
-                  onChange={(e) => {
-                    const cleaned = e.target.value.replace(/\D/g, "");
-                    const numericValue = cleaned ? parseInt(cleaned, 10) : 0;
-                    if (numericValue !== amount) {
-                      setAmount(numericValue);
-                    }
-                  }}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  ₺
-                </span>
+        <div className="rounded-3xl border border-slate-200 bg-white shadow-lg shadow-slate-200/50">
+          <div className="grid gap-5 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:p-8">
+            <fieldset className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 px-4 pb-5 sm:px-5">
+              <legend className="px-2 text-sm font-bold text-slate-900">
+                Kredi bilgileri
+              </legend>
+              <div className="mt-2 grid grid-cols-2 gap-4">
+                <div className="relative col-span-2 min-w-0">
+                  <label htmlFor="credit-product" className={labelClass}>
+                    Ürün
+                  </label>
+                  <select
+                    id="credit-product"
+                    value={productType}
+                    onChange={(e) => setProductType(e.target.value)}
+                    className={`${fieldClass} pr-8`}
+                  >
+                    <option>Taşıt Kredisi</option>
+                    <option>Ticari Araç Kredisi</option>
+                    <option>Motorsiklet Kredisi</option>
+                  </select>
+                  <ChevronDown
+                    aria-hidden="true"
+                    className="pointer-events-none absolute bottom-3.5 right-3 size-4 text-slate-500"
+                  />
+                </div>
+                <div className="col-span-2 min-w-0">
+                  <label htmlFor="credit-amount" className={labelClass}>
+                    Tutar (₺)
+                  </label>
+                  <input
+                    id="credit-amount"
+                    type="text"
+                    inputMode="numeric"
+                    value={amount.toLocaleString("tr-TR")}
+                    onChange={(e) => {
+                      const cleaned = e.target.value.replace(/\D/g, "");
+                      const numericValue = cleaned ? parseInt(cleaned, 10) : 0;
+                      if (numericValue !== amount) {
+                        setAmount(numericValue);
+                      }
+                    }}
+                    className={fieldClass}
+                  />
+                </div>
+                <div className="relative min-w-0">
+                  <label htmlFor="credit-duration" className={labelClass}>
+                    Vade (ay)
+                  </label>
+                  <select
+                    id="credit-duration"
+                    value={duration}
+                    onChange={(e) => setDuration(Number(e.target.value))}
+                    className={`${fieldClass} pr-8`}
+                  >
+                    {durationOptions.map((months) => (
+                      <option key={months} value={months}>
+                        {months} ay
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    aria-hidden="true"
+                    className="pointer-events-none absolute bottom-3.5 right-3 size-4 text-slate-500"
+                  />
+                </div>
+                <div className="relative min-w-0">
+                  <label htmlFor="credit-rate" className={labelClass}>
+                    Aylık oran
+                  </label>
+                  <select
+                    id="credit-rate"
+                    value={rate}
+                    onChange={(e) => setRate(parseFloat(e.target.value))}
+                    className={`${fieldClass} pr-8`}
+                  >
+                    {rateOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        %
+                        {option.value.toLocaleString("tr-TR", {
+                          minimumFractionDigits: 2,
+                        })}{" "}
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    aria-hidden="true"
+                    className="pointer-events-none absolute bottom-3.5 right-3 size-4 text-slate-500"
+                  />
+                </div>
               </div>
-            </div>
+            </fieldset>
 
-            {/* Duration */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                Vade
-              </label>
-              <div className="flex items-center">
-                <input
-                  type="number"
-                  value={duration}
-                  onChange={(e) => setDuration(parseInt(e.target.value) || 0)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                />
-                <span className="ml-2 text-sm font-medium text-gray-700 whitespace-nowrap">
-                  Ay
-                </span>
-              </div>
-            </div>
-
-            {/* Rate */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                Oran
-              </label>
-              <select
-                value={rate}
-                onChange={(e) => setRate(parseFloat(e.target.value))}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+            <div className="flex min-w-0 flex-col justify-between gap-5 rounded-2xl bg-primary p-5 text-white sm:p-6">
+              <dl
+                aria-live="polite"
+                aria-atomic="true"
+                className="grid grid-cols-[minmax(0,1fr)_auto] gap-4"
               >
-                {rateOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    %{option.value.toFixed(2)} {option.label}
-                  </option>
-                ))}
-              </select>
+                <div className="col-span-2 border-b border-white/20 pb-4">
+                  <dt className="text-sm font-semibold text-blue-100">
+                    Aylık taksit
+                  </dt>
+                  <dd className="mt-1 text-3xl font-bold tracking-tight tabular-nums [overflow-wrap:anywhere] sm:text-4xl">
+                    {formattedMonthly}
+                  </dd>
+                  <dd className="mt-1 text-xs leading-5 text-blue-100">
+                    Tutarın tamamı peşinatsız kredilendirilirse
+                  </dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="text-xs text-blue-100">Toplam ödeme</dt>
+                  <dd className="mt-1 text-lg font-semibold tabular-nums [overflow-wrap:anywhere]">
+                    {formattedTotal}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-blue-100">Aylık oran</dt>
+                  <dd className="mt-1 text-lg font-semibold tabular-nums">
+                    %
+                    {rate.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                  </dd>
+                </div>
+              </dl>
+              <a
+                href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-center text-sm font-bold text-primary transition hover:bg-blue-50 ${focusClass}`}
+              >
+                Hemen Başvur
+                <ArrowUpRight aria-hidden="true" size={16} />
+              </a>
             </div>
           </div>
 
-          {/* Results Section - 4 columns aligned with input */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-gray-200">
-            {/* Column 1 - Ürün alignment */}
-            <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">
-                Taksit Tutarı
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-primary">
-                {formattedMonthly}
-              </p>
-              <p className="text-xs font-semibold mt-1 text-left" style={{ color: "#0f367e" }}>
-                Peşinatsız Tamamına Kredi Olursa
-              </p>
-            </div>
-
-            {/* Column 2 - Tutar alignment */}
-            <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">
-                Ödenecek Toplam Tutar
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-primary">
-                {formattedTotal}
-              </p>
-            </div>
-
-            {/* Column 3 - Vade alignment */}
-            <div>
-              <p className="text-xs text-gray-600 mb-2 text-left">Oran</p>
-              <p className="text-2xl sm:text-3xl font-bold text-primary">
-                %{rate.toFixed(2)}
-              </p>
-            </div>
-
-            {/* Column 4 - Oran alignment with Show/Hide checkbox */}
-            <div>
-              <div className="flex items-center gap-2 h-full">
-                <button
-                  type="button"
-                  onClick={() => setTableVisible(!tableVisible)}
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    minWidth: "20px",
-                    minHeight: "20px",
-                    borderRadius: "50%",
-                    border: "2px solid #0f367e",
-                    backgroundColor: tableVisible ? "#0f367e" : "#ffffff",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    transition: "all 0.2s ease",
-                  }}
-                  title={tableVisible ? "Tabloyu Gizle" : "Tabloyu Göster"}
-                >
-                  {tableVisible && (
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 12 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1 6L5 10L11 2"
-                        stroke="#ffffff"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
-                </button>
-                <label
-                  className="text-sm text-gray-700 cursor-pointer font-medium"
-                  onClick={() => setTableVisible(!tableVisible)}
-                  style={{ userSelect: "none" }}
-                >
-                  {tableVisible ? "Tabloyu Gizle" : "Tabloyu Göster"}
-                </label>
-              </div>
-            </div>
+          <div className="mx-5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200 py-4 sm:mx-7 lg:mx-8">
+            <button
+              type="button"
+              aria-expanded={tableVisible}
+              aria-controls="credit-payment-schedule"
+              onClick={() => setTableVisible((visible) => !visible)}
+              className={`inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-left text-sm font-semibold text-primary transition hover:bg-slate-50 ${focusClass}`}
+            >
+              {tableVisible
+                ? "Ödeme tablosunu gizle"
+                : "Ödeme tablosunu göster"}
+              <ChevronDown
+                aria-hidden="true"
+                size={16}
+                className={tableVisible ? "rotate-180" : undefined}
+              />
+            </button>
+            <button
+              type="button"
+              onClick={downloadPaymentSchedulePNG}
+              className={`inline-flex min-h-11 items-center gap-2 rounded-xl px-4 py-2 text-left text-sm font-semibold text-primary transition hover:bg-slate-50 ${focusClass}`}
+            >
+              <Download aria-hidden="true" size={16} />
+              Ödeme planını indir
+            </button>
           </div>
 
           {/* Payment Schedule Table for PNG Export */}
           <div
+            id="credit-payment-schedule"
             ref={tableRef}
             data-ref="table"
+            aria-hidden={!tableVisible}
+            className="mx-5 sm:mx-7 lg:mx-8"
             style={{
               backgroundColor: "#ffffff",
               opacity: tableVisible ? 1 : 0,
@@ -524,15 +535,15 @@ export default function CreditCalculator() {
                 }
 
                 /* Force grid lines to always be visible */
-                table {
+                .scrollable-table-container table {
                   border-collapse: collapse !important;
                   width: 100%;
                   background-color: #ffffff;
                   table-layout: auto;
                 }
 
-                table td,
-                table th {
+                .scrollable-table-container table td,
+                .scrollable-table-container table th {
                   border: 1px solid #6d2fce !important;
                   padding: 16px !important;
                   text-align: center !important;
@@ -542,7 +553,7 @@ export default function CreditCalculator() {
                   outline: 1px solid #6d2fce !important;
                 }
 
-                table thead th {
+                .scrollable-table-container table thead th {
                   border: 2px solid #1800ae !important;
                   font-weight: bold !important;
                   background-color: #1800ae !important;
@@ -551,13 +562,13 @@ export default function CreditCalculator() {
 
                 /* Mobile specific - ensure borders are visible */
                 @media (max-width: 768px) {
-                  table {
+                  .scrollable-table-container table {
                     border-collapse: collapse !important;
                     table-layout: fixed;
                   }
 
-                  table td,
-                  table th {
+                  .scrollable-table-container table td,
+                  .scrollable-table-container table th {
                     border: 1px solid #6d2fce !important;
                     border-right: 1px solid #6d2fce !important;
                     border-bottom: 1px solid #6d2fce !important;
@@ -568,7 +579,7 @@ export default function CreditCalculator() {
                     box-sizing: border-box;
                   }
 
-                  table thead th {
+                  .scrollable-table-container table thead th {
                     border: 2px solid #1800ae !important;
                     border-right: 2px solid #1800ae !important;
                     border-bottom: 2px solid #1800ae !important;
@@ -577,23 +588,23 @@ export default function CreditCalculator() {
                   }
 
                   /* Extra visible lines for mobile */
-                  table tr {
+                  .scrollable-table-container table tr {
                     border-bottom: 1px solid #6d2fce !important;
                   }
 
-                  table thead tr {
+                  .scrollable-table-container table thead tr {
                     border-bottom: 2px solid #1800ae !important;
                   }
                 }
 
                 /* iOS Safari specific fix */
                 @supports (-webkit-touch-callout: none) {
-                  table td,
-                  table th {
+                  .scrollable-table-container table td,
+                  .scrollable-table-container table th {
                     border: 1px solid #6d2fce !important;
                     -webkit-appearance: none;
                   }
-                  table thead th {
+                  .scrollable-table-container table thead th {
                     border: 2px solid #1800ae !important;
                   }
                 }
@@ -848,50 +859,14 @@ export default function CreditCalculator() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <button
-              onClick={downloadPaymentSchedulePNG}
-              className="px-8 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors duration-200 flex items-center gap-2"
-            >
-              Ödeme Planı
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-            </button>
-            <a
-              href="https://wa.me/905326398440?text=Kredi%20Ba%C5%9Fvurusu%20Yapmak%20%C4%B0stiyorum."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 text-center"
-            >
-              Hemen Başvur
-            </a>
-          </div>
-
-          {/* Terms and Conditions */}
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <ul className="text-xs text-gray-600 space-y-2">
+          <div className="rounded-b-3xl border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7 lg:px-8">
+            <ul className="list-disc space-y-1 pl-4 text-xs leading-5 text-slate-600">
               <li>
-                • Şahıs vergi levhalı müşterilerimize geçerli ayrı avantajlar
-                için %4,50 seçerek hesaplama ekranından ödeme planını
-                indirebilirsiniz.
+                Şahıs vergi levhalı müşterilerimiz, %3,70 oranını seçerek
+                avantajlı ödeme planını indirebilir.
               </li>
-              <li>• Minimum Taşıt Kredisi 50.000 TL olarka geçerlidir.</li>
-              <li>
-                • Dosya masrafları ödeme planı dışında ek olarak sunulmaktadır.
-              </li>
+              <li>Minimum kullanılabilen tutar 50.000 TL’dir.</li>
+              <li>Dosya masrafları ödeme planına ek olarak sunulur.</li>
             </ul>
           </div>
         </div>

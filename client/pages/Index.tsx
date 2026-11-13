@@ -5,7 +5,9 @@ import BannerSlider from "@/components/BannerSlider";
 import ServicesSection from "@/components/ServicesSection";
 import BankLogosCarousel from "@/components/BankLogosCarousel";
 import CreditCalculator from "@/components/CreditCalculator";
+import CardInstallmentCalculator from "@/components/CardInstallmentCalculator";
 import PiyasaVerileri from "@/components/PiyasaVerileri";
+import VehicleListings from "@/components/VehicleListings";
 import CarBrandsShowcase from "@/components/CarBrandsShowcase";
 import Footer from "@/components/Footer";
 
@@ -121,6 +123,10 @@ export default function Index() {
 
         {/* Credit Calculator Section */}
         <CreditCalculator />
+
+        <CardInstallmentCalculator />
+
+        <VehicleListings />
 
         {/* Market Data Section */}
         <PiyasaVerileri />

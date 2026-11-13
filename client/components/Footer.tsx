@@ -171,13 +171,14 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors py-1 block">
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors py-1 block">
-                  Facebook
+                <a
+                  href="https://www.instagram.com/otofinansglobalresmi/"
+                  className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 py-1 font-sans transition-colors hover:text-white"
+                >
+                  <span>Instagram</span>
+                  <span className="text-base font-semibold text-white">
+                    OtoFinansGlobalResmi
+                  </span>
                 </a>
               </li>
             </ul>
