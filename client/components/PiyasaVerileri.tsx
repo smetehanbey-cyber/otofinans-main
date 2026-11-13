@@ -1,160 +1,144 @@
-import { useState, useMemo, useEffect } from "react";
+import { useEffect, useState } from "react";
+import {
+  currencies,
+  fetchMarketSource,
+  truncgilUrl,
+  type MarketQuotes,
+} from "@shared/market-quotes";
+
+const formatRate = new Intl.NumberFormat("tr-TR", {
+  minimumFractionDigits: 4,
+  maximumFractionDigits: 4,
+});
 
 export default function PiyasaVerileri() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [marketData, setMarketData] = useState([
-    {
-      id: 1,
-      symbol: "USD",
-      name: "Amerikan Doları",
-      buyRate: 43.4918,
-      sellRate: 43.5038,
-      change: 0.03,
-      isPositive: true,
-    },
-    {
-      id: 2,
-      symbol: "EUR",
-      name: "Euro",
-      buyRate: 51.4746,
-      sellRate: 51.4821,
-      change: 0.04,
-      isPositive: true,
-    },
-    {
-      id: 3,
-      symbol: "GBP",
-      name: "İngiliz Poundu",
-      buyRate: 59.7531,
-      sellRate: 60.0526,
-      change: 0.26,
-      isPositive: true,
-    },
-  ]);
+  const [quotes, setQuotes] = useState<MarketQuotes>({});
+  const [loading, setLoading] = useState(true);
 
-  // Fetch market data from backend
   useEffect(() => {
-    let isMounted = true;
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const controller = new AbortController();
 
-    const fetchMarketData = async () => {
+    async function refresh() {
+      const signal = AbortSignal.any([
+        controller.signal,
+        AbortSignal.timeout(8000),
+      ]);
+      let rates: MarketQuotes = {};
       try {
-        const controller = new AbortController();
-        timeoutId = setTimeout(() => controller.abort(), 5000);
-
-        // Only attempt to fetch if not already in an error state
-        // to avoid repeated failed requests
         const response = await fetch("/api/market-data", {
-          method: "GET",
-          signal: controller.signal,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+          signal,
         });
-
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-          timeoutId = null;
-        }
-
         if (response.ok) {
           const data = await response.json();
-          if (isMounted && Array.isArray(data) && data.length > 0) {
-            setMarketData(data);
+          if (Array.isArray(data)) {
+            for (const { symbol } of currencies) {
+              const quote = data.find((item) => item?.symbol === symbol);
+              if (
+                Number.isFinite(quote?.buyRate) &&
+                quote.buyRate > 0 &&
+                Number.isFinite(quote.sellRate) &&
+                quote.sellRate > 0
+              ) {
+                rates[symbol] = {
+                  buyRate: quote.buyRate,
+                  sellRate: quote.sellRate,
+                  change: Number.isFinite(quote.change) ? quote.change : null,
+                };
+              }
+            }
           }
         }
-      } catch (_error) {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-          timeoutId = null;
-        }
-        // Silently ignore fetch errors - use default data
+      } catch {
+        // Static hosting can serve the SPA document in place of the API.
       }
-    };
 
-    // Fetch immediately on mount
-    fetchMarketData();
+      if (
+        !controller.signal.aborted &&
+        Object.keys(rates).length < currencies.length
+      ) {
+        const direct = await fetchMarketSource(
+          truncgilUrl,
+          AbortSignal.any([controller.signal, AbortSignal.timeout(4500)]),
+        );
+        rates = { ...direct, ...rates };
+      }
+      if (!controller.signal.aborted) {
+        setQuotes(rates);
+        setLoading(false);
+      }
+    }
 
-    // Set up interval to fetch every 2 minutes for updates
-    const interval = setInterval(fetchMarketData, 2 * 60 * 1000);
-
+    void refresh();
+    const interval = setInterval(refresh, 30_000);
     return () => {
-      isMounted = false;
-      if (timeoutId) clearTimeout(timeoutId);
+      controller.abort();
       clearInterval(interval);
     };
   }, []);
 
-  const itemsPerPage = 3;
-  const totalItems = marketData.length;
-  const maxIndex =
-    totalItems > itemsPerPage ? Math.ceil(totalItems / itemsPerPage) - 1 : 0;
-
-  const currentItems = useMemo(() => {
-    const start = currentIndex * itemsPerPage;
-    return marketData.slice(start, start + itemsPerPage);
-  }, [currentIndex, marketData]);
-
   return (
-    <section className="pt-8 pb-12 sm:py-12" style={{ backgroundColor: "#1f3a93" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12" style={{ paddingTop: "32px" }}>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+    <section className="bg-[#1f3a93]" aria-labelledby="market-data-title">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center sm:mb-12">
+          <h2
+            id="market-data-title"
+            className="text-3xl font-bold text-white sm:text-4xl"
+          >
             Piyasa Verileri
           </h2>
-          <div className="w-16 h-1 bg-white mx-auto"></div>
+          <div className="mx-auto mt-2 h-1 w-16 bg-white" />
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
-          {currentItems.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
-            >
-              {/* Currency Symbol */}
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {item.symbol}
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+          {currencies.map(({ symbol, name }) => {
+            const quote = quotes[symbol];
+            const change = quote?.change;
+            return (
+              <div key={symbol} className="rounded-2xl bg-white p-6 shadow-lg">
+                <div className="mb-4 flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-2xl font-bold text-gray-900">{symbol}</p>
+                    <p className="text-xs text-gray-500">{name}</p>
+                  </div>
+                  {change != null && (
+                    <span
+                      className={`rounded-full px-2 py-1 text-xs font-semibold ${change >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                    >
+                      {change >= 0 ? "▲" : "▼"}{" "}
+                      {change.toLocaleString("tr-TR", {
+                        maximumFractionDigits: 3,
+                      })}
+                      %
+                    </span>
+                  )}
+                </div>
+                <dl className="space-y-3">
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-xs font-medium text-gray-600">Alış</dt>
+                    <dd className="text-sm font-bold text-gray-900">
+                      {quote ? formatRate.format(quote.buyRate) + " ₺" : "—"}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-xs font-medium text-gray-600">Satış</dt>
+                    <dd className="text-sm font-bold text-gray-900">
+                      {quote ? formatRate.format(quote.sellRate) + " ₺" : "—"}
+                    </dd>
+                  </div>
+                </dl>
+                {!quote && (
+                  <p className="mt-3 text-xs text-gray-600">
+                    {loading
+                      ? "Kur bilgisi yükleniyor…"
+                      : "Kur bilgisi geçici olarak alınamadı."}
                   </p>
-                  <p className="text-xs text-gray-500">{item.name}</p>
-                </div>
-                <div
-                  className={`flex items-center gap-1 px-2 py-1 rounded-full ${
-                    item.isPositive
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  <span className="text-lg">{item.isPositive ? "▲" : "▼"}</span>
-                  <span className="text-xs font-semibold">
-                    {item.change.toFixed(3)}%
-                  </span>
-                </div>
+                )}
               </div>
-
-              {/* Buy/Sell Rates */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-medium text-gray-600">Al</span>
-                  <span className="text-sm font-bold text-gray-900">
-                    {item.buyRate.toFixed(4)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-medium text-gray-600">Sat</span>
-                  <span className="text-sm font-bold text-gray-900">
-                    {item.sellRate.toFixed(4)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
       </div>
     </section>
   );
